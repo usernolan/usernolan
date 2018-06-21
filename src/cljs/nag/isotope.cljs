@@ -22,24 +22,6 @@
              (js/particlesJS.load "particles" "js/particles-nuid-config.json")))))
   (.arrange iso #js {"filter" (or filter (str "." class))}))
 
-(defn ease [cur start delta dur]
-  (let [cur' (/ cur (/ dur 2))]
-    (if (< cur' 1)
-      (-> delta (/ 2) (* cur') (* cur') (+ start))
-      (let [cur'' (- cur' 1)]
-        (-> cur'' (- 2) (* cur'') (- 1) (* (- delta)) (/ 2) (+ start))))))
-
-(defn scrollto
-  ([to] (scrollto to 0 20 800))
-  ([to cur i dur]
-   (if-let [to' (js/document.getElementById to)]
-     (let [start (.-pageYOffset js/window)
-           delta (- (.-offsetTop to') start 75)
-           v (ease cur start delta dur)]
-       (js/window.scrollTo 0 v)
-       (when (< cur (- dur 10)) (js/setTimeout #(scrollto to (+ cur i) i dur) i)))
-     (js/setTimeout #(scrollto to cur i dur)))))
-
 (defn show [new-filter]
   (let [is (some-> "isotope-container"
                    dom/getElementByClass
@@ -61,7 +43,7 @@
       :all (arrange {:class "isotope"})
       (js/console.log "?"))
     (reset! old-filter (if (= @old-filter new-filter) nil new-filter))
-    (scrollto "app")))
+    (js/window.scrollTo 0 0)))
 
 (defn title []
   [:h1 {:style {:cursor "pointer"}
@@ -89,7 +71,6 @@
 
 (defn isotope [{:keys [id props content]}]
   (let [on-click (fn [e]
-                   (js/console.log (dom/getViewportSize))
                    (some-> e .-target .-classList (.toggle "scoped"))
                    (.layout iso))]
     [:div.isotope
@@ -110,8 +91,8 @@
    [:a {:href href
         :on-mouse-over set-lighter
         :on-mouse-out set-darker
-        :style {:margin-right (if (> (aget (dom/getViewportSize) "width") 500) "25px" "15px")
-                :font-size (if (> (aget (dom/getViewportSize) "width") 500) "75px" "50px")
+        :style {:margin-right (if (> (.-width (dom/getViewportSize)) 500) "25px" "15px")
+                :font-size (if (> (.-width (dom/getViewportSize)) 500) "75px" "50px")
                 :color darker}}
     icon]])
 
@@ -342,6 +323,19 @@
    {:id "30"
     :props {:class "nolan"}
     :content [:img {:src "imgs/lolli.png" :alt "lolli"}]}
+
+   {:id "31"
+    :props {:class "people"}
+    :content
+    (if (> (.-width (dom/getViewportSize)) 1000)
+      [:video
+       {:src "imgs/escape-room.mp4"
+        :poster "imgs/escape-room.mp4"
+        :type "video/mp4"
+        :muted true
+        :auto-play true
+        :loop true}]
+      [:img {:src "imgs/escape-room.jpg" :alt "nuidians"}])}
 
    {:id "2000000000"
     :props {:class "nolan"}}])

@@ -11,8 +11,7 @@ pom.xml.asc
 *.class
 /.lein-*
 /.nrepl-port
-/resources/public/js
-/public/js
+/resources/public/js/nag
 /out
 /.repl
 *.log
