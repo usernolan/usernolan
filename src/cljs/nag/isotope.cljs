@@ -165,8 +165,8 @@
     :props {:class "quotes"}
     :content
     [:div {:style {:width "80%"}}
-     [:p {:style {:display "block"}} "\"simplicity is about subtracting the obvious and adding the meaningful.\""]
-     [:p ".• john maeda"]]}
+     [:p {:style {:display "block"}} "\"remember, one of the most important principles in programming is the same as one of the most important principles in sorcery, all right? that's if you have the name of the spirit, you get control over it.\""]
+     [:p ".• hal abelson"]]}
 
    {:id "12"
     :content [:img {:src "imgs/grandcan.jpg" :alt "grand canyon"}]}
@@ -177,7 +177,7 @@
 
    {:id "14"
     :props {:class "nolan quotes"}
-    :content [:p "worry is a misuse of the imagination.•"]}
+    :content [:p "worry is a misuse of the imagination .•"]}
 
    {:id "15"
     :props {:class "things"}
