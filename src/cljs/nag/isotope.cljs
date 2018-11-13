@@ -105,7 +105,7 @@
 (def isotopes
   [{:id "1"
     :props {:class "nolan"}
-    :content [:p {:style {:width "90%"}}"im nolan. i live in san francisco. im originally from indiana and have an unbelievable family. pretty much everything else about me can be found out by clicking around furiously on this page."]}
+    :content [:p {:style {:width "90%"}} "im nolan. im originally from indiana and have an unbelievable family. pretty much everything else about me can be found out by clicking around furiously on this page."]}
 
    {:id "2"
     :props {:class "people"}
