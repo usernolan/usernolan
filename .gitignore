@@ -26,4 +26,5 @@ config.edn
 # macOS
 .DS_Store
 
-uiddb.transit
+/.cpcache
+/.shadow-cljs

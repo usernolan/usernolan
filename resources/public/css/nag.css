@@ -1,6 +1,19 @@
+@font-face {
+  font-family: "Favorit Std";
+  font-style: "normal";
+  font-weight: "normal";
+  src: url("/fonts/favorit-std-regular.woff") format("woff");
+}
+
 body {
-  font-family: "Helvetica Neue", Helvetica, "Arimo", Arial, sans-serif;
+  font-family: "Favorit Std", "Helvetica Neue", Helvetica, "Arimo", Arial, sans-serif;
+  font-size: 1.1rem;
   margin: 0;
+}
+@media screen and (max-width: 330px) {
+  body {
+    font-size: .95rem;
+  }
 }
 body * {
   outline: none;
@@ -88,7 +101,7 @@ a {
 }
 #header-dropdown.active {
   opacity: 1;
-  height: 240px;
+  height: 250px;
 }
 #header-dropdown.active * {
   text-align: right;
@@ -117,6 +130,7 @@ a {
 .isotope {
   border: 4px solid white;
   background: white;
+  overflow: hidden;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   -webkit-transition: none;
