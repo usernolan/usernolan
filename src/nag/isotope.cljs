@@ -7,22 +7,37 @@
                "layoutMode" "masonry"
                "masonry" #js {"columnWidth" ".isotope-sizer"}})
 
-(defn init []
+(defn init
+  []
   (def iso (js/Isotope. ".isotope-container" opts)))
 
 (def old-filter (atom nil))
 
-(defn arrange [{:keys [class filter f]}]
-  (goog.array/map
-    (dom/getElementsByClass class)
-    #(if f
-       (f %)
-       (do (some-> % .-classList (.add "scoped"))
-           (when (dom/findNode % (fn [n] (some-> n .-classList (.contains "particles"))))
-             (js/particlesJS.load "particles" "js/particles-nuid-config.json")))))
-  (.arrange iso #js {"filter" (or filter (str "." class))}))
+(defn contains-particles?
+  [el]
+  (dom/findNode el #(some-> % .-classList (.contains "particles"))))
 
-(defn show [new-filter]
+(defn reload-particles!
+  [& [{:keys [id config-path]
+       :or {id "particles"
+            config-path "js/particles-nuid-config.json"}}]]
+  (js/particlesJS.load id config-path))
+
+(defn scope
+  [el]
+  (some-> el .-classList (.add "scoped"))
+  (when (contains-particles? el)
+    (reload-particles!)))
+
+(defn arrange
+  [{:keys [class filter f]
+    :or {filter (str "." class)
+         f scope}}]
+  (goog.array/map (dom/getElementsByClass class) f)
+  (.arrange iso #js {"filter" filter}))
+
+(defn show
+  [new-filter]
   (let [is (some-> "isotope-container"
                    dom/getElementByClass
                    dom/getChildren)]
@@ -45,9 +60,11 @@
     (reset! old-filter (if (= @old-filter new-filter) nil new-filter))
     (js/window.scrollTo 0 0)))
 
-(defn title []
-  [:h1 {:style {:cursor "pointer"}
-        :on-click #(show :nolan)}
+(defn title
+  []
+  [:h1
+   {:style {:cursor "pointer"}
+    :on-click #(show :nolan)}
    "nolan"])
 
 (def nav-list
@@ -70,7 +87,8 @@
 (defn set-lighter [el] (-> el .-target .-style .-color (set! lighter-rgb)))
 (defn set-darker [el] (-> el .-target .-style .-color (set! darker-rgb)))
 
-(defn isotope [{:keys [id props content]}]
+(defn isotope
+  [{:keys [id props content]}]
   (let [on-click (fn [e]
                    (some-> e .-target .-classList (.toggle "scoped"))
                    (.layout iso))]
@@ -86,7 +104,8 @@
                :auto-focus false}}
       content]]))
 
-(defn hover-li [{:keys [href icon]}]
+(defn hover-li
+  [{:keys [href icon]}]
   [:li {:style {:pointer-events "all"}}
    [:a {:href href
         :on-mouse-over set-lighter
@@ -96,7 +115,8 @@
                 :color darker-rgb}}
     icon]])
 
-(defn hover-ul [lis]
+(defn hover-ul
+  [lis]
   [:ul {:style {:margin 0 :padding 0}}
    (for [li lis]
      ^{:key (:href li)}
@@ -120,8 +140,14 @@
     :props {:class "quotes"}
     :content
     [:div {:style {:width "80%"}}
-     [:p {:style {:display "block"}} "\"any sufficiently advanced technology is indistinguishable from magic.\""]
-     [:p ".• arthur c. clarke"]]}
+     [:p {:style {:display "block"}}
+      (str
+       "\""
+       (rand-nth
+        ["information is the resolution of uncertainty."
+         "my greatest concern was what to call [entropy]."])
+       "\"")]
+     [:p ".• claude shannon"]]}
 
    {:id "5"
     :props {:class "contact"}
@@ -154,8 +180,15 @@
     :props {:class "quotes"}
     :content
     [:div {:style {:width "80%"}}
-     [:h3 {:style {:display "block"}} ".• flow"]
-     [:p "the mental state of operation in which a person...is fully immersed in a feeling of energized focus, full involvement, and enjoyment in the process of the activity."]]}
+     [:p {:style {:display "block"}}
+      (str
+       "\""
+       (rand-nth
+        ["we don't get to stop the world, especially not to observe it."
+         "when you combine two pieces of data you get data. when you combine two machines you get trouble."
+         "design is to take things apart in such a way that they can be put back together."])
+       "\"")]
+     [:p ".• rich hickey"]]}
 
    {:id "10"
     :props {:class "things"}
@@ -340,6 +373,23 @@
    {:id "32"
     :props {:class (if (< lighter 192) "nolan things" "things")}
     :content [:img {:src "imgs/colorcrete.jpg" :alt "colorcrete"}]}
+
+   {:id "33"
+    :props {:class "quotes"}
+    :content
+    [:div {:style {:width "80%"}}
+     [:p {:style {:display "block"}}
+      (str
+       "\""
+       (rand-nth
+        ["one main factor in the upward trend of animal life has been the power of wandering."
+         "seek simplicity, and distrust it."
+         "the only simplicity to be trusted is found on the far side of complexity."
+         "we think in generalities, but we live in details."
+         "a science that hesitates to forget its founders is lost."
+         "in the evolution of real knowledge, [a contradiction] marks the first step in progress towards victory."])
+       "\"")]
+     [:p ".• alfred north whitehead"]]}
 
    {:id "2000000000"
     :props {:class "nolan"}}])

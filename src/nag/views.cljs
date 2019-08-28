@@ -39,8 +39,9 @@
   [:ul props
    (for [{:keys [display on-click]} isotope/nav-list]
      ^{:key display}
-     [:li {:style {:color isotope/gray2-rgb}
-           :on-click on-click}
+     [:li
+      {:style {:color isotope/gray2-rgb}
+       :on-click on-click}
       display])])
 
 (defn header []

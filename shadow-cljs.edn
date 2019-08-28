@@ -1,9 +1,11 @@
 {:builds
  {:site
-  {:compiler-options {:externs ["externs/isotope.ext.js"
-                                "externs/particles.ext.js"]}
-   :output-dir "resources/public/js/nag"
+  {:output-dir "resources/public/js/nag"
    :modules {:site {:entries [nag.core]}}
+   :compiler-options
+   {:externs
+    ["externs/isotope.ext.js"
+     "externs/particles.ext.js"]}
    :devtools
    {:after-load nag.core/init
     :http-root "resources/public"
