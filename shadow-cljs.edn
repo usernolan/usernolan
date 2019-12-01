@@ -1,15 +1,10 @@
-{:builds
- {:site
-  {:output-dir "resources/public/js/nag"
-   :modules {:site {:entries [nag.core]}}
-   :compiler-options
-   {:externs
-    ["externs/isotope.ext.js"
-     "externs/particles.ext.js"]}
-   :devtools
-   {:after-load nag.core/init
-    :http-root "resources/public"
-    :http-port 32123}
+{:deps {:aliases [:cljs]}
+ :builds
+ {:browser
+  {:target     :browser
+   :modules    {:browser {:entries [nag.core]}}
+   :output-dir "resources/public/js/nag"
    :asset-path "js/nag"
-   :target :browser}}
- :deps {:aliases [:shadow]}}
+   :devtools   {:after-load nag.core/init
+                :http-root  "resources/public"
+                :http-port  32123}}}}

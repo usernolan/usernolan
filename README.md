@@ -1,3 +1,3 @@
-# NAG •.
+# .•
 
-not always gray dot net
+[notalwaysgray.net](https://notalwaysgray.net)
