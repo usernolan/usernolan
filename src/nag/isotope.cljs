@@ -1,5 +1,7 @@
 (ns nag.isotope
   (:require
+   [reagent.core :as r]
+   [goog.array :as arr]
    [goog.dom :as dom]))
 
 (def opts #js {"itemSelector"    ".isotope"
@@ -35,7 +37,7 @@
   [{:keys [class filter f]
     :or   {filter (str "." class)
            f      scope}}]
-  (goog.array/map (dom/getElementsByClass class) f)
+  (arr/map (dom/getElementsByClass class) f)
   (.arrange iso #js {"filter" filter}))
 
 (defn show
@@ -51,7 +53,7 @@
       :quotes     (arrange {:class "quotes"})
       :contact    (arrange {:class "contact"})
       :rand       (do
-                    (goog.array/map
+                    (arr/map
                      (dom/getElementsByClass "isotope")
                      (fn [el]
                        (when (< (rand) 0.15)
