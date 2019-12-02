@@ -1,26 +1,19 @@
-@font-face {
-  font-family: "Favorit Std";
-  font-style: "normal";
-  font-weight: "normal";
-  src: url("/fonts/favorit-std-regular.woff") format("woff");
-}
-
 body {
-  font-family: "Favorit Std", "Helvetica Neue", Helvetica, "Arimo", Arial, sans-serif;
+  font-family: "Helvetica Neue", sans-serif;
   font-size: 1.1rem;
   margin: 0;
 }
+
 @media screen and (max-width: 330px) {
   body {
     font-size: .95rem;
   }
 }
+
 body * {
   outline: none;
-  -webkit-transition: all .2s ease;
-       -o-transition: all .2s ease;
-          transition: all .2s ease;
 }
+
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
   body * {
     -webkit-transition: opacity 0s, margin .2s, padding .2s, color .2s;
