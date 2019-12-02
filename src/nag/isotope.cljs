@@ -170,13 +170,13 @@
     :content
     [hover-ul
      [{:href "https://github.com/Nolan330"
-       :icon [:i.fab.fa-github]}
+       :icon [:i.icon-github-circled]}
       {:href "https://twitter.com/_nolan330"
-       :icon [:i.fab.fa-twitter]}
+       :icon [:i.icon-twitter]}
       {:href "https://www.linkedin.com/in/nolan330"
-       :icon [:i.fab.fa-linkedin]}
+       :icon [:i.icon-linkedin-squared]}
       {:href "mailto:nolan330@gmail.com"
-       :icon [:i.fas.fa-envelope]}]]}
+       :icon [:i.icon-mail-alt]}]]}
 
    {:id      "6"
     :content [:img {:src "imgs/ducks.jpg" :alt "ducks"}]}
@@ -245,19 +245,20 @@
    {:id    "20"
     :props {:class "prefs"}
     :content
-                                        ; discogs, songexploder, sonicpi
     [hover-ul
      [{:href "https://open.spotify.com/user/nolan330"
-       :icon [:i.fab.fa-spotify]}
+       :icon [:i.icon-spotify]}
+      {:href "https://www.discogs.com/user/nolan330/collection?header=1"
+       :icon [:i.icon-cd]}
       {:href "https://soundcloud.com/nolan330/sets"
-       :icon [:i.fab.fa-soundcloud]}]]}
+       :icon [:i.icon-soundcloud]}]]}
 
    {:id    "21"
     :props {:class "prefs"}
     :content
     [hover-ul
      [{:href "https://behance.net/IntegrationFactory/appreciated"
-       :icon [:i.fab.fa-behance]}]]}
+       :icon [:i.icon-behance]}]]}
 
    {:id    "22"
     :props {:class "prefs"}
