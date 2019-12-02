@@ -71,6 +71,36 @@
     :style    {:cursor "pointer"}}
    "nolan"])
 
+(defn int->rgb-css-str
+  [n]
+  (str "rgb(" n "," n "," n ")"))
+
+(def gray1-ratom (r/atom (rand-int 256)))
+(def gray2-ratom (r/atom (- 255 @gray1-ratom)))
+(def gray1-rgb-css-str-ratom (r/atom (int->rgb-css-str @gray1-ratom)))
+(def gray2-rgb-css-str-ratom (r/atom (int->rgb-css-str @gray2-ratom)))
+
+(defn set-body-background-color!
+  [color-css-str]
+  (->
+   (dom/getElementsByTagName dom/TagName.BODY)
+   (arr/peek)
+   .-style
+   .-background
+   (set! color-css-str)))
+
+(set-body-background-color! @gray1-rgb-css-str-ratom)
+
+(add-watch gray1-ratom
+           ::state-watch
+           (fn [_ _ old-val gray1]
+             (if (= old-val gray1)
+               gray1
+               (let [gray2             (reset! gray2-ratom (- 255 gray1))
+                     gray1-rgb-css-str (reset! gray1-rgb-css-str-ratom (int->rgb-css-str gray1))
+                     gray2-rgb-css-str (reset! gray2-rgb-css-str-ratom (int->rgb-css-str gray2))
+                     body              (set-body-background-color! gray1-rgb-css-str)]))))
+
 (def nav-list
   [{:display "people" :on-click (fn [] (show :people))}
    {:display "things" :on-click (fn [] (show :things))}
@@ -78,29 +108,12 @@
    {:display "quotes" :on-click (fn [] (show :quotes))}
    {:display "contact" :on-click (fn [] (show :contact))}
    {:display "rand" :on-click (fn [] (show :rand))}
+   {:display "inv" :on-click (fn [] (reset! gray1-ratom @gray2-ratom))}
    {:display "all" :on-click (fn [] (show :all))}])
 
-(comment
-
-  (defn gray1 (r/atom (rand-int 129)))
-  (defn gray2 (r/atom (- 255 @gray1)))
-  (add-watch gray1
-             ::gray-shift-watch
-             (fn [_ _ _ new-val]
-               (reset! gray2 (- 255 new-val))))
-
-  )
-
-(def gray1 (rand-int 256))
-(def gray1-rgb (str "rgb(" gray1 "," gray1 "," gray1 ")"))
-(def gray2 (- 255 gray1))
-(def gray2-rgb (str "rgb(" gray2 "," gray2 "," gray2 ")"))
-(def lighter (if (< gray1 gray2) gray2 gray1))
-(def lighter-rgb (if (= lighter gray1) gray1-rgb gray2-rgb))
-(def darker (if (< gray1 gray2) gray1 gray2))
-(def darker-rgb (if (= darker gray1) gray1-rgb gray2-rgb))
-(defn set-lighter [el] (-> el .-target .-style .-color (set! lighter-rgb)))
-(defn set-darker [el] (-> el .-target .-style .-color (set! darker-rgb)))
+(defn set-event-target-color!
+  [e color-css-str]
+  (-> e .-target .-style .-color (set! color-css-str)))
 
 (defn isotope
   [{:keys [id props content]}]
@@ -111,8 +124,10 @@
     [:div.isotope
      (merge
       props
-      {:style    {:box-shadow (str "inset 0 0 0 4px " darker-rgb)
-                  :color      darker-rgb}
+      {:style    {:background @gray1-rgb-css-str-ratom
+                  :border     (str "4px solid " @gray1-rgb-css-str-ratom)
+                  :box-shadow (str "inset 0 0 0 4px " @gray2-rgb-css-str-ratom)
+                  :color      @gray2-rgb-css-str-ratom}
        :on-click on-click})
 
      [:p.id id]
@@ -120,17 +135,16 @@
      [:div.content
       {:style {:pointer-events "none"
                :auto-focus     false}}
-      content]]))
+      (if (fn? content) (content) content)]]))
 
 (defn hover-li
   [{:keys [href icon]}]
   [:li {:style {:pointer-events "all"}}
-   [:a {:href          href
-        :on-mouse-over set-lighter
-        :on-mouse-out  set-darker
-        :style         {:margin-right (if (> (.-width (dom/getViewportSize)) 500) "25px" "15px")
-                        :font-size    (if (> (.-width (dom/getViewportSize)) 500) "75px" "50px")
-                        :color        darker-rgb}}
+   [:a {:href   href
+        :target "_blank"
+        :style  {:margin-right (if (> (.-width (dom/getViewportSize)) 500) "25px" "15px")
+                 :font-size    (if (> (.-width (dom/getViewportSize)) 500) "75px" "50px")
+                 :color        @gray2-rgb-css-str-ratom}}
     icon]])
 
 (defn hover-ul
@@ -143,7 +157,7 @@
 (def isotopes
   [{:id      "1"
     :props   {:class "nolan"}
-    :content [:p {:style {:width "90%"}} "im nolan. im originally from indiana and have an unbelievable family. pretty much everything else about me can be found out by clicking around furiously on this page."]}
+    :content [:p {:style {:width "80%"}} "im nolan. im originally from indiana and have an unbelievable family. pretty much everything else about me can be found out by clicking around furiously on this page."]}
 
    {:id      "2"
     :props   {:class "people"}
@@ -151,21 +165,19 @@
 
    {:id      "3"
     :props   {:class "things"}
-    :content [:img {:src   "imgs/rock.png" :alt "rock"
+    :content [:img {:src   "imgs/rock.png"
+                    :alt   "rock"
                     :style {:object-fit "contain"}}]}
 
    {:id    "4"
     :props {:class "quotes"}
     :content
-    [:div {:style {:width "80%"}}
-     [:p {:style {:display "block"}}
-      (str
-       "\""
-       (rand-nth
-        ["information is the resolution of uncertainty."
-         "my greatest concern was what to call [entropy]."])
-       "\"")]
-     [:p ".• claude shannon"]]}
+    (fn []
+      [:div {:style {:width "80%"}}
+       [:p {:style {:display     "block"
+                    :font-weight "bold"}}
+        "my greatest concern was what to call it"]
+       [:p ".• claude shannon"]])}
 
    {:id    "5"
     :props {:class "contact"}
@@ -188,29 +200,29 @@
     :content
     [:div {:style {:width "80%"}}
      [:h3 {:style {:display "block"}} ".• overview effect"]
-     [:p "a cognitive shift in awareness reported by some astronauts and cosmonauts during spaceflight."]]}
+     [:p "a cognitive shift in awareness reported by some astronauts and cosmonauts during spaceflight"]]}
 
    {:id      "8"
-    :content [:img {:src   "imgs/beach.jpg" :alt "gray beach"
+    :content [:img {:src   "imgs/beach.jpg"
+                    :alt   "gray beach"
                     :style {:object-fit "unset"}}]}
 
    {:id    "9"
     :props {:class "quotes"}
     :content
     [:div {:style {:width "80%"}}
-     [:p {:style {:display "block"}}
-      "\"design is to take things apart in such a way that they can be put back together.\""]
+     [:p {:style {:display     "block"
+                  :font-weight "bold"}}
+      "design is to take things apart in such a way that they can be put back together"]
      [:p ".• rich hickey"]]}
-
-   {:id      "10"
-    :props   {:class "things"}
-    :content [:img {:src "imgs/ballpoint.jpg" :alt "ballpoint"}]}
 
    {:id    "11"
     :props {:class "quotes"}
     :content
     [:div {:style {:width "80%"}}
-     [:p {:style {:display "block"}} "\"remember, one of the most important principles in programming is the same as one of the most important principles in sorcery, all right? that's if you have the name of the spirit, you get control over it.\""]
+     [:p {:style {:display     "block"
+                  :font-weight "bold"}}
+      "remember, one of the most important principles in programming is the same as one of the most important principles in sorcery, all right? that's if you have the name of the spirit, you get control over it"]
      [:p ".• hal abelson"]]}
 
    {:id      "12"
@@ -222,11 +234,11 @@
 
    {:id      "14"
     :props   {:class "nolan quotes"}
-    :content [:p "\"one main factor in the upward trend of animal life has been the power of wandering.\""]}
-
-   {:id      "15"
-    :props   {:class "things"}
-    :content [:img {:src "imgs/pipe.jpg" :alt "pipe"}]}
+    :content [:div {:style {:width "80%"}}
+              [:p {:style {:display     "block"
+                           :font-weight "bold"}}
+               "one main factor in the upward trend of animal life has been the power of wandering"]
+              [:p ".• alfred north whitehead"]]}
 
    {:id      "16"
     :props   {:class "people"}
@@ -237,7 +249,7 @@
     :content [:img {:src "imgs/squids.jpg" :alt "🦑"}]}
 
    {:id      "18"
-    :props   {:class (if (>= lighter 192) "nolan things" "things")}
+    :props   {:class (if (>= (max @gray1-ratom @gray2-ratom) 192) "nolan things" "things")}
     :content [:img {:src "imgs/space.jpg" :alt "space"}]}
 
    {:id      "19"
@@ -265,11 +277,14 @@
    {:id    "22"
     :props {:class "prefs"}
     :content
-    [:ul
-     [:li [:img {:src "imgs/borderlands.png" :alt "borderlands"}]]
-     [:li [:img {:src "imgs/fez.png" :alt "fez"}]]
-     [:li [:img {:src "imgs/ssb.png" :alt "ssb"}]]
-     [:li [:img {:src "imgs/wow.png" :alt "wow"}]]]}
+    (fn []
+      (let [filter-css-str (str "saturate(0%) brightness(" (* (/ @gray2-ratom 255) 100) "%) contrast(100%)")
+            style {:filter filter-css-str :-webkit-filter filter-css-str}]
+        [:ul
+         [:li [:img {:src "imgs/borderlands.png" :alt "borderlands" :style style}]]
+         [:li [:img {:src "imgs/fez.png" :alt "fez" :style style}]]
+         [:li [:img {:src "imgs/ssb.png" :alt "ssb" :style style}]]
+         [:li [:img {:src "imgs/wow.png" :alt "wow" :style style}]]]))}
 
    {:id      "23"
     :props   {:class "people"}
@@ -279,92 +294,72 @@
     :props   {:class "people"}
     :content [:img {:src "imgs/phish.jpg" :alt "phaesh"}]}
 
-   {:id    "25"
-    :props {:class "prefs"}
-    :content
-    [:div {:style {:width "100%" :height "100%"}}
-     [:img {:src   "imgs/shlin.png" :alt "ashlin c. dolan"
-            :style {:object-fit "contain"}}]
-     [:a {:href          "https://ashlindolan.com"
-          :on-mouse-over set-lighter
-          :on-mouse-out  set-darker
-          :style         {:pointer-events "all"
-                          :font-size      "40px"
-                          :position       "absolute"
-                          :bottom         ".5em"
-                          :right          "1em"
-                          :color          darker-rgb}}
-      "ACD"]]}
-
    {:id    "26"
     :props {:class "prefs"}
     :content
-    [:div {:style {:width "100%" :height "100%"}}
-     [:img {:src "imgs/profhos.jpg" :alt "profhos"}]
-     [:a {:href          "http://sugarboypress.blogspot.com"
-          :on-mouse-over set-lighter
-          :on-mouse-out  set-darker
-          :style         {:pointer-events "all"
-                          :font-size      "40px"
-                          :position       "absolute"
-                          :bottom         ".5em"
-                          :right          "1em"
-                          :color          darker-rgb}}
-      "Mark"]]}
+    (fn []
+      [:div {:style {:width "100%" :height "100%"}}
+       [:img {:src "imgs/profhos.jpg" :alt "profhos"}]
+       [:a {:href   "http://sugarboypress.blogspot.com"
+            :target "_blank"
+            :style  {:pointer-events "all"
+                     :font-size      "40px"
+                     :position       "absolute"
+                     :bottom         ".5em"
+                     :right          "1em"
+                     :color          @gray2-rgb-css-str-ratom}}
+        "Mark"]])}
 
    {:id    "27"
     :props {:class "prefs"}
     :content
-    [:div {:style {:width "100%" :height "100%"}}
-     [:img {:src "imgs/pyramids.jpg" :alt "beeple"}]
-     [:a {:href          "https://beeple-crap.com"
-          :on-mouse-over set-darker
-          :on-mouse-out  set-lighter
-          :style         {:pointer-events "all"
-                          :font-size      "40px"
-                          :position       "absolute"
-                          :bottom         ".5em"
-                          :right          "1em"
-                          :color          lighter-rgb}}
-      "beeple"]]}
+    (fn []
+      [:div {:style {:width "100%" :height "100%"}}
+       [:img {:src "imgs/pyramids.jpg" :alt "beeple"}]
+       [:a {:href   "https://beeple-crap.com"
+            :target "_blank"
+            :style  {:pointer-events "all"
+                     :font-size      "40px"
+                     :position       "absolute"
+                     :bottom         ".5em"
+                     :right          "1em"
+                     :color          @gray1-rgb-css-str-ratom}}
+        "beeple"]])}
 
    {:id    "28"
     :props {:class "prefs"}
     :content
-    [:a {:href          "https://ericasmith.co"
-         :on-mouse-over set-lighter
-         :on-mouse-out  set-darker
-         :style         {:pointer-events "all"
-                         :color          darker-rgb
-                         :width          "80%"}}
-     [:h1 "Erica Smith — Graphic Design"]]}
+    (fn []
+      [:a {:href   "https://ericasmith.co"
+           :target "_blank"
+           :style  {:pointer-events "all"
+                    :color          @gray2-rgb-css-str-ratom
+                    :width          "80%"}}
+       [:h1 "Erica Smith — Graphic Design"]])}
 
    {:id    "29"
     :props {:class "things"}
     :content
-    [:div
-     [:a {:href  "https://nuid.io"
-          :style {:display        "block"
-                  :pointer-events "all"}}
-      [:h1
-       [:span {:on-mouse-over #(-> % .-target .-style .-color (set! "#00f2a2"))
-               :on-mouse-out  #(-> % .-target .-style .-color (set! "#181818"))
-               :style         {:color "#181818"}} "Nu"]
-       [:span {:on-mouse-over #(-> % .-target .-style .-color (set! "#181818"))
-               :on-mouse-out  #(-> % .-target .-style .-color (set! "#00f2a2"))
-               :style         {:color "#00f2a2"}} "ID"]]]
-     [:a {:href          "https://nuid.io"
-          :on-mouse-over #(-> % .-target .-style .-color (set! "#00f2a2"))
-          :on-mouse-out  #(-> % .-target .-style .-color (set! "#181818"))
-          :style         {:pointer-events "all"
-                          :color          "#181818"}}
-      [:p "Decentralized Authentication"]]
-     [:div#particles.particles
-      {:style {:position "absolute"
-               :height   "100%"
-               :width    "100%"
-               :left     0
-               :top      0}}]]}
+    (fn []
+      [:div
+       [:a {:href   "https://nuid.io"
+            :target "_blank"
+            :style  {:display        "block"
+                     :pointer-events "all"}}
+        [:h1
+         [:span {:style {:color @gray2-rgb-css-str-ratom}} "Nu"]
+         [:span {:style {:color "#00ffaf"}} "ID"]]]
+       [:a {:href   "https://nuid.io"
+            :target "_blank"
+            :style  {:color          @gray2-rgb-css-str-ratom
+                     :pointer-events "all"}}
+        [:p "Decentralized Authentication"]]
+       [:div#particles.particles
+        {:style {:position "absolute"
+                 :height   "100%"
+                 :width    "100%"
+                 :left     0
+                 :top      0}}]])}
 
    {:id      "30"
     :props   {:class "things"}
@@ -373,33 +368,20 @@
    {:id    "31"
     :props {:class "people"}
     :content
-    (if (> (.-width (dom/getViewportSize)) 1000)
-      [:video
-       {:src       "imgs/escape-room.mp4"
-        :poster    "imgs/escape-room.mp4"
-        :type      "video/mp4"
-        :muted     true
-        :auto-play true
-        :loop      true}]
-      [:img {:src "imgs/escape-room.jpg" :alt "nuidians"}])}
+    (fn []
+      (if (> (.-width (dom/getViewportSize)) 1000)
+        [:video
+         {:src       "imgs/escape-room.mp4"
+          :poster    "imgs/escape-room.mp4"
+          :type      "video/mp4"
+          :muted     true
+          :auto-play true
+          :loop      true}]
+        [:img {:src "imgs/escape-room.jpg" :alt "nuidians"}]))}
 
    {:id      "32"
-    :props   {:class (if (< lighter 192) "nolan things" "things")}
+    :props   {:class (if (< (max @gray1-ratom @gray2-ratom) 192) "nolan things" "things")}
     :content [:img {:src "imgs/colorcrete.jpg" :alt "colorcrete"}]}
 
-   {:id    "33"
-    :props {:class "quotes"}
-    :content
-    [:div {:style {:width "80%"}}
-     [:p {:style {:display "block"}}
-      (str
-       "\""
-       (rand-nth
-        ["seek simplicity, and distrust it."
-         "we think in generalities, but we live in details."
-         "a science that hesitates to forget its founders is lost."])
-       "\"")]
-     [:p ".• alfred north whitehead"]]}
-
-   {:id    "2000000000"
+   {:id    "2000000000000"
     :props {:class "nolan"}}])
