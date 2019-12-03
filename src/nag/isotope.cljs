@@ -108,13 +108,13 @@
                    (.layout iso))]
 
     [:div.isotope
-     (merge
-      props
-      {:style    {:background @gray1-rgb-css-str-ratom
-                  :border     (str "4px solid " @gray1-rgb-css-str-ratom)
+     (merge-with
+      merge
+      {:style    {:border     (str "4px solid " @gray1-rgb-css-str-ratom)
                   :box-shadow (str "inset 0 0 0 4px " @gray2-rgb-css-str-ratom)
                   :color      @gray2-rgb-css-str-ratom}
-       :on-click on-click})
+       :on-click on-click}
+      props)
 
      [:p.id id]
 
@@ -265,7 +265,7 @@
     :content
     (fn []
       (let [filter-css-str (str "saturate(0%) brightness(" (* (/ @gray2-ratom 255) 100) "%) contrast(100%)")
-            style {:filter filter-css-str :-webkit-filter filter-css-str}]
+            style          {:filter filter-css-str :-webkit-filter filter-css-str}]
         [:ul
          [:li [:img {:src "imgs/borderlands.png" :alt "borderlands" :style style}]]
          [:li [:img {:src "imgs/fez.png" :alt "fez" :style style}]]
