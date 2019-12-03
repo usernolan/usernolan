@@ -1,5 +1,6 @@
 (ns nag.isotope
   (:require
+   [nag.webgl :as webgl]
    [reagent.core :as r]
    [goog.array :as arr]
    [goog.dom :as dom]))
@@ -365,6 +366,12 @@
    {:id      "32"
     :props   {:class (if (< (max @gray1-ratom @gray2-ratom) 192) "nolan things" "things")}
     :content [:img {:src "imgs/colorcrete.jpg" :alt "colorcrete"}]}
+
+   {:id      "33"
+    :props   {:class "things"
+              :style {:box-shadow "none"}}
+    :content [webgl/canvas-component
+              {:height 200 :width 350}]}
 
    {:id    "2000000000000"
     :props {:class "nolan"}}])
