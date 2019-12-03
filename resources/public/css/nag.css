@@ -178,6 +178,12 @@ a {
      object-fit: cover;
   border-top-right-radius: .8em;
 }
+@supports (-ms-ime-align: auto) {
+  .isotope.scoped div.content video {
+    width: unset;
+    min-height: 100%;
+  }
+}
 .isotope.scoped div.content ul li img {
   margin-right: 25px;
   max-width: 75px;

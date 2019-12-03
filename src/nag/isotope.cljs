@@ -340,16 +340,18 @@
             :target "_blank"
             :style  {:display        "block"
                      :pointer-events "all"}}
-        [:h1
-         [:span {:style {:color @gray2-rgb-css-str-ratom}} "Nu"]
-         [:span {:style {:color (cond (> @gray1-ratom 192) "#0000ff"
-                                      (< @gray1-ratom 64)  "#00ffaf"
-                                      :else                "white")}} "ID"]]]
+        [:h1 {:style {:margin "0"}}
+         [:span {:style {:color   @gray2-rgb-css-str-ratom
+                         :display "inline-block"}} "Nu"]
+         [:span {:style {:color   (cond (> @gray1-ratom 192) "#0000ff"
+                                        (< @gray1-ratom 64)  "#00ffaf"
+                                        :else                "white")
+                         :display "inline-block"}} "ID"]]]
        [:a {:href   "https://nuid.io"
             :target "_blank"
             :style  {:color          @gray2-rgb-css-str-ratom
                      :pointer-events "all"}}
-        [:p "Decentralized Authentication"]]])}
+        [:p {:style {:margin "0"}} "Decentralized Authentication"]]])}
 
    {:id    "28"
     :props {:class "things"}
