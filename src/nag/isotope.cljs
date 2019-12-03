@@ -152,15 +152,13 @@
                     :alt   "rock"
                     :style {:object-fit "contain"}}]}
 
-   {:id    "4"
-    :props {:class "quotes"}
-    :content
-    (fn []
-      [:div {:style {:width "80%"}}
-       [:p {:style {:display     "block"
-                    :font-weight "bold"}}
-        "my greatest concern was what to call it"]
-       [:p ".• claude shannon"]])}
+   {:id      "4"
+    :props   {:class "nolan quotes"}
+    :content [:div {:style {:width "80%"}}
+              [:p {:style {:display     "block"
+                           :font-weight "bold"}}
+               "one main factor in the upward trend of animal life has been the power of wandering"]
+              [:p ".• alfred north whitehead"]]}
 
    {:id    "5"
     :props {:class "contact"}
@@ -178,50 +176,66 @@
    {:id      "6"
     :content [:img {:src "imgs/ducks.jpg" :alt "ducks"}]}
 
-   {:id    "7"
-    :props {:class "quotes"}
-    :content
-    [:div {:style {:width "80%"}}
-     [:h3 {:style {:display "block"}} ".• overview effect"]
-     [:p "a cognitive shift in awareness reported by some astronauts and cosmonauts during spaceflight"]]}
+   {:id      "7"
+    :props   {:class "quotes"}
+    :content [:div {:style {:width "80%"}}
+              [:p {:style {:display     "block"
+                           :font-weight "bold"}}
+               "my greatest concern was what to call it"]
+              [:p ".• claude shannon"]]}
 
    {:id      "8"
     :content [:img {:src   "imgs/beach.jpg"
                     :alt   "gray beach"
                     :style {:object-fit "unset"}}]}
 
-   {:id    "9"
-    :props {:class "quotes"}
-    :content
-    [:div {:style {:width "80%"}}
-     [:p {:style {:display     "block"
-                  :font-weight "bold"}}
-      "design is to take things apart in such a way that they can be put back together"]
-     [:p ".• rich hickey"]]}
+   {:id      "9"
+    :props   {:class "quotes"}
+    :content [:div {:style {:width "80%"}}
+              [:p {:style {:display     "block"
+                           :font-weight "bold"}}
+               "design is to take things apart in such a way that they can be put back together"]
+              [:p ".• rich hickey"]]}
 
-   {:id    "11"
-    :props {:class "quotes"}
-    :content
-    [:div {:style {:width "80%"}}
-     [:p {:style {:display     "block"
-                  :font-weight "bold"}}
-      "remember, one of the most important principles in programming is the same as one of the most important principles in sorcery, all right? that's if you have the name of the spirit, you get control over it"]
-     [:p ".• hal abelson"]]}
-
-   {:id      "12"
+   {:id      "10"
     :content [:img {:src "imgs/grandcan.jpg" :alt "grand canyon"}]}
+
+   {:id      "11"
+    :props   {:class "quotes"}
+    :content [:div {:style {:width "80%"}}
+              [:p {:style {:display     "block"
+                           :font-weight "bold"}}
+               "remember, one of the most important principles in programming is the same as one of the most important principles in sorcery, all right? that's if you have the name of the spirit, you get control over it"]
+              [:p ".• hal abelson"]]}
+
+   {:id    "12"
+    :props {:class "quotes"}
+    :content
+    [:div {:style {:width "80%"}}
+     [:h3 {:style {:display "block"}} ".• overview effect"]
+     [:p "a cognitive shift in awareness reported by some astronauts and cosmonauts during spaceflight"]]}
 
    {:id      "13"
     :props   {:class "people"}
     :content [:img {:src "imgs/shlin.jpg" :alt "💙"}]}
 
    {:id      "14"
-    :props   {:class "nolan quotes"}
-    :content [:div {:style {:width "80%"}}
-              [:p {:style {:display     "block"
-                           :font-weight "bold"}}
-               "one main factor in the upward trend of animal life has been the power of wandering"]
-              [:p ".• alfred north whitehead"]]}
+    :props   {:class (if (>= (max @gray1-ratom @gray2-ratom) 192) "nolan things" "things")}
+    :content [:img {:src "imgs/space.jpg" :alt "space"}]}
+
+   {:id    "15"
+    :props {:class "things"}
+    :content
+    (fn []
+      (let [gray-pct       (* (/ @gray2-ratom 255) 100)
+            filter-css-str (str "saturate(0%) brightness(" gray-pct "%) contrast(100%)")]
+        [:img {:src    "imgs/keys.png"
+               :alt    "cross-sections of keyholes"
+               :style  {:filter         filter-css-str
+                        :-webkit-filter filter-css-str
+                        :height         "84%"
+                        :width          "unset"}
+               :height "84%"}]))}
 
    {:id      "16"
     :props   {:class "people"}
@@ -232,14 +246,10 @@
     :content [:img {:src "imgs/squids.jpg" :alt "🦑"}]}
 
    {:id      "18"
-    :props   {:class (if (>= (max @gray1-ratom @gray2-ratom) 192) "nolan things" "things")}
-    :content [:img {:src "imgs/space.jpg" :alt "space"}]}
-
-   {:id      "19"
     :props   {:class "things"}
     :content [:img {:src "imgs/midway.jpg" :alt "airport"}]}
 
-   {:id    "20"
+   {:id    "19"
     :props {:class "prefs"}
     :content
     [hover-ul
@@ -250,18 +260,19 @@
       {:href "https://soundcloud.com/nolan330/sets"
        :icon [:i.icon-soundcloud]}]]}
 
-   {:id    "21"
+   {:id    "20"
     :props {:class "prefs"}
     :content
     [hover-ul
      [{:href "https://behance.net/IntegrationFactory/appreciated"
        :icon [:i.icon-behance]}]]}
 
-   {:id    "22"
+   {:id    "21"
     :props {:class "prefs"}
     :content
     (fn []
-      (let [filter-css-str (str "saturate(0%) brightness(" (* (/ @gray2-ratom 255) 100) "%) contrast(100%)")
+      (let [gray-pct       (* (/ @gray2-ratom 255) 100)
+            filter-css-str (str "saturate(0%) brightness(" gray-pct "%) contrast(100%)")
             style          {:filter filter-css-str :-webkit-filter filter-css-str}]
         [:ul
          [:li [:img {:src "imgs/borderlands.png" :alt "borderlands" :style style}]]
@@ -269,15 +280,15 @@
          [:li [:img {:src "imgs/ssb.png" :alt "ssb" :style style}]]
          [:li [:img {:src "imgs/wow.png" :alt "wow" :style style}]]]))}
 
-   {:id      "23"
+   {:id      "22"
     :props   {:class "people"}
     :content [:img {:src "imgs/bois.jpg" :alt "bois"}]}
 
-   {:id      "24"
+   {:id      "23"
     :props   {:class "people"}
     :content [:img {:src "imgs/phish.jpg" :alt "phaesh"}]}
 
-   {:id    "26"
+   {:id    "24"
     :props {:class "prefs"}
     :content
     (fn []
@@ -293,7 +304,7 @@
                      :color          @gray2-rgb-css-str-ratom}}
         "Mark"]])}
 
-   {:id    "27"
+   {:id    "25"
     :props {:class "prefs"}
     :content
     (fn []
@@ -309,7 +320,7 @@
                      :color          @gray1-rgb-css-str-ratom}}
         "beeple"]])}
 
-   {:id    "28"
+   {:id    "26"
     :props {:class "prefs"}
     :content
     (fn []
@@ -320,7 +331,7 @@
                     :width          "80%"}}
        [:h1 "Erica Smith — Graphic Design"]])}
 
-   {:id    "29"
+   {:id    "27"
     :props {:class "things"}
     :content
     (fn []
@@ -331,14 +342,16 @@
                      :pointer-events "all"}}
         [:h1
          [:span {:style {:color @gray2-rgb-css-str-ratom}} "Nu"]
-         [:span {:style {:color (if (> @gray1-ratom @gray2-ratom) "#0000ff" "#00ffaf")}} "ID"]]]
+         [:span {:style {:color (cond (> @gray1-ratom 192) "#0000ff"
+                                      (< @gray1-ratom 64)  "#00ffaf"
+                                      :else                "white")}} "ID"]]]
        [:a {:href   "https://nuid.io"
             :target "_blank"
             :style  {:color          @gray2-rgb-css-str-ratom
                      :pointer-events "all"}}
         [:p "Decentralized Authentication"]]])}
 
-   {:id    "30"
+   {:id    "28"
     :props {:class "things"}
     :content
     (let [xf-css-str (str "translateY(-4px)")]
@@ -349,7 +362,7 @@
                      :-ms-transform     xf-css-str
                      :transform         xf-css-str}}])}
 
-   {:id    "31"
+   {:id    "29"
     :props {:class "people"}
     :content
     (fn []
@@ -363,15 +376,14 @@
           :loop      true}]
         [:img {:src "imgs/escape-room.jpg" :alt "nuidians"}]))}
 
-   {:id      "32"
+   {:id      "30"
     :props   {:class (if (< (max @gray1-ratom @gray2-ratom) 192) "nolan things" "things")}
     :content [:img {:src "imgs/colorcrete.jpg" :alt "colorcrete"}]}
 
-   {:id      "33"
+   {:id      "31"
     :props   {:class "things"
               :style {:box-shadow "none"}}
-    :content [webgl/canvas-component
-              {:height 200 :width 350}]}
+    :content [webgl/canvas-component {:height 200 :width 350}]}
 
    {:id    "2000000000000"
     :props {:class "nolan"}}])

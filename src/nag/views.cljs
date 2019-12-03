@@ -33,7 +33,7 @@
         [:div#header-container
          {:class (when (> @scroll 0) "pinned")
           :style {:background @isotope/gray1-rgb-css-str-ratom
-                  :position   (when (> @scroll 3000) "fixed")}}
+                  :position   (when (> @scroll 3500) "fixed")}}
 
          [:div#header
           {:style {:color @isotope/gray2-rgb-css-str-ratom}}

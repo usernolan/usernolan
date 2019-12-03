@@ -39,8 +39,8 @@ a {
 }
 #header-container.pinned {
   top: 0;
-  -webkit-box-shadow: 0 0 10px 0 rgba(0,0,0,.25);
-          box-shadow: 0 0 10px 0 rgba(0,0,0,.25);
+  -webkit-box-shadow: 0 0 10px 0 rgba(0,0,0,.2);
+          box-shadow: 0 0 10px 0 rgba(0,0,0,.2);
 }
 #header-container ul li {
   display: inline;
@@ -87,13 +87,14 @@ a {
   height: 0;
   opacity: 0;
   width: 100%;
+  transition: height 150ms ease;
 }
 #header-dropdown * {
   display: none;
 }
 #header-dropdown.active {
   opacity: 1;
-  height: 250px;
+  height: 300px;
 }
 #header-dropdown.active * {
   text-align: right;
@@ -235,39 +236,3 @@ a {
     display: none;
   }
 }
-
-@font-face {
-  font-family: 'icons';
-  src: url('/icons/icons.eot');
-  src: url('/icons/icons.eot') format('embedded-opentype'),
-       url('/icons/icons.woff2') format('woff2'),
-       url('/icons/icons.woff') format('woff'),
-       url('/icons/uicons.ttf') format('truetype'),
-       url('/icons/icons.svg') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-[class^="icon-"]:before, [class*=" icon-"]:before {
-  font-family: "icons";
-  font-style: normal;
-  font-weight: normal;
-  speak: none;
-  display: inline-block;
-  text-decoration: inherit;
-  width: 1em;
-  text-align: center;
-  font-variant: normal;
-  text-transform: none;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.icon-cd:before { content: '\e800'; }
-.icon-twitter:before { content: '\f099'; }
-.icon-github-circled:before { content: '\f09b'; }
-.icon-mail-alt:before { content: '\f0e0'; }
-.icon-behance:before { content: '\f1b4'; }
-.icon-spotify:before { content: '\f1bc'; }
-.icon-soundcloud:before { content: '\f1be'; }
-.icon-linkedin-squared:before { content: '\f30c'; }
