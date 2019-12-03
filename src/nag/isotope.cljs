@@ -15,23 +15,9 @@
 
 (def old-filter (atom nil))
 
-(defn contains-particles?
-  [el]
-  (dom/findNode
-   el
-   (fn [node] (some-> node .-classList (.contains "particles")))))
-
-(defn reload-particles!
-  [& [{:keys [id config-path]
-       :or   {id          "particles"
-              config-path "js/particles-nuid-config.json"}}]]
-  (js/particlesJS.load id config-path))
-
 (defn scope
   [el]
-  (some-> el .-classList (.add "scoped"))
-  (when (contains-particles? el)
-    (reload-particles!)))
+  (some-> el .-classList (.add "scoped")))
 
 (defn arrange
   [{:keys [class filter f]
@@ -348,18 +334,12 @@
                      :pointer-events "all"}}
         [:h1
          [:span {:style {:color @gray2-rgb-css-str-ratom}} "Nu"]
-         [:span {:style {:color "#00ffaf"}} "ID"]]]
+         [:span {:style {:color (if (> @gray1-ratom @gray2-ratom) "#0000ff" "#00ffaf")}} "ID"]]]
        [:a {:href   "https://nuid.io"
             :target "_blank"
             :style  {:color          @gray2-rgb-css-str-ratom
                      :pointer-events "all"}}
-        [:p "Decentralized Authentication"]]
-       [:div#particles.particles
-        {:style {:position "absolute"
-                 :height   "100%"
-                 :width    "100%"
-                 :left     0
-                 :top      0}}]])}
+        [:p "Decentralized Authentication"]]])}
 
    {:id      "30"
     :props   {:class "things"}
