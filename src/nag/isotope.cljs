@@ -337,9 +337,16 @@
                      :pointer-events "all"}}
         [:p "Decentralized Authentication"]]])}
 
-   {:id      "30"
-    :props   {:class "things"}
-    :content [:img {:src "imgs/lolli.png" :alt "lolli"}]}
+   {:id    "30"
+    :props {:class "things"}
+    :content
+    (let [xf-css-str (str "translateY(-4px)")]
+      [:img {:src   "imgs/lolli.png"
+             :alt   "lolli"
+             :style {:-webkit-transform xf-css-str
+                     :-moz-transform    xf-css-str
+                     :-ms-transform     xf-css-str
+                     :transform         xf-css-str}}])}
 
    {:id    "31"
     :props {:class "people"}
