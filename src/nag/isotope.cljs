@@ -97,10 +97,6 @@
    {:display "inv" :on-click (fn [] (reset! gray1-ratom @gray2-ratom))}
    {:display "all" :on-click (fn [] (show :all))}])
 
-(defn set-event-target-color!
-  [e color-css-str]
-  (-> e .-target .-style .-color (set! color-css-str)))
-
 (defn isotope
   [{:keys [id props content]}]
   (let [on-click (fn [e]
