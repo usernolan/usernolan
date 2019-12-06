@@ -382,7 +382,17 @@
     :props   {:class (if (< (max @gray1-ratom @gray2-ratom) 192) "nolan things" "things")}
     :content [:img {:src "imgs/colorcrete.jpg" :alt "colorcrete"}]}
 
-   {:id      "31"
+   {:id    "31"
+    :props {:class "quotes"}
+    :content
+    (fn []
+      [:div {:style {:width "80%"}}
+       [:p {:style {:display     "block"
+                    :font-weight "bold"}}
+        "one big thing for me has always been: always think what you do sucks. because the second you stop believing that, you suck. and that's a fact"]
+       [:p ".• julian casablancas"]])}
+
+   {:id      "32"
     :props   {:class "things"
               :style {:box-shadow "none"}}
     :content [webgl/canvas-component {:height 200 :width 350}]}
