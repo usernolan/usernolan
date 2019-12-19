@@ -166,7 +166,7 @@
     [hover-ul
      [{:href "https://github.com/Nolan330"
        :icon [:i.icon-github-circled]}
-      {:href "https://twitter.com/_nolan330"
+      {:href "https://twitter.com/nolan330_"
        :icon [:i.icon-twitter]}
       {:href "https://www.linkedin.com/in/nolan330"
        :icon [:i.icon-linkedin-squared]}
