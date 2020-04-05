@@ -72,21 +72,22 @@
   (->
    (dom/getElementsByTagName dom/TagName.BODY)
    (arr/peek)
-   .-style
-   .-background
+   (.-style)
+   (.-background)
    (set! color-css-str)))
 
 (set-body-background-color! @gray1-rgb-css-str-ratom)
 
-(add-watch gray1-ratom
-           ::state-watch
-           (fn [_ _ old-val gray1]
-             (if (= old-val gray1)
-               gray1
-               (let [gray2             (reset! gray2-ratom (- 255 gray1))
-                     gray1-rgb-css-str (reset! gray1-rgb-css-str-ratom (int->rgb-css-str gray1))
-                     gray2-rgb-css-str (reset! gray2-rgb-css-str-ratom (int->rgb-css-str gray2))
-                     body              (set-body-background-color! gray1-rgb-css-str)]))))
+(defn update-gray!-watch-fn
+  [_ _ old-val gray1]
+  (if (= old-val gray1)
+    gray1
+    (let [gray2             (reset! gray2-ratom (- 255 gray1))
+          gray1-rgb-css-str (reset! gray1-rgb-css-str-ratom (int->rgb-css-str gray1))
+          gray2-rgb-css-str (reset! gray2-rgb-css-str-ratom (int->rgb-css-str gray2))
+          body              (set-body-background-color! gray1-rgb-css-str)])))
+
+(add-watch gray1-ratom ::state-watch update-gray!-watch-fn)
 
 (def nav-list
   [{:display "people" :on-click (partial show :people)}
