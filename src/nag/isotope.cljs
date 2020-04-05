@@ -426,5 +426,8 @@
         "one big thing for me has always been: always think what you do sucks. because the second you stop believing that, you suck. and that's a fact"]
        [:p ".• julian casablancas"]])}
 
+   {:id      "33"
+    :content [:img {:src "imgs/truck.jpg" :alt "truck"}]}
+
    {:id    "2000000000000"
     :props {:class "nolan"}}])
