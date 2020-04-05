@@ -32,8 +32,12 @@
       (fn []
         [:div#header-container
          {:class (when (> @scroll 0) "pinned")
-          :style {:background @isotope/gray1-rgb-css-str-ratom
-                  :position   (when (> @scroll 3500) "fixed")}}
+          :style {:background    @isotope/gray1-rgb-css-str-ratom
+                  :border-bottom (when (> @scroll 0)
+                                   (->>
+                                    @isotope/gray2-rgb-css-str-ratom
+                                    (str "2px solid ")))
+                  :position      (when (> @scroll 3500) "fixed")}}
 
          [:div#header
           {:style {:color @isotope/gray2-rgb-css-str-ratom}}
