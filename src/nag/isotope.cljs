@@ -296,7 +296,7 @@
     (fn []
       [:div {:style {:width "100%" :height "100%"}}
        [:img {:src "imgs/profhos.jpg" :alt "profhos"}]
-       [:a {:href   "http://sugarboypress.blogspot.com"
+       [:a {:href   "http://sugarboypress.com"
             :target "_blank"
             :style  {:pointer-events "all"
                      :font-size      "40px"
