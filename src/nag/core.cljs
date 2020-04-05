@@ -2,11 +2,11 @@
   (:require
    [nag.isotope :as isotope]
    [nag.views :as views]
-   [reagent.core :as r]))
+   [reagent.dom :as r.dom]))
 
 (defn render
   []
-  (r/render
+  (r.dom/render
    [views/main-panel]
    (js/document.getElementById "app")))
 
