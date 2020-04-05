@@ -303,7 +303,7 @@
                      :position       "absolute"
                      :bottom         ".5em"
                      :right          "1em"
-                     :color          @gray2-rgb-css-str-ratom}}
+                     :color          "white"}}
         "Mark"]])}
 
    {:id    "25"
@@ -319,7 +319,7 @@
                      :position       "absolute"
                      :bottom         ".5em"
                      :right          "1em"
-                     :color          @gray1-rgb-css-str-ratom}}
+                     :color          "white"}}
         "beeple"]])}
 
    {:id    "26"
