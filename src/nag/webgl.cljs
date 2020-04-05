@@ -19,12 +19,15 @@
 
 (defn rand-id
   []
-  (str "id" (rand-int js/Number.MAX_SAFE_INTEGER)))
+  (->>
+   (rand-int js/Number.MAX_SAFE_INTEGER)
+   (str "id")))
 
 (def icosahedron-mesh
-  (geom.polyhedra/polyhedron-mesh
-   geom.polyhedra/icosahedron
-   {:mesh (gl.mesh/gl-mesh 20 #{:fnorm})}))
+  (->>
+   {:mesh (gl.mesh/gl-mesh 20 #{:fnorm})}
+   (geom.polyhedra/polyhedron-mesh
+    geom.polyhedra/icosahedron)))
 
 (defn model
   [{:keys [gl-context

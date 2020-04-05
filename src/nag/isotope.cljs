@@ -54,7 +54,7 @@
 (defn title
   []
   [:h1
-   {:on-click (fn [] (show :nolan))
+   {:on-click (partial show :nolan)
     :style    {:cursor "pointer"}}
    "nolan"])
 
@@ -62,7 +62,7 @@
   [n]
   (str "rgb(" n "," n "," n ")"))
 
-(def gray1-ratom (r/atom (rand-int 256)))
+(def gray1-ratom (r/atom 255))
 (def gray2-ratom (r/atom (- 255 @gray1-ratom)))
 (def gray1-rgb-css-str-ratom (r/atom (int->rgb-css-str @gray1-ratom)))
 (def gray2-rgb-css-str-ratom (r/atom (int->rgb-css-str @gray2-ratom)))
@@ -89,36 +89,37 @@
                      body              (set-body-background-color! gray1-rgb-css-str)]))))
 
 (def nav-list
-  [{:display "people" :on-click (fn [] (show :people))}
-   {:display "things" :on-click (fn [] (show :things))}
-   {:display "prefs" :on-click (fn [] (show :prefs))}
-   {:display "quotes" :on-click (fn [] (show :quotes))}
-   {:display "contact" :on-click (fn [] (show :contact))}
-   {:display "rand" :on-click (fn [] (show :rand))}
+  [{:display "people" :on-click (partial show :people)}
+   {:display "things" :on-click (partial show :things)}
+   {:display "prefs" :on-click (partial show :prefs)}
+   {:display "quotes" :on-click (partial show :quotes)}
+   {:display "contact" :on-click (partial show :contact)}
+   {:display "rand" :on-click (partial show :rand)}
    {:display "inv" :on-click (fn [] (reset! gray1-ratom @gray2-ratom))}
-   {:display "all" :on-click (fn [] (show :all))}])
+   {:display "all" :on-click (partial show :all)}])
+
+(defn isotope-click-handler
+  [e]
+  (some-> e .-target .-classList (.toggle "scoped"))
+  (.layout iso))
 
 (defn isotope
   [{:keys [id props content]}]
-  (let [on-click (fn [e]
-                   (some-> e .-target .-classList (.toggle "scoped"))
-                   (.layout iso))]
+  [:div.isotope
+   (merge-with
+    merge
+    {:style    {:border     (str "4px solid " @gray1-rgb-css-str-ratom)
+                :box-shadow (str "inset 0 0 0 4px " @gray2-rgb-css-str-ratom)
+                :color      @gray2-rgb-css-str-ratom}
+     :on-click isotope-click-handler}
+    props)
 
-    [:div.isotope
-     (merge-with
-      merge
-      {:style    {:border     (str "4px solid " @gray1-rgb-css-str-ratom)
-                  :box-shadow (str "inset 0 0 0 4px " @gray2-rgb-css-str-ratom)
-                  :color      @gray2-rgb-css-str-ratom}
-       :on-click on-click}
-      props)
+   [:p.id id]
 
-     [:p.id id]
-
-     [:div.content
-      {:style {:pointer-events "none"
-               :auto-focus     false}}
-      (if (fn? content) (content) content)]]))
+   [:div.content
+    {:style {:pointer-events "none"
+             :auto-focus     false}}
+    (if (fn? content) (content) content)]])
 
 (defn hover-li
   [{:keys [href icon]}]
@@ -164,9 +165,9 @@
     :props {:class "contact"}
     :content
     [hover-ul
-     [{:href "https://github.com/Nolan330"
+     [{:href "https://github.com/notalwaysgray"
        :icon [:i.icon-github-circled]}
-      {:href "https://twitter.com/nolan330_"
+      {:href "https://twitter.com/notalwaysgray"
        :icon [:i.icon-twitter]}
       {:href "https://www.linkedin.com/in/nolan330"
        :icon [:i.icon-linkedin-squared]}
