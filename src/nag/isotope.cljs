@@ -257,16 +257,16 @@
     [hover-ul
      [{:href "https://open.spotify.com/user/nolan330"
        :icon [:i.icon-spotify]}
-      {:href "https://www.discogs.com/user/nolan330/collection?header=1"
+      {:href "https://www.discogs.com/user/notalwaysgray/collection?header=1"
        :icon [:i.icon-cd]}
-      {:href "https://soundcloud.com/nolan330/sets"
+      {:href "https://soundcloud.com/notalwaysgray/sets"
        :icon [:i.icon-soundcloud]}]]}
 
    {:id    "20"
     :props {:class "prefs"}
     :content
     [hover-ul
-     [{:href "https://behance.net/IntegrationFactory/appreciated"
+     [{:href "https://behance.net/notalwaysgray/appreciated"
        :icon [:i.icon-behance]}]]}
 
    {:id    "21"
