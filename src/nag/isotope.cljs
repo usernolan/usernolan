@@ -326,12 +326,20 @@
     :props {:class "prefs"}
     :content
     (fn []
-      [:a {:href   "https://ericasmith.co"
-           :target "_blank"
-           :style  {:pointer-events "all"
-                    :color          @gray2-rgb-css-str-ratom
-                    :width          "80%"}}
-       [:h1 "Erica Smith — Graphic Design"]])}
+      [:div {:style {:width "100%" :height "100%"}}
+       [:img {:src   "imgs/era.png"
+              :alt   "era"
+              :style {:object-position (str "center " (rand-int 101) "%")}}]
+       [:a {:href   "https://ericasmith.co"
+            :target "_blank"
+            :style  {:pointer-events "all"
+                     :font-size      "40px"
+                     :position       "absolute"
+                     :bottom         ".5em"
+                     :right          "1em"
+                     :color          "white"
+                     :text-shadow    "0px 0px 5px black"}}
+        "Erica"]])}
 
    {:id    "27"
     :props {:class "things"}
