@@ -343,23 +343,14 @@
     :props {:class "things"}
     :content
     (fn []
-      [:div
-       [:a {:href   "https://nuid.io"
-            :target "_blank"
-            :style  {:display        "block"
-                     :pointer-events "all"}}
-        [:h1 {:style {:margin "0"}}
-         [:span {:style {:color   @gray2-rgb-css-str-ratom
-                         :display "inline-block"}} "Nu"]
-         [:span {:style {:color   (cond (> @gray1-ratom 192) "#0000ff"
-                                        (< @gray1-ratom 64)  "#00ffaf"
-                                        :else                "white")
-                         :display "inline-block"}} "ID"]]]
-       [:a {:href   "https://nuid.io"
-            :target "_blank"
-            :style  {:color          @gray2-rgb-css-str-ratom
-                     :pointer-events "all"}}
-        [:p {:style {:margin "0"}} "Decentralized Authentication"]]])}
+      (let [inv   (str "invert(" (/ @gray2-ratom 255) ")")
+            style {:filter inv :-webkit-filter inv}]
+        [:a {:href   "https://nuid.io"
+             :target "_blank"
+             :style  {:display        "block"
+                      :pointer-events "all"
+                      :width          "33%"}}
+         [:img {:src "imgs/nuid.svg" :alt "nuid" :style style}]]))}
 
    {:id    "28"
     :props {:class "things"}
