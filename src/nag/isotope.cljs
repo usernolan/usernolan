@@ -28,27 +28,26 @@
 
 (defn show
   [new-filter]
-  (let [is (some-> "isotope-container" dom/getElementByClass dom/getChildren)]
-    (condp = new-filter
-      @old-filter (arrange {:class "isotope"
-                            :f     (fn [el] (some-> el .-classList (.remove "scoped")))})
-      :nolan      (arrange {:class "nolan"})
-      :people     (arrange {:class "people"})
-      :things     (arrange {:class "things"})
-      :prefs      (arrange {:class "prefs"})
-      :quotes     (arrange {:class "quotes"})
-      :contact    (arrange {:class "contact"})
-      :rand       (do
-                    (arr/map
-                     (dom/getElementsByClass "isotope")
-                     (fn [el]
-                       (when (< (rand) 0.15)
-                         (some-> el .-classList (.add "scoped" "rand")))))
-                    (.arrange iso #js {"filter" ".rand"}))
-      :all        (arrange {:class "isotope"})
-      (js/console.log "?"))
-    (reset! old-filter (if (= @old-filter new-filter) nil new-filter))
-    (js/window.scrollTo 0 0)))
+  (condp = new-filter
+    @old-filter (arrange {:class "isotope"
+                          :f     (fn [el] (some-> el .-classList (.remove "scoped")))})
+    :nolan      (arrange {:class "nolan"})
+    :people     (arrange {:class "people"})
+    :things     (arrange {:class "things"})
+    :prefs      (arrange {:class "prefs"})
+    :quotes     (arrange {:class "quotes"})
+    :contact    (arrange {:class "contact"})
+    :rand       (do
+                  (arr/map
+                   (dom/getElementsByClass "isotope")
+                   (fn [el]
+                     (when (< (rand) 0.15)
+                       (some-> el .-classList (.add "scoped" "rand")))))
+                  (.arrange iso #js {"filter" ".rand"}))
+    :all        (arrange {:class "isotope"})
+    (js/console.log "?"))
+  (reset! old-filter (if (= @old-filter new-filter) nil new-filter))
+  (js/window.scrollTo 0 0))
 
 (defn title
   []
