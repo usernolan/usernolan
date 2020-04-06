@@ -123,11 +123,14 @@
     (if (fn? content) (content) content)]])
 
 (defn hover-li
-  [{:keys [href icon]}]
+  [{:keys [href icon index count]}]
   [:li {:style {:pointer-events "all"}}
    [:a {:href   href
         :target "_blank"
-        :style  {:margin-right (if (> (.-width (dom/getViewportSize)) 500) "25px" "15px")
+        :style  {:margin-right (when-not (= index (dec count))
+                                 (if (> (.-width (dom/getViewportSize)) 500)
+                                   "25px"
+                                   "15px"))
                  :font-size    (cond
                                  (> (.-width (dom/getViewportSize)) 500) "75px"
                                  (> (.-width (dom/getViewportSize)) 320) "50px"
@@ -138,9 +141,12 @@
 (defn hover-ul
   [lis]
   [:ul {:style {:margin 0 :padding 0}}
-   (for [li lis]
-     ^{:key (:href li)}
-     [hover-li li])])
+   (doall
+    (map-indexed
+     (fn [i li]
+       ^{:key (:href li)}
+       [hover-li (merge li {:index i :count (count lis)})])
+     lis))])
 
 (def isotopes
   [{:id      "1"
