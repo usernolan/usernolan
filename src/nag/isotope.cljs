@@ -1,6 +1,5 @@
 (ns nag.isotope
   (:require
-   [nag.webgl :as webgl]
    [reagent.core :as r]
    [goog.array :as arr]
    [goog.dom :as dom]))
