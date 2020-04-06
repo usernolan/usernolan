@@ -128,7 +128,10 @@
    [:a {:href   href
         :target "_blank"
         :style  {:margin-right (if (> (.-width (dom/getViewportSize)) 500) "25px" "15px")
-                 :font-size    (if (> (.-width (dom/getViewportSize)) 500) "75px" "50px")
+                 :font-size    (cond
+                                 (> (.-width (dom/getViewportSize)) 500) "75px"
+                                 (> (.-width (dom/getViewportSize)) 320) "50px"
+                                 :else                                   "42px")
                  :color        @gray2-rgb-css-str-ratom}}
     icon]])
 
@@ -170,6 +173,8 @@
        :icon [:i.icon-github-circled]}
       {:href "https://twitter.com/notalwaysgray"
        :icon [:i.icon-twitter]}
+      {:href "https://instagram.com/n.o.lan"
+       :icon [:i.icon-instagram]}
       {:href "https://www.linkedin.com/in/nolan330"
        :icon [:i.icon-linkedin-squared]}
       {:href "mailto:nolan330@gmail.com"
