@@ -4,16 +4,18 @@
    [goog.array :as arr]
    [goog.dom :as dom]))
 
-(def opts #js {"itemSelector"    ".isotope"
-               "percentPosition" "true"
-               "layoutMode"      "masonry"
-               "masonry"         #js {"columnWidth" ".isotope-sizer"}})
+(def opts
+  #js {"itemSelector"    ".isotope"
+       "percentPosition" "true"
+       "layoutMode"      "masonry"
+       "masonry"         #js {"columnWidth" ".isotope-sizer"}})
 
 (defn init
   []
   (def iso (js/Isotope. ".isotope-container" opts)))
 
-(def old-filter (atom nil))
+(def old-filter
+  (atom nil))
 
 (defn scope
   [el]
