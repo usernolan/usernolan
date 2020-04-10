@@ -401,13 +401,13 @@
       [:div {:style {:width "100%" :height "100%"}}
        (if (> (.-width (dom/getViewportSize)) 1000)
          [:video
-          {:src       "https://scontent-iad3-1.cdninstagram.com/v/t50.2886-16/30524586_164635920916978_7079781141053440_n.mp4?_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=110&_nc_ohc=E36DGHhjNncAX_jYx7s&oe=5E8C68EA&oh=9c2b74415043ece393fe7eb669b6b4a5"
-           :poster    "https://scontent-iad3-1.cdninstagram.com/v/t51.2885-15/e15/30603270_164853797669555_2580934565010866176_n.jpg?_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=111&_nc_ohc=9afSaG3-vHoAX_sCdC8&oh=dcee1d4e309f5d01393d1e04eaf8ccc5&oe=5E8CCCA4"
+          {:src       "imgs/dvdp.mp4"
+           :poster    "imgs/dvdp.jpg"
            :type      "video/mp4"
            :muted     true
            :auto-play true
            :loop      true}]
-         [:img {:src "https://scontent-iad3-1.cdninstagram.com/v/t51.2885-15/e15/30603270_164853797669555_2580934565010866176_n.jpg?_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=111&_nc_ohc=9afSaG3-vHoAX_sCdC8&oh=dcee1d4e309f5d01393d1e04eaf8ccc5&oe=5E8CCCA4" :alt "dvdp"}])
+         [:img {:src "imgs/dvdp.jpg" :alt "dvdp"}])
        [:a {:href   "https://davidope.com/"
             :target "_blank"
             :style  {:pointer-events "all"
