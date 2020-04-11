@@ -228,9 +228,28 @@
      [:h3 {:style {:display "block"}} ".• overview effect"]
      [:p "a cognitive shift in awareness reported by some astronauts and cosmonauts during spaceflight"]]}
 
-   {:id      "13"
-    :props   {:class "people"}
-    :content [:img {:src "imgs/shlin.jpg" :alt "💙"}]}
+   {:id "13"
+    :content
+    (fn []
+      [:div {:style {:width "100%" :height "100%"}}
+       (if (> (.-width (dom/getViewportSize)) 1000)
+         [:video
+          {:src       "imgs/shlin.mp4"
+           :poster    "imgs/shlin.jpg"
+           :type      "video/mp4"
+           :muted     true
+           :auto-play true
+           :loop      true}]
+         [:img {:src "imgs/shlin.jpg" :alt "shlin"}])
+       [:a {:href   "https://www.instagram.com/ashlin_dolan/"
+            :target "_blank"
+            :style  {:pointer-events "all"
+                     :font-size      "40px"
+                     :position       "absolute"
+                     :bottom         ".5em"
+                     :right          "1em"
+                     :color          "white"}}
+        "ACD"]])}
 
    {:id      "14"
     :props   {:class (if (>= (max @gray1-ratom @gray2-ratom) 192) "nolan things" "things")}
