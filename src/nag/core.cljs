@@ -16,9 +16,10 @@
 (defn error!
   [message]
   (doto (arr/peek (dom/getElementsByTagName dom/TagName.BODY))
-    (dom/setProperties  #js {"style" "padding:5vh 5vw;"})
-    (dom/append (doto (dom/createElement "h1")
-                  (dom/setTextContent message)))))
+    (dom/setProperties #js {"style" "font-family:\"Helvetica Neue\", sans-serif;padding:5vh 5vw;"})
+    (dom/append
+     (doto (dom/createElement "h1")
+       (dom/setTextContent message)))))
 
 (defn ie!
   []

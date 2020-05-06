@@ -181,7 +181,7 @@
        :icon [:i.icon-twitter]}
       {:href "https://instagram.com/n.o.lan"
        :icon [:i.icon-instagram]}
-      {:href "https://www.linkedin.com/in/nolan330"
+      {:href "https://www.linkedin.com/in/notalwaysgray"
        :icon [:i.icon-linkedin-squared]}
       {:href "mailto:nolan330@gmail.com"
        :icon [:i.icon-mail-alt]}]]}
