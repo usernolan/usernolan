@@ -1,10 +1,7 @@
-{:deps {:aliases [:cljs]}
+{:deps {:aliases [:shadow]}
  :builds
  {:browser
   {:target     :browser
-   :modules    {:browser {:entries [nag.core]}}
+   :modules    {:browser {:entries [nag.browser]}}
    :output-dir "resources/public/js/nag"
-   :asset-path "js/nag"
-   :devtools   {:after-load nag.core/init
-                :http-root  "resources/public"
-                :http-port  32123}}}}
+   :asset-path "js/nag"}}}
