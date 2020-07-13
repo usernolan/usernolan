@@ -1,22 +1,38 @@
 (ns nag.html.nav
   (:require
-   [garden.core :as g]
+   [clojure.string :as string]
    [garden.stylesheet :as g.stylesheet]
    [nag.css :as css]
    [nag.lib :as lib]
    [nag.nav :as nav]))
 
+(def idents
+  [nav/people
+   nav/things
+   nav/prefs
+   nav/quotes
+   nav/contact
+   nav/rand
+   nav/all])
+
+(defn ->name
+  [ident]
+  (last (string/split ident #"-")))
+
+(defn ->href
+  [ident]
+  (str "/#/" (->name ident)))
+
 (defn ->nav-hiccup
   [ident]
-  [:a {:class (lib/->html-safe ident)
-       :href  (str "/#/" (name ident))}
-   (name ident)])
+  [:a {:class ident :href (->href ident)}
+   (->name ident)])
 
 (defn hiccups
   [& _]
   [[:button {:class (lib/->html-safe ::css/mobile-only ::nav/expand)} "+"]
    [:nav {:class (lib/->html-safe ::nav/nav)}
-    (map ->nav-hiccup nav/idents)]])
+    (map ->nav-hiccup idents)]])
 
 (def css
   [[(lib/->css-selector ::nav/nav) {}
@@ -29,7 +45,7 @@
      :border      "none"
      :box-sizing  "border-box"
      :cursor      "pointer"
-     :font-size   "1.25rem"
+     :font-size   "2rem"
      :font-weight "bold"
      :padding     "0 28px"}]
    (g.stylesheet/at-media
@@ -43,7 +59,7 @@
        :display   "block"
        :margin    "7px 0"}]]
     [(lib/->css-selector ::nav/expanded)
-     {:height "233px"}]
+     {:height "250px"}]
     [(lib/->css-selector ::nav/expand)
      {:transition "transform 100ms"}])
    [(lib/->css-selector ::nav/active)

@@ -6,74 +6,75 @@
    [goog.events :as events]
    [goog.events.EventType :as EventType]
    [goog.functions :as fn]
-   [nag.browser.nav :as browser.nav]
-   [nag.isotope :as isotope]
-   [nag.lib :as lib]
+   [goog.string :as string]
    [nag.nav :as nav]))
 
-(def default-opts
-  #js {:itemSelector    (lib/->css-selector ::isotope/isotope)
-       :percentPosition "true"
-       :layoutMode      "masonry"
-       :masonry         #js {:columnWidth (lib/->css-selector ::isotope/sizer)}})
+(def container-class
+  "-nag-isotope-container")
 
-(defonce isotope-atom
-  (atom
-   (js/Isotope.
-    (lib/->css-selector ::isotope/container)
-    default-opts)))
+(def isotope-class
+  "-nag-isotope-isotope")
 
-(defonce isotope-elements
-  (dom/getElementsByClass
-   (lib/->html-safe ::isotope/isotope)))
+(def sizer-class
+  "-nag-isotope-sizer")
+
+(def expanded-class
+  "-nag-isotope-expanded")
+
+(defonce isotope
+  (js/Isotope.
+   (str "." container-class)
+   #js {:itemSelector    (str "." isotope-class)
+        :percentPosition true
+        :layoutMode      "masonry"
+        :masonry         #js {:columnWidth (str "." sizer-class)}}))
+
+(defonce isotope-element-arr
+  (dom/getElementsByClass isotope-class))
 
 (def default-filter
-  (lib/->css-selector ::isotope/isotope))
+  (str "." isotope-class))
+
+(defn -add-classes?
+  [ident el]
+  (or
+   (identical? ident nav/all)
+   (and (identical? ident nav/rand) (< (rand) 0.15))
+   (dom.class/contains el ident)))
+
+(defn update-classlist!
+  [ident el]
+  (if (-add-classes? ident el)
+    (do
+      (when (identical? ident nav/rand)
+        (dom.class/add el nav/rand))
+      (dom.class/add el expanded-class))
+    (dom.class/remove el expanded-class)))
+
+(defn ->filter
+  [ident]
+  (or
+   (and (identical? ident nav/all) default-filter)
+   (and (identical? ident nav/rand) (string/buildString "." nav/rand))
+   (and ident (string/buildString "." ident))
+   default-filter))
 
 (defn filter!
-  [{::nav/keys [filter-ident]}]
-  (let [expanded (lib/->html-safe ::isotope/expanded)
-        filter   (lib/->html-safe filter-ident)]
-    (doseq [el isotope-elements]
-      (when (dom/isElement el)
-        (if (and filter-ident
-                 (or (= ::nav/all filter-ident)
-                     (and (= ::nav/rand filter-ident) (< (rand) 0.15))
-                     (dom.class/contains el filter)))
-          (do
-            (when (= ::nav/rand filter-ident)
-              (dom.class/add el (lib/->html-safe ::nav/rand)))
-            (dom.class/add el expanded))
-          (dom.class/remove el expanded)))))
-  (when (and @isotope-atom (fn? (.-arrange ^js @isotope-atom)))
-    (let [filter (or (and (= ::nav/all filter-ident) default-filter)
-                     (and (= ::nav/rand filter-ident) (lib/->css-selector ::nav/rand))
-                     (lib/->css-selector filter-ident)
-                     default-filter)]
-      (.arrange @isotope-atom #js {:filter filter})))
+  [ident]
+  (arr/map isotope-element-arr (fn [el] (update-classlist! ident el)))
+  (.arrange isotope #js {:filter (->filter ident)})
   (js/window.scrollTo 0 0))
 
-(defn -filter-ident-watch-fn
-  [_ _ old-val new-val]
-  (when-not (= old-val new-val)
-    (filter! {::nav/filter-ident new-val})))
+(def -isotope-listener
+  (fn/throttle
+   (fn [e]
+     (dom.class/toggle (.-target e) expanded-class)
+     (.layout isotope))
+   401))
 
-(add-watch
- browser.nav/filter-ident-atom
- ::filter-ident-watch
- -filter-ident-watch-fn)
+(defn -add-listener!
+  [el]
+  (events/listen el EventType/CLICK -isotope-listener))
 
 (defonce isotope-listeners
-  (doseq [el isotope-elements]
-    (doto el
-      (events/listen
-       EventType/CLICK
-       (fn/throttle
-        (fn [_]
-          (when (dom/isElement el)
-            (->>
-             (lib/->html-safe ::isotope/expanded)
-             (dom.class/toggle el)))
-          (when (and @isotope-atom (fn? (.-layout ^js @isotope-atom)))
-            (.layout ^js @isotope-atom)))
-        401)))))
+  (arr/map isotope-element-arr -add-listener!))

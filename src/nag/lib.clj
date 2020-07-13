@@ -16,6 +16,6 @@
    (->>
     (into (vector x1 x2) xs)
     (into (vector) (comp (remove nil?) (map ->css-selector)))
-    (string/join " "))))
+    (string/join ""))))
 
 (def mobile-width "700px")

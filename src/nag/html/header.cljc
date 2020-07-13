@@ -7,24 +7,25 @@
 (defn hiccup
   [& _]
   [:div {:class (lib/->html-safe ::container)}
-   [:a {:class (lib/->html-safe ::nav/nolan)
-        :href  (str "/#/" (name ::nav/nolan))}
+   [:a {:class nav/nolan :href (str "/#/nolan")}
     [:h1 "nolan"]]
    (for [h (html.nav/hiccups)] h)])
 
 (def css
   (concat
    [[(lib/->css-selector ::container)
-     {:align-items "baseline"
-      :box-sizing  "border-box"
-      :display     "flex"
-      :flex-wrap   "wrap"
-      :padding     "7px 14px"
-      :width       "100%"}]
-    [(str "a" (lib/->css-selector ::nav/nolan))
+     {:align-items     "baseline"
+      :box-sizing      "border-box"
+      :display         "flex"
+      :flex-wrap       "wrap"
+      :justify-content "space-between"
+      :padding         "7px 14px"
+      :width           "100%"}]
+    [(str "a." nav/nolan)
      {:color "black"}
+     [:&:hover {:text-decoration "underline"}]
      [:>
-      [:h1 {:margin "0"}]
-      [:&:hover
-       {:text-decoration "underline"}]]]]
+      [:h1
+       {:margin         "0"
+        :pointer-events "none"}]]]]
    html.nav/css))

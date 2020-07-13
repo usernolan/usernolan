@@ -2,8 +2,7 @@
   (:require
    [garden.core :as g]
    [nag.css :as css]
-   [nag.html.body :as body]
-   [nag.lib :as lib]))
+   [nag.html.body :as body]))
 
 (defn hiccup
   [& _]

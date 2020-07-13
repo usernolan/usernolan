@@ -8,97 +8,116 @@
    [goog.functions :as fn]
    [goog.history.EventType :as history.EventType]
    [goog.object :as obj]
-   [nag.browser.lib :as browser.lib]
-   [nag.lib :as lib]
+   [goog.string :as string]
+   [nag.browser.isotope :as browser.isotope]
    [nag.nav :as nav])
   (:import
    [goog History]))
 
-(defonce expand-el
-  (browser.lib/->el ::nav/expand))
-
 (defonce nav-el
-  (browser.lib/->el ::nav/nav))
+  (dom/getElementByClass nav/nav))
 
-(def expanded?-atom
-  (atom false))
+  ;; TODO: conditional defs on viewport size w/ listener
+(defonce expand-el
+  (dom/getElementByClass nav/expand))
 
-(defn -expanded?-watch-fn
-  [_ _ old-val new-val]
-  (when (and (not= old-val new-val) nav-el expand-el)
-    (let [expanded (lib/->html-safe ::nav/expanded)
-          rotated  (lib/->html-safe :nag.css/rotated-45)]
-      (if new-val
-        (do
-          (dom.class/add nav-el expanded)
-          (dom.class/add expand-el rotated))
-        (do
-          (dom.class/remove nav-el expanded)
-          (dom.class/remove expand-el rotated))))))
+(def rotated-class
+  "-nag-css-rotated-45")
 
-(add-watch expanded?-atom ::expanded?-watch -expanded?-watch-fn)
+(def -toggle-expanded!
+  (fn/throttle
+   (fn []
+     (dom.class/toggle nav-el nav/expanded)
+     (dom.class/toggle expand-el rotated-class))
+   101))
 
 (defonce expand-listener
   (events/listen
    expand-el
    EventType/CLICK
-   (fn/throttle
-    (fn [_] (swap! expanded?-atom not))
-    101)))
+   -toggle-expanded!))
 
-(def idents
-  (into nav/idents [::nav/nolan]))
+(def ident-arr
+  #js [nav/nolan
+       nav/people
+       nav/things
+       nav/prefs
+       nav/quotes
+       nav/contact
+       nav/rand
+       nav/all])
 
-(def token=>ident
-  (into
-   (hash-map)
-   (map
-    (juxt
-     (comp (partial str "/") name)
-     identity))
-   idents))
+(defonce ident=>el-obj
+  (arr/reduce
+   ident-arr
+   (fn [acc ident _ _]
+     (let [el (dom/getElementByClass ident)]
+       (doto acc (obj/set ident el))))
+   (obj/create)))
 
-(def ident=>el
-  (into
-   (hash-map)
-   (map
-    (juxt
-     identity
-     browser.lib/->el))
-   idents))
+(defonce state-obj
+  #js {:filter-ident nil})
 
-(defonce filter-ident-atom
-  (atom nil))
+(defn -current-filter-el?
+  [el]
+  (let [current-ident (obj/get state-obj "filter-ident")
+        current-el    (obj/get ident=>el-obj current-ident)]
+    (identical? el current-el)))
+
+(defn -set-expanded!
+  [expanded?]
+  (dom.class/enable nav-el nav/expanded expanded?)
+  (dom.class/enable expand-el rotated-class expanded?))
+
+(def -click-listener
+  (fn/throttle
+   (fn [e]
+     (-set-expanded! false)
+     (when-let [el (.-target e)]
+       (when (-current-filter-el? el) ; TODO: data-*
+         (js/window.location.assign "/#/")
+         (.preventDefault e))))
+   101))
+
+(defn -add-click-listener!
+  [el]
+  (events/listen el EventType/CLICK -click-listener))
 
 (defonce -el-click-listeners
-  (doseq [el (vals ident=>el)]
-    (doto el
-      (events/listen
-       EventType/CLICK
-       (fn/throttle
-        (fn [e]
-          (reset! expanded?-atom false)
-          (when (= el (ident=>el @filter-ident-atom))
-            (js/window.location.assign "/#/")
-            (.preventDefault e)))
-        101)))))
+  (arr/map
+   (obj/getValues ident=>el-obj)
+   -add-click-listener!))
 
-(defn -filter-ident-watch-fn
-  [_ _ old-val new-val]
-  (let [old-el (ident=>el old-val) new-el (ident=>el new-val)
-        active (lib/->html-safe ::nav/active)]
-    (when (dom/isElement old-el) (dom.class/remove old-el active))
-    (when (dom/isElement new-el) (dom.class/add new-el active))))
+(defn ->name
+  [ident]
+  (->>
+   (string/splitLimit ident "-" 10)
+   (arr/last)))
 
-(add-watch filter-ident-atom ::filter-ident-watch -filter-ident-watch-fn)
+(defonce token=>ident-obj
+  (arr/reduce
+   ident-arr
+   (fn [acc ident _ _]
+     (let [token (string/buildString "/" (->name ident))]
+       (doto acc (obj/set token ident))))
+   (obj/create)))
 
-(defonce location-listener
+(def active-class
+  "-nag-nav-active")
+
+(defn -handle-event!
+  [e]
+  (let [target-ident  (obj/get token=>ident-obj (.-token e))
+        current-ident (obj/get state-obj "filter-ident")]
+    (when-not (identical? target-ident current-ident)
+      (obj/set state-obj "filter-ident" target-ident)
+      (let [target-el  (obj/get ident=>el-obj target-ident)
+            current-el (obj/get ident=>el-obj current-ident)]
+        (when target-el (dom.class/add target-el active-class))
+        (when current-el (dom.class/remove current-el active-class))
+        (browser.isotope/filter! target-ident)))))
+
+(defonce history
   (doto (History.)
-    (events/listen
-     history.EventType/NAVIGATE
-     (fn [e]
-       (let [ident (token=>ident (.-token e))]
-         (js/setTimeout
-          (fn [] (reset! filter-ident-atom ident))
-          0))))
+    (events/listen history.EventType/NAVIGATE -handle-event!)
     (.setEnabled true)))

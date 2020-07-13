@@ -1,15 +1,12 @@
 (ns nag.html.isotope
   (:require
-   [garden.core :as g]
-   [garden.selectors :as g.selectors]
    [garden.stylesheet :as g.stylesheet]
-   [nag.css :as css]
    [nag.isotope :as isotope]
    [nag.lib :as lib]
    [nag.nav :as nav]))
 
 (defn ->li
-  [i {::keys [href icon]}]
+  [{::keys [href icon]}]
   [:li
    [:a {:href href :target "_blank"}
     icon]])
@@ -18,7 +15,7 @@
   [lis]
   (when (seq lis)
     [:ul {:class (lib/->html-safe ::isotope/ul)}
-     (map-indexed ->li lis)]))
+     (map ->li lis)]))
 
 (def data
   [{::nav/filters [::nav/nolan]
@@ -72,16 +69,14 @@
                    [:h3 {:style {:display "block"}} ".• overview effect"]
                    [:p "a cognitive shift in awareness reported by some astronauts and cosmonauts during spaceflight"]]}
    {::content [:div {:style {:width "100%" :height "100%"}}
-               [:img {:alt "shlin"
-                      :src "/imgs/shlin.jpg"}]
-               [:a {:href   "https://www.instagram.com/ashlin_dolan/"
-                    :style  {:font-size "40px"
-                             :position  "absolute"
-                             :bottom    ".5em"
-                             :right     "1em"
-                             :color     "white"}
+               [:img {:alt "shlin" :src "imgs/shlin.jpg"}]
+               [:a {:href   "https://ashlindolanstudio.com/"
+                    :style  {:position "absolute"
+                             :bottom   ".5em"
+                             :right    "1em"
+                             :color    "white"}
                     :target "_blank"}
-                "ACD"]]}
+                [:h1 "ACD"]]]}
    {::nav/filters [::nav/nolan ::nav/things]
     ::content     [:img {:alt "a sidewalk chalk portal into outer space"
                          :src "/imgs/space.jpg"}]}
@@ -128,38 +123,35 @@
                    [:img {:alt "printmaker mark hosford"
                           :src "/imgs/profhos.jpg"}]
                    [:a {:href   "http://sugarboypress.com"
-                        :style  {:font-size "40px"
-                                 :position  "absolute"
-                                 :bottom    ".5em"
-                                 :right     "1em"
-                                 :color     "white"}
+                        :style  {:position "absolute"
+                                 :bottom   ".5em"
+                                 :right    "1em"
+                                 :color    "white"}
                         :target "_blank"}
-                    "Mark"]]}
+                    [:h1 "Mark"]]]}
    {::nav/filters [::nav/prefs]
     ::content     [:div {:style {:width "100%" :height "100%"}}
                    [:img {:alt "digital artist beeple"
                           :src "/imgs/pyramids.jpg"}]
                    [:a {:href   "https://beeple-crap.com"
-                        :style  {:font-size "40px"
-                                 :position  "absolute"
-                                 :bottom    ".5em"
-                                 :right     "1em"
-                                 :color     "white"}
+                        :style  {:position "absolute"
+                                 :bottom   ".5em"
+                                 :right    "1em"
+                                 :color    "white"}
                         :target "_blank"}
-                    "beeple"]]}
+                    [:h1 "beeple"]]]}
    {::nav/filters [::nav/prefs]
     ::content     [:div {:style {:width "100%" :height "100%"}}
                    [:img {:alt   "my sister's a graphic designer in Los Angeles"
                           :src   "/imgs/era.png"
                           :style {:object-position (str "center " (rand-int 101) "%")}}]
                    [:a {:href   "https://ericasmith.co"
-                        :style  {:font-size "40px"
-                                 :position  "absolute"
-                                 :bottom    ".5em"
-                                 :right     "1em"
-                                 :color     "white"}
+                        :style  {:position "absolute"
+                                 :bottom   ".5em"
+                                 :right    "1em"
+                                 :color    "white"}
                         :target "_blank"}
-                    "Erica"]]}
+                    [:h1 "Erica"]]]}
    {::nav/filters [::nav/things]
     ::content     [:a {:href   "https://nuid.io"
                        :style  {:display "block"
@@ -186,13 +178,12 @@
     ::content     [:div {:style {:width "100%" :height "100%"}}
                    [:img {:alt "digital artist dvdp" :src "/imgs/dvdp.jpg"}]
                    [:a {:href   "https://davidope.com/"
-                        :style  {:font-size "40px"
-                                 :position  "absolute"
-                                 :bottom    ".5em"
-                                 :right     "1em"
-                                 :color     "white"}
+                        :style  {:position "absolute"
+                                 :bottom   ".5em"
+                                 :right    "1em"
+                                 :color    "white"}
                         :target "_blank"}
-                    "dvdp"]]}
+                    [:h1 "dvdp"]]]}
    {::nav/filters [::nav/quotes]
     ::content     [:div {:style {:width "80%"}}
                    [:p {:style {:display "block" :font-weight "bold"}}
@@ -203,7 +194,7 @@
 
 (defn ->isotope
   [i {::nav/keys [filters] ::keys [content]}]
-  [:div {:class (apply lib/->html-safe ::isotope/isotope filters)}
+  [:button {:class (apply lib/->html-safe ::isotope/isotope filters)}
    [:p (inc i)]
    [:div {:class (lib/->html-safe ::isotope/content)}
     content]])
@@ -225,13 +216,16 @@
     {:height "25%"
      :width  "16.66%"}]
    [(lib/->css-selector ::isotope/isotope)
-    {:border                  "3.5px solid #fff"
+    {:background              "none"
+     :border                  "3.5px solid transparent"
      :border-top-right-radius "1.2em"
      :box-shadow              "inset 0 0 0 3.5px #000"
      :box-sizing              "border-box"
+     :font-size               "1.1rem"
      :overflow                "hidden"
+     :padding                 "0"
      :position                "relative"
-     :user-select             "none"}
+     :text-align              "left"}
     [:>
      [:p
       {:margin   "0"

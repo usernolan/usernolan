@@ -1,10 +1,38 @@
-(ns nag.nav)
+(ns nag.nav
+  (:refer-clojure :exclude [rand]))
 
-(def idents
-  [::people
-   ::things
-   ::prefs
-   ::quotes
-   ::contact
-   ::rand
-   ::all])
+(def prefix
+  "-nag-nav-")
+
+(def expand
+  (str prefix "expand"))
+
+(def expanded
+  (str prefix "expanded"))
+
+(def nav
+  (str prefix "nav"))
+
+(def nolan
+  (str prefix "nolan"))
+
+(def people
+  (str prefix "people"))
+
+(def things
+  (str prefix "things"))
+
+(def prefs
+  (str prefix "prefs"))
+
+(def quotes
+  (str prefix "quotes"))
+
+(def contact
+  (str prefix "contact"))
+
+(def rand
+  (str prefix "rand"))
+
+(def all
+  (str prefix "all"))
