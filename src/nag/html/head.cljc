@@ -10,6 +10,9 @@
    [:title "notalwaysgray •."]
    [:meta {:charset "utf-8"}]
    [:meta {:content "IE=edge" :http-equiv "X-UA-Compatible"}]
+   [:meta {:name "description" :content "nolan's webspace"}]
+   [:meta {:name "keywords" :content "nolan, computer, internet, web, space"}]
+   [:meta {:name "author" :content "nolan"}]
    [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
    [:meta {:name "format-detection" :content "telephone=no"}]
    [:meta {:prefix "og: http://ogp.me/ns#" :property "og:site_name" :content "notalwaysgray.net"}]
@@ -28,6 +31,8 @@
    [:link {:rel "canonical" :href "https://notalwaysgray.net"}]
    [:link {:rel "shortcut icon" :href "favicon.ico"}]
    [:link {:rel "stylesheet" :href "/css/icons/icons.css"}]
+   [:link {:rel "preload" :href "https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" :as "script"}]
+   [:link {:rel "preload" :href "/js/nag/browser.js" :as "script"}]
    [:style
     (g/css
      {:pretty-print? false}

@@ -20,5 +20,6 @@
   (spit "resources/public/index.html" (generate))
 
   (ns shadow.user)
+  (shadow/release :browser)
 
   )

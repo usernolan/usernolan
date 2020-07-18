@@ -22,11 +22,12 @@
     ::content     [:p {:style {:width "80%"}}
                    "im nolan. im originally from indiana and have an unbelievable family. pretty much everything else about me can be found out by clicking around furiously on this page."]}
    {::nav/filters [::nav/people]
-    ::content     [:img {:alt "my fam" :src "/imgs/fam.jpg"}]}
+    ::content     [:img {:alt "my fam" :loading "lazy" :src "/imgs/fam.jpg"}]}
    {::nav/filters [::nav/things]
-    ::content     [:img {:alt   "colorful artwork"
-                         :src   "/imgs/rock.png"
-                         :style {:object-fit "contain"}}]}
+    ::content     [:img {:alt     "colorful artwork"
+                         :loading "lazy"
+                         :src     "/imgs/rock.png"
+                         :style   {:object-fit "contain"}}]}
    {::nav/filters [::nav/nolan ::nav/quotes]
     ::content     [:div {:style {:width "80%"}}
                    [:p {:style {:display "block" :font-weight "bold"}}
@@ -44,21 +45,24 @@
                      ::icon [:i.icon-linkedin-squared]}
                     {::href "mailto:nolan330@gmail.com"
                      ::icon [:i.icon-mail-alt]}])}
-   {::content [:img {:alt "childhood baseball team" :src "/imgs/ducks.jpg"}]}
+   {::content [:img {:alt     "childhood baseball team"
+                     :loading "lazy"
+                     :src     "/imgs/ducks.jpg"}]}
    {::nav/filters [::nav/quotes]
     ::content     [:div {:style {:width "80%"}}
                    [:p {:style {:display "block" :font-weight "bold"}}
                     "my greatest concern was what to call it"]
                    [:p ".• claude shannon"]]}
-   {::content [:img {:alt   "rocky california beach"
-                     :src   "/imgs/beach.jpg"
-                     :style {:object-fit "unset"}}]}
+   {::content [:img {:alt     "rocky california beach"
+                     :loading "lazy"
+                     :src     "/imgs/beach.jpg"
+                     :style   {:object-fit "unset"}}]}
    {::nav/filters [::nav/quotes]
     ::content     [:div {:style {:width "80%"}}
                    [:p {:style {:display "block" :font-weight "bold"}}
                     "design is to take things apart in such a way that they can be put back together"]
                    [:p ".• rich hickey"]]}
-   {::content [:img {:alt "the grand canyon" :src "/imgs/grandcan.jpg"}]}
+   {::content [:img {:alt "the grand canyon" :loading "lazy" :src "/imgs/grandcan.jpg"}]}
    {::nav/filters [::nav/quotes]
     ::content     [:div {:style {:width "80%"}}
                    [:p {:style {:display "block" :font-weight "bold"}}
@@ -69,7 +73,7 @@
                    [:h3 {:style {:display "block"}} ".• overview effect"]
                    [:p "a cognitive shift in awareness reported by some astronauts and cosmonauts during spaceflight"]]}
    {::content [:div {:style {:width "100%" :height "100%"}}
-               [:img {:alt "shlin" :src "imgs/shlin.jpg"}]
+               [:img {:alt "shlin" :loading "lazy" :src "imgs/shlin.jpg"}]
                [:a {:href   "https://ashlindolanstudio.com/"
                     :style  {:position "absolute"
                              :bottom   ".5em"
@@ -78,22 +82,29 @@
                     :target "_blank"}
                 [:h1 "ACD"]]]}
    {::nav/filters [::nav/nolan ::nav/things]
-    ::content     [:img {:alt "a sidewalk chalk portal into outer space"
-                         :src "/imgs/space.jpg"}]}
+    ::content     [:img {:alt     "a sidewalk chalk portal into outer space"
+                         :loading "lazy"
+                         :src     "/imgs/space.jpg"}]}
    {::nav/filters [::nav/things]
-    ::content     [:img {:alt   "vague array of cross-sectional keyholes"
-                         :src   "/imgs/keys.png"
-                         :style {:filter         "saturate(0%) brightness(0%) contrast(100%)"
-                                 :height         "84%"
-                                 :width          "unset"
-                                 :-webkit-filter "saturate(0%) brightness(0%) contrast(100%)"}}]}
+    ::content     [:img {:alt     "vague array of cross-sectional keyholes"
+                         :loading "lazy"
+                         :src     "/imgs/keys.png"
+                         :style   {:filter         "saturate(0%) brightness(0%) contrast(100%)"
+                                   :height         "84%"
+                                   :width          "unset"
+                                   :-webkit-filter "saturate(0%) brightness(0%) contrast(100%)"}}]}
    {::nav/filters [::nav/people]
-    ::content     [:img {:alt "my family's dog louis" :src "/imgs/louis.jpg"}]}
+    ::content     [:img {:alt     "my family's dog louis"
+                         :loading "lazy"
+                         :src     "/imgs/louis.jpg"}]}
    {::nav/filters [::nav/people]
-    ::content     [:img {:alt "a picture of friends" :src "/imgs/squids.jpg"}]}
+    ::content     [:img {:alt     "a picture of friends"
+                         :loading "lazy"
+                         :src     "/imgs/squids.jpg"}]}
    {::nav/filters [::nav/things]
-    ::content     [:img {:alt "colorfully lit hallway at a busy, modern airport"
-                         :src "/imgs/midway.jpg"}]}
+    ::content     [:img {:alt     "colorfully lit hallway at a busy, modern airport"
+                         :loading "lazy"
+                         :src     "/imgs/midway.jpg"}]}
    {::nav/filters [::nav/prefs]
     ::content     (->ul
                    [{::href "https://open.spotify.com/user/nolan330"
@@ -110,18 +121,21 @@
     ::content     (let [style {:filter         "saturate(0%) brightness(0%) contrast(100%)"
                                :-webkit-filter "saturate(0%) brightness(0%) contrast(100%)"}]
                     [:ul
-                     [:li [:img {:src "/imgs/borderlands.png" :alt "borderlands" :style style}]]
-                     [:li [:img {:src "/imgs/fez.png" :alt "fez" :style style}]]
-                     [:li [:img {:src "/imgs/ssb.png" :alt "ssb" :style style}]]
-                     [:li [:img {:src "/imgs/wow.png" :alt "wow" :style style}]]])}
+                     [:li [:img {:src "/imgs/borderlands.png" :loading "lazy" :alt "borderlands" :style style}]]
+                     [:li [:img {:src "/imgs/fez.png" :loading "lazy" :alt "fez" :style style}]]
+                     [:li [:img {:src "/imgs/ssb.png" :loading "lazy" :alt "ssb" :style style}]]
+                     [:li [:img {:src "/imgs/wow.png" :loading "lazy" :alt "wow" :style style}]]])}
    {::nav/filters [::nav/people]
-    ::content     [:img {:alt "friends" :src "/imgs/bois.jpg"}]}
+    ::content     [:img {:alt "friends" :loading "lazy" :src "/imgs/bois.jpg"}]}
    {::nav/filters [::nav/people]
-    ::content     [:img {:alt "phaesh; the band" :src "/imgs/phish.jpg"}]}
+    ::content     [:img {:alt     "phish; the band"
+                         :loading "lazy"
+                         :src     "/imgs/phish.jpg"}]}
    {::nav/filters [::nav/prefs]
     ::content     [:div {:style {:width "100%" :height "100%"}}
-                   [:img {:alt "printmaker mark hosford"
-                          :src "/imgs/profhos.jpg"}]
+                   [:img {:alt     "printmaker mark hosford"
+                          :loading "lazy"
+                          :src     "/imgs/profhos.jpg"}]
                    [:a {:href   "http://sugarboypress.com"
                         :style  {:position "absolute"
                                  :bottom   ".5em"
@@ -131,8 +145,9 @@
                     [:h1 "Mark"]]]}
    {::nav/filters [::nav/prefs]
     ::content     [:div {:style {:width "100%" :height "100%"}}
-                   [:img {:alt "digital artist beeple"
-                          :src "/imgs/pyramids.jpg"}]
+                   [:img {:alt     "digital artist beeple"
+                          :loading "lazy"
+                          :src     "/imgs/pyramids.jpg"}]
                    [:a {:href   "https://beeple-crap.com"
                         :style  {:position "absolute"
                                  :bottom   ".5em"
@@ -142,9 +157,10 @@
                     [:h1 "beeple"]]]}
    {::nav/filters [::nav/prefs]
     ::content     [:div {:style {:width "100%" :height "100%"}}
-                   [:img {:alt   "my sister's a graphic designer in Los Angeles"
-                          :src   "/imgs/era.png"
-                          :style {:object-position (str "center " (rand-int 101) "%")}}]
+                   [:img {:alt     "my sister's a graphic designer in Los Angeles"
+                          :loading "lazy"
+                          :src     "/imgs/era.png"
+                          :style   {:object-position (str "center " (rand-int 101) "%")}}]
                    [:a {:href   "https://ericasmith.co"
                         :style  {:position "absolute"
                                  :bottom   ".5em"
@@ -157,26 +173,33 @@
                        :style  {:display "block"
                                 :width   "33%"}
                        :target "_blank"}
-                   [:img {:alt   "nuid, inc."
-                          :src   "/imgs/nuid.svg"
-                          :style {:filter         "invert(0)"
-                                  :-webkit-filter "invert(0)"}}]]}
+                   [:img {:alt     "nuid, inc."
+                          :loading "lazy"
+                          :src     "/imgs/nuid.svg"
+                          :style   {:filter         "invert(0)"
+                                    :-webkit-filter "invert(0)"}}]]}
    {::nav/filters [::nav/things]
     ::content     (let [xf-css-str (str "translateY(-4px)")]
-                    [:img {:src   "/imgs/lolli.png"
-                           :alt   "lolli"
-                           :style {:-webkit-transform xf-css-str
-                                   :-moz-transform    xf-css-str
-                                   :-ms-transform     xf-css-str
-                                   :transform         xf-css-str}}])}
+                    [:img {:src     "/imgs/lolli.png"
+                           :loading "lazy"
+                           :alt     "lolli"
+                           :style   {:-webkit-transform xf-css-str
+                                     :-moz-transform    xf-css-str
+                                     :-ms-transform     xf-css-str
+                                     :transform         xf-css-str}}])}
    {::nav/filters [::nav/people]
-    ::content     [:img {:alt "early nuidians" :src "/imgs/escape-room.jpg"}]}
+    ::content     [:img {:alt     "early nuidians"
+                         :loading "lazy"
+                         :src     "/imgs/escape-room.jpg"}]}
    {::nav/filters [::nav/things]
-    ::content     [:img {:alt "spraypainted concrete, under construction"
-                         :src "imgs/colorcrete.jpg"}]}
+    ::content     [:img {:alt     "spraypainted concrete, under construction"
+                         :loading "lazy"
+                         :src     "imgs/colorcrete.jpg"}]}
    {::nav/filters [::nav/prefs]
     ::content     [:div {:style {:width "100%" :height "100%"}}
-                   [:img {:alt "digital artist dvdp" :src "/imgs/dvdp.jpg"}]
+                   [:img {:alt     "digital artist dvdp"
+                          :loading "lazy"
+                          :src     "/imgs/dvdp.jpg"}]
                    [:a {:href   "https://davidope.com/"
                         :style  {:position "absolute"
                                  :bottom   ".5em"
@@ -189,8 +212,9 @@
                    [:p {:style {:display "block" :font-weight "bold"}}
                     "one big thing for me has always been: always think what you do sucks. because the second you stop believing that, you suck. and that's a fact"]
                    [:p ".• julian casablancas"]]}
-   {::content [:img {:alt "bright yellow pickup truck driving on a beach"
-                     :src "/imgs/truck.jpg"}]}])
+   {::content [:img {:alt     "bright yellow pickup truck driving on a beach"
+                     :loading "lazy"
+                     :src     "/imgs/truck.jpg"}]}])
 
 (defn ->isotope
   [i {::nav/keys [filters] ::keys [content]}]
