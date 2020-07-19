@@ -1,11 +1,9 @@
 (ns nag.html.head
   (:require
-   [garden.core :as g]
-   [nag.css :as css]
-   [nag.html.body :as body]))
+   [rum.core :as rum]))
 
-(defn hiccup
-  [& _]
+(rum/defc component
+  []
   [:head
    [:title "notalwaysgray •."]
    [:meta {:charset "utf-8"}]
@@ -31,11 +29,6 @@
    [:link {:rel "canonical" :href "https://notalwaysgray.net"}]
    [:link {:rel "shortcut icon" :href "favicon.ico"}]
    [:link {:rel "stylesheet" :href "/css/icons/icons.css"}]
+   [:link {:rel "stylesheet" :href "/css/nag.css"}]
    [:link {:rel "preload" :href "https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" :as "script"}]
-   [:link {:rel "preload" :href "/js/nag/browser.js" :as "script"}]
-   [:style
-    (g/css
-     {:pretty-print? false}
-     (concat
-      css/css
-      body/css))]])
+   [:link {:rel "preload" :href "/js/nag/browser.js" :as "script"}]])

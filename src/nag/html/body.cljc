@@ -1,13 +1,14 @@
 (ns nag.html.body
   (:require
    [nag.html.header :as header]
-   [nag.html.isotope :as isotope]))
+   [nag.html.isotope :as isotope]
+   [rum.core :as rum]))
 
-(defn hiccup
-  [& _]
+(rum/defc component
+  []
   [:body
-   (header/hiccup)
-   (isotope/hiccup)])
+   (header/component)
+   (isotope/component)])
 
 (def css
   (concat

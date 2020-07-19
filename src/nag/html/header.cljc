@@ -2,14 +2,15 @@
   (:require
    [nag.html.nav :as html.nav]
    [nag.lib :as lib]
-   [nag.nav :as nav]))
+   [nag.nav :as nav]
+   [rum.core :as rum]))
 
-(defn hiccup
-  [& _]
+(rum/defc component
+  []
   [:div {:class (lib/->html-safe ::container)}
    [:a {:class nav/nolan :href (str "/#/nolan")}
     [:h1 "nolan"]]
-   (for [h (html.nav/hiccups)] h)])
+   (html.nav/component)])
 
 (def css
   (concat
@@ -19,7 +20,7 @@
       :display         "flex"
       :flex-wrap       "wrap"
       :justify-content "space-between"
-      :padding         "7px 14px"
+      :padding         "7px 14px 7px 7px"
       :width           "100%"}]
     [(str "a." nav/nolan)
      {:color "black"}

@@ -7,6 +7,7 @@ node_modules
 # shadow-cljs
 .shadow-cljs
 resources/public/js/nag
+target
 
 # nREPL
 .nrepl-port

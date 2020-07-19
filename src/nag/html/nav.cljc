@@ -4,7 +4,8 @@
    [garden.stylesheet :as g.stylesheet]
    [nag.css :as css]
    [nag.lib :as lib]
-   [nag.nav :as nav]))
+   [nag.nav :as nav]
+   [rum.core :as rum]))
 
 (def idents
   [nav/people
@@ -23,16 +24,17 @@
   [ident]
   (str "/#/" (->name ident)))
 
-(defn ->nav-hiccup
+(rum/defc ->nav-component
   [ident]
   [:a {:class ident :href (->href ident)}
    (->name ident)])
 
-(defn hiccups
-  [& _]
-  [[:button {:class (lib/->html-safe ::css/mobile-only ::nav/expand)} "+"]
+(rum/defc component
+  []
+  [:<>
+   [:button {:class (lib/->html-safe ::css/mobile-only ::nav/expand)} "+"]
    [:nav {:class (lib/->html-safe ::nav/nav)}
-    (map ->nav-hiccup idents)]])
+    (map ->nav-component idents)]])
 
 (def css
   [[(lib/->css-selector ::nav/nav) {}

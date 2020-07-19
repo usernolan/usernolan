@@ -3,19 +3,20 @@
    [garden.stylesheet :as g.stylesheet]
    [nag.isotope :as isotope]
    [nag.lib :as lib]
-   [nag.nav :as nav]))
+   [nag.nav :as nav]
+   [rum.core :as rum]))
 
-(defn ->li
+(rum/defc ->li-component
   [{::keys [href icon]}]
   [:li
    [:a {:href href :target "_blank"}
     icon]])
 
-(defn ->ul
+(rum/defc ->ul-component
   [lis]
   (when (seq lis)
     [:ul {:class (lib/->html-safe ::isotope/ul)}
-     (map ->li lis)]))
+     (map ->li-component lis)]))
 
 (def data
   [{::nav/filters [::nav/nolan]
@@ -34,7 +35,7 @@
                     "one main factor in the upward trend of animal life has been the power of wandering"]
                    [:p ".• alfred north whitehead"]]}
    {::nav/filters [::nav/contact]
-    ::content     (->ul
+    ::content     (->ul-component
                    [{::href "https://github.com/notalwaysgray"
                      ::icon [:i.icon-github-circled]}
                     {::href "https://twitter.com/notalwaysgray"
@@ -106,7 +107,7 @@
                          :loading "lazy"
                          :src     "/imgs/midway.jpg"}]}
    {::nav/filters [::nav/prefs]
-    ::content     (->ul
+    ::content     (->ul-component
                    [{::href "https://open.spotify.com/user/nolan330"
                      ::icon [:i.icon-spotify]}
                     {::href "https://www.discogs.com/user/notalwaysgray/collection?header=1"
@@ -114,13 +115,14 @@
                     {::href "https://soundcloud.com/notalwaysgray/sets"
                      ::icon [:i.icon-soundcloud]}])}
    {::nav/filters [::nav/prefs]
-    ::content     (->ul
+    ::content     (->ul-component
                    [{::href "https://behance.net/notalwaysgray/appreciated"
                      ::icon [:i.icon-behance]}])}
    {::nav/filters [::nav/prefs]
     ::content     (let [style {:filter         "saturate(0%) brightness(0%) contrast(100%)"
                                :-webkit-filter "saturate(0%) brightness(0%) contrast(100%)"}]
                     [:ul
+                     {:class "-nag-isotope-ul"}
                      [:li [:img {:src "/imgs/borderlands.png" :loading "lazy" :alt "borderlands" :style style}]]
                      [:li [:img {:src "/imgs/fez.png" :loading "lazy" :alt "fez" :style style}]]
                      [:li [:img {:src "/imgs/ssb.png" :loading "lazy" :alt "ssb" :style style}]]
@@ -216,23 +218,23 @@
                      :loading "lazy"
                      :src     "/imgs/truck.jpg"}]}])
 
-(defn ->isotope
+(rum/defc ->isotope-component
   [i {::nav/keys [filters] ::keys [content]}]
   [:button {:class (apply lib/->html-safe ::isotope/isotope filters)}
    [:p (inc i)]
    [:div {:class (lib/->html-safe ::isotope/content)}
     content]])
 
-(defn hiccup
-  [& _]
+(rum/defc component
+  []
   [:div {:class (lib/->html-safe ::isotope/container)}
    [:div {:class (lib/->html-safe ::isotope/sizer)}]
-   (map-indexed ->isotope data)])
+   (map-indexed ->isotope-component data)])
 
 (def css
   [[(lib/->css-selector ::isotope/container)
     {:height     "100vh"
-     :margin     "0 7px"
+     :margin     "0 7px 0 3.5px"
      :max-height "100vh"
      :min-height "100vh"}]
    [(lib/->css-selector ::isotope/sizer)
@@ -260,18 +262,17 @@
     {:align-items             "center"
      :border-top-right-radius "1.2em"
      :box-sizing              "border-box"
-     :display                 "flex"
+     :display                 "none"
      :height                  "100%"
      :justify-content         "center"
      :margin                  "0 auto"
      :pointer-events          "none"
-     :width                   "100%"}
-    [:* {:display "none"}]]
+     :width                   "100%"}]
    [(lib/->css-selector ::isotope/expanded)
     {:height "50%"
      :width  "50%"}
     [(lib/->css-selector ::isotope/content)
-     [:* {:display "unset"}]
+     {:display "flex"}
      [:a {:pointer-events "all"}]
      [:img :video
       {:border-top-right-radius "0.8em"
@@ -284,8 +285,10 @@
         {:margin    "0 14px"
          :max-width "75px"}]]]
      [(lib/->css-selector ::isotope/ul)
-      {:margin  "0"
-       :padding "0"}
+      {:display    "flex"
+       :list-style "none"
+       :margin     "0"
+       :padding    "0"}
       [:li
        [:a
         {:color     "#000"

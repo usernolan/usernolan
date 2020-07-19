@@ -4,4 +4,11 @@
   {:target     :browser
    :modules    {:browser {:entries [nag.browser]}}
    :output-dir "resources/public/js/nag"
-   :asset-path "js/nag"}}}
+   :asset-path "js/nag"
+   :devtools   {:http-port 32123
+                :http-root "resources/public"}}
+
+  :static
+  {:target    :node-script
+   :main      nag.html/watch!
+   :output-to "target/node-script/static.js"}}}
