@@ -35,46 +35,32 @@
 (def default-filter
   (str "." isotope-class))
 
-(defn -add-classes?
-  [ident el]
-  (or
-   (identical? ident nav/all)
-   (and (identical? ident nav/rand) (< (rand) 0.15))
-   (dom.class/contains el ident)))
+(defn add-classes? [ident el]
+  (or (identical? ident nav/all)
+      (and (identical? ident nav/rand)
+           (< (rand) 0.15))
+      (dom.class/contains el ident)))
 
-(defn update-classlist!
-  [ident el]
-  (if (-add-classes? ident el)
-    (do
-      (when (identical? ident nav/rand)
-        (dom.class/add el nav/rand))
-      (dom.class/add el expanded-class))
+(defn update-classlist! [ident el]
+  (if (add-classes? ident el)
+    (do (when (identical? ident nav/rand) (dom.class/add el nav/rand))
+        (dom.class/add el expanded-class))
     (dom.class/remove el expanded-class)))
 
-(defn ->filter
-  [ident]
-  (or
-   (and (identical? ident nav/all) default-filter)
-   (and (identical? ident nav/rand) (string/buildString "." nav/rand))
-   (and ident (string/buildString "." ident))
-   default-filter))
-
-(defn filter!
-  [ident]
+(defn arrange! [ident]
   (arr/map isotope-element-arr (fn [el] (update-classlist! ident el)))
-  (.arrange isotope #js {:filter (->filter ident)})
-  (js/window.scrollTo 0 0))
+  (js/window.scrollTo 0 0)
+  (.arrange isotope))
 
-(def -isotope-listener
+(def isotope-listener
   (fn/throttle
    (fn [e]
      (dom.class/toggle (.-target e) expanded-class)
      (.layout isotope))
    401))
 
-(defn -add-listener!
-  [el]
-  (events/listen el EventType/CLICK -isotope-listener))
+(defn add-listener! [el]
+  (events/listen el EventType/CLICK isotope-listener))
 
 (defonce isotope-listeners
-  (arr/map isotope-element-arr -add-listener!))
+  (arr/map isotope-element-arr add-listener!))

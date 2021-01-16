@@ -112,7 +112,7 @@
             current-el (obj/get ident=>el-obj current-ident)]
         (when target-el (dom.class/add target-el active-class))
         (when current-el (dom.class/remove current-el active-class))
-        (browser.isotope/filter! target-ident)))))
+        (browser.isotope/arrange! target-ident)))))
 
 (defonce history
   (doto (History.)
