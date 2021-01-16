@@ -15,13 +15,12 @@
 (def css
   (concat
    [[(lib/->css-selector ::container)
-     {:align-items     "baseline"
-      :box-sizing      "border-box"
-      :display         "flex"
-      :flex-wrap       "wrap"
-      :justify-content "space-between"
-      :padding         "7px 14px 7px 7px"
-      :width           "100%"}]
+     {:align-items "baseline"
+      :box-sizing  "border-box"
+      :display     "flex"
+      :flex-wrap   "wrap"
+      :padding     "7px 14px 7px 7px"
+      :width       "100%"}]
     [(str "a." nav/nolan)
      {:color "black"}
      [:&:hover {:text-decoration "underline"}]
