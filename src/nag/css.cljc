@@ -3,11 +3,22 @@
    [garden.stylesheet :as g.stylesheet]
    [nag.lib :as lib]))
 
+(def font-stack
+  ["'Helvetica Neue'"
+   "Helvetica"
+   "-apple-system"
+   "BlinkMacSystemFont"
+   "'Segoe UI'"
+   "Roboto"
+   "Oxygen"
+   "Ubuntu"
+   "Cantarell"
+   "'Open Sans'"
+   "sans-serif"])
+
 (def body
-  [[:body
-    {:font-family "\"Helvetica Neue\", Helvetica, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Oxygen, Ubuntu, Cantarell, \"Open Sans\", sans-serif"
-     :font-size   "1.1rem"
-     :margin      "0"}]
+  [[:body {:font-size "1.1rem" :margin "0"}
+    [:* {:font-family font-stack}]]
    (g.stylesheet/at-media
     {:screen true :max-width "330px"}
     [:body {:font-size "0.95rem"}])])
