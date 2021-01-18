@@ -2,6 +2,7 @@
   (:require
    [goog.array :as arr]
    [goog.dom :as dom]
+   [goog.dom.TagName :as dom.TagName]
    [goog.dom.classlist :as dom.class]
    [goog.events :as events]
    [goog.events.EventType :as EventType]
@@ -56,8 +57,9 @@
 (def isotope-listener
   (fn/throttle
    (fn [e]
-     (dom.class/toggle (.-target e) expanded-class)
-     (.layout isotope))
+     (when (= (.-tagName (.-target e)) (str dom.TagName/BUTTON))
+       (dom.class/toggle (.-target e) expanded-class)
+       (.layout isotope)))
    401))
 
 (defn add-listener! [el]
