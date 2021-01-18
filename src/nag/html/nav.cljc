@@ -58,7 +58,7 @@
        :display   "block"
        :margin    "7px 0"}]]
     [(lib/->css-selector ::nav/expanded)
-     {:height "250px"}]
+     {:height "150px"}]
     [(lib/->css-selector ::nav/expand)
      {:transition "transform 100ms"}])
    [(lib/->css-selector ::nav/active)
