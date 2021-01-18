@@ -22,10 +22,8 @@
       :padding     "7px 14px 7px 7px"
       :width       "100%"}]
     [(str "a." nav/nolan)
-     {:color "black"}
+     {:color "black" :text-decoration "none"}
      [:&:hover {:text-decoration "underline"}]
      [:>
-      [:h1
-       {:margin         "0"
-        :pointer-events "none"}]]]]
+      [:h1 {:margin "0" :pointer-events "none"}]]]]
    html.nav/css))

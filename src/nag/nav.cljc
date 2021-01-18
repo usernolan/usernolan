@@ -16,15 +16,6 @@
 (def nolan
   (str prefix "nolan"))
 
-(def people
-  (str prefix "people"))
-
-(def things
-  (str prefix "things"))
-
-(def prefs
-  (str prefix "prefs"))
-
 (def quotes
   (str prefix "quotes"))
 

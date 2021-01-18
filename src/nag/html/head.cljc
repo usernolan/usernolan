@@ -28,7 +28,6 @@
    [:meta {:name "twitter:image" :content "/imgs/pyramids.jpg"}]
    [:link {:rel "canonical" :href "https://notalwaysgray.net"}]
    [:link {:rel "shortcut icon" :href "favicon.ico"}]
-   [:link {:rel "stylesheet" :href "/css/icons/icons.css"}]
    [:link {:rel "stylesheet" :href "/css/nag.css"}]
    [:link {:rel "preload" :href "https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" :as "script"}]
    [:link {:rel "preload" :href "/js/nag/browser.js" :as "script"}]])

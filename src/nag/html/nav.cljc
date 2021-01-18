@@ -8,10 +8,7 @@
    [rum.core :as rum]))
 
 (def idents
-  [nav/people
-   nav/things
-   nav/prefs
-   nav/quotes
+  [nav/quotes
    nav/contact
    nav/rand
    nav/all])
@@ -37,10 +34,10 @@
     (map ->nav-component idents)]])
 
 (def css
-  [[(lib/->css-selector ::nav/nav) {}
-    [:a
-     {:color       "black"
-      :margin-left "21px"}
+  [[(lib/->css-selector ::nav/nav)
+    [:a {:color           "black"
+         :margin-left     "21px"
+         :text-decoration "none"}
      [:&:hover {:text-decoration "underline"}]]]
    [(lib/->css-selector ::nav/expand)
     {:background  "none"
@@ -65,4 +62,4 @@
     [(lib/->css-selector ::nav/expand)
      {:transition "transform 100ms"}])
    [(lib/->css-selector ::nav/active)
-    {:text-decoration "underline"}]])
+    {:text-decoration "underline !important"}]])

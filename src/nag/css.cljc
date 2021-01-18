@@ -24,7 +24,7 @@
     [:body {:font-size "0.95rem"}])])
 
 (def a
-  [[:a {:text-decoration "none"}]])
+  [[:a {:color "black"}]])
 
 (def mobile-only
   [[(lib/->css-selector ::mobile-only)
