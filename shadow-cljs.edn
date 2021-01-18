@@ -10,5 +10,5 @@
 
   :static
   {:target    :node-script
-   :main      nag.html/watch!
+   :main      nag.html/spit-static-markup!
    :output-to "target/node-script/static.js"}}}

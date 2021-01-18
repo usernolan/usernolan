@@ -1,9 +1,6 @@
 (ns nag.html
   (:require
-   [nag.html.page.index :as index]
-   [nag.io :as io]))
+   [nag.html.page.index :as index]))
 
-(defn watch!
-  [& _args]
-  (index/spit-static-markup!)
-  (io/wait!))
+(defn ^:dev/after-load spit-static-markup! []
+  (index/spit-static-markup!))
