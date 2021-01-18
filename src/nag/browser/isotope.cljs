@@ -38,14 +38,15 @@
 (defn add-classes? [ident el]
   (or (identical? ident nav/all)
       (and (identical? ident nav/rand)
-           (< (rand) 0.15))
+           (< (rand) 0.2))
       (dom.class/contains el ident)))
 
 (defn update-classlist! [ident el]
   (if (add-classes? ident el)
     (do (when (identical? ident nav/rand) (dom.class/add el nav/rand))
         (dom.class/add el expanded-class))
-    (dom.class/remove el expanded-class)))
+    (do (dom.class/remove el expanded-class)
+        (dom.class/remove el nav/rand))))
 
 (defn arrange! [ident]
   (arr/map isotope-element-arr (fn [el] (update-classlist! ident el)))
