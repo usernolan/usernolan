@@ -198,7 +198,7 @@
      :border-top-right-radius "1.2em"
      :box-shadow              "inset 0 0 0 1.5px #000"
      :box-sizing              "border-box"
-     :font-size               "1.1rem"
+     :font-size               "1rem"
      :overflow                "hidden"
      :padding                 "0"
      :position                "relative"

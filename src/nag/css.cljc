@@ -17,7 +17,7 @@
    "sans-serif"])
 
 (def body
-  [[:body {:font-size "1.1rem" :margin "0"}
+  [[:body {:font-size "1rem" :margin "0"}
     [:* {:font-family font-stack}]]
    (g.stylesheet/at-media
     {:screen true :max-width "330px"}
