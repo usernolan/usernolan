@@ -1,0 +1,27 @@
+{
+  "browser": {
+    "process": false,
+    "setTimeout": false,
+    "util": false
+  },
+  "dependencies": {
+    "@thi.ng/checks": "^3.1.2",
+    "@thi.ng/compose": "^2.1.2",
+    "@thi.ng/hiccup-svg": "^4.2.4",
+    "@thi.ng/random": "^3.2.2",
+    "@thi.ng/rdom": "^0.8.2",
+    "@thi.ng/router": "^3.1.2",
+    "@thi.ng/rstream": "^7.2.0",
+    "@thi.ng/transducers": "^8.1.2",
+    "gsap": "^3.9.0"
+  },
+  "devDependencies": {
+    "@fortawesome/fontawesome-pro": "^5.15.2",
+    "@thi.ng/hiccup": "^4.2.2",
+    "esbuild": "^0.14.0",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "shadow-cljs": "^2.16.6",
+    "source-map-support": "^0.5.21"
+  }
+}

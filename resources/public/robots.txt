@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: http://nuid.io/sitemap.xml

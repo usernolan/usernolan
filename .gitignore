@@ -1,0 +1,17 @@
+# clj
+.cpcache
+
+# npm
+node_modules
+
+# shadow-cljs
+.shadow-cljs
+resources/public/js/usernolan
+target
+
+# nREPL
+.nrepl-port
+
+# terraform
+.terraform
+plan
