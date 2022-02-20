@@ -27,15 +27,18 @@
       :overflow-y "scroll"
       :box-sizing "border-box"}]
 
-    [:.root
-     {:background "black"}]
+    [:.root {:transition "background 80ms ease, color 80ms ease"}]
+    [:.root.usernolan {:background "darkgray" :color "lightgray"}]
+    [:.root.nm8 {:background "black" :color "white"}]
+    [:.root.oe {:background "transparent" :color "black"}]
+    [:.root.smxzy {:background "purple" :color "lightblue"}]
 
     [:.controls
      {:position   "absolute"
       :box-sizing "border-box"}]
 
-    [:.controls
-     {:color "white"}]
+    [:.controls {}
+     #_{:color "white"}]
 
     [:.content
      {:position   "absolute"
