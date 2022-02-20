@@ -25,22 +25,13 @@
 
 (def routes
   #js[#js{:id    "default-about"
-          :match #js["about"]}
-
-      #js{:id    "default-refs"
-          :match #js["refs"]}
-
-      #js{:id    "default-ref"
-          :match #js["ref" "?ref-id"]}
-
-      #js{:id    "default-gallery"
-          :match #js["gallery"]}
-
-      #js{:id    "default-gallery-item"
-          :match #js["gallery" "?item-id"]}
+          :match #js["usernolan" "about"]}
 
       #js{:id    "about"
           :match #js["?id" "about"]}
+
+      #js{:id    "quotes"
+          :match #js["?id" "quotes"]}
 
       #js{:id    "refs"
           :match #js["?id" "refs"]}
@@ -65,125 +56,188 @@
 (defonce start-router!
   (.start router))
 
-(def route!
+(defonce route!
   (rs/reactive (.-current router)))
 
-(defonce router-stream
+(defonce router-listener
   (.addListener router router/EVENT_ROUTE_CHANGED
                 (fn [e]
-                  (js/console.log e)
+                  (js/console.log "EVENT_ROUTE_CHANGED" e)
                   (.next route! (.-value e)))))
-
-(defonce register-gsap-plugins!
-  (.registerPlugin gsap Flip))
-
-(defn route-match-key-fn [route-match]
-  (.-id route-match))
-
-(defn default-view-async [route-match]
-  (js/Promise.resolve
-   #js["div" nil
-       #js["button" nil "controls"]
-       #js["h1" nil (js/JSON.stringify route-match)]]))
-
-(defn error-view-async [err]
-  (js/Promise.resolve
-   #js["h1" #js{:style #js{:color "red"}} err]))
 
 (def id-radio-data
   #js[#js{:id    "id-radio-usernolan"
-          :value "usernolan"
-          :label "usernolan"}
+          :value "usernolan"}
 
       #js{:id    "id-radio-nm8"
-          :value "nm8"
-          :label "nm8"}
+          :value "nm8"}
 
       #js{:id    "id-radio-oe"
           :value "observer.explicator"
           :label "Oe"}
 
-      #js{:id    "id-radio-numis"
-          :value "numis"
-          :label "numis"}])
+      #js{:id    "id-radio-smxzy"
+          :value "smxzy"}])
 
-(defn id-radio-div [x]
-  #js["div" nil
-      #js["input" #js{:type "radio" :name "id-radio" :id (.-id x) :value (.-value x)}]
-      #js["label" #js{:for (.-id x)} (or (.-label x) (.-value x))]])
-
-(defn id-radio-nav [attrs xs]
-  (doto #js["nav.control.id-radio" attrs]
-    (arr/extend
-        (arr/map xs id-radio-div))))
+(def id-radio!
+  (let [init (or (.. route! deref -params -id)
+                 (.-value (aget id-radio-data 0)))]
+    (rs/reactive init)))
 
 (def mode-radio-data
-  #js[#js{:id    "mode-system"
+  #js[#js{:id    "mode-radio-system"
           :value "system"}
-      #js{:id    "mode-light"
+
+      #js{:id    "mode-radio-light"
           :value "light"}
-      #js{:id    "mode-dark"
+
+      #js{:id    "mode-radio-dark"
           :value "dark"}])
 
-(defn mode-radio-div [x]
-  #js["div" nil
-      #js["input" #js{:type "radio" :name "mode-radio" :id (.-id x) :value (.-value x)}]
-      #js["label" #js{:for (.-id x)} (or (.-label x) (.-value x))]])
-
-(defn mode-radio-section [attrs xs]
-  (doto #js["section.control.mode-radio" attrs]
-    (arr/extend
-        (arr/map xs mode-radio-div))))
+(def mode-radio!
+  (let [init (.-value (aget mode-radio-data 0))]
+    (rs/reactive init)))
 
 (def filter-radio-data
   #js[#js{:id    "filter-not-always-gray"
           :value "notalwaysgray"}
+
       #js{:id    "filter-always-gray"
           :value "alwaysgray"}
+
       #js{:id    "filter-roy"
           :value "roy"}])
 
-(defn filter-radio-div [x]
-  #js["div" nil
-      #js["input" #js{:type "radio" :name "filter-radio" :id (.-id x) :value (.-value x)}]
-      #js["label" #js{:for (.-id x)} (or (.-label x) (.-value x))]])
-
-(defn filter-radio-section [attrs xs]
-  (doto #js["section.control.filter-radio" attrs]
-    (arr/extend
-        (arr/map xs filter-radio-div))))
+(def filter-radio!
+  (let [init (.-value (aget filter-radio-data 0))]
+    (rs/reactive init)))
 
 (def content-radio-data
   #js[#js{:id    "content-about"
           :value "about"}
+
+      #js{:id    "content-quotes"
+          :value "quotes"}
+
       #js{:id    "content-references"
           :value "refs"}
+
       #js{:id    "content-gallery"
-          :value "gallery"}
-      #_#js{:id    "content-contact"
-            :value "contact"}])
+          :value "gallery"}])
 
-(defn content-radio-div [x]
-  #js["div" nil
-      #js["input" #js{:type "radio" :name "content-radio" :id (.-id x) :value (.-value x)}]
-      #js["label" #js{:for (.-id x)} (or (.-label x) (.-value x))]])
+(def content-radio!
+  (let [route (.. route! deref -id)
+        init  (if (identical? route "default-about") "about" route)]
+    (rs/reactive init)))
 
-(defn content-radio-nav [attrs xs]
-  (doto #js["nav.control.content-radio" attrs]
-    (arr/extend
-        (arr/map xs content-radio-div))))
+(defn id-onchange-nav-fn [id e]
+  (js/console.log "onchange-nav-fn" e)
+  (let [content (.deref content-radio!)
+        route   (str "/" id "/" content)]
+    (js/console.log "onchange-nav-fn" id content route)
+    (.routeTo router route)))
 
-;; TODO: default route
-;; TODO: control grid(s)
+(def id-radio-spec
+  #js{:element  #js["nav.control.id-radio" nil]
+      :name     "id-radio"
+      :data     id-radio-data
+      :reactive id-radio!
+      :onchange id-onchange-nav-fn})
+
+(defn content-onchange-nav-fn [content e]
+  (js/console.log "onchange-nav-fn" e)
+  (let [id    (.deref id-radio!)
+        route (str "/" id "/" content)]
+    (js/console.log "onchange-nav-fn" id content route)
+    (.routeTo router route)))
+
+(def content-radio-spec
+  #js{:element  #js["nav.control.content-radio" nil]
+      :name     "content-radio"
+      :data     content-radio-data
+      :reactive content-radio!
+      :onchange content-onchange-nav-fn})
+
+(def mode-radio-spec
+  #js{:element  #js["section.control.mode-radio" nil]
+      :name     "mode-radio"
+      :data     mode-radio-data
+      :reactive mode-radio!})
+
+(def filter-radio-spec
+  #js{:element  #js["section.control.filter-radio" nil]
+      :name     "filter-radio"
+      :data     filter-radio-data
+      :reactive filter-radio!})
+
+(defn radio-div [spec x]
+  (let [n (.-name spec)
+        i (.-id x)
+        v (.-value x)
+        r (.-reactive spec)
+        c (.transform r (xf/map (fn [x] (identical? x v))))
+        f (if-let [onchange (.-onchange spec)]
+            (goog/partial onchange (.-value x))
+            #(.next r v))
+        l (or (.-label x) v)]
+    #js["div" nil
+        #js["input" #js{:type     "radio"
+                        :name     n
+                        :id       i
+                        :value    v
+                        :checked  c
+                        :onchange f}]
+        #js["label" #js{:for i} l]]))
+
+(defn radio-component [spec]
+  (let [el   (.-element spec)
+        data (.-data spec)
+        f    (goog/partial radio-div spec)]
+    (doto el
+      (arr/extend
+          (arr/map data f)))))
+
+(comment
+  ;; id-radio! :- { usernolan nm8 Oe smxzy }
+  ;; content-radio! :- { about quotes refs gallery }
+  ;; => (.route router (str ,,,))
+
+  ;;;
+  )
+
+;; TODO: rstream from radios
 ;; TODO: radio onclick, choices<>route
-;; TODO: radio defaults, state
+;; TODO: radio defaults, state, styling
+;; TODO: control grid(s)
+
+(defonce route-stream!
+  (.transform route! (xf/map
+                      (fn [x]
+                        (js/console.log "route-stream!" x)
+                        (let [route-id (.-id x)
+                              content  (if (identical? route-id "default-about")
+                                         "about"
+                                         route-id)
+                              id       (if (identical? route-id "default-about")
+                                         "usernolan"
+                                         (.. x -params -id))]
+                          (.next content-radio! content)
+                          (.next id-radio! id))))))
+
+#_(defonce nav-control!
+  (let [s (rs/sync #js{:src #js{:id      id-radio!
+                                :content content-radio!}})]
+    (.transform s (xf/map (fn [x]
+                            (js/console.log "nav-control!" x)
+                            (let [route (str "/" (.-id x) "/" (.-content x))]
+                              (.routeTo router route)))))))
 
 (defn controls [_ctx]
   #js["div.controls" nil
-      #js[id-radio-nav nil id-radio-data]
-      #js[mode-radio-section nil mode-radio-data]
-      #js[filter-radio-section nil filter-radio-data]
-      #js[content-radio-nav nil content-radio-data]])
+      (radio-component id-radio-spec)
+      (radio-component mode-radio-spec)
+      (radio-component filter-radio-spec)
+      (radio-component content-radio-spec)])
 
 (defn show-controls! [e]
   (js/console.log e)
@@ -198,23 +252,47 @@
   (js/Promise.resolve
    #js["div" #js{:class "about"}
        #js["button" #js{:onclick show-controls!} "show controls"]
-       #js["h1" nil (js/JSON.stringify route-match)]]))
+       #js["h2" nil (js/JSON.stringify route-match)]
+       #js["h2" nil id-radio!]
+       #js["h2" nil content-radio!]
+       #js["h2" nil mode-radio!]
+       #js["h2" nil filter-radio!]]))
+
+(defn route-match-key-fn [route-match]
+  (.-id route-match))
+
+(defn default-view-async [route-match]
+  (js/Promise.resolve
+   #js["div" #js{:class (.-id route-match)}
+       #js["button" #js{:onclick show-controls!} "show controls"]
+       #js["h2" nil (js/JSON.stringify route-match)]
+       #js["h2" nil id-radio!]
+       #js["h2" nil content-radio!]
+       #js["h2" nil mode-radio!]
+       #js["h2" nil filter-radio!]]))
+
+(defn error-view-async [err]
+  (js/Promise.resolve
+   #js["h1" #js{:style #js{:color "red"}} err]))
 
 (defn content [_ctx]
   #js["div.content" nil
-      (rd/$switch
+      #js["button" #js{:onclick show-controls!} "show controls"]
+      #js["h2" nil (.transform route! (xf/map (fn [x] (js/JSON.stringify x))))]
+      #js["h2" nil id-radio!]
+      #js["h2" nil content-radio!]
+      #js["h2" nil mode-radio!]
+      #js["h2" nil filter-radio!]
+      #_(rd/$switch
        route!
        route-match-key-fn
-       #js{"default-about"        default-about-async
-           "default-refs"         default-view-async
-           "default-ref"          default-view-async
-           "default-gallery"      default-view-async
-           "default-gallery-item" default-view-async
-           "about"                default-view-async
-           "refs"                 default-view-async
-           "ref"                  default-view-async
-           "gallery"              default-view-async
-           "gallery-item"         default-view-async}
+       #js{"default-about" default-about-async
+           "about"         default-view-async
+           "quotes"        default-view-async
+           "refs"          default-view-async
+           "ref"           default-view-async
+           "gallery"       default-view-async
+           "gallery-item"  default-view-async}
        error-view-async)])
 
 (def root
