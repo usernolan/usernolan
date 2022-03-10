@@ -451,7 +451,7 @@
               #js{:closeOut rs/CloseMode.NEVER}))
 
 #_(.transform nm8-svg-rect-dashoffset-stream!
-            (xf/map (fn [x] (* -1 (+ x 3)))))
+              (xf/map (fn [x] (* -1 (+ x 3)))))
 
 (defn nm8-svg-async [attrs]
   (js/Promise.resolve
@@ -517,10 +517,19 @@
   )
 
 (def Oe-svg-rect-dasharray
-  "2 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 2 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125")
+  "2")
+
+(defonce Oe-svg-rect-dashoffset-stream!
+  (.transform usernolan-svg-RAF!
+              (xf/map (fn [^js x]
+                        (cond
+                          (.-mouseover x) (* (mod (.-t x) 120) 0.02617993877991494)
+                          (.-toggle x)    0
+                          :else           -2.5)))
+              #js{:closeOut rs/CloseMode.NEVER}))
 
 (def Oe-svg-large-rect-dasharray
-  "1.5707963267948966 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305")
+  "1.5707963267948966")
 
 #_2.356194490192345
 #_3.141592653589793
@@ -535,7 +544,7 @@
                         (cond
                           (.-mouseover x) (* (mod (.-t x) 120) 0.02617993877991494)
                           (.-toggle x)    0
-                          :else           1.5707963267948966)))
+                          :else           0)))
               #js{:closeOut rs/CloseMode.NEVER}))
 
 (defonce Oe-svg-small-rect-dashoffset-stream!
@@ -546,6 +555,9 @@
                           (.-toggle x)    1.1780972450961724
                           :else           0)))
               #js{:closeOut rs/CloseMode.NEVER}))
+
+(defonce Oe-svg-stream!
+  nil)
 
 (defn Oe-svg-async [attrs]
   (js/Promise.resolve
@@ -567,12 +579,51 @@
       #js["rect"
           #js{:width             1
               :height            1
-              :x                 0.525
+              :x                 1.25
               :y                 0.25
-              :rx                0.5
-              :ry                0.5
-              :stroke-dasharray  Oe-svg-small-rect-dasharray
-              :stroke-dashoffset Oe-svg-small-rect-dashoffset-stream!}]]))
+              :rx                0
+              :ry                0
+              :stroke-dasharray  Oe-svg-rect-dasharray
+              :stroke-dashoffset Oe-svg-rect-dashoffset-stream!}]]))
+
+(def smixzy-svg-rect-dasharray
+  "2")
+
+(defonce smixzy-svg-rect-dashoffset-stream!
+  (.transform usernolan-svg-RAF!
+              (xf/map (fn [^js x]
+                        (cond
+                          (.-mouseover x) (* (mod (.-t x) 120) 0.02617993877991494)
+                          (.-toggle x)    0
+                          :else           -2.5)))
+              #js{:closeOut rs/CloseMode.NEVER}))
+
+(def smixzy-svg-large-rect-dasharray
+  "1.5707963267948966")
+
+(def smixzy-svg-small-rect-dasharray
+  "1.1780972450961724 0.10709974955419749 0.10709974955419749 0.10709974955419749 0.10709974955419749 0.10709974955419749 0.10709974955419749 0.10709974955419749 0.10709974955419749 0.10709974955419749 0.10709974955419749 0.10709974955419749")
+
+(defonce smixzy-svg-large-rect-dashoffset-stream!
+  (.transform usernolan-svg-RAF!
+              (xf/map (fn [^js x]
+                        (cond
+                          (.-mouseover x) (* (mod (.-t x) 120) 0.02617993877991494)
+                          (.-toggle x)    0
+                          :else           0)))
+              #js{:closeOut rs/CloseMode.NEVER}))
+
+(defonce smixzy-svg-small-rect-dashoffset-stream!
+  (.transform usernolan-svg-RAF!
+              (xf/map (fn [^js x]
+                        (cond
+                          (.-mouseover x) (* (mod (.-t x) 120) -0.019634954084936207)
+                          (.-toggle x)    1.1780972450961724
+                          :else           0)))
+              #js{:closeOut rs/CloseMode.NEVER}))
+
+(defonce smixzy-svg-stream!
+  nil)
 
 (defn smixzy-svg-async [attrs]
   (js/Promise.resolve
@@ -589,8 +640,12 @@
                :y                 0.875
                :rx                0.5
                :ry                0.5
-               :stroke-dasharray  usernolan-svg-rect-dasharray
-               :stroke-dashoffset usernolan-svg-rect-dashoffset-stream!}]
+               :stroke-dasharray  smixzy-svg-rect-dasharray
+               :stroke-dashoffset smixzy-svg-rect-dashoffset-stream!
+               :stroke-linecap    "round"
+               #_#_:style             #js{:transform        "rotate(45deg)"
+                                      :transform-origin "center"
+                                      :transform-box    "fill-box"}}]
        #js["rect"
            #js{:width             0.25
                :height            1
@@ -598,8 +653,12 @@
                :y                 0.5
                :rx                0.5
                :ry                0.5
-               :stroke-dasharray  usernolan-svg-circle-dasharray
-               :stroke-dashoffset usernolan-svg-circle-dashoffset-stream!}]]))
+               :stroke-dasharray  smixzy-svg-large-rect-dasharray
+               :stroke-dashoffset smixzy-svg-large-rect-dashoffset-stream!
+               :stroke-linecap    "round"
+               #_#_:style             #js{:transform        "rotate(45deg)"
+                                      :transform-origin "center"
+                                      :transform-box    "fill-box"}}]]))
 
 
 (defn content [_ctx]
