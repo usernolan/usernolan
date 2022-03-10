@@ -419,9 +419,8 @@
 (defn smixzy-about-component-async [_route-match]
   (js/Promise.resolve
    #js["div" #js{:class "about"}
-       #js["p" nil "im a soft one"
-           #js["br" nil] "level 60 arcane mage"
-           #js["br" nil] "nonsense acrylic handmade"]
+       #js["p" nil "nonsense acrylic handmade"
+           #js["br" nil] "level 60 arcane mage"]
        #_#js[debug-component nil]]))
 
 (.addAll about-component-async
@@ -431,16 +430,28 @@
              "smixzy"    smixzy-about-component-async})
 
 (def nm8-svg-rect-dasharray
-  "1.5 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.5 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125")
+  "0.5")
 
 (defonce nm8-svg-rect-dashoffset-stream!
   (.transform usernolan-svg-RAF!
               (xf/map (fn [^js x]
                         (cond
                           (.-mouseover x) (* (mod (.-t x) 611) 0.01309328968903437)
-                          (.-toggle x)    0.5
+                          (.-toggle x)    -0.5
                           :else           0)))
               #js{:closeOut rs/CloseMode.NEVER}))
+
+(defonce nm8-svg-rect2-dashoffset-stream!
+  (.transform usernolan-svg-RAF!
+              (xf/map (fn [^js x]
+                        (cond
+                          (.-mouseover x) (+ (* (mod (.-t x) 611) -0.01309328968903437) 0.5)
+                          (.-toggle x)    0.5
+                          :else           -3)))
+              #js{:closeOut rs/CloseMode.NEVER}))
+
+#_(.transform nm8-svg-rect-dashoffset-stream!
+            (xf/map (fn [x] (* -1 (+ x 3)))))
 
 (defn nm8-svg-async [attrs]
   (js/Promise.resolve
@@ -467,9 +478,7 @@
                :rx                0
                :ry                0
                :stroke-dasharray  nm8-svg-rect-dasharray
-               :stroke-dashoffset (.transform nm8-svg-rect-dashoffset-stream!
-                                              (xf/map (fn [x] (* -1 (+ x 3)))))}]]))
-
+               :stroke-dashoffset nm8-svg-rect2-dashoffset-stream!}]]))
 
 (comment ; Oe circles
 
@@ -556,10 +565,10 @@
               :stroke-dasharray  Oe-svg-large-rect-dasharray
               :stroke-dashoffset Oe-svg-large-rect-dashoffset-stream!}]
       #js["rect"
-          #js{:width             0.75
-              :height            0.75
-              :x                 0.15
-              :y                 0.375
+          #js{:width             1
+              :height            1
+              :x                 0.525
+              :y                 0.25
               :rx                0.5
               :ry                0.5
               :stroke-dasharray  Oe-svg-small-rect-dasharray
