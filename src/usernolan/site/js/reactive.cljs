@@ -5,11 +5,13 @@
    [goog.dom :as dom]
    [goog.dom.classlist :as classlist]
    [goog.functions :as fns]
+   [goog.iter :as iter]
    [goog.object :as obj]
    [goog.string :as str]
    ["gsap" :refer [gsap]]
    ["gsap/Flip" :refer [Flip]]
    ["@thi.ng/compose" :as cf]
+   ["@thi.ng/defmulti" :as dfm]
    ["@thi.ng/hiccup" :as h]
    ["@thi.ng/hiccup-svg" :as svg]
    ["@thi.ng/rdom" :as rd]
@@ -25,7 +27,7 @@
 
 (def routes
   #js[#js{:id    "default-about"
-          :match #js["usernolan" "about"]}
+          :match #js["about"]}
 
       #js{:id    "about"
           :match #js["?id" "about"]}
@@ -57,7 +59,8 @@
   (.start router))
 
 (defonce route!
-  (rs/reactive (.-current router)))
+  (rs/reactive (.-current router)
+               #js{:closeOut rs/CloseMode.NEVER}))
 
 (defonce router-listener
   (.addListener router router/EVENT_ROUTE_CHANGED
@@ -75,8 +78,8 @@
       #js{:id    "id-radio-oe"
           :value "Oe"}
 
-      #js{:id    "id-radio-smxzy"
-          :value "smxzy"}])
+      #js{:id    "id-radio-smixzy"
+          :value "smixzy"}])
 
 (def id-radio!
   (let [init (or (.. route! deref -params -id)
@@ -87,18 +90,22 @@
   #js[#js{:id    "content-about"
           :value "about"}
 
-      #js{:id    "content-quotes"
-          :value "quotes"}
-
       #js{:id    "content-references"
           :value "refs"}
+
+      #js{:id    "content-quotes"
+          :value "quotes"}
 
       #js{:id    "content-gallery"
           :value "gallery"}])
 
 (def content-radio!
   (let [route (.. route! deref -id)
-        init  (if (identical? route "default-about") "about" route)]
+        init  (cond
+                (identical? route "default-about") "about"
+                (identical? route "ref")           "refs"
+                (identical? route "gallery-item")  "gallery"
+                :else                              route)]
     (rs/reactive init)))
 
 (defn id-radio-onchange-fn [id e]
@@ -130,10 +137,7 @@
           :value "notalwaysgray"}
 
       #js{:id    "filter-always-gray"
-          :value "alwaysgray"}
-
-      #js{:id    "filter-roy"
-          :value "roy"}])
+          :value "alwaysgray"}])
 
 (def filter-radio!
   (let [init (.-value (aget filter-radio-data 0))]
@@ -190,32 +194,25 @@
       (arr/extend
           (arr/map data f)))))
 
-(comment
-  ;; id-radio! :- { usernolan nm8 Oe smxzy }
-  ;; content-radio! :- { about quotes refs gallery }
-  ;; => (.route router (str ,,,))
-
-  ;;;
-  )
-
-;; TODO: rstream from radios
-;; TODO: radio onclick, choices<>route
 ;; TODO: radio defaults, state, styling
 ;; TODO: control grid(s)
 
+(defn route-stream-fn [x]
+  (let [route-id (.-id x)
+        default? (identical? route-id "default-about")
+        content  (cond
+                   (identical? route-id "gallery-item") "gallery"
+                   (identical? route-id "ref")          "refs"
+                   default?                             "about"
+                   :else                                route-id)
+        id       (if default? "usernolan" (.. x -params -id))]
+    (when-not (identical? (.deref content-radio!) content)
+      (.next content-radio! content))
+    (when-not (identical? (.deref id-radio!) id)
+      (.next id-radio! id))))
+
 (defonce route-stream!
-  (.transform route! (xf/map
-                      (fn [x]
-                        (js/console.log "route-stream!" x)
-                        (let [route-id (.-id x)
-                              content  (if (identical? route-id "default-about")
-                                         "about"
-                                         route-id)
-                              id       (if (identical? route-id "default-about")
-                                         "usernolan"
-                                         (.. x -params -id))]
-                          (.next content-radio! content)
-                          (.next id-radio! id))))))
+  (.transform route! (xf/map route-stream-fn)))
 
 (defn controls [_ctx]
   #js["div.controls" nil
@@ -225,7 +222,6 @@
       (radio-component content-radio-spec)])
 
 (defn show-controls! [e]
-  (js/console.log e)
   (when-let [el (dom/getAncestorByClass (.-target e) "content")]
     ;; TODO: dynamic top+left/transform dynamic
     ;; NOTE: mobile vs. desktop
@@ -233,52 +229,324 @@
     ;; NOTE: clientX of links
     (classlist/toggle el "show-controls")))
 
-(defn default-about-async [route-match]
-  (js/Promise.resolve
-   #js["div" #js{:class "about"}
-       #js["button" #js{:onclick show-controls!} "show controls"]
-       #js["h2" nil (js/JSON.stringify route-match)]
-       #js["h2" nil id-radio!]
-       #js["h2" nil content-radio!]
-       #js["h2" nil mode-radio!]
-       #js["h2" nil filter-radio!]]))
+(defonce radio-stream!
+  (rs/sync #js{:src #js{:id      id-radio!
+                        :content content-radio!
+                        :mode    mode-radio!
+                        :filter  filter-radio!}}))
 
-(defn route-match-key-fn [route-match]
-  (.-id route-match))
+(defonce usernolan-svg-mouseover-stream!
+  (rs/reactive false))
+
+(defonce usernolan-svg-toggle-stream!
+  (rs/reactive false))
+
+(def usernolan-svg-rect-y-top 0.025)
+(def usernolan-svg-rect-y-middle 0.275)
+(def usernolan-svg-rect-y-bottom 0.525)
+
+(defonce usernolan-svg-rect-y-stream!
+  (rs/reactive usernolan-svg-rect-y-top
+               #js{:closeOut rs/CloseMode.NEVER})) ; NOTE: rs/tweenNumber
+
+(def usernolan-svg-rect-dasharray
+  "2 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 2 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125")
+
+(defonce fromRAF!
+  (rs/fromRAF))
+
+(defonce usernolan-svg-RAF!
+  (rs/sync #js{:src #js{:t         fromRAF!
+                        :mouseover usernolan-svg-mouseover-stream!
+                        :toggle    usernolan-svg-toggle-stream!}}))
+
+(defonce usernolan-svg-rect-dashoffset-stream!
+  (.transform usernolan-svg-RAF!
+              (xf/map (fn [^js x]
+                        (cond
+                          (.-mouseover x) (* (mod (.-t x) 611) 0.01309328968903437)
+                          (.-toggle x)    -3.4375
+                          :else           -1.5)))
+              #js{:closeOut rs/CloseMode.NEVER}))
+
+(def usernolan-svg-circle-cy-bottom 1.025)
+(def usernolan-svg-circle-cy-middle 0.775)
+(def usernolan-svg-circle-cy-top 0.525)
+
+(defonce usernolan-svg-circle-cy-stream!
+  (rs/reactive usernolan-svg-circle-cy-bottom
+               #js{:closeOut rs/CloseMode.NEVER})) ; NOTE: rs/tweenNumber
+
+(def usernolan-svg-circle-dasharray
+  "1.5707963267948966 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305")
+
+(defonce usernolan-svg-circle-dashoffset-stream!
+  (.transform usernolan-svg-RAF!
+              (xf/map (fn [^js x]
+                        (cond
+                          (.-mouseover x) (* (mod (.-t x) 240) -0.01308996938995747)
+                          (.-toggle x)    0
+                          :else           1.5707963267948966)))
+              #js{:closeOut rs/CloseMode.NEVER}))
+
+(defn usernolan-svg-onmouseover [_e]
+  (.next usernolan-svg-mouseover-stream! true)
+  (.next usernolan-svg-rect-y-stream! usernolan-svg-rect-y-middle)
+  (.next usernolan-svg-circle-cy-stream! usernolan-svg-circle-cy-middle))
+
+(defn usernolan-svg-onmouseout [_e]
+  (.next usernolan-svg-mouseover-stream! false)
+  (if (.deref usernolan-svg-toggle-stream!)
+    (do (.next usernolan-svg-rect-y-stream! usernolan-svg-rect-y-bottom)
+        (.next usernolan-svg-circle-cy-stream! usernolan-svg-circle-cy-top))
+    (do (.next usernolan-svg-rect-y-stream! usernolan-svg-rect-y-top)
+        (.next usernolan-svg-circle-cy-stream! usernolan-svg-circle-cy-bottom))))
+
+(defn usernolan-svg-onclick [_e]
+  (js/setTimeout usernolan-svg-onmouseout 80)
+  (.next usernolan-svg-toggle-stream!
+         (not (.deref usernolan-svg-toggle-stream!))))
+
+(defn usernolan-svg [attrs]
+  #js["svg"
+      #js{:xmlns       "http://www.w3.org/2000/svg"
+          :viewBox     "0 0 2.275 1.575"
+          :onmouseover usernolan-svg-onmouseover
+          :onmouseout  usernolan-svg-onmouseout
+          :onclick     usernolan-svg-onclick}
+      #js["rect"
+          #js{:width             1
+              :height            1
+              :x                 0.025
+              :y                 (rs/tweenNumber usernolan-svg-rect-y-stream!
+                                                 usernolan-svg-rect-y-top
+                                                 0.2)
+              :stroke-dasharray  usernolan-svg-rect-dasharray
+              :stroke-dashoffset usernolan-svg-rect-dashoffset-stream!}]
+      #js["circle"
+          #js{:r                 0.5
+              :cx                1.75
+              :cy                (rs/tweenNumber usernolan-svg-circle-cy-stream!
+                                                 usernolan-svg-circle-cy-bottom
+                                                 0.2)
+              :stroke-dasharray  usernolan-svg-circle-dasharray
+              :stroke-dashoffset usernolan-svg-circle-dashoffset-stream!}]])
+
+(defonce debug-stream!
+  (let [s (rs/sync #js{:src #js{:radios radio-stream!
+                                :route  route!}})]
+    (.transform s (xf/map js/JSON.stringify))))
+
+#_(defonce state-interval
+  (js/setInterval
+   (fn []
+     (js/console.log
+      (str
+       (.getState route!)
+       (.getState id-radio!)
+       (.getState content-radio!)
+       (.getState mode-radio!)
+       (.getState filter-radio!)
+       (.getState filter-radio!)
+       (.getState route-stream!)
+       (.getState radio-stream!)
+       (.getState usernolan-svg-mouseover-stream!)
+       (.getState usernolan-svg-toggle-stream!)
+       (.getState usernolan-svg-rect-y-stream!)
+       (.getState fromRAF!)
+       (.getState usernolan-svg-RAF!)
+       (.getState usernolan-svg-rect-dashoffset-stream!)
+       (.getState usernolan-svg-circle-cy-stream!)
+       (.getState usernolan-svg-circle-dashoffset-stream!)
+       (.getState debug-stream!))))
+   1000))
+
+(defn debug-component [attrs]
+  #js["div.debug" attrs
+      #js["p" nil debug-stream!]])
 
 (defn default-view-async [route-match]
   (js/Promise.resolve
    #js["div" #js{:class "about"}
-       #js["button" #js{:onclick show-controls!} "show controls"]
-       #js["h2" nil (js/JSON.stringify route-match)]
-       #js["h2" nil id-radio!]
-       #js["h2" nil content-radio!]
-       #js["h2" nil mode-radio!]
-       #js["h2" nil filter-radio!]]))
+       #js["p" nil "im nolan. ive been called a reflector!"
+           #js["br" nil] "usernolan is a multiplexer."
+           #js["br" nil] "click square zero"]
+       #_#js["a.contact" #js{:href "mailto:inbox@usernolan.net"}
+           "Email"]
+       #_#js[debug-component nil]]))
 
 (defn error-view-async [err]
   (js/Promise.resolve
    #js["h1" #js{:style #js{:color "red"}} err]))
 
+(defn route-match-key-fn [route-match]
+  (.-id route-match))
+
+(defn usernolan-svg-async [id]
+  (js/Promise.resolve
+   (usernolan-svg nil)))
+
+(defn about-async [route-match])
+
+(def about-component-async
+  (dfm/defmulti
+    (fn [route-match]
+      (.. route-match -params -id))))
+
+(defn usernolan-about-component-async [_route-match]
+  (js/Promise.resolve
+   #js["div" #js{:class "about"}
+       #js["p" nil "im nolan. ive been called a reflector!"
+           #js["br" nil] "usernolan is a multiplexer."
+           #js["br" nil] "click square zero"]
+       #_#js["a.contact" #js{:href "mailto:inbox@usernolan.net"}
+             "Email"]
+       #_#js[debug-component nil]]))
+
+(defn nm8-about-component-async [_route-match]
+  (js/Promise.resolve
+   #js["div" #js{:class "about"}
+       #js["p" nil "im sorry this site uses javascript."
+           #js["br" nil] "smixzy won the argument"
+           #js["br" nil] "based on \"vibe\" ???"
+           ]
+       #_#js[debug-component nil]]))
+
+(defn Oe-about-component-async [_route-match]
+  (js/Promise.resolve
+   #js["div" #js{:class "about"}
+       #js["p" nil "observe .• explicate"
+           #js["br" nil] ":: metacircular interpretation"]
+       #_#js[debug-component nil]]))
+
+(defn smixzy-about-component-async [_route-match]
+  (js/Promise.resolve
+   #js["div" #js{:class "about"}
+       #js["p" nil "im a soft one"
+           #js["br" nil] "level 60 arcane mage"
+           #js["br" nil] "acrylic handmade nonsense"]
+       #_#js[debug-component nil]]))
+
+(.addAll about-component-async
+         #js{"usernolan" usernolan-about-component-async
+             "nm8"       nm8-about-component-async
+             "Oe"        Oe-about-component-async
+             "smixzy"    smixzy-about-component-async})
+
+(defn nm8-svg-async [attrs]
+  (js/Promise.resolve
+   #js["svg"
+       #js{:xmlns       "http://www.w3.org/2000/svg"
+           :viewBox     "0 0 2.275 1.575"
+           :onmouseover usernolan-svg-onmouseover
+           :onmouseout  usernolan-svg-onmouseout
+           :onclick     usernolan-svg-onclick}
+       #js["rect"
+           #js{:width             1
+               :height            1
+               :x                 0.025
+               :y                 0.25
+               :rx                0.125
+               :ry                0.125
+               :stroke-dasharray  usernolan-svg-rect-dasharray
+               :stroke-dashoffset usernolan-svg-rect-dashoffset-stream!}]
+       #js["rect"
+           #js{:width             1
+               :height            1
+               :x                 1.025
+               :y                 0.25
+               :rx                0.125
+               :ry                0.125
+               :stroke-dasharray  usernolan-svg-circle-dasharray
+               :stroke-dashoffset (.transform usernolan-svg-circle-dashoffset-stream!
+                                              (xf/map (fn [x] (* -1 x))))}]]))
+
+(defn Oe-svg-async [attrs]
+  (js/Promise.resolve
+   #js["svg"
+       #js{:xmlns       "http://www.w3.org/2000/svg"
+           :viewBox     "0 0 2.275 1.575"
+           :onmouseover usernolan-svg-onmouseover
+           :onmouseout  usernolan-svg-onmouseout
+           :onclick     usernolan-svg-onclick}
+      #js["rect"
+          #js{:width             1
+              :height            1
+              :x                 0.025
+              :y                 0.25
+              :rx                0.25
+              :ry                0.25
+              :stroke-dasharray  usernolan-svg-rect-dasharray
+              :stroke-dashoffset usernolan-svg-rect-dashoffset-stream!}]
+      #js["rect"
+          #js{:width             1
+              :height            1
+              :x                 1.25
+              :y                 0.25
+              :rx                0.25
+              :ry                0.25
+              :stroke-dasharray  usernolan-svg-circle-dasharray
+              :stroke-dashoffset usernolan-svg-circle-dashoffset-stream!}]]))
+
+(defn smixzy-svg-async [attrs]
+  (js/Promise.resolve
+   #js["svg"
+       #js{:xmlns       "http://www.w3.org/2000/svg"
+           :viewBox     "0 0 2.275 1.575"
+           :onmouseover usernolan-svg-onmouseover
+           :onmouseout  usernolan-svg-onmouseout
+           :onclick     usernolan-svg-onclick}
+       #js["rect"
+           #js{:width             1
+               :height            0.25
+               :x                 0.25
+               :y                 0.875
+               :rx                0.5
+               :ry                0.5
+               :stroke-dasharray  usernolan-svg-rect-dasharray
+               :stroke-dashoffset usernolan-svg-rect-dashoffset-stream!}]
+       #js["rect"
+           #js{:width             0.25
+               :height            1
+               :x                 0.625
+               :y                 0.5
+               :rx                0.5
+               :ry                0.5
+               :stroke-dasharray  usernolan-svg-circle-dasharray
+               :stroke-dashoffset usernolan-svg-circle-dashoffset-stream!}]]))
+
+
 (defn content [_ctx]
   #js["div.content" nil
+      #js["button.show-controls" #js{:onclick show-controls!}
+          (rd/$switch
+           id-radio!
+           identity
+           #js{"usernolan" usernolan-svg-async
+               "nm8"       nm8-svg-async
+               "Oe"        Oe-svg-async
+               "smixzy"    smixzy-svg-async}
+           error-view-async)]
       (rd/$switch
-         route!
-         route-match-key-fn
-         #js{"default-about" default-about-async
-             "about"         default-view-async
-             "quotes"        default-view-async
-             "refs"          default-view-async
-             "ref"           default-view-async
-             "gallery"       default-view-async
-             "gallery-item"  default-view-async}
-         error-view-async)])
+       route!
+       route-match-key-fn
+       #js{"default-about" default-view-async
+           "about"         about-component-async
+           "quotes"        default-view-async
+           "refs"          default-view-async
+           "ref"           default-view-async
+           "gallery"       default-view-async
+           "gallery-item"  default-view-async}
+       error-view-async)])
+
+(defonce root-class-stream!
+  (let [xf (xf/map (fn [x] (let [s (iter/join (obj/getValues x) " ")]
+                             (str/buildString "root " s))))]
+    (.transform radio-stream! xf
+                #js{:closeOut rs/CloseMode.NEVER})))
 
 (def root
-  #js["div" #js{:class (.transform (rs/sync #js{:src #js{:id      id-radio!
-                                                         :content content-radio!}})
-                                   (xf/map (fn [x]
-                                             (str "root " (.-id x) " " (.-content x)))))}
+  #js["div" #js{:class root-class-stream!}
       (controls nil)
       (content nil)])
 
