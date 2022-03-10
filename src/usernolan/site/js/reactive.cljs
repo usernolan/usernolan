@@ -406,10 +406,7 @@
 (defn nm8-about-component-async [_route-match]
   (js/Promise.resolve
    #js["div" #js{:class "about"}
-       #js["p" nil "im sorry this site uses javascript."
-           #js["br" nil] "smixzy won the argument"
-           #js["br" nil] "based on \"vibe\" ???"
-           ]
+       #js["p" nil "im sorry this site uses javascript."]
        #_#js[debug-component nil]]))
 
 (defn Oe-about-component-async [_route-match]
@@ -424,7 +421,7 @@
    #js["div" #js{:class "about"}
        #js["p" nil "im a soft one"
            #js["br" nil] "level 60 arcane mage"
-           #js["br" nil] "acrylic handmade nonsense"]
+           #js["br" nil] "nonsense acrylic handmade"]
        #_#js[debug-component nil]]))
 
 (.addAll about-component-async
@@ -433,11 +430,23 @@
              "Oe"        Oe-about-component-async
              "smixzy"    smixzy-about-component-async})
 
+(def nm8-svg-rect-dasharray
+  "1.5 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.5 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125")
+
+(defonce nm8-svg-rect-dashoffset-stream!
+  (.transform usernolan-svg-RAF!
+              (xf/map (fn [^js x]
+                        (cond
+                          (.-mouseover x) (* (mod (.-t x) 611) 0.01309328968903437)
+                          (.-toggle x)    0.5
+                          :else           0)))
+              #js{:closeOut rs/CloseMode.NEVER}))
+
 (defn nm8-svg-async [attrs]
   (js/Promise.resolve
    #js["svg"
        #js{:xmlns       "http://www.w3.org/2000/svg"
-           :viewBox     "0 0 2.275 1.575"
+           :viewBox     "0 0 2.275 2.05"
            :onmouseover usernolan-svg-onmouseover
            :onmouseout  usernolan-svg-onmouseout
            :onclick     usernolan-svg-onclick}
@@ -445,21 +454,89 @@
            #js{:width             1
                :height            1
                :x                 0.025
-               :y                 0.25
-               :rx                0.125
-               :ry                0.125
-               :stroke-dasharray  usernolan-svg-rect-dasharray
-               :stroke-dashoffset usernolan-svg-rect-dashoffset-stream!}]
+               :y                 0.025
+               :rx                0
+               :ry                0
+               :stroke-dasharray  nm8-svg-rect-dasharray
+               :stroke-dashoffset nm8-svg-rect-dashoffset-stream!}]
        #js["rect"
            #js{:width             1
                :height            1
                :x                 1.025
-               :y                 0.25
-               :rx                0.125
-               :ry                0.125
-               :stroke-dasharray  usernolan-svg-circle-dasharray
-               :stroke-dashoffset (.transform usernolan-svg-circle-dashoffset-stream!
-                                              (xf/map (fn [x] (* -1 x))))}]]))
+               :y                 1.025
+               :rx                0
+               :ry                0
+               :stroke-dasharray  nm8-svg-rect-dasharray
+               :stroke-dashoffset (.transform nm8-svg-rect-dashoffset-stream!
+                                              (xf/map (fn [x] (* -1 (+ x 3)))))}]]))
+
+
+(comment ; Oe circles
+
+  (def Oe-svg-rect-dasharray
+    "2 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 2 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125")
+
+  (def Oe-svg-large-rect-dasharray
+    "1.5707963267948966 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305")
+
+  #_2.356194490192345
+  #_3.141592653589793
+
+  (def Oe-svg-small-rect-dasharray
+    "1.1780972450961724 0.10709974955419749 0.10709974955419749 0.10709974955419749 0.10709974955419749 0.10709974955419749 0.10709974955419749 0.10709974955419749 0.10709974955419749 0.10709974955419749 0.10709974955419749 0.10709974955419749"
+    #_"1.1780972450961724 0.1308996938995747 0.1308996938995747 0.1308996938995747 0.1308996938995747 0.1308996938995747 0.1308996938995747 0.1308996938995747 0.1308996938995747 0.1308996938995747")
+
+  (defonce Oe-svg-large-rect-dashoffset-stream!
+    (.transform usernolan-svg-RAF!
+                (xf/map (fn [^js x]
+                          (cond
+                            (.-mouseover x) (* (mod (.-t x) 120) 0.02617993877991494)
+                            (.-toggle x)    0
+                            :else           1.5707963267948966)))
+                #js{:closeOut rs/CloseMode.NEVER}))
+
+  (defonce Oe-svg-small-rect-dashoffset-stream!
+    (.transform usernolan-svg-RAF!
+                (xf/map (fn [^js x]
+                          (cond
+                            (.-mouseover x) (* (mod (.-t x) 120) -0.019634954084936207)
+                            (.-toggle x)    1.1780972450961724
+                            :else           0)))
+                #js{:closeOut rs/CloseMode.NEVER}))
+
+  ;;;
+  )
+
+(def Oe-svg-rect-dasharray
+  "2 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 2 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125 0.125")
+
+(def Oe-svg-large-rect-dasharray
+  "1.5707963267948966 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305 0.1208304866765305")
+
+#_2.356194490192345
+#_3.141592653589793
+
+(def Oe-svg-small-rect-dasharray
+  "1.1780972450961724 0.10709974955419749 0.10709974955419749 0.10709974955419749 0.10709974955419749 0.10709974955419749 0.10709974955419749 0.10709974955419749 0.10709974955419749 0.10709974955419749 0.10709974955419749 0.10709974955419749"
+  #_"1.1780972450961724 0.1308996938995747 0.1308996938995747 0.1308996938995747 0.1308996938995747 0.1308996938995747 0.1308996938995747 0.1308996938995747 0.1308996938995747 0.1308996938995747")
+
+(defonce Oe-svg-large-rect-dashoffset-stream!
+  (.transform usernolan-svg-RAF!
+              (xf/map (fn [^js x]
+                        (cond
+                          (.-mouseover x) (* (mod (.-t x) 120) 0.02617993877991494)
+                          (.-toggle x)    0
+                          :else           1.5707963267948966)))
+              #js{:closeOut rs/CloseMode.NEVER}))
+
+(defonce Oe-svg-small-rect-dashoffset-stream!
+  (.transform usernolan-svg-RAF!
+              (xf/map (fn [^js x]
+                        (cond
+                          (.-mouseover x) (* (mod (.-t x) 120) -0.019634954084936207)
+                          (.-toggle x)    1.1780972450961724
+                          :else           0)))
+              #js{:closeOut rs/CloseMode.NEVER}))
 
 (defn Oe-svg-async [attrs]
   (js/Promise.resolve
@@ -474,19 +551,19 @@
               :height            1
               :x                 0.025
               :y                 0.25
-              :rx                0.25
-              :ry                0.25
-              :stroke-dasharray  usernolan-svg-rect-dasharray
-              :stroke-dashoffset usernolan-svg-rect-dashoffset-stream!}]
+              :rx                0.5
+              :ry                0.5
+              :stroke-dasharray  Oe-svg-large-rect-dasharray
+              :stroke-dashoffset Oe-svg-large-rect-dashoffset-stream!}]
       #js["rect"
-          #js{:width             1
-              :height            1
-              :x                 1.25
-              :y                 0.25
-              :rx                0.25
-              :ry                0.25
-              :stroke-dasharray  usernolan-svg-circle-dasharray
-              :stroke-dashoffset usernolan-svg-circle-dashoffset-stream!}]]))
+          #js{:width             0.75
+              :height            0.75
+              :x                 0.15
+              :y                 0.375
+              :rx                0.5
+              :ry                0.5
+              :stroke-dasharray  Oe-svg-small-rect-dasharray
+              :stroke-dashoffset Oe-svg-small-rect-dashoffset-stream!}]]))
 
 (defn smixzy-svg-async [attrs]
   (js/Promise.resolve
