@@ -310,7 +310,7 @@
 (defn usernolan-svg [attrs]
   #js["svg"
       #js{:xmlns       "http://www.w3.org/2000/svg"
-          :viewBox     "0 0 2.275 1.575"
+          :viewBox     "0 0 2.275 1.55"
           :onmouseover usernolan-svg-onmouseover
           :onmouseout  usernolan-svg-onmouseout
           :onclick     usernolan-svg-onclick}
@@ -325,7 +325,7 @@
               :stroke-dashoffset usernolan-svg-rect-dashoffset-stream!}]
       #js["circle"
           #js{:r                 0.5
-              :cx                1.75
+              :cx                1.66
               :cy                (rs/tweenNumber usernolan-svg-circle-cy-stream!
                                                  usernolan-svg-circle-cy-bottom
                                                  0.2)
@@ -336,6 +336,13 @@
   (let [s (rs/sync #js{:src #js{:radios radio-stream!
                                 :route  route!}})]
     (.transform s (xf/map js/JSON.stringify))))
+
+
+(defonce svg-RAF!
+  (rs/sync #js{:src #js{:t         fromRAF!
+                        :id        id-radio!
+                        :mouseover usernolan-svg-mouseover-stream!
+                        :toggle    usernolan-svg-toggle-stream!}}))
 
 #_(defonce state-interval
   (js/setInterval
@@ -412,15 +419,15 @@
 (defn Oe-about-component-async [_route-match]
   (js/Promise.resolve
    #js["div" #js{:class "about"}
-       #js["p" nil "observe .• explicate"
-           #js["br" nil] ":: metacircular interpretation"]
+       #js["p" nil "observe .• explice"
+           #js["br" nil] "metacircular interpreter"]
        #_#js[debug-component nil]]))
 
 (defn smixzy-about-component-async [_route-match]
   (js/Promise.resolve
    #js["div" #js{:class "about"}
        #js["p" nil "nonsense acrylic handmade"
-           #js["br" nil] "level 60 arcane mage"]
+           #js["br" nil] "Lv. 60 arcane mage"]
        #_#js[debug-component nil]]))
 
 (.addAll about-component-async
@@ -587,13 +594,14 @@
               :stroke-dashoffset Oe-svg-rect-dashoffset-stream!}]]))
 
 (def smixzy-svg-rect-dasharray
-  "2")
+  "0.17857142857142858"
+  #_"0.35714285714285715")
 
 (defonce smixzy-svg-rect-dashoffset-stream!
   (.transform usernolan-svg-RAF!
               (xf/map (fn [^js x]
                         (cond
-                          (.-mouseover x) (* (mod (.-t x) 120) 0.02617993877991494)
+                          (.-mouseover x) (* (mod (.-t x) 120) 0.041666666666666664)
                           (.-toggle x)    0
                           :else           -2.5)))
               #js{:closeOut rs/CloseMode.NEVER}))
@@ -647,24 +655,240 @@
                                       :transform-origin "center"
                                       :transform-box    "fill-box"}}]
        #js["rect"
-           #js{:width             0.25
-               :height            1
-               :x                 0.625
-               :y                 0.5
+           #js{:width             0.5
+               :height            0.5
+               :x                 0.5
+               :y                 0.75
                :rx                0.5
                :ry                0.5
-               :stroke-dasharray  smixzy-svg-large-rect-dasharray
-               :stroke-dashoffset smixzy-svg-large-rect-dashoffset-stream!
+               #_#_:stroke-dasharray  smixzy-svg-large-rect-dasharray
+               #_#_:stroke-dashoffset smixzy-svg-large-rect-dashoffset-stream!
                :stroke-linecap    "round"
                #_#_:style             #js{:transform        "rotate(45deg)"
                                       :transform-origin "center"
                                       :transform-box    "fill-box"}}]]))
 
+(defn width1-f [x]
+  (case (.-id x)
+    "usernolan" 1
+    "nm8"       1
+    "Oe"        1
+    "smixzy"    1))
+
+(defn width2-f [x]
+  (case (.-id x)
+    "usernolan" 1
+    "nm8"       1
+    "Oe"        1
+    "smixzy"    1))
+
+(defn height1-f [x]
+  (case (.-id x)
+    "usernolan" 1
+    "nm8"       1
+    "Oe"        1
+    "smixzy"    1))
+
+(defn height2-f [x]
+  (case (.-id x)
+    "usernolan" 1
+    "nm8"       1
+    "Oe"        1
+    "smixzy"    1))
+
+(defn x1-f [x]
+  (case (.-id x)
+    "usernolan" 0.025
+    "nm8"       0.025
+    "Oe"        0.025
+    "smixzy"    0.025))
+
+(defn x2-f [x]
+  (case (.-id x)
+    "usernolan" 1.21
+    "nm8"       1.21
+    "Oe"        1.21
+    "smixzy"    1.21))
+
+(defn y1-f [x]
+  (case (.-id x)
+    "usernolan" 0.025
+    "nm8"       0.025
+    "Oe"        0.025
+    "smixzy"    0.025))
+
+(defn y2-f [x]
+  (case (.-id x)
+    "usernolan" 0.025
+    "nm8"       0.025
+    "Oe"        0.025
+    "smixzy"    0.025))
+
+(defn rx1-f [x]
+  (case (.-id x)
+    "usernolan" 0
+    "nm8"       0
+    "Oe"        0.5
+    "smixzy"    0.5))
+
+(defn rx2-f [x]
+  (case (.-id x)
+    "usernolan" 0.5
+    "nm8"       0
+    "Oe"        0
+    "smixzy"    0.5))
+
+(defn ry1-f [x]
+  (case (.-id x)
+    "usernolan" 0
+    "nm8"       0
+    "Oe"        0.5
+    "smixzy"    0.5))
+
+(defn ry2-f [x]
+  (case (.-id x)
+    "usernolan" 0.5
+    "nm8"       0
+    "Oe"        0
+    "smixzy"    0.5))
+
+(defn dasharray1-f [x]
+  (case (.-id x)
+    "usernolan" usernolan-svg-rect-dasharray
+    "nm8"       "0.5"
+    "Oe"        "2"
+    "smixzy"    "0.125"))
+
+(defn dasharray2-f [x]
+  (case (.-id x)
+    "usernolan" usernolan-svg-circle-dasharray
+    "nm8"       "0.5"
+    "Oe"        "2"
+    "smixzy"    "0.125"))
+
+(defn dashoffset1-f [x]
+  (case (.-id x)
+    "usernolan" 0
+    "nm8"       0
+    "Oe"        0
+    "smixzy"    0))
+
+(defn dashoffset2-f [x]
+  (case (.-id x)
+    "usernolan" 0
+    "nm8"       0
+    "Oe"        0
+    "smixzy"    0))
+
+(defn rot1-f [x]
+  (case (.-id x)
+    "usernolan" 0
+    "nm8"       0
+    "Oe"        0
+    "smixzy"    0))
+
+(defn rot2-f [x]
+  (case (.-id x)
+    "usernolan" 0
+    "nm8"       0
+    "Oe"        0
+    "smixzy"    0))
+
+(defn make-svg []
+  (let [mouseover!   (rs/reactive false)
+        toggle!      (rs/reactive false)
+        state!       (rs/sync #js{:src #js{:t         fromRAF!
+                                           :id        id-radio!
+                                           :mouseover mouseover!
+                                           :toggle    toggle!}})
+        onmouseover  (fn [_e] (.next mouseover! true))
+        onmouseout   (fn [_e] (.next mouseover! false))
+        onclick      (fn [_e]
+                       (js/setTimeout onmouseout 80)
+                       (.next toggle!
+                              (not (.deref toggle!))))
+        width1!      (.transform state! (xf/map width1-f) #js{:closeOut rs/CloseMode.NEVER})
+        width2!      (.transform state! (xf/map width2-f) #js{:closeOut rs/CloseMode.NEVER})
+        height1!     (.transform state! (xf/map height1-f) #js{:closeOut rs/CloseMode.NEVER})
+        height2!     (.transform state! (xf/map height2-f) #js{:closeOut rs/CloseMode.NEVER})
+        x1!          (.transform state! (xf/map x1-f) #js{:closeOut rs/CloseMode.NEVER})
+        x2!          (.transform state! (xf/map x2-f) #js{:closeOut rs/CloseMode.NEVER})
+        y1!          (.transform state! (xf/map y1-f) #js{:closeOut rs/CloseMode.NEVER})
+        y2!          (.transform state! (xf/map y2-f) #js{:closeOut rs/CloseMode.NEVER})
+        rx1!         (.transform state! (xf/map rx1-f) #js{:closeOut rs/CloseMode.NEVER})
+        rx2!         (.transform state! (xf/map rx2-f) #js{:closeOut rs/CloseMode.NEVER})
+        ry1!         (.transform state! (xf/map ry1-f) #js{:closeOut rs/CloseMode.NEVER})
+        ry2!         (.transform state! (xf/map ry2-f) #js{:closeOut rs/CloseMode.NEVER})
+        dasharray1!  (.transform state! (xf/map dasharray1-f) #js{:closeOut rs/CloseMode.NEVER})
+        dasharray2!  (.transform state! (xf/map dasharray2-f) #js{:closeOut rs/CloseMode.NEVER})
+        dashoffset1! (.transform state! (xf/map dashoffset1-f) #js{:closeOut rs/CloseMode.NEVER})
+        dashoffset2! (.transform state! (xf/map dashoffset2-f) #js{:closeOut rs/CloseMode.NEVER})
+        rot1!        (.transform state! (xf/map rot1-f) #js{:closeOut rs/CloseMode.NEVER})
+        rot2!        (.transform state! (xf/map rot2-f) #js{:closeOut rs/CloseMode.NEVER})
+        component    #js["svg"
+                         #js{:xmlns       "http://www.w3.org/2000/svg"
+                             :viewBox     "0 0 2.275 1.55"
+                             :onmouseover onmouseover
+                             :onmouseout  onmouseout
+                             :onclick     onclick}
+                         #js["rect"
+                             #js{:width             (rs/tweenNumber width1! (.deref width1!) 0.2)
+                                 :height            (rs/tweenNumber height1! (.deref height1!) 0.2)
+                                 :x                 (rs/tweenNumber x1! (.deref x1!) 0.2)
+                                 :y                 (rs/tweenNumber y1! (.deref y1!) 0.2)
+                                 :rx                (rs/tweenNumber rx1! (.deref rx1!) 0.2)
+                                 :ry                (rs/tweenNumber ry1! (.deref ry1!) 0.2)
+                                 :stroke-dasharray  dasharray1!
+                                 :stroke-dashoffset dashoffset1!
+                                 :style             #js{:transform        (.transform (rs/tweenNumber rot1! (.deref rot1!) 0.2)
+                                                                                      (xf/map (fn [x] (str "rotate(" x "deg)"))))
+                                                        :transform-origin "center"
+                                                        :transform-box    "fill-box"}}]
+                         #js["rect"
+                             #js{:width             (rs/tweenNumber width2! (.deref width2!) 0.2)
+                                 :height            (rs/tweenNumber height2! (.deref height2!) 0.2)
+                                 :x                 (rs/tweenNumber x2! (.deref x2!) 0.2)
+                                 :y                 (rs/tweenNumber y2! (.deref y2!) 0.2)
+                                 :rx                (rs/tweenNumber rx2! (.deref rx2!) 0.2)
+                                 :ry                (rs/tweenNumber ry2! (.deref ry2!) 0.2)
+                                 :stroke-dasharray  dasharray2!
+                                 :stroke-dashoffset dashoffset2!
+                                 :style             #js{:transform        (.transform (rs/tweenNumber rot2! (.deref rot2!) 0.2)
+                                                                                      (xf/map (fn [x] (str "rotate(" x "deg)"))))
+                                                        :transform-origin "center"
+                                                        :transform-box    "fill-box"}}]]]
+
+    #js{:mouseover   mouseover!
+        :toggle      toggle!
+        :state       state!
+        :width1      width1!
+        :width2      width2!
+        :height1     height1!
+        :height2     height2!
+        :x1          x1!
+        :x2          x2!
+        :y1          y1!
+        :y2          y2!
+        :rx1         rx1!
+        :rx2         rx2!
+        :ry1         ry1!
+        :ry2         ry2!
+        :dasharray1  dasharray1!
+        :dasharray2  dasharray2!
+        :dashoffset1 dashoffset1!
+        :dashoffset2 dashoffset2!
+        :rot1        rot1!
+        :rot2        rot2!
+        :component   component}))
+
+(defonce svg-primary
+  (make-svg))
 
 (defn content [_ctx]
   #js["div.content" nil
       #js["button.show-controls" #js{:onclick show-controls!}
-          (rd/$switch
+          (.-component svg-primary)
+          #_(rd/$switch
            id-radio!
            identity
            #js{"usernolan" usernolan-svg-async
