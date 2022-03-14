@@ -32,19 +32,19 @@
     [:.root.usernolan {:background "#171717" :color "#e8e8e8"}
      [:.content {:background "#e8e8e8" :color "#171717"}
       [:button.show-site-controls
-       [:svg {#_#_#_#_:width "120px" :height "83px" :stroke "#171717"}]]]]
+       [:svg {:stroke "#171717"}]]]]
     [:.root.nm8 {:background "black" :color "white"}
      [:.content {:background "white" :color "black"}
       [:button.show-site-controls
-       [:svg {#_#_#_#_:width "120px" :height "83px" :stroke "black"}]]]]
+       [:svg {:stroke "black"}]]]]
     [:.root.Oe {:background "white" :color "black"}
      [:.content {:background "white" :color "black"}
       [:button.show-site-controls
-       [:svg {#_#_#_#_:width "120px" :height "83px" :stroke "black"}]]]]
+       [:svg {:stroke "black"}]]]]
     [:.root.smixzy {:background "purple" :color "lightblue"}
      [:.content {:background "lightblue" :color "purple"}
       [:button.show-site-controls
-       [:svg {#_#_#_#_:width "120px" :height "83px" :stroke "purple"}]]]]
+       [:svg {:stroke "purple"}]]]]
 
     [:.site-controls
      {:position "absolute"}]
@@ -76,17 +76,10 @@
      {:cursor     "pointer"
       :background "none"
       :border     "none"
-      :padding    "0"}
+      :padding    "5px"}
      [:svg
       {:fill         "none"
        :stroke-width "0.042"}]]
-
-    #_[:.about
-       #_{:display "flex"}
-       {:grid-row-start "1"
-        :grid-column    "3 / span 5"
-        :display        "flex"}
-       [:p {:max-width "600px"}]]
 
     [:.squares-container
      {:grid-row-start "1"
@@ -96,14 +89,6 @@
       :display   "flex"
       :flex-wrap "wrap"
       :gap       "5px"}]
-    [".squares[data-zoom-level='7']"
-     [:.square {:width "12.57%" :min-height "100px"}]]
-    [".squares[data-zoom-level='5']"
-     [:.square {:width "140px" :height "140px"}]]
-    [".squares[data-zoom-level='3']"
-     [:.square {:width "233.33px" :height "233.33px"}]]
-    [".squares[data-zoom-level='1']"
-     [:.square {:width "730px" :height "730px"}]]
     [:.square
      {:border     "1px dashed black"
       :transition "width 120ms ease, height 120ms ease"}]
@@ -115,7 +100,6 @@
     [:.zoom-control
      {:position "sticky"
       :top      "0"}]]
-
 
    #_ [(g.ss/at-media
         {:screen true :orientation :landscape}

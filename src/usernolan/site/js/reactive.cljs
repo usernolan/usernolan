@@ -4,6 +4,8 @@
    [goog.array :as arr]
    [goog.dom :as dom]
    [goog.dom.classlist :as classlist]
+   [goog.events :as events]
+   [goog.events.EventType :as EventType]
    [goog.functions :as fns]
    [goog.iter :as iter]
    [goog.object :as obj]
@@ -400,17 +402,60 @@
     (fn [route-match]
       (.. route-match -params -id))))
 
+(defonce zoom-level!
+  (rs/reactive 7))
+
+(defonce sqd!
+  (rs/reactive 0))
+
+(defonce sqd-str!
+  (.transform sqd! (xf/map (fn [x] (str x "px")))))
+
 (defn make-squares []
-  (doto #js["div.squares" #js{:data-zoom-level "7"}]
+  (doto #js["div.squares" nil]
     (arr/extend
         (arr/map
          (arr/range 70)
          (fn [i]
-           #js["div" #js{:class (str "square sq" i)} i])))))
+           #js["div" #js{:class (str "square sq" i)
+                         :style #js{:width sqd-str! :height sqd-str!}}
+               #js["div" nil (str i)]])))))
+
+;; TODO: values.cljs?
+(def gap 5)
 
 (defn set-zoom [n e]
-  (let [^js el (dom/getElementByClass "squares")]
-    (set! (.. el -dataset -zoomLevel) (str n))))
+  (when-let [^js el (dom/getElementByClass "squares")]
+    (let [container-width (.-clientWidth el)
+          d               (/ (- container-width (* n gap)) n)
+          #_#_squares         (dom/getElementsByClass "square")]
+      (.next sqd! d)
+      #_(arr/forEach
+       squares
+       (fn [^js square]
+         (set! (.. square -style -width) (str d "px"))
+         (set! (.. square -style -height) (str d "px")))))))
+
+(defonce resize-listener!
+  (events/listen js/window EventType/RESIZE
+                 (fns/debounce
+                  (fn [_e]
+                    (set-zoom (.deref zoom-level!) nil))
+                  500)))
+
+#_(def zoomable-grid-spec1
+  #js{:component #js["div.squares" nil]
+      :data      #js[,,,]
+      }
+  )
+
+#_(defn make-zoomable-grid [^js spec]
+  #js{:grid (doto (.-component spec)
+              (arr/extend
+                  (arr/map
+                   (.-data spec)
+                   (.-f spec))))
+      :zoom nil})
 
 (defn usernolan-about-component-async [_route-match]
   (js/Promise.resolve
@@ -425,7 +470,7 @@
        #_#js["p" nil "im nolan. ive been called a reflector!"
            #js["br" nil] "usernolan is a multiplexer."
            #js["br" nil] "click square zero"]
-       #_#js["a.contact" #js{:href "mailto:inbox@usernolan.net"}
+      #_#js["a.contact" #js{:href "mailto:inbox@usernolan.net"}
              "Email"]
        #_#js[debug-component nil]]))
 
@@ -909,12 +954,15 @@
 (defonce svg-primary
   (make-svg))
 
+(defn page-controls [_attrs]
+  #js["div.page-controls-container" nil
+      #js["div.page-controls" nil
+          #js["button.show-site-controls" #js{:onclick show-controls!}
+              (.-component svg-primary)]]])
+
 (defn content [_ctx]
   #js["div.content" nil
-      #js["div.page-controls-container" nil
-          #js["div.page-controls" nil
-              #js["button.show-site-controls" #js{:onclick show-controls!}
-                  (.-component svg-primary)]]]
+      (page-controls nil)
       #js["div.squares-container" nil
           (make-squares)]
       #js["div.zoom-control-container" nil
@@ -949,7 +997,8 @@
 
 (defn mount []
   (-> (rd/$compile root)
-      (.mount (dom/getElement "app"))))
+      (.mount (dom/getElement "app")))
+  (set-zoom (.deref zoom-level!) nil))
 
 (defonce mount!
   (mount))
