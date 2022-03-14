@@ -215,7 +215,7 @@
   (.transform route! (xf/map route-stream-fn)))
 
 (defn controls [_ctx]
-  #js["div.controls" nil
+  #js["div.site-controls" nil
       (radio-component id-radio-spec)
       (radio-component mode-radio-spec)
       (radio-component filter-radio-spec)
@@ -227,7 +227,7 @@
     ;; NOTE: mobile vs. desktop
     ;; NOTE: clientY of filter//last "bottom" of radios
     ;; NOTE: clientX of links
-    (classlist/toggle el "show-controls")))
+    (classlist/toggle el "show-site-controls")))
 
 (defonce radio-stream!
   (rs/sync #js{:src #js{:id      id-radio!
@@ -400,10 +400,19 @@
     (fn [route-match]
       (.. route-match -params -id))))
 
+(defn make-squares []
+  (doto #js["div.squares" nil]
+    (arr/extend
+        (arr/map
+         (arr/range 70)
+         (fn [i]
+           #js["div" #js{:class (str "square sq" i)}])))))
+
 (defn usernolan-about-component-async [_route-match]
   (js/Promise.resolve
    #js["div" #js{:class "about"}
-       #js["p" nil "im nolan. ive been called a reflector!"
+       (make-squares)
+       #_#js["p" nil "im nolan. ive been called a reflector!"
            #js["br" nil] "usernolan is a multiplexer."
            #js["br" nil] "click square zero"]
        #_#js["a.contact" #js{:href "mailto:inbox@usernolan.net"}
@@ -706,7 +715,7 @@
 (defn x2-f [x]
   (case (.-id x)
     "usernolan" 1.21
-    "nm8"       1.21
+    "nm8"       1.025
     "Oe"        1.21
     "smixzy"    1.21))
 
@@ -766,17 +775,23 @@
     "Oe"        "2"
     "smixzy"    "0.125"))
 
-(defn dashoffset1-f [x]
+(defn dashoffset1-f [^js x]
   (case (.-id x)
     "usernolan" 0
-    "nm8"       0
+    "nm8"       (cond
+                  (.-mouseover x) (* (mod (.-t x) 611) -0.01309328968903437)
+                  (.-toggle x)    0.5
+                  :else           -3)
     "Oe"        0
     "smixzy"    0))
 
-(defn dashoffset2-f [x]
+(defn dashoffset2-f [^js x]
   (case (.-id x)
     "usernolan" 0
-    "nm8"       0
+    "nm8"       (cond
+                  (.-mouseover x) (+ (* (mod (.-t x) 611) -0.01309328968903437) 0.5)
+                  (.-toggle x)    0.5
+                  :else           -3)
     "Oe"        0
     "smixzy"    0))
 
@@ -886,16 +901,9 @@
 
 (defn content [_ctx]
   #js["div.content" nil
-      #js["button.show-controls" #js{:onclick show-controls!}
-          (.-component svg-primary)
-          #_(rd/$switch
-           id-radio!
-           identity
-           #js{"usernolan" usernolan-svg-async
-               "nm8"       nm8-svg-async
-               "Oe"        Oe-svg-async
-               "smixzy"    smixzy-svg-async}
-           error-view-async)]
+      #js["div.page-controls" nil
+          #js["button.show-site-controls" #js{:onclick show-controls!}
+              (.-component svg-primary)]]
       (rd/$switch
        route!
        route-match-key-fn
