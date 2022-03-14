@@ -32,40 +32,45 @@
     [:.root.usernolan {:background "#171717" :color "#e8e8e8"}
      [:.content {:background "#e8e8e8" :color "#171717"}
       [:button.show-site-controls
-       [:svg {:width "120px" :height "83px" :stroke "#171717"}]]]]
+       [:svg {#_#_#_#_:width "120px" :height "83px" :stroke "#171717"}]]]]
     [:.root.nm8 {:background "black" :color "white"}
      [:.content {:background "white" :color "black"}
       [:button.show-site-controls
-       [:svg {:width "120px" :height "83px" :stroke "black"}]]]]
+       [:svg {#_#_#_#_:width "120px" :height "83px" :stroke "black"}]]]]
     [:.root.Oe {:background "white" :color "black"}
      [:.content {:background "white" :color "black"}
       [:button.show-site-controls
-       [:svg {:width "120px" :height "83px" :stroke "black"}]]]]
+       [:svg {#_#_#_#_:width "120px" :height "83px" :stroke "black"}]]]]
     [:.root.smixzy {:background "purple" :color "lightblue"}
      [:.content {:background "lightblue" :color "purple"}
       [:button.show-site-controls
-       [:svg {:width "120px" :height "83px" :stroke "purple"}]]]]
+       [:svg {#_#_#_#_:width "120px" :height "83px" :stroke "purple"}]]]]
 
     [:.site-controls
      {:position "absolute"}]
 
     [:.content
-     {:position        "absolute"
-      :top             "0"
-      :left            "0"
-      :width           "100%"
-      :min-height      "100%"
-      :overflow        "hidden"
-      #_#_#_#_:display "flex"
-      :align-items     "flex-start"
-      :transition      "top 80ms ease, left 80ms ease"}]
+     {:position              "absolute"
+      :top                   "0"
+      :left                  "0"
+      :width                 "100%"
+      :min-height            "100%"
+      :display               "grid"
+      :grid-template-rows    "1fr"
+      :grid-template-columns "repeat(8,1fr) repeat(4, minmax(48px, 1fr))"
+      :transition            "top 80ms ease, left 80ms ease"}]
 
     [:.content.show-site-controls
      {:top  "80px"
       :left "225px"}]
 
+    [:.page-controls-container
+     {:grid-row-start "1"
+      :grid-column    "1 / span 1"
+      :position       "relative"}]
     [:.page-controls
-     {:position "fixed"}]
+     {:position "sticky"
+      :top      "0"}]
 
     [:button.show-site-controls
      {:cursor     "pointer"
@@ -76,17 +81,23 @@
       {:fill         "none"
        :stroke-width "0.042"}]]
 
-    [:.about
-     #_[:p {:max-width "600px"}]]
+    #_[:.about
+       #_{:display "flex"}
+       {:grid-row-start "1"
+        :grid-column    "3 / span 5"
+        :display        "flex"}
+       [:p {:max-width "600px"}]]
 
+    [:.squares-container
+     {:grid-row-start "1"
+      :grid-column    "2 / span 6"}]
     [:.squares
-     {:margin-left "120px"
-      :width       "730px"
-      :display     "flex"
-      :flex-wrap   "wrap"
-      :gap         "5px"}]
+     {:width     "100%"
+      :display   "flex"
+      :flex-wrap "wrap"
+      :gap       "5px"}]
     [".squares[data-zoom-level='7']"
-     [:.square {:width "100px" :height "100px"}]]
+     [:.square {:width "12.57%" :min-height "100px"}]]
     [".squares[data-zoom-level='5']"
      [:.square {:width "140px" :height "140px"}]]
     [".squares[data-zoom-level='3']"
@@ -95,8 +106,15 @@
      [:.square {:width "730px" :height "730px"}]]
     [:.square
      {:border     "1px dashed black"
-      :transition "width 80ms ease, height 80ms ease"}]
-    ]
+      :transition "width 120ms ease, height 120ms ease"}]
+
+    [:.zoom-control-container
+     {:grid-row-start "1"
+      :grid-column    "8 / span 1"
+      :position       "relative"}]
+    [:.zoom-control
+     {:position "sticky"
+      :top      "0"}]]
 
 
    #_ [(g.ss/at-media

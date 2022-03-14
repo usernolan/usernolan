@@ -911,10 +911,20 @@
 
 (defn content [_ctx]
   #js["div.content" nil
-      #js["div.page-controls" nil
-          #js["button.show-site-controls" #js{:onclick show-controls!}
-              (.-component svg-primary)]]
-      (rd/$switch
+      #js["div.page-controls-container" nil
+          #js["div.page-controls" nil
+              #js["button.show-site-controls" #js{:onclick show-controls!}
+                  (.-component svg-primary)]]]
+      #js["div.squares-container" nil
+          (make-squares)]
+      #js["div.zoom-control-container" nil
+          #js["div.zoom-control" nil
+              #js["button" #js{:onclick (goog/partial set-zoom 7)} "7x"]
+              #js["button" #js{:onclick (goog/partial set-zoom 5)} "5x"]
+              #js["button" #js{:onclick (goog/partial set-zoom 3)} "3x"]
+              #js["button" #js{:onclick (goog/partial set-zoom 1)} "1x"]
+              ]]
+      #_(rd/$switch
        route!
        route-match-key-fn
        #js{"default-about" default-view-async
