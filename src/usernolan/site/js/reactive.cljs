@@ -401,17 +401,27 @@
       (.. route-match -params -id))))
 
 (defn make-squares []
-  (doto #js["div.squares" nil]
+  (doto #js["div.squares" #js{:data-zoom-level "7"}]
     (arr/extend
         (arr/map
          (arr/range 70)
          (fn [i]
-           #js["div" #js{:class (str "square sq" i)}])))))
+           #js["div" #js{:class (str "square sq" i)} i])))))
+
+(defn set-zoom [n e]
+  (let [^js el (dom/getElementByClass "squares")]
+    (set! (.. el -dataset -zoomLevel) (str n))))
 
 (defn usernolan-about-component-async [_route-match]
   (js/Promise.resolve
    #js["div" #js{:class "about"}
        (make-squares)
+       #js["div.zoom-control" nil
+           #js["button" #js{:onclick (goog/partial set-zoom 7)} "7x"]
+           #js["button" #js{:onclick (goog/partial set-zoom 5)} "5x"]
+           #js["button" #js{:onclick (goog/partial set-zoom 3)} "3x"]
+           #js["button" #js{:onclick (goog/partial set-zoom 1)} "1x"]
+           ]
        #_#js["p" nil "im nolan. ive been called a reflector!"
            #js["br" nil] "usernolan is a multiplexer."
            #js["br" nil] "click square zero"]

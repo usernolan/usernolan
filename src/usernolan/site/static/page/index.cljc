@@ -81,14 +81,21 @@
 
     [:.squares
      {:margin-left "120px"
-      :width       "42%"
-      :max-width   "900px"
+      :width       "730px"
       :display     "flex"
       :flex-wrap   "wrap"
       :gap         "5px"}]
-    [:.square {:border "1px dashed black"}]
+    [".squares[data-zoom-level='7']"
+     [:.square {:width "100px" :height "100px"}]]
+    [".squares[data-zoom-level='5']"
+     [:.square {:width "140px" :height "140px"}]]
+    [".squares[data-zoom-level='3']"
+     [:.square {:width "233.33px" :height "233.33px"}]]
+    [".squares[data-zoom-level='1']"
+     [:.square {:width "730px" :height "730px"}]]
     [:.square
-     {:width "100px" :height "100px"}]
+     {:border     "1px dashed black"
+      :transition "width 80ms ease, height 80ms ease"}]
     ]
 
 
