@@ -735,42 +735,42 @@
 (defn width1-f [x]
   (case (.-id x)
     "usernolan" 1
-    "nm8"       0.75
+    "nm8"       1
     "Oe"        1
     "smixzy"    1))
 
 (defn width2-f [x]
   (case (.-id x)
     "usernolan" 1
-    "nm8"       0.75
+    "nm8"       1
     "Oe"        1
     "smixzy"    1))
 
 (defn height1-f [x]
   (case (.-id x)
     "usernolan" 1
-    "nm8"       0.75
+    "nm8"       1
     "Oe"        1
     "smixzy"    1))
 
 (defn height2-f [x]
   (case (.-id x)
     "usernolan" 1
-    "nm8"       0.75
+    "nm8"       1
     "Oe"        1
     "smixzy"    1))
 
 (defn x1-f [x]
   (case (.-id x)
     "usernolan" 0.025
-    "nm8"       0.375
+    "nm8"       0.225
     "Oe"        0.025
     "smixzy"    0.025))
 
 (defn x2-f [x]
   (case (.-id x)
     "usernolan" 1.21
-    "nm8"       1.1625
+    "nm8"       1.625
     "Oe"        1.21
     "smixzy"    1.21))
 
@@ -780,7 +780,7 @@
                   (.-mouseover x) 0.275
                   (.-toggle x)    0.525
                   :else           0.025)
-    "nm8"       0.025
+    "nm8"       0.525
     "Oe"        0.025
     "smixzy"    0.025))
 
@@ -790,7 +790,7 @@
                   (.-mouseover x) 0.275
                   (.-toggle x)    0.025
                   :else           0.525)
-    "nm8"       0.775
+    "nm8"       0.525
     "Oe"        0.025
     "smixzy"    0.025))
 
@@ -825,14 +825,14 @@
 (defn dasharray1-f [x]
   (case (.-id x)
     "usernolan" usernolan-svg-rect-dasharray
-    "nm8"       "0.375"
+    "nm8"       "4"
     "Oe"        "2"
     "smixzy"    "0.125"))
 
 (defn dasharray2-f [x]
   (case (.-id x)
     "usernolan" usernolan-svg-circle-dasharray
-    "nm8"       "0.375"
+    "nm8"       "4"
     "Oe"        "2"
     "smixzy"    "0.125"))
 
@@ -843,9 +843,9 @@
                   (.-toggle x)    -3.4375
                   :else           -1.5)
     "nm8"       (cond
-                  (.-mouseover x) (* (mod (.-t x) 240) 0.012291666666666668)
-                  (.-toggle x)    -0.36875
-                  :else           0)
+                  (.-mouseover x) (* (mod (.-t x) 240) 0.03333333333333333)
+                  (.-toggle x)    -0.5
+                  :else           0.5)
     "Oe"        0
     "smixzy"    0))
 
@@ -856,23 +856,23 @@
                   (.-toggle x)    -0.7853981633974483
                   :else           0.7853981633974483)
     "nm8"       (cond
-                  (.-mouseover x) (+ (* (mod (.-t x) 240) -0.012291666666666668) 0.36875)
-                  (.-toggle x)    -0.36875
-                  :else           0)
+                  (.-mouseover x) (+ (* (mod (.-t x) 240) -0.03333333333333333) 4)
+                  (.-toggle x)    -0.5
+                  :else           0.5)
     "Oe"        0
     "smixzy"    0))
 
 (defn rot1-f [x]
   (case (.-id x)
     "usernolan" 0
-    "nm8"       0
+    "nm8"       135
     "Oe"        0
     "smixzy"    0))
 
 (defn rot2-f [x]
   (case (.-id x)
     "usernolan" 0
-    "nm8"       0
+    "nm8"       -45
     "Oe"        0
     "smixzy"    0))
 
@@ -909,7 +909,7 @@
         rot2!        (.transform state! (xf/map rot2-f) #js{:closeOut rs/CloseMode.NEVER})
         component    #js["svg"
                          #js{:xmlns       "http://www.w3.org/2000/svg"
-                             :viewBox     "0 0 2.275 1.55"
+                             :viewBox     "0 0 3 2"
                              :onmouseover onmouseover
                              :onmouseout  onmouseout
                              :onclick     onclick}

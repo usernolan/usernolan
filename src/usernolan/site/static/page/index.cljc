@@ -36,7 +36,7 @@
     [:.root.nm8 {:background "black" :color "white"}
      [:.content {:background "white" :color "black"}
       [:button.show-site-controls
-       [:svg {:stroke "black"}]]]]
+       [:svg {:stroke "black" :stroke-linecap "square"}]]]]
     [:.root.Oe {:background "white" :color "black"}
      [:.content {:background "white" :color "black"}
       [:button.show-site-controls
@@ -79,7 +79,7 @@
       :padding    "5px"}
      [:svg
       {:fill         "none"
-       :stroke-width "0.042"}]]
+       :stroke-width "0.05"}]]
 
     [:.squares-container
      {:grid-row-start "1"
