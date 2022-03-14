@@ -735,56 +735,62 @@
 (defn width1-f [x]
   (case (.-id x)
     "usernolan" 1
-    "nm8"       1
+    "nm8"       0.75
     "Oe"        1
     "smixzy"    1))
 
 (defn width2-f [x]
   (case (.-id x)
     "usernolan" 1
-    "nm8"       1
+    "nm8"       0.75
     "Oe"        1
     "smixzy"    1))
 
 (defn height1-f [x]
   (case (.-id x)
     "usernolan" 1
-    "nm8"       1
+    "nm8"       0.75
     "Oe"        1
     "smixzy"    1))
 
 (defn height2-f [x]
   (case (.-id x)
     "usernolan" 1
-    "nm8"       1
+    "nm8"       0.75
     "Oe"        1
     "smixzy"    1))
 
 (defn x1-f [x]
   (case (.-id x)
     "usernolan" 0.025
-    "nm8"       0.025
+    "nm8"       0.375
     "Oe"        0.025
     "smixzy"    0.025))
 
 (defn x2-f [x]
   (case (.-id x)
     "usernolan" 1.21
-    "nm8"       1.025
+    "nm8"       1.1625
     "Oe"        1.21
     "smixzy"    1.21))
 
-(defn y1-f [x]
+(defn y1-f [^js x]
   (case (.-id x)
-    "usernolan" 0.025
+    "usernolan" (cond
+                  (.-mouseover x) 0.275
+                  (.-toggle x)    0.525
+                  :else           0.025)
     "nm8"       0.025
     "Oe"        0.025
     "smixzy"    0.025))
 
-(defn y2-f [x]
+(defn y2-f [^js x]
   (case (.-id x)
-    "usernolan" 0.025
-    "nm8"       0.025
+    "usernolan" (cond
+                  (.-mouseover x) 0.275
+                  (.-toggle x)    0.025
+                  :else           0.525)
+    "nm8"       0.775
     "Oe"        0.025
     "smixzy"    0.025))
 
@@ -819,34 +825,40 @@
 (defn dasharray1-f [x]
   (case (.-id x)
     "usernolan" usernolan-svg-rect-dasharray
-    "nm8"       "0.5"
+    "nm8"       "0.375"
     "Oe"        "2"
     "smixzy"    "0.125"))
 
 (defn dasharray2-f [x]
   (case (.-id x)
     "usernolan" usernolan-svg-circle-dasharray
-    "nm8"       "0.5"
+    "nm8"       "0.375"
     "Oe"        "2"
     "smixzy"    "0.125"))
 
 (defn dashoffset1-f [^js x]
   (case (.-id x)
-    "usernolan" 0
+    "usernolan" (cond
+                  (.-mouseover x) (* (mod (.-t x) 611) 0.01309328968903437)
+                  (.-toggle x)    -3.4375
+                  :else           -1.5)
     "nm8"       (cond
-                  (.-mouseover x) (* (mod (.-t x) 611) -0.01309328968903437)
-                  (.-toggle x)    0.5
-                  :else           -3)
+                  (.-mouseover x) (* (mod (.-t x) 240) 0.012291666666666668)
+                  (.-toggle x)    -0.36875
+                  :else           0)
     "Oe"        0
     "smixzy"    0))
 
 (defn dashoffset2-f [^js x]
   (case (.-id x)
-    "usernolan" 0
+    "usernolan" (cond
+                  (.-mouseover x) (* (mod (.-t x) 240) -0.01308996938995747)
+                  (.-toggle x)    -0.7853981633974483
+                  :else           0.7853981633974483)
     "nm8"       (cond
-                  (.-mouseover x) (+ (* (mod (.-t x) 611) -0.01309328968903437) 0.5)
-                  (.-toggle x)    0.5
-                  :else           -3)
+                  (.-mouseover x) (+ (* (mod (.-t x) 240) -0.012291666666666668) 0.36875)
+                  (.-toggle x)    -0.36875
+                  :else           0)
     "Oe"        0
     "smixzy"    0))
 
