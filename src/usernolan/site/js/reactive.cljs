@@ -762,8 +762,8 @@
     "nm8"       1
     "Oe"        (cond
                   (.-mouseover x) 0.75
-                  (.-toggle x)    1.25
-                  true            1.25)
+                  (.-toggle x)    1
+                  true            1)
     "smixzy"    1))
 
 (defn height1-f [^js x]
@@ -782,8 +782,8 @@
     "nm8"       1
     "Oe"        (cond
                   (.-mouseover x) 0.75
-                  (.-toggle x)    1.25
-                  true            1.25)
+                  (.-toggle x)    1
+                  true            1)
     "smixzy"    1))
 
 (defn x1-f [^js x]
@@ -792,7 +792,7 @@
     "nm8"       0.265
     "Oe"        (cond
                   (.-mouseover x) 0.75
-                  (.-toggle x)    0.12915
+                  (.-toggle x)    1.55415
                   true            0.12915)
     "smixzy"    0.025))
 
@@ -802,7 +802,7 @@
     "nm8"       1.679213562373095
     "Oe"        (cond
                   (.-mouseover x) 1.125
-                  (.-toggle x)    1.55415
+                  (.-toggle x)    0.37915
                   true            1.55415)
     "smixzy"    1.21))
 
@@ -828,48 +828,36 @@
     "nm8"       0.525
     "Oe"        (cond
                   (.-mouseover x) 0.625
-                  (.-toggle x)    0.375
-                  true            0.375)
+                  (.-toggle x)    0.5
+                  true            0.5)
     "smixzy"    0.025))
 
 (defn rx1-f [^js x]
   (case (.-id x)
     "usernolan" 0
     "nm8"       0
-    "Oe"        (cond
-                  (.-mouseover x) 1
-                  (.-toggle x)    0
-                  true            1)
+    "Oe"        1
     "smixzy"    0.5))
 
 (defn rx2-f [^js x]
   (case (.-id x)
     "usernolan" 1
     "nm8"       0
-    "Oe"        (cond
-                  (.-mouseover x) 1
-                  (.-toggle x)    1
-                  true            0)
+    "Oe"        1
     "smixzy"    0.5))
 
 (defn ry1-f [^js x]
   (case (.-id x)
     "usernolan" 0
     "nm8"       0
-    "Oe"        (cond
-                  (.-mouseover x) 1
-                  (.-toggle x)    0
-                  true            1)
+    "Oe"        1
     "smixzy"    0.5))
 
 (defn ry2-f [^js x]
   (case (.-id x)
     "usernolan" 1
     "nm8"       0
-    "Oe"        (cond
-                  (.-mouseover x) 1
-                  (.-toggle x)    1
-                  true            0)
+    "Oe"        1
     "smixzy"    0.5))
 
 (defn dasharray1-f [^js x]
@@ -878,7 +866,7 @@
     "nm8"       "4"
     "Oe"        (cond
                   (.-mouseover x) "2.356194490192345"
-                  (.-toggle x)    "2.5"
+                  (.-toggle x)    "1.9634954084936207"
                   true            "1.9634954084936207")
     "smixzy"    "0.125"))
 
@@ -888,8 +876,8 @@
     "nm8"       "4"
     "Oe"        (cond
                   (.-mouseover x) "1.1780972450961724"
-                  (.-toggle x)    "1.9634954084936207"
-                  true            "2.5")
+                  (.-toggle x)    "1.5707963267948966"
+                  true            "1.5707963267948966")
     "smixzy"    "0.125"))
 
 (def frames 240)
@@ -907,7 +895,7 @@
                   true            0.5)
     "Oe"        (cond
                   (.-mouseover x) (+ (* (mod (.-t x) 240) 0.039269908169872414 #_0.019634954084936207) 1.1780972450961724)
-                  (.-toggle x)    -0.625
+                  (.-toggle x)    0
                   true            0)
     "smixzy"    0))
 
@@ -923,8 +911,8 @@
                   true            0.5)
     "Oe"        (cond
                   (.-mouseover x) (+ (* (mod (.-t x) 240) -0.019634954084936207 #_0.009817477042468103) 0.5890486225480862)
-                  (.-toggle x)    1.9634954084936207
-                  true            1.875)
+                  (.-toggle x)    1.5707963267948966
+                  true            1.5707963267948966)
     "smixzy"    0))
 
 (defn rot1-f [x]
