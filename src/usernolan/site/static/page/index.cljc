@@ -42,7 +42,7 @@
     [:.root.Oe {:background "white" :color "black"}
      [:.content {:background "white" :color "black"}
       [:button.show-site-controls
-       [:svg {:stroke "black"}]]]]
+       [:svg {:stroke "black" :stroke-linecap "round"}]]]]
     [:.root.smixzy {:background "purple" #_ "radial-gradient(circle at 0 0, purple 0%, pink 100%)" :color "lightblue"}
      [:.content {:background "lightblue" #_ "radial-gradient(circle at 100% 100%, lightgreen 0%, lightblue 100%)" :color "purple"}
       [:button.show-site-controls
