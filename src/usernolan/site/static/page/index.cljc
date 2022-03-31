@@ -20,6 +20,8 @@
    [[:body {:margin "0" :padding "0"}]
     [:* {:box-sizing "border-box"}]
 
+    #_[:svg {:shape-rendering "optimizeSpeed"}]
+
     [:.root
      {:font-family "sans-serif"
       :position    "absolute"
@@ -41,8 +43,8 @@
      [:.content {:background "white" :color "black"}
       [:button.show-site-controls
        [:svg {:stroke "black"}]]]]
-    [:.root.smixzy {:background "purple" :color "lightblue"}
-     [:.content {:background "lightblue" :color "purple"}
+    [:.root.smixzy {:background "purple" #_ "radial-gradient(circle at 0 0, purple 0%, pink 100%)" :color "lightblue"}
+     [:.content {:background "lightblue" #_ "radial-gradient(circle at 100% 100%, lightgreen 0%, lightblue 100%)" :color "purple"}
       [:button.show-site-controls
        [:svg {:stroke "purple"}]]]]
 
