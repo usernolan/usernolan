@@ -27,8 +27,7 @@
       :position    "absolute"
       :width       "100vw"
       :min-height  "100vh"
-      :overflow-x  "hidden"
-      :overflow-y  "scroll"}]
+      :overflow    "hidden"}]
 
     [:button.show-site-controls
      [:svg
@@ -64,11 +63,14 @@
       :left                  "0"
       :width                 "100%"
       :min-height            "100%"
+      :max-height            "100%"
       :display               "grid"
       :grid-template-rows    "1fr"
       :grid-template-columns "repeat(8,1fr) repeat(4, minmax(48px, 1fr))"
-      :transition            "top 80ms ease, left 80ms ease"}]
-
+      :transition            "top 80ms ease, left 80ms ease"
+      :overflow-x            "hidden"
+      :overflow-y            "scroll"
+      :overscroll-behavior   "contain"}]
     [:.content.show-site-controls
      {:top  "80px"
       :left "225px"}]
