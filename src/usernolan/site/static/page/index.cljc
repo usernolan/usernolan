@@ -30,6 +30,13 @@
       :overflow-x  "hidden"
       :overflow-y  "scroll"}]
 
+    [:button.show-site-controls
+     [:svg
+      [:rect
+       {:pointer-events   "none"
+        :transform-origin "center"
+        :transform-box    "fill-box"}]]]
+
     [:.root {:transition "background 80ms ease, color 80ms ease"}]
     [:.root.usernolan {:background "#171717" :color "#e8e8e8"}
      [:.content {:background "#e8e8e8" :color "#171717"}
@@ -46,7 +53,7 @@
     [:.root.smixzy {:background "purple" #_ "radial-gradient(circle at 0 0, purple 0%, pink 100%)" :color "lightblue"}
      [:.content {:background "lightblue" #_ "radial-gradient(circle at 100% 100%, lightgreen 0%, lightblue 100%)" :color "purple"}
       [:button.show-site-controls
-       [:svg {:stroke "purple"}]]]]
+       [:svg {:stroke "purple" :stroke-linecap "round"}]]]]
 
     [:.site-controls
      {:position "absolute"}]
