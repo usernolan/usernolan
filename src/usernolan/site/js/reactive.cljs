@@ -5,7 +5,7 @@
    [goog.dom.classlist :as classlist]
    [goog.events :as events]
    [goog.events.EventType :as EventType]
-   [goog.functions :as fns]
+   [goog.functions :as fn]
    [goog.iter :as iter]
    [goog.object :as obj]
    [goog.string :as str]
@@ -218,10 +218,12 @@
 
 (defn controls [_ctx]
   #js["div.site-controls" nil
-      (radio-component id-radio-spec)
-      (radio-component mode-radio-spec)
-      (radio-component filter-radio-spec)
-      (radio-component content-radio-spec)])
+      #js["div.top-site-controls" nil
+          (radio-component id-radio-spec)
+          (radio-component mode-radio-spec)
+          (radio-component filter-radio-spec)]
+      #js["div.bottom-site-controls" nil
+          (radio-component content-radio-spec)]])
 
 (defn show-controls! [e]
   (when-let [el (dom/getAncestorByClass (.-target e) "content")]
@@ -333,7 +335,7 @@
 
 (defonce resize-listener!
   (events/listen js/window EventType/RESIZE
-                 (fns/debounce
+                 (fn/debounce
                   (fn [_e]
                     (set-zoom (.deref zoom-level!) nil))
                   500)))
@@ -354,40 +356,39 @@
 
 (defn usernolan-about-component-async [_route-match]
   (js/Promise.resolve
-   #js["div" #js{:class "about"}
-       (make-squares)
-       #js["div.zoom-control" nil
-           #js["button" #js{:onclick (goog/partial set-zoom 7)} "7x"]
-           #js["button" #js{:onclick (goog/partial set-zoom 5)} "5x"]
-           #js["button" #js{:onclick (goog/partial set-zoom 3)} "3x"]
-           #js["button" #js{:onclick (goog/partial set-zoom 1)} "1x"]
-           ]
-       #_#js["p" nil "im nolan. ive been called a reflector!"
-           #js["br" nil] "usernolan is a multiplexer."
-           #js["br" nil] "click square zero"]
-      #_#js["a.contact" #js{:href "mailto:inbox@usernolan.net"}
-             "Email"]
-       #_#js[debug-component nil]]))
+   #js["div" #js{:class "about-container"}
+       #js["main" nil
+           #js["p" nil "Hi I'm nolan."]
+           #js["p.np" nil "I've been called a reflector."]
+           #js["p" nil "I've also been called intense,"]
+           #js["p" nil "by my mom no less."]
+           #js["p.np" nil "You get the gist,"]
+           #js["p" nil "but click the top left thing"]
+           #js["p" nil "to learn more about me."]]]))
 
 (defn nm8-about-component-async [_route-match]
   (js/Promise.resolve
-   #js["div" #js{:class "about"}
-       #js["p" nil "im sorry this site uses javascript."]
-       #_#js[debug-component nil]]))
+   #js["div" #js{:class "about-container"}
+       #js["main" nil
+           #js["p" nil "I'm sorry this site uses javascript."]]]))
 
 (defn Oe-about-component-async [_route-match]
   (js/Promise.resolve
-   #js["div" #js{:class "about"}
-       #js["p" nil "observe .• explice"
-           #js["br" nil] "metacircular interpreter"]
-       #_#js[debug-component nil]]))
+   #js["div" #js{:class "about-container"}
+       #js["main" nil
+           #js["p" nil "Observe ∘ Explicate"]
+           #js["p" nil "Language, logic, proof, etc."]
+           #js["p" nil "Abstract machines"]
+           #js["p" nil "Process"]]]))
 
 (defn smixzy-about-component-async [_route-match]
   (js/Promise.resolve
-   #js["div" #js{:class "about"}
-       #js["p" nil "nonsense acrylic handmade"
-           #js["br" nil] "Lv. 60 arcane mage"]
-       #_#js[debug-component nil]]))
+   #js["div" #js{:class "about-container"}
+       #js["main" nil
+           #js["p" nil "nonsense"]
+           #js["p" nil "acrylic"]
+           #js["p" nil "handmade"]
+           #js["p" nil "Lv. 60 arcane mage"]]]))
 
 (.addAll about-component-async
          #js{"usernolan" usernolan-about-component-async
@@ -406,19 +407,20 @@
           #js["button.show-site-controls" #js{:onclick show-controls!}
               (.-component svg-primary)]]])
 
+(defn squares-component []
+  #js["div.squares-container" nil
+      (make-squares)]
+  #js["div.zoom-control-container" nil
+      #js["div.zoom-control" nil
+          #js["button" #js{:onclick (goog/partial set-zoom 7)} "7x"]
+          #js["button" #js{:onclick (goog/partial set-zoom 5)} "5x"]
+          #js["button" #js{:onclick (goog/partial set-zoom 3)} "3x"]
+          #js["button" #js{:onclick (goog/partial set-zoom 1)} "1x"]]])
+
 (defn content [_ctx]
   #js["div.content" nil
       (page-controls nil)
-      #js["div.squares-container" nil
-          (make-squares)]
-      #js["div.zoom-control-container" nil
-          #js["div.zoom-control" nil
-              #js["button" #js{:onclick (goog/partial set-zoom 7)} "7x"]
-              #js["button" #js{:onclick (goog/partial set-zoom 5)} "5x"]
-              #js["button" #js{:onclick (goog/partial set-zoom 3)} "3x"]
-              #js["button" #js{:onclick (goog/partial set-zoom 1)} "1x"]
-              ]]
-      #_(rd/$switch
+      (rd/$switch
        route!
        route-match-key-fn
        #js{"default-about" default-view-async
@@ -498,7 +500,7 @@
   (require
    '[goog.array :as arr]
    '[goog.dom :as dom]
-   '[goog.functions :as fns]
+   '[goog.functions :as fn]
    '[goog.object :as obj]
    '[goog.string :as str])
 

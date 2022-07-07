@@ -49,13 +49,24 @@
      [:.content {:background "white" :color "black"}
       [:button.show-site-controls
        [:svg {:stroke "black" :stroke-linecap "round"}]]]]
-    [:.root.smixzy {:background "purple" #_ "radial-gradient(circle at 0 0, purple 0%, pink 100%)" :color "lightblue"}
-     [:.content {:background "lightblue" #_ "radial-gradient(circle at 100% 100%, lightgreen 0%, lightblue 100%)" :color "purple"}
+    [:.root.smixzy {:background #_ "radial-gradient(circle at 0 0, purple 0%, pink 100%)" "purple" :color "lightblue"}
+     [:.content {:background #_ "radial-gradient(circle at 100% 100%, lightgreen 0%, lightblue 100%)" "lightblue" :color "purple"}
       [:button.show-site-controls
-       [:svg {:stroke "purple" :stroke-linecap "round"}]]]]
+       [:svg {:stroke "purple" :stroke-linecap "round"}]]]
+     [:.content.show-site-controls {:border-top-left-radius "15px"}]]
 
-    [:.site-controls
-     {:position "absolute"}]
+    [:.site-controls {:position "absolute" :width "100%"}
+     [:.top-site-controls
+      {:display         "flex"
+       :justify-content "space-between"
+       :width           "100%"}
+      [:.id-radio-control]
+      [(g.sel/> g.sel/nav) {:display "flex"}]
+      [(g.sel/> g.sel/section) {:display "flex"}]
+      ]
+     [(g.sel/& (g.sel/nth-child 1))]
+     #_[:input {:display "flex" :justify-content "space-between" :vertical-align "middle" :min-width "400px"}]
+     ]
 
     [:.content
      {:position              "absolute"
@@ -69,7 +80,6 @@
       :grid-template-columns "repeat(8,1fr) repeat(4, minmax(48px, 1fr))"
       :transition            "top 80ms ease, left 80ms ease"
       :overflow-x            "hidden"
-      :overflow-y            "scroll"
       :overscroll-behavior   "contain"}]
     [:.content.show-site-controls
      {:top  "80px"
@@ -87,10 +97,22 @@
      {:cursor     "pointer"
       :background "none"
       :border     "none"
-      :padding    "5px"}
+      :padding    "7px"}
      [:svg
       {:fill         "none"
-       :stroke-width "0.05"}]]
+       :stroke-width "0.056"}]]
+
+    [:.about-container
+     {:grid-column     "2 / span 6"
+      :display         "flex"
+      :flex-direction  "column"
+      :justify-content "center"
+      :align-items     "center"}
+     [:p
+      {:font-size "1.66rem"
+       :margin    "0"}]
+     [:p.np
+      {:margin-top "1rem"}]]
 
     [:.squares-container
      {:grid-row-start "1"

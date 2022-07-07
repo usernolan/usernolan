@@ -40,39 +40,41 @@
 (defn width1-f [^js x]
   (case (.-id x)
     "usernolan" 1.25
-    "nm8"       1
-    "Oe"        (if (.-mouseover x) 1.5 1.25)
+    "nm8"       0.66
+    "Oe"        1 #_1.25 #_(if (.-mouseover x) 1.5 1.25)
     "smixzy"    (if (.-mouseover x) 2 0.5)))
 
 (defn width2-f [^js x]
   (case (.-id x)
     "usernolan" 1.25
-    "nm8"       1
-    "Oe"        (if (.-mouseover x) 0.75 1)
+    "nm8"       0.66
+    "Oe"        1 #_1.25 #_(if (.-mouseover x) 0.75 1)
     "smixzy"    1.5))
 
 (defn height1-f [^js x]
   (case (.-id x)
     "usernolan" 1.25
-    "nm8"       1
-    "Oe"        (if (.-mouseover x) 1.5 1.25)
+    "nm8"       0.66
+    "Oe"        1 #_(if (.-mouseover x) 1.5 1.25)
     "smixzy"    (if (.-mouseover x) 0.5 1.5)))
 
 (defn height2-f [^js x]
   (case (.-id x)
     "usernolan" 1.25
-    "nm8"       1
-    "Oe"        (if (.-mouseover x) 0.75 1)
+    "nm8"       0.66
+    "Oe"        1 #_(if (.-mouseover x) 0.75 1)
     "smixzy"    (if (.-mouseover x) 1.5 0.5)))
 
 (defn x1-f [^js x]
   (case (.-id x)
     "usernolan" 0.12915
-    "nm8"       0.265
+    "nm8"       (if (.-mouseover x)
+                  1.665
+                  0.675)
     "Oe"        (cond
-                  (.-mouseover x) 0.75
+                  (.-mouseover x) 1
                   (.-toggle x)    1.55415
-                  true            0.12915)
+                  true            0.75)
     "smixzy"    (cond
                   (.-mouseover x) 0.5
                   (.-toggle x)    1.25
@@ -81,11 +83,13 @@
 (defn x2-f [^js x]
   (case (.-id x)
     "usernolan" 1.55415
-    "nm8"       1.679213562373095
+    "nm8"       (if (.-mouseover x)
+                  0.675
+                  1.665)
     "Oe"        (cond
-                  (.-mouseover x) 1.125
+                  (.-mouseover x) 1
                   (.-toggle x)    0.37915
-                  true            1.55415)
+                  true            0.75)
     "smixzy"    0.75))
 
 (defn y1-f [^js x]
@@ -94,8 +98,8 @@
                   (.-mouseover x) 0.375
                   (.-toggle x)    0.675
                   true            0.025)
-    "nm8"       0.525
-    "Oe"        (if (.-mouseover x) 0.25 0.375)
+    "nm8"       0.6699
+    "Oe"        0.5 #_(if (.-mouseover x) 0.25 0.375)
     "smixzy"    (if (.-mouseover x) 0.75 0.25)))
 
 (defn y2-f [^js x]
@@ -104,54 +108,74 @@
                   (.-mouseover x) 0.375
                   (.-toggle x)    0.025
                   true            0.675)
-    "nm8"       0.525
-    "Oe"        (if (.-mouseover x) 0.625 0.5)
+    "nm8"       0.6699
+    "Oe"        0.5 #_(if (.-mouseover x) 0.625 0.5)
     "smixzy"    (if (.-mouseover x) 0.25 0.75)))
 
 (defn rx1-f [^js x]
   (case (.-id x)
     "usernolan" 0
-    "nm8"       0
+    "nm8"       1
     "Oe"        1
     "smixzy"    1))
 
 (defn rx2-f [^js x]
   (case (.-id x)
     "usernolan" 1
-    "nm8"       0
+    "nm8"       1
     "Oe"        1
     "smixzy"    1))
 
 (defn ry1-f [^js x]
   (case (.-id x)
     "usernolan" 0
-    "nm8"       0
+    "nm8"       1
     "Oe"        1
     "smixzy"    1))
 
 (defn ry2-f [^js x]
   (case (.-id x)
     "usernolan" 1
-    "nm8"       0
+    "nm8"       1
     "Oe"        1
     "smixzy"    1))
+
+(defn fill1-f [^js x]
+  (case (.-id x)
+    "usernolan" nil
+    "nm8"       (cond
+                  (.-mouseover x) nil
+                  (.-toggle x)    nil
+                  true            "black")
+    "Oe"        nil
+    "smixzy"    nil))
+
+(defn fill2-f [^js x]
+  (case (.-id x)
+    "usernolan" nil
+    "nm8"       (cond
+                  (.-mouseover x) nil
+                  (.-toggle x)    "black"
+                  true            nil)
+    "Oe"        nil
+    "smixzy"    nil))
 
 (defn dasharray1-f [^js x]
   (case (.-id x)
     "usernolan" usernolan-rect1-dasharray-15
-    "nm8"       "4"
-    "Oe"        (if (.-mouseover x)
-                  "2.356194490192345"
-                  "1.9634954084936207")
+    "nm8"       (if (.-mouseover x)
+                  "1.0367255756846319"
+                  "0")
+    "Oe"        "1.5707963267948966"
     "smixzy"    "0.125"))
 
 (defn dasharray2-f [^js x]
   (case (.-id x)
     "usernolan" usernolan-rect2-dasharray-13
-    "nm8"       "4"
-    "Oe"        (if (.-mouseover x)
-                  "1.1780972450961724"
-                  "1.5707963267948966")
+    "nm8"       (if (.-mouseover x)
+                  "0.10367255756846319"
+                  "0")
+    "Oe"        "1.5707963267948966"
     "smixzy"    "0"))
 
 (defn dashoffset1-f [^js x]
@@ -160,12 +184,11 @@
                   (.-mouseover x) (* (mod (.-t x) frames) usernolan-frame)
                   (.-toggle x)    0.625 ; (* 1.25 0.5)
                   true            -1.875) ; (* 1.25 -1.5)
-    "nm8"       (cond
-                  (.-mouseover x) (* (mod (.-t x) 240) 0.03333333333333333)
-                  (.-toggle x)    -0.5
-                  true            0.5)
+    "nm8"       (if (.-mouseover x)
+                  (* (mod (.-t x) 240) 0.008639379797371931)
+                  0)
     "Oe"        (cond
-                  (.-mouseover x) (+ (* (mod (.-t x) 240) 0.039269908169872414) 1.1780972450961724)
+                  (.-mouseover x) (* (mod (.-t x) 240) 0.01308996938995747) #_(+ (* (mod (.-t x) 240) 0.039269908169872414) 1.1780972450961724)
                   (.-toggle x)    1.9634954084936207
                   true            0)
     "smixzy"    (if (.-mouseover x)
@@ -178,12 +201,11 @@
                   (.-mouseover x) (* (mod (.-t x) 240) -0.016362461737446838) ; (/ (* Math/PI 1.25) 240)
                   (.-toggle x)    -0.9817477042468103 ; (/ (* Math/PI 1.25) 4)
                   true            0.9817477042468103)
-    "nm8"       (cond
-                  (.-mouseover x) (+ (* (mod (.-t x) 240) -0.03333333333333333) 4)
-                  (.-toggle x)    -0.5
-                  true            0.5)
+    "nm8"       (if (.-mouseover x)
+                  (* (mod (.-t x) 240) #_-0.08639379797371932 -0.017278759594743863 #_-0.034557519189487726 #_-0.008639379797371931)
+                  0)
     "Oe"        (cond
-                  (.-mouseover x) (+ (* (mod (.-t x) 240) -0.019634954084936207) 0.5890486225480862)
+                  (.-mouseover x) (* (mod (.-t x) 240) -0.01308996938995747) #_(+ (* (mod (.-t x) 240) -0.019634954084936207) 0.5890486225480862) 
                   (.-toggle x)    0
                   true            1.5707963267948966)
     "smixzy"    0))
@@ -191,7 +213,7 @@
 (defn rot1-f [^js x]
   (case (.-id x)
     "usernolan" 0
-    "nm8"       135
+    "nm8"       0
     "Oe"        0
     "smixzy"    (cond
                   (.-mouseover x) 0
@@ -201,7 +223,7 @@
 (defn rot2-f [^js x]
   (case (.-id x)
     "usernolan" 0
-    "nm8"       -45
+    "nm8"       0
     "Oe"        0
     "smixzy"    (if (.-toggle x) 135 0)))
 
@@ -233,6 +255,8 @@
         rx2!         (.transform state! (xf/map rx2-f) #js{:closeOut rs/CloseMode.NEVER})
         ry1!         (.transform state! (xf/map ry1-f) #js{:closeOut rs/CloseMode.NEVER})
         ry2!         (.transform state! (xf/map ry2-f) #js{:closeOut rs/CloseMode.NEVER})
+        fill1!       (.transform state! (xf/map fill1-f) #js{:closeOut rs/CloseMode.NEVER})
+        fill2!       (.transform state! (xf/map fill2-f) #js{:closeOut rs/CloseMode.NEVER})
         dasharray1!  (.transform state! (xf/map dasharray1-f) #js{:closeOut rs/CloseMode.NEVER})
         dasharray2!  (.transform state! (xf/map dasharray2-f) #js{:closeOut rs/CloseMode.NEVER})
         dashoffset1! (.transform state! (xf/map dashoffset1-f) #js{:closeOut rs/CloseMode.NEVER})
@@ -252,6 +276,7 @@
                                  :y                 (rs/tweenNumber y1! (.deref y1!) 0.25)
                                  :rx                (rs/tweenNumber rx1! (.deref rx1!) 0.25)
                                  :ry                (rs/tweenNumber ry1! (.deref ry1!) 0.25)
+                                 :fill              fill1!
                                  :stroke-dasharray  dasharray1!
                                  :stroke-dashoffset dashoffset1!
                                  :style             #js{:transform
@@ -264,6 +289,7 @@
                                  :y                 (rs/tweenNumber y2! (.deref y2!) 0.25)
                                  :rx                (rs/tweenNumber rx2! (.deref rx2!) 0.25)
                                  :ry                (rs/tweenNumber ry2! (.deref ry2!) 0.25)
+                                 :fill              fill2!
                                  :stroke-dasharray  dasharray2!
                                  :stroke-dashoffset dashoffset2!
                                  :style             #js{:transform
