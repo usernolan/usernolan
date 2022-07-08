@@ -40,7 +40,10 @@
     [:.root.usernolan {:background "#171717" :color "#e8e8e8"}
      [:.content {:background "#e8e8e8" :color "#171717"}
       [:button.show-site-controls
-       [:svg {:stroke "#171717"}]]]]
+       [:svg {:stroke "#171717"}
+        [:rect
+         [(g.sel/& (g.sel/nth-child "1")) {:stroke-linecap "square"}]
+         [(g.sel/& (g.sel/nth-child "2")) {:stroke-linecap "round"}]]]]]]
     [:.root.nm8 {:background "black" :color "white"}
      [:.content {:background "white" :color "black"}
       [:button.show-site-controls

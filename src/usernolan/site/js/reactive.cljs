@@ -361,9 +361,9 @@
            #js["p" nil "Hi I'm nolan."]
            #js["p.np" nil "I've been called a reflector."]
            #js["p" nil "I've also been called intense,"]
-           #js["p" nil "by my mom no less."]
+           #js["p" nil "including by my mom."]
            #js["p.np" nil "You get the gist,"]
-           #js["p" nil "but click the top left thing"]
+           #js["p" nil "but you can click the thing"]
            #js["p" nil "to learn more about me."]]]))
 
 (defn nm8-about-component-async [_route-match]
