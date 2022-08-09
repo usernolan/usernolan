@@ -9,20 +9,18 @@
     "@thi.ng/checks": "^3.1.2",
     "@thi.ng/compose": "^2.1.2",
     "@thi.ng/hiccup-svg": "^4.2.4",
+    "@thi.ng/hiccup": "^4.2.2",
     "@thi.ng/random": "^3.2.2",
-    "@thi.ng/rdom": "^0.8.2",
+    "@thi.ng/rdom": "^0.9.1",
     "@thi.ng/router": "^3.1.2",
     "@thi.ng/rstream": "^7.2.0",
     "@thi.ng/transducers": "^8.1.2",
     "gsap": "^3.9.0"
   },
   "devDependencies": {
-    "@fortawesome/fontawesome-pro": "^6.0.0",
-    "@thi.ng/hiccup": "^4.2.2",
-    "esbuild": "^0.14.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "shadow-cljs": "^2.17.5",
+    "shadow-cljs": "^2.19.8",
     "source-map-support": "^0.5.21"
   }
 }

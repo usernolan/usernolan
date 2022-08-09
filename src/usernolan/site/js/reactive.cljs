@@ -112,12 +112,12 @@
 
 (defn id-radio-onchange-fn [id e]
   (let [content (.deref content-radio!)
-        route   (str "/" id "/" content)]
+        route   (str "#/" id "/" content)]
     (.routeTo router route)))
 
 (defn content-radio-onchange-fn [content e]
   (let [id    (.deref id-radio!)
-        route (str "/" id "/" content)]
+        route (str "#/" id "/" content)]
     (.routeTo router route)))
 
 (def mode-radio-data

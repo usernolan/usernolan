@@ -1,12 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url><loc>https://nuid.io</loc><priority>0.5</priority></url>
-<url><loc>https://nuid.io/index.html</loc><priority>1</priority></url>
-<url><loc>https://nuid.io/solution.html</loc><priority>1</priority></url>
-<url><loc>https://nuid.io/faq.html</loc><priority>0.75</priority></url>
-<url><loc>https://nuid.io/press-and-education.html</loc><priority>0.5</priority></url>
-<url><loc>https://nuid.io/about.html</loc><priority>0.5</priority></url>
-<url><loc>https://nuid.io/contact.html</loc><priority>0.5</priority></url>
-<url><loc>https://portal.nuid.io</loc><priority>0.75</priority></url>
-<url><loc>https://blog.nuid.io</loc><priority>0.5</priority></url>
+<url><loc>https://usernolan.net</loc><priority>0.5</priority></url>
 </urlset>

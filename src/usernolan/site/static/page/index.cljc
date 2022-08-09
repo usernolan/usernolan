@@ -152,8 +152,7 @@
    ;;;
 
 
-(defn body
-  [props]
+(defn body [props]
   [:body
    [:div#app]])
 
