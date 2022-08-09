@@ -7,7 +7,7 @@ node_modules
 # shadow-cljs
 .shadow-cljs
 resources/public/js/usernolan
-target
+resources/build
 
 # nREPL
 .nrepl-port

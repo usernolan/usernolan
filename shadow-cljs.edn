@@ -13,6 +13,6 @@
   :static ; ALT: split html, css
   {:target           :node-script
    :main             usernolan.site.static/generate-pages!
-   :output-to        "target/node-script/static.js"
+   :output-to        "resources/build/node-script/static.js"
    :compiler-options {:reader-features #{:node}}
    :devtools         {:after-load usernolan.site.static/generate-pages!}}}}
