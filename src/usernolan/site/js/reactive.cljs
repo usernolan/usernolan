@@ -318,7 +318,7 @@
                          :style #js{:width sqd-str! :height sqd-str!}}
                #js["div" nil (str i)]])))))
 
-;; TODO: values.cljs?
+;; TODO: values.cljc?
 (def gap 5)
 
 (defn set-zoom [n e]
@@ -358,19 +358,16 @@
   (js/Promise.resolve
    #js["div" #js{:class "about-container"}
        #js["main" nil
-           #js["p" nil "Hi I'm nolan."]
-           #js["p.np" nil "I've been called a reflector."]
-           #js["p" nil "I've also been called intense,"]
-           #js["p" nil "including by my mom."]
-           #js["p.np" nil "You get the gist,"]
-           #js["p" nil "but you can click the thing"]
-           #js["p" nil "to learn more about me."]]]))
+           #js["p" nil "I'm nolan. I've been called a reflector."]
+           #js["p" nil "This site is basically where I overshare on the internet,"]
+           #js["p" nil "so you can learn more if you click the thing."]]]))
 
 (defn nm8-about-component-async [_route-match]
   (js/Promise.resolve
    #js["div" #js{:class "about-container"}
        #js["main" nil
-           #js["p" nil "I'm sorry this site uses javascript."]]]))
+           #js["p" nil "Bummer that this site uses javascript"]
+           #js["p" nil "That SVG is obscene"]]]))
 
 (defn Oe-about-component-async [_route-match]
   (js/Promise.resolve
@@ -385,7 +382,7 @@
   (js/Promise.resolve
    #js["div" #js{:class "about-container"}
        #js["main" nil
-           #js["p" nil "nonsense"]
+           #js["p" nil "Nonsense"]
            #js["p" nil "acrylic"]
            #js["p" nil "handmade"]
            #js["p" nil "Lv. 60 arcane mage"]]]))
@@ -438,6 +435,7 @@
     (.transform radio-stream! xf
                 #js{:closeOut rs/CloseMode.NEVER})))
 
+;; TODO: refactor
 (def root
   #js["div" #js{:class root-class-stream!}
       (controls nil)

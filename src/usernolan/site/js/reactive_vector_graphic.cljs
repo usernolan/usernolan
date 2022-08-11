@@ -29,84 +29,83 @@
         dash-str (str/repeat (str dash " ") ndash)]
     (str/buildString line-str dash-str)))
 
+(def usernolan-rect-size 1.0)
+
 (def usernolan-rect1-dasharray-15
-  (usernolan-dasharray (* 1.25 4) 15))
+  (usernolan-dasharray (* usernolan-rect-size 4) 15))
 
 (def usernolan-rect2-dasharray-13
-  (usernolan-dasharray (* Math/PI 1.25) 13))
+  (usernolan-dasharray (* Math/PI usernolan-rect-size) 13))
 
-(def usernolan-frame (/ (* 4 1.25) frames))
+(def usernolan-frame (/ (* 4 usernolan-rect-size) frames))
+
+;; ALT: values.cljc?
+(def stroke-width 0.056)
 
 (defn width1-f [^js x]
   (case (.-id x)
-    "usernolan" 1.25
+    "usernolan" 1
     "nm8"       0.66
     "Oe"        (if (.-mouseover x) 0.66 1)
     "smixzy"    (if (.-mouseover x) 2 0.5)))
 
 (defn width2-f [^js x]
   (case (.-id x)
-    "usernolan" 1.25
+    "usernolan" 1
     "nm8"       0.66
     "Oe"        (if (.-mouseover x) 0.66 1)
     "smixzy"    1.5))
 
 (defn height1-f [^js x]
   (case (.-id x)
-    "usernolan" 1.25
+    "usernolan" 1
     "nm8"       0.66
     "Oe"        (if (.-mouseover x) 0.66 1)
     "smixzy"    (if (.-mouseover x) 0.5 1.5)))
 
 (defn height2-f [^js x]
   (case (.-id x)
-    "usernolan" 1.25
+    "usernolan" 1
     "nm8"       0.66
     "Oe"        (if (.-mouseover x) 0.66 1)
     "smixzy"    (if (.-mouseover x) 1.5 0.5)))
 
 (defn x1-f [^js x]
   (case (.-id x)
-    "usernolan" 0.12915
-    "nm8"       0.675
+    "usernolan" 0.028 ; (/ stroke-width 2)
+    "nm8"       0.028 #_0.675
     "Oe"        (cond
-                  (.-mouseover x) 1.166
-                  (.-toggle x)    1
-                  true            1)
+                  (.-mouseover x) 0.1946 #_1.166
+                  (.-toggle x)    0.028  #_1
+                  true            0.028  #_1)
     "smixzy"    (cond
-                  (.-mouseover x) 0.5
-                  (.-toggle x)    1.25
-                  true            1.25)))
+                  (.-mouseover x) 0.028
+                  true            0.528 #_1.25)))
 
 (defn x2-f [^js x]
   (case (.-id x)
-    "usernolan" 1.55415
-    "nm8"       1.665
+    "usernolan" 1.214 ; (+ usernolan-rect-size 0.2 (/ stroke-width 4))
+    "nm8"       1.018 #_1.665
     "Oe"        (cond
-                  (.-mouseover x) 1.166
-                  (.-toggle x)    1
-                  true            1)
-    "smixzy"    0.75))
+                  (.-mouseover x) 0.1946 #_1.166 ; (+ 0.028 0.1666)
+                  true            0.028 #_1)
+    "smixzy"    (cond
+                  (.-mouseover x) 0.278 ; (+ 0.25 0.028)
+                  true            0.028)))
 
 (defn y1-f [^js x]
   (case (.-id x)
-    "usernolan" (cond
-                  (.-mouseover x) 0.375
-                  (.-toggle x)    0.675
-                  true            0.025)
-    "nm8"       0.6699
-    "Oe"        (if (.-mouseover x) 0.666 0.5)
-    "smixzy"    (if (.-mouseover x) 0.75 0.25)))
+    "usernolan" 0.028 ; (/ stroke-width 2)
+    "nm8"       0.028 #_0.6699
+    "Oe"        (if (.-mouseover x) 0.1946 #_0.666 0.028 #_0.5)
+    "smixzy"    (if (.-mouseover x) 0.528 0.028)))
 
 (defn y2-f [^js x]
   (case (.-id x)
-    "usernolan" (cond
-                  (.-mouseover x) 0.375
-                  (.-toggle x)    0.025
-                  true            0.675)
-    "nm8"       0.6699
-    "Oe"        (if (.-mouseover x) 0.666 0.5)
-    "smixzy"    (if (.-mouseover x) 0.25 0.75)))
+    "usernolan" 0.028 ; (/ stroke-width 2)
+    "nm8"       0.028 #_0.6699
+    "Oe"        (if (.-mouseover x) 0.1946 #_0.666 0.028 #_0.5)
+    "smixzy"    (if (.-mouseover x) 0.028 0.528)))
 
 (defn rx1-f [^js x]
   (case (.-id x)
@@ -186,8 +185,8 @@
   (case (.-id x)
     "usernolan" (cond
                   (.-mouseover x) (* (mod (.-t x) frames) usernolan-frame)
-                  (.-toggle x)    0.625 ; (* 1.25 0.5)
-                  true            -1.875) ; (* 1.25 -1.5)
+                  (.-toggle x)    0.5 ; (* 1.0 0.5)
+                  true            -1.5) ; (* 1.0 -1.5)
     "nm8"       0
     "Oe"        (cond
                   (.-mouseover x) 0 #_(* (mod (.-t x) 240) 0.008639379797371931) #_(+ (* (mod (.-t x) 240) 0.039269908169872414) 1.1780972450961724)
@@ -200,9 +199,9 @@
 (defn dashoffset2-f [^js x]
   (case (.-id x)
     "usernolan" (cond
-                  (.-mouseover x) (* (mod (.-t x) 240) -0.016362461737446838) ; (/ (* Math/PI 1.25) 240)
-                  (.-toggle x)    -0.9817477042468103 ; (/ (* Math/PI 1.25) 4)
-                  true            0.9817477042468103)
+                  (.-mouseover x) (* (mod (.-t x) 240) -0.01308996938995747) ; (/ (* Math/PI 1.0) 240)
+                  (.-toggle x)    -0.7853981633974483 ; (/ (* Math/PI 1.0) 4)
+                  true            0.7853981633974483)
     "nm8"       0
     "Oe"        (cond
                   (.-mouseover x) 0 #_(* (mod (.-t x) 240) -0.008639379797371931) #_(+ (* (mod (.-t x) 240) -0.019634954084936207) 0.5890486225480862) 
@@ -225,7 +224,10 @@
     "usernolan" 0
     "nm8"       0
     "Oe"        0
-    "smixzy"    (if (.-toggle x) 135 0)))
+    "smixzy"    (cond
+                  (.-mouseover x) 0
+                  (.-toggle x)    135
+                  true            0)))
 
 (def css-rotation-xf
   (let [f (fn [x] (str "rotate(" x "deg)"))]
@@ -265,7 +267,7 @@
         rot2!        (.transform state! (xf/map rot2-f) #js{:closeOut rs/CloseMode.NEVER})
         component    #js["svg"
                          #js{:xmlns       "http://www.w3.org/2000/svg"
-                             :viewBox     "0 0 3 2"
+                             :viewBox     "0 0 2.242 1.556"
                              :onmouseover onmouseover
                              :onmouseout  onmouseout
                              :onclick     onclick}

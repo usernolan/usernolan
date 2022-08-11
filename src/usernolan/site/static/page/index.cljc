@@ -37,6 +37,7 @@
         :transform-box    "fill-box"}]]]
 
     [:.root {:transition "background 80ms ease, color 80ms ease"}]
+
     [:.root.usernolan {:background "#171717" :color "#e8e8e8"}
      [:.content {:background "#e8e8e8" :color "#171717"}
       [:button.show-site-controls
@@ -44,14 +45,17 @@
         [:rect
          [(g.sel/& (g.sel/nth-child "1")) {:stroke-linecap "square"}]
          [(g.sel/& (g.sel/nth-child "2")) {:stroke-linecap "round"}]]]]]]
+
     [:.root.nm8 {:background "black" :color "white"}
      [:.content {:background "white" :color "black"}
       [:button.show-site-controls
-       [:svg {:stroke "black" :stroke-linecap "square"}]]]]
+       [:svg {:stroke "black"}]]]]
+
     [:.root.Oe {:background "white" :color "black"}
      [:.content {:background "white" :color "black"}
       [:button.show-site-controls
        [:svg {:stroke "black" :stroke-linecap "round"}]]]]
+
     [:.root.smixzy {:background #_ "radial-gradient(circle at 0 0, purple 0%, pink 100%)" "purple" :color "lightblue"}
      [:.content {:background #_ "radial-gradient(circle at 100% 100%, lightgreen 0%, lightblue 100%)" "lightblue" :color "purple"}
       [:button.show-site-controls
@@ -100,22 +104,32 @@
      {:cursor     "pointer"
       :background "none"
       :border     "none"
-      :padding    "7px"}
+      :margin     "7px 28px 28px 7px"
+      :padding    "0"}
      [:svg
       {:fill         "none"
        :stroke-width "0.056"}]]
 
     [:.about-container
-     {:grid-column     "2 / span 6"
+     {:grid-column     "2 / span 8"
       :display         "flex"
       :flex-direction  "column"
       :justify-content "center"
       :align-items     "center"}
      [:p
-      {:font-size "1.66rem"
+      {:font-size "2rem"
        :margin    "0"}]
      [:p.np
-      {:margin-top "1rem"}]]
+      {:margin-top "1rem"}]
+     [:img
+      {:width         "470px"
+       :height        "470px"
+       :border        "2px solid #171717"
+       :margin-bottom "2rem"
+       #_#_:filter "brightness(0.5) sepia(0.5) hue-rotate(90deg)"
+       #_#_:box-shadow "0 0 5px rgba(0,0,0,0.5)"
+       }]
+     ]
 
     [:.squares-container
      {:grid-row-start "1"
