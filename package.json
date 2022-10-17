@@ -14,13 +14,12 @@
     "@thi.ng/rdom": "^0.9.6",
     "@thi.ng/router": "^3.2.3",
     "@thi.ng/rstream": "^7.2.15",
-    "@thi.ng/transducers": "^8.3.11",
-    "gsap": "^3.10.4"
+    "@thi.ng/transducers": "^8.3.11"
   },
   "devDependencies": {
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "shadow-cljs": "^2.19.8",
+    "shadow-cljs": "2.20.5",
     "source-map-support": "^0.5.21"
   }
 }

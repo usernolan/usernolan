@@ -86,12 +86,10 @@
   [[k v]]
   (str (name k) " " v))
 
-(defn transition
-  [transitions]
-  [[:& {:transition
-        (->> transitions
-             (map normalize-transition)
-             (string/join ", "))}]])
+(defn transition [m]
+  (->> m
+       (map normalize-transition)
+       (string/join ", ")))
 
 
    ;;;

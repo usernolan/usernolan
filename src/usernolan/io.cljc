@@ -3,7 +3,7 @@
       [(:refer-clojure :exclude [spit])
        (:require
         [clojure.java.io :as io])])
-  #?@(:cljs
+  #?@(:cljs ; NOTE: `:node`? likely disallowed
       [(:require
         ["fs" :as fs]
         ["path" :as path])]))

@@ -44,9 +44,9 @@
    ;;;
 
 
-  ;; NOTE: sorting here is probably unnecessary, but making the order in which
-  ;; style links and tags appear deterministic ensures `turbolinks` does as
-  ;; little work as possible in deduplicating nodes in `<head>`
+;; NOTE: sorting here is probably unnecessary, but making the order in which
+;; style links and tags appear deterministic ensures `turbolinks` does as
+;; little work as possible in deduplicating nodes in `<head>`
 (defn style-tags [props idents]
   (map
    (partial style-tag props)

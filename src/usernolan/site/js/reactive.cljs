@@ -10,8 +10,6 @@
    [goog.object :as obj]
    [goog.string :as str]
    [usernolan.site.js.reactive-vector-graphic :as rvg]
-   ["gsap" :refer [gsap]]
-   ["gsap/Flip" :refer [Flip]]
    ["@thi.ng/compose" :as cf]
    ["@thi.ng/defmulti" :as dfm]
    ["@thi.ng/hiccup" :as h]
@@ -83,7 +81,7 @@
       #js{:id    "id-radio-smixzy"
           :value "smixzy"}])
 
-(def id-radio!
+(defonce id-radio!
   (let [init (or (.. route! deref -params -id)
                  (.-value (aget id-radio-data 0)))]
     (rs/reactive init)))
@@ -101,7 +99,7 @@
       #js{:id    "content-gallery"
           :value "gallery"}])
 
-(def content-radio!
+(defonce content-radio!
   (let [route (.. route! deref -id)
         init  (cond
                 (identical? route "default-about") "about"
@@ -130,7 +128,8 @@
       #js{:id    "mode-radio-dark"
           :value "dark"}])
 
-(def mode-radio!
+(defonce mode-radio!
+  ;; TODO: query params
   (let [init (.-value (aget mode-radio-data 0))]
     (rs/reactive init)))
 
@@ -141,7 +140,8 @@
       #js{:id    "filter-always-gray"
           :value "alwaysgray"}])
 
-(def filter-radio!
+(defonce filter-radio!
+  ;; TODO: query params
   (let [init (.-value (aget filter-radio-data 0))]
     (rs/reactive init)))
 
@@ -173,10 +173,10 @@
 
 (defn radio-div [spec x]
   (let [n (.-name spec)
-        i (.-id x)
+        i (.-id x) ; TODO: fallback id
         v (.-value x)
         r (.-reactive spec)
-        c (.transform r (xf/map (fn [x] (identical? x v))))
+        c (.transform r (xf/map (fn [x] (identical? x v))) #js{:closeOut rs/CloseMode.NEVER})
         f (if-let [f (.-onchange spec)] (goog/partial f v) #(.next r v))
         l (or (.-label x) v)]
     #js["div" nil
@@ -214,7 +214,8 @@
       (.next id-radio! id))))
 
 (defonce route-stream!
-  (.transform route! (xf/map route-stream-fn)))
+  (.transform route! (xf/map route-stream-fn)
+              #js{:closeOut rs/CloseMode.NEVER}))
 
 (defn controls [_ctx]
   #js["div.site-controls" nil
@@ -233,141 +234,63 @@
     ;; NOTE: clientX of links
     (classlist/toggle el "show-site-controls")))
 
-(defonce radio-stream!
-  (rs/sync #js{:src #js{:id      id-radio!
-                        :content content-radio!
-                        :mode    mode-radio!
-                        :filter  filter-radio!}}))
-
-(defonce debug-stream!
-  (let [s (rs/sync #js{:src #js{:radios radio-stream!
-                                :route  route!}})]
-    (.transform s (xf/map js/JSON.stringify))))
-
 (defonce fromRAF!
   (rs/fromRAF))
 
-#_(defonce state-interval
-    (js/setInterval
-     (fn []
-       (js/console.log
-        (str
-         (.getState route!)
-         (.getState id-radio!)
-         (.getState content-radio!)
-         (.getState mode-radio!)
-         (.getState filter-radio!)
-         (.getState filter-radio!)
-         (.getState route-stream!)
-         (.getState radio-stream!)
-         (.getState usernolan-svg-mouseover-stream!)
-         (.getState usernolan-svg-toggle-stream!)
-         (.getState usernolan-svg-rect-y-stream!)
-         (.getState fromRAF!)
-         (.getState usernolan-svg-RAF!)
-         (.getState usernolan-svg-rect-dashoffset-stream!)
-         (.getState usernolan-svg-circle-cy-stream!)
-         (.getState usernolan-svg-circle-dashoffset-stream!)
-         (.getState debug-stream!))))
-     1000))
+(defonce system-mode!
+  (let [match? (.. js/window (matchMedia "(prefers-color-scheme: dark)") -matches)
+        init   (if match? "dark" "light")]
+    (rs/reactive init)))
 
-(defn debug-component [attrs]
-  #js["div.debug" attrs
-      #js["p" nil debug-stream!]])
+(defonce register-system-mode-listener!
+  (let [match (js/window.matchMedia "(prefers-color-scheme: dark)")]
+    (.addEventListener match "change"
+                       (fn [^js e]
+                         (let [mode (if (.-matches e) "dark" "light")]
+                           (.next system-mode! mode))))))
 
-(defn default-view-async [route-match]
-  (js/Promise.resolve
-   #js["div" #js{:class "about"}
-       #js["p" nil "im nolan. ive been called a reflector!"
-           #js["br" nil] "usernolan is a multiplexer."
-           #js["br" nil] "click square zero"]
-       #_#js["a.contact" #js{:href "mailto:inbox@usernolan.net"}
-           "Email"]
-       #_#js[debug-component nil]]))
+(defonce mode!
+  (let [r  (rs/sync #js{:src #js{:system system-mode! :radio mode-radio!}})
+        xf (xf/map (fn [^js x]
+                     (if (identical? (.-radio x) "system")
+                       (.-system x)
+                       (.-radio x))))]
+    (.transform r xf #js{:closeOut rs/CloseMode.NEVER})))
 
-(defn error-view-async [err]
-  (js/Promise.resolve
-   #js["h1" #js{:style #js{:color "red"}} err]))
+(def svg-primary
+  (rvg/make-svg
+   #js{:t      fromRAF!
+       :id     id-radio!
+       :mode   mode!
+       :filter filter-radio!}))
 
-(defn route-match-key-fn [route-match]
-  (.-id route-match))
-
-(defn about-async [route-match])
+(defn page-controls [_attrs]
+  #js["div.page-controls-container" nil
+      #js["div.page-controls" nil
+          #js["button.show-site-controls" #js{:onclick show-controls!}
+              (.-component svg-primary)]]])
 
 (def about-component-async
   (dfm/defmulti
     (fn [route-match]
       (.. route-match -params -id))))
 
-(defonce zoom-level!
-  (rs/reactive 7))
-
-(defonce sqd!
-  (rs/reactive 0))
-
-(defonce sqd-str!
-  (.transform sqd! (xf/map (fn [x] (str x "px")))))
-
-(defn make-squares []
-  (doto #js["div.squares" nil]
-    (arr/extend
-        (arr/map
-         (arr/range 70)
-         (fn [i]
-           #js["div" #js{:class (str "square sq" i)
-                         :style #js{:width sqd-str! :height sqd-str!}}
-               #js["div" nil (str i)]])))))
-
-;; TODO: values.cljc?
-(def gap 5)
-
-(defn set-zoom [n e]
-  (when-let [^js el (dom/getElementByClass "squares")]
-    (let [container-width (.-clientWidth el)
-          d               (/ (- container-width (* n gap)) n)
-          #_#_squares     (dom/getElementsByClass "square")]
-      (.next sqd! d)
-      #_(arr/forEach
-       squares
-       (fn [^js square]
-         (set! (.. square -style -width) (str d "px"))
-         (set! (.. square -style -height) (str d "px")))))))
-
-(defonce resize-listener!
-  (events/listen js/window EventType/RESIZE
-                 (fn/debounce
-                  (fn [_e]
-                    (set-zoom (.deref zoom-level!) nil))
-                  500)))
-
-#_(def zoomable-grid-spec1
-  #js{:component #js["div.squares" nil]
-      :data      #js[,,,]
-      }
-  )
-
-#_(defn make-zoomable-grid [^js spec]
-  #js{:grid (doto (.-component spec)
-              (arr/extend
-                  (arr/map
-                   (.-data spec)
-                   (.-f spec))))
-      :zoom nil})
-
 (defn usernolan-about-component-async [_route-match]
   (js/Promise.resolve
    #js["div" #js{:class "about-container"}
        #js["main" nil
            #js["p" nil "I'm nolan. I've been called a reflector."]
-           #js["p" nil "This site is basically where I overshare on the internet,"]
-           #js["p" nil "so you can learn more if you click the thing."]]]))
+           #js["p" nil "This is where I wildly overshare on the internet,"]
+           #js["p" nil "so feel free to click around and learn more."]]]))
 
 (defn nm8-about-component-async [_route-match]
   (js/Promise.resolve
    #js["div" #js{:class "about-container"}
        #js["main" nil
            #js["p" nil "Bummer that this site uses javascript"]
-           #js["p" nil "That SVG is obscene"]]]))
+           #_#js["p" nil "Perpetual healthy dissatisfaction"]
+           #_#js["p" nil "Post-it™ notes"]
+           ]]))
 
 (defn Oe-about-component-async [_route-match]
   (js/Promise.resolve
@@ -393,18 +316,119 @@
              "Oe"        Oe-about-component-async
              "smixzy"    smixzy-about-component-async})
 
-(def svg-primary
-  (rvg/make-svg
-   #js{:t  fromRAF!
-       :id id-radio!}))
+(defn route-match-key-fn [route-match]
+  (.-id route-match))
 
-(defn page-controls [_attrs]
-  #js["div.page-controls-container" nil
-      #js["div.page-controls" nil
-          #js["button.show-site-controls" #js{:onclick show-controls!}
-              (.-component svg-primary)]]])
+(defn error-view-async [err]
+  (js/Promise.resolve
+   #js["h1" #js{:style #js{:color "red"}} err]))
 
-(defn squares-component []
+(defn content [_ctx]
+  #js["div.content" nil
+      (page-controls nil)
+      (rd/$switch
+       route!
+       route-match-key-fn
+       #js{"default-about" usernolan-about-component-async ; ALT: add default impl to dfm
+           "about"         about-component-async
+           #_#_"quotes"       nil
+           #_#_"refs"         nil
+           #_#_"ref"          nil
+           #_#_"gallery"      nil
+           #_#_"gallery-item" nil}
+       error-view-async)])
+
+(defonce root-class-stream!
+  (let [r  (rs/sync #js{:src #js{:id      id-radio!
+                                 :content content-radio!
+                                 :mode    mode!
+                                 :filter  filter-radio!}})
+        xf (xf/map (fn [x] (let [s (iter/join (obj/getValues x) " ")]
+                             (str/buildString "root " s))))]
+    (.transform r xf #js{:closeOut rs/CloseMode.NEVER})))
+
+;; TODO: refactor
+(def root
+  #js["div" #js{:class root-class-stream!}
+      (controls nil)
+      (content nil)])
+
+(defn mount []
+  (let [c  (rd/$compile root)
+        el (dom/getElement "app")]
+    (.mount c el)))
+
+;; TODO: init, defaults
+;; NOTE: read env; query params, system mode
+;; NOTE: zoom level
+
+(defonce mount!
+  (mount))
+
+(defn ^:dev/after-load render []
+  (dom/removeChildren (dom/getElement "app"))
+  (mount))
+
+
+;; NOTE: zoomable grid
+
+
+#_(defonce zoom-level!
+  (rs/reactive 7))
+
+#_(defonce sqd!
+  (rs/reactive 0))
+
+#_(defonce sqd-str!
+  (.transform sqd! (xf/map (fn [x] (str x "px")))))
+
+#_(defn make-squares []
+  (doto #js["div.squares" nil]
+    (arr/extend
+        (arr/map
+         (arr/range 70)
+         (fn [i]
+           #js["div" #js{:class (str "square sq" i)
+                         :style #js{:width sqd-str! :height sqd-str!}}
+               #js["div" nil (str i)]])))))
+
+;; TODO: values.cljc?
+#_(def gap 5)
+
+#_(defn set-zoom [n e]
+  (when-let [^js el (dom/getElementByClass "squares")]
+    (let [container-width (.-clientWidth el)
+          d               (/ (- container-width (* n gap)) n)
+          #_#_squares     (dom/getElementsByClass "square")]
+      (.next sqd! d)
+      #_(arr/forEach
+       squares
+       (fn [^js square]
+         (set! (.. square -style -width) (str d "px"))
+         (set! (.. square -style -height) (str d "px")))))))
+
+#_(defonce resize-listener!
+  (events/listen js/window EventType/RESIZE
+                 (fn/debounce
+                  (fn [_e]
+                    (set-zoom (.deref zoom-level!) nil))
+                  500)))
+
+#_(def zoomable-grid-spec1
+  #js{:component #js["div.squares" nil]
+      :data      #js[,,,]
+      }
+  )
+
+#_(defn make-zoomable-grid [^js spec]
+  #js{:grid (doto (.-component spec)
+              (arr/extend
+                  (arr/map
+                   (.-data spec)
+                   (.-f spec))))
+      :zoom nil})
+
+#_(defn squares-component []
   #js["div.squares-container" nil
       (make-squares)]
   #js["div.zoom-control-container" nil
@@ -414,44 +438,49 @@
           #js["button" #js{:onclick (goog/partial set-zoom 3)} "3x"]
           #js["button" #js{:onclick (goog/partial set-zoom 1)} "1x"]]])
 
-(defn content [_ctx]
-  #js["div.content" nil
-      (page-controls nil)
-      (rd/$switch
-       route!
-       route-match-key-fn
-       #js{"default-about" default-view-async
-           "about"         about-component-async
-           "quotes"        default-view-async
-           "refs"          default-view-async
-           "ref"           default-view-async
-           "gallery"       default-view-async
-           "gallery-item"  default-view-async}
-       error-view-async)])
+#_(defonce radio-stream!
+  (rs/sync #js{:src #js{:id      id-radio!
+                        :content content-radio!
+                        :mode    mode-radio!
+                        :filter  filter-radio!}}))
 
-(defonce root-class-stream!
-  (let [xf (xf/map (fn [x] (let [s (iter/join (obj/getValues x) " ")]
-                             (str/buildString "root " s))))]
-    (.transform radio-stream! xf
-                #js{:closeOut rs/CloseMode.NEVER})))
 
-;; TODO: refactor
-(def root
-  #js["div" #js{:class root-class-stream!}
-      (controls nil)
-      (content nil)])
+;; NOTE: debug
 
-(defn mount []
-  (-> (rd/$compile root)
-      (.mount (dom/getElement "app")))
-  (set-zoom (.deref zoom-level!) nil))
 
-(defonce mount!
-  (mount))
+#_(defonce debug-stream!
+  (let [s (rs/sync #js{:src #js{:radios radio-stream!
+                                :route  route!}})]
+    (.transform s (xf/map js/JSON.stringify))))
 
-(defn ^:dev/after-load render []
-  (dom/removeChildren (dom/getElement "app"))
-  (mount))
+
+#_(defonce state-interval
+    (js/setInterval
+     (fn []
+       (js/console.log
+        (str
+         (.getState route!)
+         (.getState id-radio!)
+         (.getState content-radio!)
+         (.getState mode-radio!)
+         (.getState filter-radio!)
+         (.getState filter-radio!)
+         (.getState route-stream!)
+         (.getState usernolan-svg-mouseover-stream!)
+         (.getState usernolan-svg-toggle-stream!)
+         (.getState usernolan-svg-rect-y-stream!)
+         (.getState fromRAF!)
+         (.getState usernolan-svg-RAF!)
+         (.getState usernolan-svg-rect-dashoffset-stream!)
+         (.getState usernolan-svg-circle-cy-stream!)
+         (.getState usernolan-svg-circle-dashoffset-stream!)
+         (.getState debug-stream!))))
+     1000))
+
+#_(defn debug-component [attrs]
+  #js["div.debug" attrs
+      #js["p" nil debug-stream!]])
+
 
 (comment
 
