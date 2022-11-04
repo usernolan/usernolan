@@ -20,6 +20,30 @@ body * {
   box-sizing: border-box;
 }
 
+select {
+	background: black;
+	color: white;
+	appearance: none;
+	/* outline: none; */
+	border: none;
+	padding: 0.5rem 1.25rem 0.5rem 1rem;
+	border-radius: 3px;
+	margin: 0.5rem 0 0.5rem 0.25rem;
+	font-size: 1rem;
+  /* box-shadow: -3px 3px 10px rgba(0,0,0,0.25); */
+  font-family: monospace;
+  vertical-align: bottom;
+}
+
+/*
+select.who {
+  font-size: 2rem;
+}
+select.what {
+  font-size: 0.8rem;
+}
+*/
+
 nav ul {
   list-style: none;
   padding: 0;

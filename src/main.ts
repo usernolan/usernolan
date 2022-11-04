@@ -6,7 +6,7 @@ import { sync } from "@thi.ng/rstream/sync"
 import { EVENT_ROUTE_CHANGED, HTMLRouter } from "@thi.ng/router"
 
 const routes = [
-  { id: "default", match: ["gist"] },
+  { id: "gist-default", match: ["nolan", "gist"] },
   { id: "gist", match: ["?who", "gist"] },
   { id: "gallery", match: ["?who", "gallery"] },
   { id: "gallery-item", match: ["?who", "gallery", "?gid"] },
@@ -25,6 +25,7 @@ const routerConfig = {
 const router = new HTMLRouter(routerConfig)
 router.start()
 
+// TODO: load from url
 const who = reactive(router.current?.params?.who || "nolan")
 const what = reactive(router.current?.id.split("-")[0] || "gist")
 
@@ -50,35 +51,65 @@ const whatClicked = reactive(false);
 const whoNav = sync({ src: { whoHovered, whoClicked } })
 const whatNav = sync({ src: { whatHovered, whatClicked } })
 
+/*
+const whoNavComponent = [
+  "nav",
+  {
+    class: whoNav.map((x) => x.whoHovered || x.whoClicked ? "expanded" : ""),
+    onmouseenter: () => whoHovered.next(true),
+    onmouseleave: () => whoHovered.next(false)
+  },
+  ["button", { onclick: () => whoClicked.next(!whoClicked.deref()) }, who],
+  $klist(
+    whoElse,
+    "ul",
+    {},
+    (x) => ["li", {}, ["a", { href: what.map((y) => `/#/${x}/${y}`), onclick: () => whoClicked.next(false) }, x]],
+    (x) => x)
+]
+
+const whatNavComponent = [
+  "nav",
+  {
+    class: whatNav.map((x) => x.whatHovered || x.whatClicked ? "expanded" : ""),
+    onmouseenter: () => whatHovered.next(true),
+    onmouseleave: () => whatHovered.next(false)
+  },
+  ["button", { onclick: () => whatClicked.next(!whatClicked.deref()) }, what],
+  $klist(
+    whatElse,
+    "ul",
+    {},
+    (x) => ["li", {}, ["a", { href: who.map((y) => `/#/${y}/${x}`), onclick: () => whatClicked.next(false) }, x]],
+    (x) => x)
+]
+*/
+
 const app = $compile([
   "div", { class: page.map((x) => `rdom-root ${x.who} ${x.what}`) },
+  // ["div.nav-container", {}, whoNavComponent, whatNavComponent],
   ["div.nav-container", {},
-    ["nav",
-      {
-        class: whoNav.map((x) => x.whoHovered || x.whoClicked ? "expanded" : ""),
-        onmouseenter: () => whoHovered.next(true),
-        onmouseleave: () => whoHovered.next(false)
-      },
-      ["button", { onclick: () => whoClicked.next(!whoClicked.deref()) }, who],
-      $klist(
-        whoElse,
-        "ul",
-        {},
-        (x) => ["li", {}, ["a", { href: what.map((y) => `/#/${x}/${y}`) }, x]],
-        (x) => x)],
-    ["nav",
-      {
-        class: whatNav.map((x) => x.whatHovered || x.whatClicked ? "expanded" : ""),
-        onmouseenter: () => whatHovered.next(true),
-        onmouseleave: () => whatHovered.next(false)
-      },
-      ["button", { onclick: () => whatClicked.next(!whatClicked.deref()) }, what],
-      $klist(
-        whatElse,
-        "ul",
-        {},
-        (x) => ["li", {}, ["a", { href: who.map((y) => `/#/${y}/${x}`) }, x]],
-        (x) => x)],],
+    ["nav", {},
+      ["select.who",
+        {
+          onchange: (e: { target: HTMLSelectElement }) => {
+            router.routeTo(`#/${e.target.value}/${what.deref()}`)
+          }
+        },
+        ["option", {}, "nolan"],
+        ["option", {}, "nm8"],
+        ["option", {}, "Oe"],
+        ["option", {}, "smixzy"]],
+      ["select.what",
+        {
+          onchange: (e: { target: HTMLSelectElement }) => {
+            router.routeTo(`#/${who.deref()}/${e.target.value}`)
+          }
+        },
+        ["option", {}, "gist"],
+        ["option", {}, "gallery"],
+        ["option", {}, "quotes"],
+        ["option", {}, "refs"]]]],
   ["main", {}, page.map((x) => `${x.who}/${x.what}`)]
 ])
 
