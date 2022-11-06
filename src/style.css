@@ -13,50 +13,81 @@
 }
 
 body {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  /* transition: background 1s ease, color 1s ease; */
 }
 body * {
   box-sizing: border-box;
 }
 
-select {
-	background: black;
-	color: white;
+nav {
+  position: fixed;
+}
+
+nav select {
 	appearance: none;
 	/* outline: none; */
 	border: none;
 	padding: 0.5rem 1.25rem 0.5rem 1rem;
 	border-radius: 3px;
-	margin: 0.5rem 0 0.5rem 0.25rem;
+	margin: 0.25rem 0 0.25rem 0.25rem;
 	font-size: 1rem;
   /* box-shadow: -3px 3px 10px rgba(0,0,0,0.25); */
-  font-family: monospace;
-  vertical-align: bottom;
+  /* font-family: monospace; */
+  /* font-family: Space Mono; */
+  font-family: ui-monospace,
+               "Cascadia Mono",
+               "Segoe UI Mono",
+               "Ubuntu Mono",
+               "Roboto Mono",
+               Menlo, Monaco, Consolas,
+               monospace;
+  /* transition: background 1s ease, color 1s ease; */
 }
 
-/*
-select.who {
-  font-size: 2rem;
+body.nolan {
+  background: #e8e8e8;
 }
-select.what {
-  font-size: 0.8rem;
-}
-*/
-
-nav ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: none;
-}
-nav.expanded ul {
-  display: block;
+body.nolan nav select {
+  background: #181818;
+  color: #e8e8e8;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: black;
-    background-color: white;
-  }
+body.nm8 {
+  background: white;
+  color: black;
 }
+body.nm8 nav select {
+  background: black;
+  color: white;
+}
+
+body.Oe {
+  background: white;
+  color: black;
+}
+body.Oe nav select {
+  background: white;
+  color: black;
+  border: 1px solid black;
+  /* border-radius: 0; */
+  /* box-shadow: -2px 2px black; */
+}
+
+body.smixzy {
+  background: white /* linear-gradient(225deg, #4400ad, #5000cd) */;
+  color:     #4400ad /* rebeccapurple */;
+  /* background: white; */
+  /* color: black; */
+}
+body.smixzy nav select {
+  background: #4400ad /* linear-gradient(90deg, #4400ad, #5000cd) */;
+  color: lightblue;
+  /* border: 1px solid lightblue; */
+  /* border-radius: 0; */
+  /* box-shadow: -2px 2px black; */
+}
+
+@media (prefers-color-scheme: light) {}

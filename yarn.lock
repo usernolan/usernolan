@@ -180,17 +180,6 @@
     "@thi.ng/rstream" "^7.2.27"
     "@thi.ng/strings" "^3.3.16"
 
-"@thi.ng/router@^3.2.10":
-  version "3.2.12"
-  resolved "https://registry.yarnpkg.com/@thi.ng/router/-/router-3.2.12.tgz#12b1a9d4975465f83799c51d8cc27ff00be3a0a4"
-  integrity sha512-ZhqRLh5tw4MyDF2jxnSQSVY0UPYarcp7WWhhyRB+UxhhxGbcMuPe5nUXVtKftXqlBVD3OnXhrV3ii3Ej52Z23g==
-  dependencies:
-    "@thi.ng/api" "^8.4.5"
-    "@thi.ng/checks" "^3.3.2"
-    "@thi.ng/equiv" "^2.1.12"
-    "@thi.ng/errors" "^2.2.3"
-    tslib "^2.4.0"
-
 "@thi.ng/rstream@^7.2.27":
   version "7.2.27"
   resolved "https://registry.yarnpkg.com/@thi.ng/rstream/-/rstream-7.2.27.tgz#bb5a133e7a4967ea994a1d7f9e087c79bc036d54"

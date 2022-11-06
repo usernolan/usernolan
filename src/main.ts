@@ -1,116 +1,157 @@
 import './style.css'
 import { $compile } from "@thi.ng/rdom/compile"
-import { $klist } from "@thi.ng/rdom/klist"
-import { reactive } from "@thi.ng/rstream/stream"
+import { $switch } from "@thi.ng/rdom/switch"
+import { $replace } from "@thi.ng/rdom/replace"
+import { reactive, stream } from "@thi.ng/rstream/stream"
 import { sync } from "@thi.ng/rstream/sync"
-import { EVENT_ROUTE_CHANGED, HTMLRouter } from "@thi.ng/router"
+import { map } from "@thi.ng/transducers/map"
 
-const routes = [
-  { id: "gist-default", match: ["nolan", "gist"] },
-  { id: "gist", match: ["?who", "gist"] },
-  { id: "gallery", match: ["?who", "gallery"] },
-  { id: "gallery-item", match: ["?who", "gallery", "?gid"] },
-  { id: "refs", match: ["?who", "refs"] },
-  { id: "quotes", match: ["?who", "quotes"] }
-]
-// {id: "generic", match: ["?who", "?what"]} ...
-// {id: "nolan-gist", match: ["nolan", "gist"]} ...
-
-const routerConfig = {
-  useFragment: true,
-  defaultRouteID: routes[0].id,
-  routes: routes
+interface Route {
+  who: string,
+  what: string,
+  id?: string
 }
-
-const router = new HTMLRouter(routerConfig)
-router.start()
-
-// TODO: load from url
-const who = reactive(router.current?.params?.who || "nolan")
-const what = reactive(router.current?.id.split("-")[0] || "gist")
-
-const page = sync({ src: { who, what } })
 
 const whoAll = ["nolan", "nm8", "Oe", "smixzy"]
 const whatAll = ["gist", "gallery", "refs", "quotes"]
 
-const whoElse = who.map((x) => whoAll.filter((y) => x != y))
-const whatElse = what.map((x) => whatAll.filter((y) => x != y))
+const routeFromHash = (s: string): Route => {
+  const i = s.indexOf("#")
 
-router.addListener(EVENT_ROUTE_CHANGED, (e) => {
+  if (i === -1) {
+    return {
+      who: whoAll[0],
+      what: whatAll[0]
+    }
+  }
+
+  const arr = s.substring(i).split("/")
+
+  return {
+    who: arr[1] || whoAll[0],
+    what: arr[2] || whatAll[0],
+    id: arr[3]
+  }
+}
+
+const route = reactive(routeFromHash(location.hash))
+
+window.addEventListener("hashchange", (e) => {
   console.log(e)
-  who.next(e?.value?.params?.who || "nolan")
-  what.next(e?.value?.id.split("-")[0] || "gist")
+  route.next(routeFromHash(e.newURL))
 })
 
-const whoHovered = reactive(false);
-const whoClicked = reactive(false);
-const whatHovered = reactive(false);
-const whatClicked = reactive(false);
+const body = document.getElementsByTagName("body")[0]
 
-const whoNav = sync({ src: { whoHovered, whoClicked } })
-const whatNav = sync({ src: { whatHovered, whatClicked } })
+route.map((r) => body.className = `${r.who} ${r.what}`)
 
-/*
-const whoNavComponent = [
-  "nav",
-  {
-    class: whoNav.map((x) => x.whoHovered || x.whoClicked ? "expanded" : ""),
-    onmouseenter: () => whoHovered.next(true),
-    onmouseleave: () => whoHovered.next(false)
-  },
-  ["button", { onclick: () => whoClicked.next(!whoClicked.deref()) }, who],
-  $klist(
-    whoElse,
-    "ul",
-    {},
-    (x) => ["li", {}, ["a", { href: what.map((y) => `/#/${x}/${y}`), onclick: () => whoClicked.next(false) }, x]],
-    (x) => x)
+const navComponent = (r: Route) => [
+  "nav", {},
+  ["select.who",
+    {
+      onchange: (e: { target: HTMLSelectElement }) => {
+        location.hash = `#/${e?.target?.value || "nolan"}/${r.what || "gist"}`
+        window.scrollTo(0, 0)
+      }
+    },
+    ...whoAll.map((x) => ["option", { selected: r.who === x }, x])],
+  ["select.what",
+    {
+      onchange: (e: { target: HTMLSelectElement }) => {
+        location.hash = `#/${r.who || "nolan"}/${e?.target?.value || "gist"}`
+        window.scrollTo(0, 0)
+      }
+    },
+    ...whatAll.map((x) => ["option", { selected: r.what === x }, x])
+  ]
 ]
 
-const whatNavComponent = [
-  "nav",
-  {
-    class: whatNav.map((x) => x.whatHovered || x.whatClicked ? "expanded" : ""),
-    onmouseenter: () => whatHovered.next(true),
-    onmouseleave: () => whatHovered.next(false)
-  },
-  ["button", { onclick: () => whatClicked.next(!whatClicked.deref()) }, what],
-  $klist(
-    whatElse,
-    "ul",
-    {},
-    (x) => ["li", {}, ["a", { href: who.map((y) => `/#/${y}/${x}`), onclick: () => whatClicked.next(false) }, x]],
-    (x) => x)
-]
-*/
+const nolanGist = async (r: Route) => `${r.who}/${r.what}`
+const nolanGalleryIndex = (r: Route) => `${r.who}/${r.what} index`
+const nolanGalleryItem = (r: Route) => `${r.who}/${r.what} item`
+const nolanGallery = async (r: Route) => r.id ? nolanGalleryItem(r) : nolanGalleryIndex(r)
+const nolanRefs = async (r: Route) => `${r.who}/${r.what}`
+const nolanQuotes = async (r: Route) => `${r.who}/${r.what}`
 
-const app = $compile([
-  "div", { class: page.map((x) => `rdom-root ${x.who} ${x.what}`) },
-  // ["div.nav-container", {}, whoNavComponent, whatNavComponent],
-  ["div.nav-container", {},
-    ["nav", {},
-      ["select.who",
-        {
-          onchange: (e: { target: HTMLSelectElement }) => {
-            router.routeTo(`#/${e.target.value}/${what.deref()}`)
-          }
-        },
-        ["option", {}, "nolan"],
-        ["option", {}, "nm8"],
-        ["option", {}, "Oe"],
-        ["option", {}, "smixzy"]],
-      ["select.what",
-        {
-          onchange: (e: { target: HTMLSelectElement }) => {
-            router.routeTo(`#/${who.deref()}/${e.target.value}`)
-          }
-        },
-        ["option", {}, "gist"],
-        ["option", {}, "gallery"],
-        ["option", {}, "quotes"],
-        ["option", {}, "refs"]]]],
-  ["main", {}, page.map((x) => `${x.who}/${x.what}`)]
+const nm8Gist = async (r: Route) => `${r.who}/${r.what}`
+const nm8GalleryIndex = (r: Route) => `${r.who}/${r.what} index`
+const nm8GalleryItem = (r: Route) => `${r.who}/${r.what} item`
+const nm8Gallery = async (r: Route) => r.id ? nm8GalleryItem(r) : nm8GalleryIndex(r)
+const nm8Refs = async (r: Route) => `${r.who}/${r.what}`
+const nm8Quotes = async (r: Route) => `${r.who}/${r.what}`
+
+const OeGist = async (r: Route) => `${r.who}/${r.what}`
+const OeGalleryIndex = (r: Route) => `${r.who}/${r.what} index`
+const OeGalleryItem = (r: Route) => `${r.who}/${r.what} item`
+const OeGallery = async (r: Route) => r.id ? OeGalleryIndex(r) : OeGalleryItem(r)
+const OeRefs = async (r: Route) => `${r.who}/${r.what}`
+const OeQuotes = async (r: Route) => `${r.who}/${r.what}`
+
+const smixzyGist = async (r: Route) => `${r.who}/${r.what}`
+const smixzyGalleryIndex = (r: Route) => `${r.who}/${r.what} index`
+const smixzyGalleryItem = (r: Route) => `${r.who}/${r.what} item`
+const smixzyGallery = async (r: Route) => r.id ? smixzyGalleryItem(r) : smixzyGalleryIndex(r)
+const smixzyRefs = async (r: Route) => `${r.who}/${r.what}`
+const smixzyQuotes = async (r: Route) => `${r.who}/${r.what}`
+
+const paddingTop = reactive(0).map((n) => n.toString().concat("px"))
+const capitalize = (s: string) => s.replace(/^\w/, c => c.toUpperCase())
+
+const rdom = $compile([
+  "div.rdom-root", {},
+  $replace(route.map(navComponent)),
+  $switch(
+    route,
+    (r) => `${r.who}${capitalize(r.what)}`,
+    {
+      nolanGist,
+      nolanGallery,
+      nolanRefs,
+      nolanQuotes,
+      nm8Gist,
+      nm8Gallery,
+      nm8Refs,
+      nm8Quotes,
+      OeGist,
+      OeGallery,
+      OeRefs,
+      OeQuotes,
+      smixzyGist,
+      smixzyGallery,
+      smixzyRefs,
+      smixzyQuotes
+    },
+    async (err) => ["div", {}, route.map((r) => `ERROR ${err}; ${r.who}/${r.what}`)]
+  )
+  // ["main", { style: { paddingTop } },
+  //   $switch(
+  //     route,
+  //     (r) => `${r.who}${capitalize(r.what)}`,
+  //     {
+  //       nolanGist,
+  //       nolanGallery,
+  //       nolanRefs,
+  //       nolanQuotes,
+  //       nm8Gist,
+  //       nm8Gallery,
+  //       nm8Refs,
+  //       nm8Quotes,
+  //       OeGist,
+  //       OeGallery,
+  //       OeRefs,
+  //       OeQuotes,
+  //       smixzyGist,
+  //       smixzyGallery,
+  //       smixzyRefs,
+  //       smixzyQuotes
+  //     },
+  //     async (err) => ["div", {}, route.map((r) => `ERROR ${err}; ${r.who}/${r.what}`)]
+  //   )
+  // ]
 ])
 
-app.mount(document.getElementById("app")!)
+rdom.mount(body)
+
+// TODO: window.resize listener
+const el = document.getElementsByTagName("nav")[0]
+paddingTop.next(el.clientHeight)
