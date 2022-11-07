@@ -43,7 +43,7 @@ window.addEventListener("hashchange", (e) =>
 const body = document.getElementsByTagName("body")[0]
 
 route.map((r) => body.className =
-  r.id ? `${r.who} ${r.what}` : `${r.who} ${r.what} ${r.id}`)
+  r.id ? `${r.who} ${r.what} ${r.id}` : `${r.who} ${r.what}`)
 
 const navComponent = (r: Route) => [
   "nav", {},
@@ -69,11 +69,15 @@ const navComponent = (r: Route) => [
 const paddingTop =
   reactive(0).map((n) => n.toString().concat("px"), { closeOut: CloseMode.NEVER })
 
+const defaultComponent = async (r: Route) =>
+  ["main", { style: { paddingTop } }, r.id ? `${r.who}/${r.what}/${r.id}` : `${r.who}/${r.what}`]
+
 const nolanGist = async (r: Route) => [
   "main", { style: { paddingTop } },
   ["h1", {}, "I'm nolan."],
   ["h2", {}, "I've been called a reflector. I'm big on computers, graphics, and all forms of animation."],
-  ["h3", {}, "This is where I dump out online, so feel free to click around and eat up."],
+  ["h3", {}, "I tried starting a company when I was 24, and I'm still recovering from that. This is where I dump out online, so feel free to click around and eat up."],
+  ["p", {}, "So stay a while, listen. Enjoy my post-social AIM profile."],
   ["a", { href: "mailto:nolan@usernolan.net" }, "nolan@usernolan.net"]
 ]
 
@@ -86,8 +90,9 @@ const nolanQuotes = async (r: Route) => `${r.who}/${r.what}`
 const nm8Gist = async (r: Route) => [
   "main", { style: { paddingTop } },
   ["h1", {}, "I'm nolan."],
-  ["h2", {}, "I'm also sorry about all the JavaScript, literally Inter, and this select navigation thing."],
-  ["h3", {}, "do u like this?"]
+  ["h2", {}, "I'm also sorry—about the JavaScript, literally Inter, and the whole nav select deal."],
+  ["h3", {}, "like 'animate'. or like 'nms', my initials. or like, unrestricted mereological composition."]
+  // ["p", {}, "do u like this?"]
   // ["h3", {}, "I've been called particular about the way things are made. I especially appreciate when things are built in a way that makes a user or observer consider how it was built."],
   // ["h2", {}, "I'm pretty particular, but I try not to be."],
   // ["h3", {}, "I mostly blame my sister, Erica."]
@@ -102,6 +107,8 @@ const nm8Quotes = async (r: Route) => `${r.who}/${r.what}`
 const OeGist = async (r: Route) => [
   "main", { style: { paddingTop } },
   ["h1", {}, "I'm nothing."],
+  ["h2", {}, "Abstract machines, Process"],
+  ["h3", {}, "Language, logic, proof, etc."],
   ["p", {}, "observe ∘ explicate"],
 ]
 const OeGalleryIndex = (r: Route) => `${r.who}/${r.what} index`
@@ -112,7 +119,7 @@ const OeQuotes = async (r: Route) => `${r.who}/${r.what}`
 
 const smixzyGist = async (r: Route) => [
   "main", { style: { paddingTop } },
-  ["h1", {}, "I'm garbage!!!"],
+  ["h1", {}, "I'm garbage."],
   ["h2", {}, "Nonsense Acrylic Handmade"],
   ["h3", {}, "Lv. 60 Arcane Mage"]
 ]
@@ -132,21 +139,21 @@ const rdom = $compile([
     (r) => `${r.who}${capitalize(r.what)}`,
     {
       nolanGist,
-      nolanGallery,
-      nolanRefs,
-      nolanQuotes,
+      nolanGallery: defaultComponent,
+      nolanRefs: defaultComponent,
+      nolanQuotes: defaultComponent,
       nm8Gist,
-      nm8Gallery,
-      nm8Refs,
-      nm8Quotes,
+      nm8Gallery: defaultComponent,
+      nm8Refs: defaultComponent,
+      nm8Quotes: defaultComponent,
       OeGist,
-      OeGallery,
-      OeRefs,
-      OeQuotes,
+      OeGallery: defaultComponent,
+      OeRefs: defaultComponent,
+      OeQuotes: defaultComponent,
       smixzyGist,
-      smixzyGallery,
-      smixzyRefs,
-      smixzyQuotes
+      smixzyGallery: defaultComponent,
+      smixzyRefs: defaultComponent,
+      smixzyQuotes: defaultComponent
     },
     async (err) => ["div", {}, route.map((r) => `ERROR ${err}; ${r.who}/${r.what}`)]
   )

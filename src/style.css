@@ -35,7 +35,7 @@ nav select {
 	padding: 0.5rem 1.25rem 0.5rem 1rem;
 	border-radius: 3px;
 	margin: 0.25rem 0 0.25rem 0.25rem;
-	font-size: 1rem;
+	font-size: 1.125rem;
   /* box-shadow: -3px 3px 10px rgba(0,0,0,0.25); */
   /* font-family: monospace; */
   /* font-family: Space Mono; */
@@ -62,11 +62,24 @@ body {
   width: 100vw;
 }
 body.gist main {
-  width: 580px;
+  width: 60%;
 }
 
 h1, h2, h3, p, a {
   /* margin: 0; */
+  font-weight: 500;
+}
+h1 {
+  font-size: 10rem;
+}
+h2 {
+  font-size: 2.5rem;
+}
+h3 {
+  font-size: 1.5rem;
+}
+p {
+  font-size: 1.25rem;
 }
 
 body.nolan {
@@ -107,6 +120,9 @@ body.Oe nav select {
   /* border-radius: 0; */
   /* box-shadow: -2px 2px black; */
 }
+body.Oe main h1 {
+  color: white;
+}
 
 body.smixzy {
   background: white /* linear-gradient(225deg, #4400ad, #5000cd) */;
@@ -116,10 +132,16 @@ body.smixzy {
 }
 body.smixzy nav select {
   background: #4400ad /* linear-gradient(90deg, #4400ad, #5000cd) */;
-  color: lightblue;
+  color: skyblue;
   /* border: 1px solid lightblue; */
   /* border-radius: 0; */
   /* box-shadow: -2px 2px black; */
+}
+
+body.smixzy main h1 {
+  background: -webkit-linear-gradient(0deg, #4400ad, skyblue);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 @media (prefers-color-scheme: light) {}
