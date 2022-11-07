@@ -24,6 +24,8 @@ body * {
 
 nav {
   position: fixed;
+  top: 0;
+  left: 0;
 }
 
 nav select {
@@ -47,12 +49,39 @@ nav select {
   /* transition: background 1s ease, color 1s ease; */
 }
 
+main {
+  padding: 0 0 0 0.25rem;
+}
+body {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  /* justify-content: center; */
+  /* align-items: center; */
+  /* padding: 0 0 0 5vw; */
+  width: 100vw;
+}
+body.gist main {
+  width: 580px;
+}
+
+h1, h2, h3, p, a {
+  /* margin: 0; */
+}
+
 body.nolan {
-  background: #e8e8e8;
+  background: #e8e8e8 /* rgb(232,230,235) */;
+  color: #424242;
 }
 body.nolan nav select {
-  background: #181818;
+  background: #424242;
   color: #e8e8e8;
+}
+body.nolan main {
+  /* max-width: 400px; */
+}
+body.nolan main a {
+  color: inherit;
 }
 
 body.nm8 {
@@ -62,6 +91,9 @@ body.nm8 {
 body.nm8 nav select {
   background: black;
   color: white;
+}
+body.nm8 main {
+  /* max-width: 600px; */
 }
 
 body.Oe {
@@ -78,7 +110,7 @@ body.Oe nav select {
 
 body.smixzy {
   background: white /* linear-gradient(225deg, #4400ad, #5000cd) */;
-  color:     #4400ad /* rebeccapurple */;
+  color: /* lightblue */ #4400ad /* rebeccapurple */;
   /* background: white; */
   /* color: black; */
 }
