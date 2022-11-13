@@ -3,9 +3,12 @@ import { $compile } from "@thi.ng/rdom/compile"
 import { $switch } from "@thi.ng/rdom/switch"
 import { $replace } from "@thi.ng/rdom/replace"
 import { reactive, stream } from "@thi.ng/rstream/stream"
+import { fromRAF } from "@thi.ng/rstream/raf"
 import { CloseMode } from "@thi.ng/rstream/api"
 import { sync } from "@thi.ng/rstream/sync"
 import { map } from "@thi.ng/transducers/map"
+import { take } from "@thi.ng/transducers/take"
+import { choices } from "@thi.ng/transducers/choices"
 
 interface Route {
   who: string,
@@ -14,7 +17,7 @@ interface Route {
 }
 
 const whoAll = ["nolan", "nm8", "Oe", "smixzy"]
-const whatAll = ["gist", "gallery", "refs", "quotes"]
+const whatAll = ["gist", "gallery", "words", "refs"]
 
 const routeFromHash = (s: string): Route => {
   const i = s.indexOf("#")
@@ -66,68 +69,95 @@ const navComponent = (r: Route) => [
   ]
 ]
 
-const paddingTop =
-  reactive(0).map((n) => n.toString().concat("px"), { closeOut: CloseMode.NEVER })
+const paddingTop = reactive(0).map((n) =>
+  n.toString().concat("px"), { closeOut: CloseMode.NEVER })
 
 const defaultComponent = async (r: Route) =>
-  ["main", { style: { paddingTop } }, r.id ? `${r.who}/${r.what}/${r.id}` : `${r.who}/${r.what}`]
+  ["main", { style: { paddingTop } },
+    r.id ? `${r.who}/${r.what}/${r.id}` : `${r.who}/${r.what}`]
 
 const nolanGist = async (r: Route) => [
   "main", { style: { paddingTop } },
   ["h1", {}, "I'm nolan."],
-  ["h2", {}, "I've been called a reflector. I'm big on computers, graphics, and all forms of animation."],
-  ["h3", {}, "I tried starting a company when I was 24, and I'm still recovering from that. This is where I dump out online, so feel free to click around and eat up."],
-  ["p", {}, "So stay a while, listen. Enjoy my post-social AIM profile."],
+  ["h2", {}, "I've been called a reflector. I'm big on computers,\ngraphics, and all forms of animation."],
+  ["h3", {}, "This is where I put out online, so stay awhile, and listen.\nEnjoy my post-social AIM profile."],
   ["a", { href: "mailto:nolan@usernolan.net" }, "nolan@usernolan.net"]
 ]
 
 const nolanGalleryIndex = (r: Route) => `${r.who}/${r.what} index`
 const nolanGalleryItem = (r: Route) => `${r.who}/${r.what} item`
 const nolanGallery = async (r: Route) => r.id ? nolanGalleryItem(r) : nolanGalleryIndex(r)
+const nolanWords = async (r: Route) => `${r.who}/${r.what}`
 const nolanRefs = async (r: Route) => `${r.who}/${r.what}`
-const nolanQuotes = async (r: Route) => `${r.who}/${r.what}`
 
 const nm8Gist = async (r: Route) => [
   "main", { style: { paddingTop } },
-  ["h1", {}, "I'm nolan."],
-  ["h2", {}, "I'm also sorry—about the JavaScript, literally Inter, and the whole nav select deal."],
-  ["h3", {}, "like 'animate'. or like 'nms', my initials. or like, unrestricted mereological composition."]
-  // ["p", {}, "do u like this?"]
-  // ["h3", {}, "I've been called particular about the way things are made. I especially appreciate when things are built in a way that makes a user or observer consider how it was built."],
-  // ["h2", {}, "I'm pretty particular, but I try not to be."],
-  // ["h3", {}, "I mostly blame my sister, Erica."]
+  ["h1", {}, "I'm sorry."],
+  ["h2", {}, "—about the JavaScript, Inter, and the\nwhole select-nav deal."],
+  ["h3", {}, "The web was never meant to be \"cool\" and \"funny\" and \"work\".\nThey have played us for absolute fools."],
+  ["p", {}, "like 'animate'. or like 'nms', my initials.\nor like, unrestricted mereological composition."],
 ]
 
 const nm8GalleryIndex = (r: Route) => `${r.who}/${r.what} index`
 const nm8GalleryItem = (r: Route) => `${r.who}/${r.what} item`
 const nm8Gallery = async (r: Route) => r.id ? nm8GalleryItem(r) : nm8GalleryIndex(r)
+const nm8Words = async (r: Route) => `${r.who}/${r.what}`
 const nm8Refs = async (r: Route) => `${r.who}/${r.what}`
-const nm8Quotes = async (r: Route) => `${r.who}/${r.what}`
+
+// ["°", ".", ",", "·", "_", ":", "?", "'", "<", ">", "\\", "/", "+", "-", "0", "x", "*", " "]
+const allChars = ["°", ".", "·", ":", "*", " ", "?"]
+const weights =  [0.143, 0.143, 0.143, 0.143, 0.143, 0.286, 0.0143]
+const takeChars = (n: number) => [...take(n, choices(allChars, weights))]
+const numChars = 9
+
+var prevX = takeChars(numChars)
 
 const OeGist = async (r: Route) => [
   "main", { style: { paddingTop } },
-  ["h1", {}, "I'm nothing."],
-  ["h2", {}, "Abstract machines, Process"],
-  ["h3", {}, "Language, logic, proof, etc."],
-  ["p", {}, "observe ∘ explicate"],
+  ["h1", {}, $replace(fromRAF().map((t) => {
+    if (t % 12 === 0)
+      prevX = takeChars(numChars)
+      // prevX = takeChars(1).concat([...take(numTake - 1, prevX)])
+    return prevX.join("")
+  }))],
+  ["h2", {}, "Abstract machines"],
+  ["h3", {}, "Process, language, logic, proof, etc..\nReal game of life hours, you know the one."],
+  ["p", {}, "observe ∘ explicate"]
 ]
 const OeGalleryIndex = (r: Route) => `${r.who}/${r.what} index`
 const OeGalleryItem = (r: Route) => `${r.who}/${r.what} item`
 const OeGallery = async (r: Route) => r.id ? OeGalleryIndex(r) : OeGalleryItem(r)
+const OeWords = async (r: Route) => `${r.who}/${r.what}`
 const OeRefs = async (r: Route) => `${r.who}/${r.what}`
-const OeQuotes = async (r: Route) => `${r.who}/${r.what}`
 
-const smixzyGist = async (r: Route) => [
-  "main", { style: { paddingTop } },
-  ["h1", {}, "I'm garbage."],
-  ["h2", {}, "Nonsense Acrylic Handmade"],
-  ["h3", {}, "Lv. 60 Arcane Mage"]
+const smixzyGist = async (_: Route) => [
+  "main", { style: { paddingTop, backgroundImage: fromRAF().map((t) => {
+    const x = Math.sin((t - 300) % (2 * Math.PI * 1200) / 333) * 200
+    // console.log(x)
+    return `radial-gradient(circle at ${x}% 50%, lightblue, #4200af)`
+  }) } },
+  ["h1",
+    // {
+    //   style: {
+    //     // backgroundImage: fromRAF().map((t) => `linear-gradient(${t % 360}deg, #4400ad, skyblue)`)
+    //     // backgroundImage: fromRAF().map((t) => `radial-gradient(circle at ${t % 200 - 100}% 0, #4400ad, skyblue)`)
+    //     backgroundImage: fromRAF().map((t) => {
+    //       const x = Math.sin((t - 300) % (2 * Math.PI * 1200) / 333) * 500
+    //       // console.log(x)
+    //       return `radial-gradient(circle at ${x}% 50%, lightblue, #4200af)`
+    //     })
+    //   }
+    // }
+   ,
+    "I'm garbage."],
+  ["h2", {}, "Nonsense \\\\ Acrylic \\\\  Handmade"],
+  ["h3", {}, "in any combination. I love my desk.\nSoft immutable. Lv. 60 Arcane Mage."]
 ]
 const smixzyGalleryIndex = (r: Route) => `${r.who}/${r.what} index`
 const smixzyGalleryItem = (r: Route) => `${r.who}/${r.what} item`
 const smixzyGallery = async (r: Route) => r.id ? smixzyGalleryItem(r) : smixzyGalleryIndex(r)
+const smixzyWords = async (r: Route) => `${r.who}/${r.what}`
 const smixzyRefs = async (r: Route) => `${r.who}/${r.what}`
-const smixzyQuotes = async (r: Route) => `${r.who}/${r.what}`
 
 const capitalize = (s: string) => s.replace(/^\w/, c => c.toUpperCase())
 
@@ -140,20 +170,20 @@ const rdom = $compile([
     {
       nolanGist,
       nolanGallery: defaultComponent,
+      nolanWords: defaultComponent,
       nolanRefs: defaultComponent,
-      nolanQuotes: defaultComponent,
       nm8Gist,
       nm8Gallery: defaultComponent,
+      nm8Words: defaultComponent,
       nm8Refs: defaultComponent,
-      nm8Quotes: defaultComponent,
       OeGist,
       OeGallery: defaultComponent,
+      OeWords: defaultComponent,
       OeRefs: defaultComponent,
-      OeQuotes: defaultComponent,
       smixzyGist,
       smixzyGallery: defaultComponent,
-      smixzyRefs: defaultComponent,
-      smixzyQuotes: defaultComponent
+      smixzyWords: defaultComponent,
+      smixzyRefs: defaultComponent
     },
     async (err) => ["div", {}, route.map((r) => `ERROR ${err}; ${r.who}/${r.what}`)]
   )
