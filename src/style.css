@@ -1,4 +1,6 @@
 :root {
+  background: #e8e8e8;
+  color: #424242;
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   color-scheme: light dark;
   font-synthesis: none;
@@ -14,9 +16,13 @@
 
 body {
   box-sizing: border-box;
+  height: 100vh;
+  width: 100vw;
   margin: 0;
   padding: 0;
-  /* transition: background 1s ease, color 1s ease; */
+  display: flex;
+  flex-direction: column;
+  transition: background 400ms ease, color 400ms ease;
 }
 body * {
   box-sizing: border-box;
@@ -27,18 +33,14 @@ nav {
   top: 0;
   left: 0;
 }
-
 nav select {
 	appearance: none;
-	/* outline: none; */
 	border: none;
+  cursor: pointer;
 	padding: 0.5rem 1.25rem 0.5rem 1rem;
 	border-radius: 3px;
 	margin: 0.25rem 0 0.25rem 0.25rem;
 	font-size: 1.25rem;
-  /* box-shadow: -3px 3px 10px rgba(0,0,0,0.25); */
-  /* font-family: monospace; */
-  /* font-family: Space Mono; */
   font-family: ui-monospace,
                "Cascadia Mono",
                "Segoe UI Mono",
@@ -46,46 +48,30 @@ nav select {
                "Roboto Mono",
                Menlo, Monaco, Consolas,
                monospace;
-  /* transition: background 1s ease, color 1s ease; */
 }
 
-main {
-  padding: 0 0 0 0.25rem;
-}
-body {
-  display: flex;
-  height: 100vh;
-  flex-direction: column;
-  /* justify-content: center; */
-  /* align-items: center; */
-  /* padding: 0 0 0 5vw; */
-  width: 100vw;
-}
 body.gist main {
   width: 60%;
+  padding: 0 0 0 0.25rem;
 }
 
-h1, h2, h3, p, a {
-  /* margin: 0; */
-  /* font-weight: 500; */
-}
-h1 {
+body.gist main h1 {
   font-size: 9.5rem;
   font-weight: 800;
   letter-spacing: -0.5rem;
 }
-h2 {
+body.gist main h2 {
   font-size: 2.66rem;
   font-weight: 700;
   letter-spacing: -0.075rem;
 }
-h3 {
+body.gist main h3 {
   font-size: 1.5rem;
   font-weight: 600;
   max-width: 780px;
   letter-spacing: -0.015rem;
 }
-p, a {
+body.gist main p, a {
   font-size: 1.25rem;
   font-weight: 500;
 }
@@ -97,9 +83,6 @@ body.nolan {
 body.nolan nav select {
   background: #424242;
   color: #e8e8e8;
-}
-body.nolan main {
-  /* max-width: 400px; */
 }
 body.nolan main a {
   color: inherit;
@@ -113,31 +96,17 @@ body.nm8 nav select {
   background: black;
   color: white;
 }
-body.nm8 main {
-  /* max-width: 600px; */
-}
 
 body.Oe {
   background: white;
-  color: black /* rgba(0,0,0,0.25) */;
-  /* text-shadow: -2px 2px black; */
-  /* text-shadow: -3px 3px black, -2px 2px black, -1px 1px black; */
+  color: black;
 }
 body.Oe nav select {
   background: white;
   color: black;
   border: 1px solid black;
-  /* border-radius: 0; */
-  /* box-shadow: -2px 2px black; */
-}
-body.Oe main {
-  /* -webkit-text-stroke-width: 1px; */
-  /* -webkit-text-stroke-color: black; */
-  /* font-family: monospace; */
 }
 body.Oe main h1 {
-  /* background-color: black; */
-  /* color: white; */
   font-family: monospace;
 }
 
@@ -147,20 +116,48 @@ body.smixzy {
 }
 body.smixzy nav select {
   background: #4200af;
-  color: skyblue;
+  color: lightblue;
 }
-
 body.smixzy main {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-body.smixzy main h1 {
-  /* color: white; */
-  /* background-image: linear-gradient(90deg, #4400ad, skyblue); */
-  /* background-image: radial-gradient(circle at 100% 0, skyblue, #4400ad); */
-  /* -webkit-background-clip: text; */
-  /* -webkit-text-fill-color: transparent; */
-}
+@media (prefers-color-scheme: dark) {
+  body.nolan {
+    background: #424242;
+    color: #cecece;
+  }
+  body.nolan nav select {
+    color: #cecece;
+    border: 1px solid #cecece;
+  }
 
-@media (prefers-color-scheme: light) {}
+  body.nm8,
+  body.Oe {
+    background: black;
+    color: white;
+  }
+  body.nm8 nav select,
+  body.Oe nav select {
+    background: #212121;
+    color: white;
+    border: 1px solid white;
+  }
+
+  body.smixzy {
+    background: #4200af;
+    color: lightblue;
+  }
+  body.smixzy nav select {
+    background: #4200af;
+    color: lightblue;
+    border: 1px solid lightblue;
+  }
+  body.smixzy main {
+    color: white !important;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+}

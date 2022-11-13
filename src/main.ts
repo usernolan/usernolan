@@ -94,7 +94,7 @@ const nm8Gist = async (r: Route) => [
   "main", { style: { paddingTop } },
   ["h1", {}, "I'm sorry."],
   ["h2", {}, "—about the JavaScript, Inter, and the\nwhole select-nav deal."],
-  ["h3", {}, "The web was never meant to be \"cool\" and \"funny\" and \"work\".\nThey have played us for absolute fools."],
+  ["h3", {}, "The web was never meant to be \"cool\" and \"work\".\nThey have played us for absolute fools."],
   ["p", {}, "like 'animate'. or like 'nms', my initials.\nor like, unrestricted mereological composition."],
 ]
 
@@ -104,24 +104,22 @@ const nm8Gallery = async (r: Route) => r.id ? nm8GalleryItem(r) : nm8GalleryInde
 const nm8Words = async (r: Route) => `${r.who}/${r.what}`
 const nm8Refs = async (r: Route) => `${r.who}/${r.what}`
 
-// ["°", ".", ",", "·", "_", ":", "?", "'", "<", ">", "\\", "/", "+", "-", "0", "x", "*", " "]
 const allChars = ["°", ".", "·", ":", "*", " ", "?"]
-const weights =  [0.143, 0.143, 0.143, 0.143, 0.143, 0.286, 0.0143]
+const weights = [0.143, 0.143, 0.143, 0.143, 0.143, 0.286, 0.0143]
 const takeChars = (n: number) => [...take(n, choices(allChars, weights))]
 const numChars = 9
 
-var prevX = takeChars(numChars)
+// var prevCharsLinear = takeChars(1).concat([...take(numChars - 1, prevCharsLinear)])
+var prevChars = takeChars(numChars)
 
 const OeGist = async (r: Route) => [
   "main", { style: { paddingTop } },
   ["h1", {}, $replace(fromRAF().map((t) => {
-    if (t % 12 === 0)
-      prevX = takeChars(numChars)
-      // prevX = takeChars(1).concat([...take(numTake - 1, prevX)])
-    return prevX.join("")
+    if (t % 12 === 0) prevChars = takeChars(numChars)
+    return prevChars.join("")
   }))],
   ["h2", {}, "Abstract machines"],
-  ["h3", {}, "Process, language, logic, proof, etc..\nReal game of life hours, you know the one."],
+  ["h3", {}, "Process, language, logic, proof, etc.\nReal game of life hours, you know the one."],
   ["p", {}, "observe ∘ explicate"]
 ]
 const OeGalleryIndex = (r: Route) => `${r.who}/${r.what} index`
@@ -130,26 +128,23 @@ const OeGallery = async (r: Route) => r.id ? OeGalleryIndex(r) : OeGalleryItem(r
 const OeWords = async (r: Route) => `${r.who}/${r.what}`
 const OeRefs = async (r: Route) => `${r.who}/${r.what}`
 
+const offset = 300
+const period = 2 * Math.PI * 1200
+const rate = 333
+const rangePct = 200
+
 const smixzyGist = async (_: Route) => [
-  "main", { style: { paddingTop, backgroundImage: fromRAF().map((t) => {
-    const x = Math.sin((t - 300) % (2 * Math.PI * 1200) / 333) * 200
-    // console.log(x)
-    return `radial-gradient(circle at ${x}% 50%, lightblue, #4200af)`
-  }) } },
-  ["h1",
-    // {
-    //   style: {
-    //     // backgroundImage: fromRAF().map((t) => `linear-gradient(${t % 360}deg, #4400ad, skyblue)`)
-    //     // backgroundImage: fromRAF().map((t) => `radial-gradient(circle at ${t % 200 - 100}% 0, #4400ad, skyblue)`)
-    //     backgroundImage: fromRAF().map((t) => {
-    //       const x = Math.sin((t - 300) % (2 * Math.PI * 1200) / 333) * 500
-    //       // console.log(x)
-    //       return `radial-gradient(circle at ${x}% 50%, lightblue, #4200af)`
-    //     })
-    //   }
-    // }
-   ,
-    "I'm garbage."],
+  "main", {
+    style: {
+      paddingTop,
+      backgroundImage: fromRAF().map((t) => {
+        const x = Math.sin((t - offset) % period / rate) * rangePct
+        // return `radial-gradient(circle at ${x}% 50%, lightblue, #4200af)`
+        return `radial-gradient(circle at ${x}% 50%, lightgreen, lightblue)`
+      })
+    }
+  },
+  ["h1", {}, "I'm garbage."],
   ["h2", {}, "Nonsense \\\\ Acrylic \\\\  Handmade"],
   ["h3", {}, "in any combination. I love my desk.\nSoft immutable. Lv. 60 Arcane Mage."]
 ]
