@@ -43,7 +43,8 @@ nav select {
   margin: 0 0.25rem 0 0;
 	border-radius: 3px;
 	font-size: 1.125rem;
-  font-family: ui-monospace,
+  font-family: Fragment Mono,
+               ui-monospace,
                "Cascadia Mono",
                "Segoe UI Mono",
                "Ubuntu Mono",
@@ -105,10 +106,7 @@ body.gallery main div.grid-container div.grid-item {
 }
 body.gallery main div.grid-controls {
   position: fixed;
-  /* top: 48px; */
   right: calc(40% - 48px); /* TODO: js? */
-  /* right: 0.25rem; */
-  /* bottom: 0.25rem; */
 }
 
 /* TODO: overlap with select control */
@@ -121,7 +119,8 @@ body.gallery main div.grid-controls button {
 	border-radius: 3px;
 	margin: 0 0 0.25rem;
 	font-size: 1.25rem;
-  font-family: ui-monospace,
+  font-family: Fragment Mono,
+               ui-monospace,
                "Cascadia Mono",
                "Segoe UI Mono",
                "Ubuntu Mono",
@@ -180,8 +179,8 @@ body.smixzy nav select {
   color: lightblue;
 }
 
-/* TODO: prefixes */
-body.smixzy main {
+/* TODO: check prefixes */
+body.smixzy.gist main {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

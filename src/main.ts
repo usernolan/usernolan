@@ -46,7 +46,9 @@ window.addEventListener("hashchange", (e) =>
   route.next(routeFromHash(e.newURL)))
 
 route.map((r) => document.body.className =
-  r.id ? `${r.who} ${r.what} ${r.id}` : `${r.who} ${r.what}`)
+  r.id ?
+    `${r.who} ${r.what} ${r.id}` :
+    `${r.who} ${r.what}`)
 
 const navComponent = (r: Route) => [
   "nav", {},
@@ -70,9 +72,9 @@ const navComponent = (r: Route) => [
   ]
 ]
 
-const paddingTopPx = reactive(0) /* TODO: rename; navHeight */
+/* TODO: rename; navHeight, ... */
 const paddingTop =
-  paddingTopPx.map((n) => `${n}px`, { closeOut: CloseMode.NEVER })
+  reactive(0).map((n) => `${n}px`, { closeOut: CloseMode.NEVER })
 
 const defaultComponent = async (r: Route) =>
   ["main", { style: { paddingTop } },
@@ -80,14 +82,14 @@ const defaultComponent = async (r: Route) =>
       `${r.who}/${r.what}/${r.id}` :
       `${r.who}/${r.what}`]
 
-const DEFAULT_NUM_GRID_COLUMNS = 5
-const MAX_NUM_GRID_COLUMNS = 20
-const GRID_GAP_PX = 5
-const numGridColumns = reactive(DEFAULT_NUM_GRID_COLUMNS)
-const gridItemWidth = numGridColumns.map((n) => {
+const DEFAULT_NUM_GRID_COLUMNS_INDEX = 3
+const GRID_GAP_PX = 5 /* TODO: duplicated from CSS */
+const numGridColumnsAll = [1, 2, 3, 5, 8, 13, 21]
+const numGridColumnsIndex = reactive(DEFAULT_NUM_GRID_COLUMNS_INDEX)
+const gridItemWidth = numGridColumnsIndex.map((i) => {
   const container = document.getElementsByClassName("grid-container")[0]
-  if (!container)
-    return "0px"
+  if (!container) return "0px"
+  const n = numGridColumnsAll[i]
   const w = (container.clientWidth - (n * GRID_GAP_PX)) / n
   return `${w}px`
 }, { closeOut: CloseMode.NEVER })
@@ -102,32 +104,23 @@ const grid = () => [
 ]
 
 const decNumGridColumns = () => {
-  const n = numGridColumns.deref() || DEFAULT_NUM_GRID_COLUMNS
-  n <= 1 ?
-    numGridColumns.next(MAX_NUM_GRID_COLUMNS) :
-    numGridColumns.next(n - 1)
+  const i = numGridColumnsIndex.deref()!
+  i === 0 ?
+    numGridColumnsIndex.next(numGridColumnsAll.length - 1) :
+    numGridColumnsIndex.next(i - 1)
 }
 const incNumGridColumns = () => {
-  const n = numGridColumns.deref() || DEFAULT_NUM_GRID_COLUMNS
-  numGridColumns.next((n % MAX_NUM_GRID_COLUMNS) + 1)
+  const i = numGridColumnsIndex.deref()!
+  numGridColumnsIndex.next((i + 1) % numGridColumnsAll.length)
 }
-
-// const gridControlTop =
-//   sync({ src: { paddingTopPx, scroll: fromDOMEvent(window, "scroll") } })
-//     .map((x) => {
-//       const n = Math.max(x.paddingTopPx - window.scrollY, 0)
-//       return n === 0 ? "0.25rem" : `${n}px` /* TODO: margin instead of 0.25rem */
-//     })
 
 const gridControls = () => [
   "div.grid-controls",
-  {}
-  // {
-  //   style: {
-  //     top: paddingTop
-  //   }
-  // }
-  ,
+  {
+    style: {
+      top: paddingTop
+    }
+  },
   ["button", { onclick: decNumGridColumns }, "+"],
   ["button", { onclick: incNumGridColumns }, "-"]
 ]
@@ -140,14 +133,14 @@ const nolanGist = async (r: Route) => [
   ["a", { href: "mailto:nolan@usernolan.net" }, "nolan@usernolan.net"]
 ]
 
-const nolanGalleryIndex = (r: Route) => [
+const galleryIndex = (r: Route) => [
   "main", { style: { paddingTop } },
   gridControls(),
   grid()
 ]
 
 const nolanGalleryItem = (r: Route) => `${r.who}/${r.what} item`
-const nolanGallery = async (r: Route) => r.id ? nolanGalleryItem(r) : nolanGalleryIndex(r)
+const nolanGallery = async (r: Route) => r.id ? nolanGalleryItem(r) : galleryIndex(r)
 const nolanRefs = async (r: Route) => `${r.who}/${r.what}`
 
 const nm8Gist = async (r: Route) => [
@@ -155,12 +148,12 @@ const nm8Gist = async (r: Route) => [
   ["h1", {}, "I'm sorry."],
   ["h2", {}, "...about the JavaScript, Inter, and the\nwhole select-nav deal."],
   ["h3", {}, "The web was never meant to be \"cool\" and \"work well\".\nThey have played us for absolute fools."],
-  ["p", {}, "like animate. or like nms, my initials.\n also mereological composition."],
+  ["p", {}, "like animate. or like my initials, nms.\n also mereological composition."],
 ]
 
 const nm8GalleryIndex = (r: Route) => `${r.who}/${r.what} index`
 const nm8GalleryItem = (r: Route) => `${r.who}/${r.what} item`
-const nm8Gallery = async (r: Route) => r.id ? nm8GalleryItem(r) : nm8GalleryIndex(r)
+const nm8Gallery = async (r: Route) => r.id ? nm8GalleryItem(r) : galleryIndex(r)
 const nm8Refs = async (r: Route) => `${r.who}/${r.what}`
 
 const allChars = ["°", ".", "·", ":", "*", " ", "?"]
@@ -183,7 +176,7 @@ const OeGist = async (r: Route) => [
 ]
 const OeGalleryIndex = (r: Route) => `${r.who}/${r.what} index`
 const OeGalleryItem = (r: Route) => `${r.who}/${r.what} item`
-const OeGallery = async (r: Route) => r.id ? OeGalleryIndex(r) : OeGalleryItem(r)
+const OeGallery = async (r: Route) => r.id ? OeGalleryItem(r) : galleryIndex(r)
 const OeRefs = async (r: Route) => `${r.who}/${r.what}`
 
 const offset = 300
@@ -215,7 +208,7 @@ const smixzyGist = async (_: Route) => [
 ]
 const smixzyGalleryIndex = (r: Route) => `${r.who}/${r.what} index`
 const smixzyGalleryItem = (r: Route) => `${r.who}/${r.what} item`
-const smixzyGallery = async (r: Route) => r.id ? smixzyGalleryItem(r) : smixzyGalleryIndex(r)
+const smixzyGallery = async (r: Route) => r.id ? smixzyGalleryItem(r) : galleryIndex(r)
 const smixzyRefs = async (r: Route) => `${r.who}/${r.what}`
 
 const capitalize = (s: string) => s.replace(/^\w/, c => c.toUpperCase())
@@ -231,13 +224,13 @@ const rdom = $compile([
       nolanGallery,
       nolanRefs: defaultComponent,
       nm8Gist,
-      nm8Gallery: defaultComponent,
+      nm8Gallery,
       nm8Refs: defaultComponent,
       OeGist,
-      OeGallery: defaultComponent,
+      OeGallery,
       OeRefs: defaultComponent,
       smixzyGist,
-      smixzyGallery: defaultComponent,
+      smixzyGallery,
       smixzyRefs: defaultComponent
     },
     async (err) => ["div", {}, route.map((r) => `ERROR ${err}; ${r.who}/${r.what}`)]
@@ -249,6 +242,5 @@ rdom.mount(document.body)
 // TODO: window.resize listener
 // TODO: "layout"
 const navElement = document.getElementsByTagName("nav")[0]
-setTimeout(() => paddingTopPx.next(navElement.clientHeight))
-// setTimeout(() => gridControlTop.next(navElement.clientHeight))
-setTimeout(() => numGridColumns.next(DEFAULT_NUM_GRID_COLUMNS))
+setTimeout(() => paddingTop.next(navElement.clientHeight))
+setTimeout(() => numGridColumnsIndex.next(DEFAULT_NUM_GRID_COLUMNS_INDEX))
