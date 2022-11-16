@@ -73,32 +73,20 @@ const navComponent = (r: Route) => [
 ]
 
 const defaultComponent = async (r: Route) =>
-  ["main", {},
-    r.id ?
-      `${r.who}/${r.what}/${r.id}` :
-      `${r.who}/${r.what}`]
+  ["main", {}, r.id ? `${r.who}/${r.what}/${r.id}` : `${r.who}/${r.what}`]
 
 /* TODO: refactor to attributes; data-gallery-cols, css selectors */
 const DEFAULT_NUM_GALLERY_COLUMNS_INDEX = 3
-const GALLERY_GAP_PX = 5 /* TODO: duplicated from CSS */
 const numGalleryColumnsAll = [1, 2, 3, 5, 8, 13, 21]
-const numGalleryColumnsIndex = reactive(DEFAULT_NUM_GALLERY_COLUMNS_INDEX)
-const galleryItemWidth = numGalleryColumnsIndex.map((i) => {
-  const container = document.getElementsByClassName("gallery-container")[0]
-  if (!container) return "0px"
-  const n = numGalleryColumnsAll[i]
-  // const w = (container.clientWidth - (n * GALLERY_GAP_PX)) / n
-  const w = container.clientWidth / n - 0.01 /* NOTE: avoid rounding issues */
-  return `${w}px`
-}, { closeOut: CloseMode.NEVER })
+const numGalleryColumnsIndex =
+  reactive(DEFAULT_NUM_GALLERY_COLUMNS_INDEX, { closeOut: CloseMode.NEVER })
 
 const gallery = () => [
-  "div.gallery-container", {},
-  ...map((n) => [
-    "div.gallery-item",
-    { style: { width: galleryItemWidth } },
-    n
-  ], range(25))
+  "div.gallery-container",
+  {
+    "data-gallery-columns": numGalleryColumnsIndex.map((i) => numGalleryColumnsAll[i])
+  },
+  ...map((n) => ["div.gallery-item", {}, n], range(25))
 ]
 
 /* TODO: undefined checks */

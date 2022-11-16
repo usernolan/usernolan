@@ -118,6 +118,29 @@ body.gallery main div.gallery-container div.gallery-item {
 body.gallery aside div.gallery-controls {
   position: sticky;
   top: 0.25rem; /* TODO: keep at initial position relative to nav */
+  padding: 0 0 0 0.25rem;
+}
+
+body.gallery main div.gallery-container[data-gallery-columns="1"] div.gallery-item {
+  width: 100%;
+}
+body.gallery main div.gallery-container[data-gallery-columns="2"] div.gallery-item {
+  width: 50%;
+}
+body.gallery main div.gallery-container[data-gallery-columns="3"] div.gallery-item {
+  width: 33.33%;
+}
+body.gallery main div.gallery-container[data-gallery-columns="5"] div.gallery-item {
+  width: 20%;
+}
+body.gallery main div.gallery-container[data-gallery-columns="8"] div.gallery-item {
+  width: 12.5%;
+}
+body.gallery main div.gallery-container[data-gallery-columns="13"] div.gallery-item {
+  width: 7.69%;
+}
+body.gallery main div.gallery-container[data-gallery-columns="21"] div.gallery-item {
+  width: 4.76%;
 }
 
 /* TODO: overlap with nav select */
