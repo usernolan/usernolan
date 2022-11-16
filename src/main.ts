@@ -82,6 +82,7 @@ const defaultComponent = async (r: Route) =>
       `${r.who}/${r.what}/${r.id}` :
       `${r.who}/${r.what}`]
 
+/* TODO: refactor to attributes; data-grid-cols, css selectors */
 const DEFAULT_NUM_GRID_COLUMNS_INDEX = 3
 const GRID_GAP_PX = 5 /* TODO: duplicated from CSS */
 const numGridColumnsAll = [1, 2, 3, 5, 8, 13, 21]
@@ -103,6 +104,7 @@ const grid = () => [
   ], range(25))
 ]
 
+/* TODO: undefined checks */
 const decNumGridColumns = () => {
   const i = numGridColumnsIndex.deref()!
   i === 0 ?
@@ -115,12 +117,7 @@ const incNumGridColumns = () => {
 }
 
 const gridControls = () => [
-  "div.grid-controls",
-  {
-    style: {
-      top: paddingTop
-    }
-  },
+  "div.grid-controls", { style: { top: paddingTop } },
   ["button", { onclick: decNumGridColumns }, "+"],
   ["button", { onclick: incNumGridColumns }, "-"]
 ]
@@ -240,7 +237,7 @@ const rdom = $compile([
 rdom.mount(document.body)
 
 // TODO: window.resize listener
-// TODO: "layout"
+// TODO: "layout"; route listener
 const navElement = document.getElementsByTagName("nav")[0]
 setTimeout(() => paddingTop.next(navElement.clientHeight))
 setTimeout(() => numGridColumnsIndex.next(DEFAULT_NUM_GRID_COLUMNS_INDEX))

@@ -53,6 +53,27 @@ nav select {
                monospace;
 }
 
+/* TODO: overlap with nav select */
+body.gallery main div.grid-controls button {
+  display: block;
+  appearance: none;
+	border: none;
+  cursor: pointer;
+	padding: 0.5rem 1rem;
+	border-radius: 3px;
+	margin: 0 0 0.25rem;
+	font-size: 1.25rem;
+  font-family: Fragment Mono,
+               ui-monospace,
+               "Cascadia Mono",
+               "Segoe UI Mono",
+               "Ubuntu Mono",
+               "Roboto Mono",
+               Menlo, Monaco, Consolas,
+               monospace;
+  aspect-ratio: 1/1;
+}
+
 
 /* Gist structure, spacing, font */
 
@@ -109,29 +130,6 @@ body.gallery main div.grid-controls {
   right: calc(40% - 48px); /* TODO: js? */
 }
 
-/* TODO: overlap with select control */
-body.gallery main div.grid-controls button {
-  display: block;
-  appearance: none;
-	border: none;
-  cursor: pointer;
-	padding: 0.5rem 1rem;
-	border-radius: 3px;
-	margin: 0 0 0.25rem;
-	font-size: 1.25rem;
-  font-family: Fragment Mono,
-               ui-monospace,
-               "Cascadia Mono",
-               "Segoe UI Mono",
-               "Ubuntu Mono",
-               "Roboto Mono",
-               Menlo, Monaco, Consolas,
-               monospace;
-  background: #424242;
-  color: #e8e8e8;
-  aspect-ratio: 1/1;
-}
-
 
 /* Colors, vibe */
 
@@ -146,12 +144,20 @@ body.nolan nav select {
 body.nolan main a {
   color: inherit;
 }
+body.nolan.gallery main div.grid-controls button {
+  background: #424242;
+  color: #e8e8e8;
+}
 
 body.nm8 {
   background: white;
   color: black;
 }
 body.nm8 nav select {
+  background: black;
+  color: white;
+}
+body.nm8.gallery main div.grid-controls button {
   background: black;
   color: white;
 }
@@ -169,6 +175,11 @@ body.Oe nav select {
 body.Oe.gist main p {
   font-style: italic;
 }
+body.Oe.gallery main div.grid-controls button {
+  background: white;
+  color: black;
+  border: 1px solid black;
+}
 
 body.smixzy {
   background: white;
@@ -183,6 +194,10 @@ body.smixzy nav select {
 body.smixzy.gist main {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+body.smixzy.gallery main div.grid-controls button {
+  background: #4200af;
+  color: lightblue;
 }
 
 @media (prefers-color-scheme: dark) {
