@@ -72,58 +72,56 @@ const navComponent = (r: Route) => [
   ]
 ]
 
-/* TODO: rename; navHeight, ... */
-const paddingTop =
-  reactive(0).map((n) => `${n}px`, { closeOut: CloseMode.NEVER })
-
 const defaultComponent = async (r: Route) =>
-  ["main", { style: { paddingTop } },
+  ["main", {},
     r.id ?
       `${r.who}/${r.what}/${r.id}` :
       `${r.who}/${r.what}`]
 
-/* TODO: refactor to attributes; data-grid-cols, css selectors */
-const DEFAULT_NUM_GRID_COLUMNS_INDEX = 3
-const GRID_GAP_PX = 5 /* TODO: duplicated from CSS */
-const numGridColumnsAll = [1, 2, 3, 5, 8, 13, 21]
-const numGridColumnsIndex = reactive(DEFAULT_NUM_GRID_COLUMNS_INDEX)
-const gridItemWidth = numGridColumnsIndex.map((i) => {
-  const container = document.getElementsByClassName("grid-container")[0]
+/* TODO: refactor to attributes; data-gallery-cols, css selectors */
+const DEFAULT_NUM_GALLERY_COLUMNS_INDEX = 3
+const GALLERY_GAP_PX = 5 /* TODO: duplicated from CSS */
+const numGalleryColumnsAll = [1, 2, 3, 5, 8, 13, 21]
+const numGalleryColumnsIndex = reactive(DEFAULT_NUM_GALLERY_COLUMNS_INDEX)
+const galleryItemWidth = numGalleryColumnsIndex.map((i) => {
+  const container = document.getElementsByClassName("gallery-container")[0]
   if (!container) return "0px"
-  const n = numGridColumnsAll[i]
-  const w = (container.clientWidth - (n * GRID_GAP_PX)) / n
+  const n = numGalleryColumnsAll[i]
+  // const w = (container.clientWidth - (n * GALLERY_GAP_PX)) / n
+  const w = container.clientWidth / n - 0.01 /* NOTE: avoid rounding issues */
   return `${w}px`
 }, { closeOut: CloseMode.NEVER })
 
-const grid = () => [
-  "div.grid-container", {},
+const gallery = () => [
+  "div.gallery-container", {},
   ...map((n) => [
-    "div.grid-item",
-    { style: { width: gridItemWidth } },
+    "div.gallery-item",
+    { style: { width: galleryItemWidth } },
     n
   ], range(25))
 ]
 
 /* TODO: undefined checks */
-const decNumGridColumns = () => {
-  const i = numGridColumnsIndex.deref()!
+const decNumGalleryColumns = () => {
+  const i = numGalleryColumnsIndex.deref()!
   i === 0 ?
-    numGridColumnsIndex.next(numGridColumnsAll.length - 1) :
-    numGridColumnsIndex.next(i - 1)
+    numGalleryColumnsIndex.next(numGalleryColumnsAll.length - 1) :
+    numGalleryColumnsIndex.next(i - 1)
 }
-const incNumGridColumns = () => {
-  const i = numGridColumnsIndex.deref()!
-  numGridColumnsIndex.next((i + 1) % numGridColumnsAll.length)
+const incNumGalleryColumns = () => {
+  const i = numGalleryColumnsIndex.deref()!
+  numGalleryColumnsIndex.next((i + 1) % numGalleryColumnsAll.length)
 }
 
-const gridControls = () => [
-  "div.grid-controls", { style: { top: paddingTop } },
-  ["button", { onclick: decNumGridColumns }, "+"],
-  ["button", { onclick: incNumGridColumns }, "-"]
+const galleryControls = () => [
+  "aside", {},
+  ["div.gallery-controls", {},
+    ["button", { onclick: decNumGalleryColumns }, "+"],
+    ["button", { onclick: incNumGalleryColumns }, "-"]]
 ]
 
 const nolanGist = async (r: Route) => [
-  "main", { style: { paddingTop } },
+  "main", {},
   ["h1", {}, "I'm nolan."],
   ["h2", {}, "I've been called a reflector. I'm big on computers,\ngraphics, and all forms of animation."],
   ["h3", {}, "This is where I put out on the internet, so stay awhile, and listen.\nEnjoy my post-social AIM profile."],
@@ -131,17 +129,17 @@ const nolanGist = async (r: Route) => [
 ]
 
 const galleryIndex = (r: Route) => [
-  "main", { style: { paddingTop } },
-  gridControls(),
-  grid()
+  "main", {},
+  gallery()
 ]
 
 const nolanGalleryItem = (r: Route) => `${r.who}/${r.what} item`
 const nolanGallery = async (r: Route) => r.id ? nolanGalleryItem(r) : galleryIndex(r)
+const nolanGalleryAside = async (r: Route) => galleryControls()
 const nolanRefs = async (r: Route) => `${r.who}/${r.what}`
 
 const nm8Gist = async (r: Route) => [
-  "main", { style: { paddingTop } },
+  "main", {},
   ["h1", {}, "I'm sorry."],
   ["h2", {}, "...about the JavaScript, Inter, and the\nwhole select-nav deal."],
   ["h3", {}, "The web was never meant to be \"cool\" and \"work well\".\nThey have played us for absolute fools."],
@@ -151,6 +149,7 @@ const nm8Gist = async (r: Route) => [
 const nm8GalleryIndex = (r: Route) => `${r.who}/${r.what} index`
 const nm8GalleryItem = (r: Route) => `${r.who}/${r.what} item`
 const nm8Gallery = async (r: Route) => r.id ? nm8GalleryItem(r) : galleryIndex(r)
+const nm8GalleryAside = async (r: Route) => galleryControls()
 const nm8Refs = async (r: Route) => `${r.who}/${r.what}`
 
 const allChars = ["°", ".", "·", ":", "*", " ", "?"]
@@ -162,7 +161,7 @@ const numChars = 9
 var prevChars = takeChars(numChars)
 
 const OeGist = async (r: Route) => [
-  "main", { style: { paddingTop } },
+  "main", {},
   ["h1", {}, $replace(fromRAF().map((t) => {
     if (t % 12 === 0) prevChars = takeChars(numChars)
     return prevChars.join("")
@@ -174,6 +173,7 @@ const OeGist = async (r: Route) => [
 const OeGalleryIndex = (r: Route) => `${r.who}/${r.what} index`
 const OeGalleryItem = (r: Route) => `${r.who}/${r.what} item`
 const OeGallery = async (r: Route) => r.id ? OeGalleryItem(r) : galleryIndex(r)
+const OeGalleryAside = async (r: Route) => galleryControls()
 const OeRefs = async (r: Route) => `${r.who}/${r.what}`
 
 const offset = 300
@@ -190,7 +190,6 @@ prefersDarkModeMatch.addEventListener("change", (e) => {
 const smixzyGist = async (_: Route) => [
   "main", {
     style: {
-      paddingTop,
       backgroundImage: fromRAF().map((t) => {
         const x = Math.sin((t - offset) % period / rate) * rangePct
         return prefersDarkMode.deref() ?
@@ -206,6 +205,7 @@ const smixzyGist = async (_: Route) => [
 const smixzyGalleryIndex = (r: Route) => `${r.who}/${r.what} index`
 const smixzyGalleryItem = (r: Route) => `${r.who}/${r.what} item`
 const smixzyGallery = async (r: Route) => r.id ? smixzyGalleryItem(r) : galleryIndex(r)
+const smixzyGalleryAside = async (r: Route) => galleryControls()
 const smixzyRefs = async (r: Route) => `${r.who}/${r.what}`
 
 const capitalize = (s: string) => s.replace(/^\w/, c => c.toUpperCase())
@@ -231,6 +231,17 @@ const rdom = $compile([
       smixzyRefs: defaultComponent
     },
     async (err) => ["div", {}, route.map((r) => `ERROR ${err}; ${r.who}/${r.what}`)]
+  ),
+  $switch(
+    route,
+    (r) => `${r.who}${capitalize(r.what)}Aside`,
+    {
+      nolanGalleryAside,
+      nm8GalleryAside,
+      OeGalleryAside,
+      smixzyGalleryAside
+    },
+    async () => ["aside", {}]
   )
 ])
 
@@ -238,6 +249,6 @@ rdom.mount(document.body)
 
 // TODO: window.resize listener
 // TODO: "layout"; route listener
-const navElement = document.getElementsByTagName("nav")[0]
-setTimeout(() => paddingTop.next(navElement.clientHeight))
-setTimeout(() => numGridColumnsIndex.next(DEFAULT_NUM_GRID_COLUMNS_INDEX))
+// const navElement = document.getElementsByTagName("nav")[0]
+// setTimeout(() => paddingTop.next(navElement.clientHeight))
+setTimeout(() => numGalleryColumnsIndex.next(DEFAULT_NUM_GALLERY_COLUMNS_INDEX))
