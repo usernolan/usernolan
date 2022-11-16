@@ -4,11 +4,13 @@ import { $switch } from "@thi.ng/rdom/switch"
 import { $replace } from "@thi.ng/rdom/replace"
 import { reactive, stream } from "@thi.ng/rstream/stream"
 import { fromRAF } from "@thi.ng/rstream/raf"
+import { fromDOMEvent } from "@thi.ng/rstream/event"
 import { CloseMode } from "@thi.ng/rstream/api"
 import { sync } from "@thi.ng/rstream/sync"
 import { map } from "@thi.ng/transducers/map"
 import { take } from "@thi.ng/transducers/take"
 import { choices } from "@thi.ng/transducers/choices"
+import { range } from "@thi.ng/transducers/range"
 
 interface Route {
   who: string,
@@ -17,7 +19,7 @@ interface Route {
 }
 
 const whoAll = ["nolan", "nm8", "Oe", "smixzy"]
-const whatAll = ["gist", "gallery", "words", "refs"]
+const whatAll = ["gist", "gallery", "refs"]
 
 const routeFromHash = (s: string): Route => {
   const i = s.indexOf("#")
@@ -43,9 +45,7 @@ const route = reactive(routeFromHash(location.hash))
 window.addEventListener("hashchange", (e) =>
   route.next(routeFromHash(e.newURL)))
 
-const body = document.getElementsByTagName("body")[0]
-
-route.map((r) => body.className =
+route.map((r) => document.body.className =
   r.id ? `${r.who} ${r.what} ${r.id}` : `${r.who} ${r.what}`)
 
 const navComponent = (r: Route) => [
@@ -57,7 +57,8 @@ const navComponent = (r: Route) => [
         window.scrollTo(0, 0)
       }
     },
-    ...whoAll.map((x) => ["option", { selected: r.who === x }, x])],
+    ...whoAll.map((x) => ["option", { selected: r.who === x }, x])
+  ],
   ["select.what",
     {
       onchange: (e: { target: HTMLSelectElement }) => {
@@ -69,39 +70,97 @@ const navComponent = (r: Route) => [
   ]
 ]
 
-const paddingTop = reactive(0).map((n) =>
-  n.toString().concat("px"), { closeOut: CloseMode.NEVER })
+const paddingTopPx = reactive(0) /* TODO: rename; navHeight */
+const paddingTop =
+  paddingTopPx.map((n) => `${n}px`, { closeOut: CloseMode.NEVER })
 
 const defaultComponent = async (r: Route) =>
   ["main", { style: { paddingTop } },
-    r.id ? `${r.who}/${r.what}/${r.id}` : `${r.who}/${r.what}`]
+    r.id ?
+      `${r.who}/${r.what}/${r.id}` :
+      `${r.who}/${r.what}`]
+
+const DEFAULT_NUM_GRID_COLUMNS = 5
+const MAX_NUM_GRID_COLUMNS = 20
+const GRID_GAP_PX = 5
+const numGridColumns = reactive(DEFAULT_NUM_GRID_COLUMNS)
+const gridItemWidth = numGridColumns.map((n) => {
+  const container = document.getElementsByClassName("grid-container")[0]
+  if (!container)
+    return "0px"
+  const w = (container.clientWidth - (n * GRID_GAP_PX)) / n
+  return `${w}px`
+}, { closeOut: CloseMode.NEVER })
+
+const grid = () => [
+  "div.grid-container", {},
+  ...map((n) => [
+    "div.grid-item",
+    { style: { width: gridItemWidth } },
+    n
+  ], range(25))
+]
+
+const decNumGridColumns = () => {
+  const n = numGridColumns.deref() || DEFAULT_NUM_GRID_COLUMNS
+  n <= 1 ?
+    numGridColumns.next(MAX_NUM_GRID_COLUMNS) :
+    numGridColumns.next(n - 1)
+}
+const incNumGridColumns = () => {
+  const n = numGridColumns.deref() || DEFAULT_NUM_GRID_COLUMNS
+  numGridColumns.next((n % MAX_NUM_GRID_COLUMNS) + 1)
+}
+
+// const gridControlTop =
+//   sync({ src: { paddingTopPx, scroll: fromDOMEvent(window, "scroll") } })
+//     .map((x) => {
+//       const n = Math.max(x.paddingTopPx - window.scrollY, 0)
+//       return n === 0 ? "0.25rem" : `${n}px` /* TODO: margin instead of 0.25rem */
+//     })
+
+const gridControls = () => [
+  "div.grid-controls",
+  {}
+  // {
+  //   style: {
+  //     top: paddingTop
+  //   }
+  // }
+  ,
+  ["button", { onclick: decNumGridColumns }, "+"],
+  ["button", { onclick: incNumGridColumns }, "-"]
+]
 
 const nolanGist = async (r: Route) => [
   "main", { style: { paddingTop } },
   ["h1", {}, "I'm nolan."],
   ["h2", {}, "I've been called a reflector. I'm big on computers,\ngraphics, and all forms of animation."],
-  ["h3", {}, "This is where I put out online, so stay awhile, and listen.\nEnjoy my post-social AIM profile."],
+  ["h3", {}, "This is where I put out on the internet, so stay awhile, and listen.\nEnjoy my post-social AIM profile."],
   ["a", { href: "mailto:nolan@usernolan.net" }, "nolan@usernolan.net"]
 ]
 
-const nolanGalleryIndex = (r: Route) => `${r.who}/${r.what} index`
+const nolanGalleryIndex = (r: Route) => [
+  "main", { style: { paddingTop } },
+  gridControls(),
+  grid()
+]
+
 const nolanGalleryItem = (r: Route) => `${r.who}/${r.what} item`
 const nolanGallery = async (r: Route) => r.id ? nolanGalleryItem(r) : nolanGalleryIndex(r)
-const nolanWords = async (r: Route) => `${r.who}/${r.what}`
 const nolanRefs = async (r: Route) => `${r.who}/${r.what}`
 
 const nm8Gist = async (r: Route) => [
   "main", { style: { paddingTop } },
   ["h1", {}, "I'm sorry."],
-  ["h2", {}, "—about the JavaScript, Inter, and the\nwhole select-nav deal."],
-  ["h3", {}, "The web was never meant to be \"cool\" and \"work\".\nThey have played us for absolute fools."],
-  ["p", {}, "like 'animate'. or like 'nms', my initials.\nor like, unrestricted mereological composition."],
+  ["h2", {}, "...about the JavaScript, Inter, and the\nwhole select-nav deal."],
+  ["h3", {}, "The web was never meant to be \"cool\" and \"work well\".\nThey have played us for absolute fools."],
+  ["p", {}, "like animate. or like nms, my initials.\n also mereological composition."],
 ]
 
 const nm8GalleryIndex = (r: Route) => `${r.who}/${r.what} index`
 const nm8GalleryItem = (r: Route) => `${r.who}/${r.what} item`
 const nm8Gallery = async (r: Route) => r.id ? nm8GalleryItem(r) : nm8GalleryIndex(r)
-const nm8Words = async (r: Route) => `${r.who}/${r.what}`
 const nm8Refs = async (r: Route) => `${r.who}/${r.what}`
 
 const allChars = ["°", ".", "·", ":", "*", " ", "?"]
@@ -118,14 +177,13 @@ const OeGist = async (r: Route) => [
     if (t % 12 === 0) prevChars = takeChars(numChars)
     return prevChars.join("")
   }))],
-  ["h2", {}, "Abstract machines"],
-  ["h3", {}, "Process, language, logic, proof, etc.\nReal game of life hours, you know the one."],
+  ["h2", {}, ".Process\n.Abstract machines"],
+  ["h3", {}, "Language, logic, proof, etc.\nReal game of life hours, you know the one."],
   ["p", {}, "observe ∘ explicate"]
 ]
 const OeGalleryIndex = (r: Route) => `${r.who}/${r.what} index`
 const OeGalleryItem = (r: Route) => `${r.who}/${r.what} item`
 const OeGallery = async (r: Route) => r.id ? OeGalleryIndex(r) : OeGalleryItem(r)
-const OeWords = async (r: Route) => `${r.who}/${r.what}`
 const OeRefs = async (r: Route) => `${r.who}/${r.what}`
 
 const offset = 300
@@ -133,14 +191,21 @@ const period = 2 * Math.PI * 1200
 const rate = 333
 const rangePct = 200
 
+const prefersDarkModeMatch = window.matchMedia("(prefers-color-scheme: dark)")
+const prefersDarkMode = reactive(prefersDarkModeMatch.matches)
+prefersDarkModeMatch.addEventListener("change", (e) => {
+  prefersDarkMode.next(e.matches)
+})
+
 const smixzyGist = async (_: Route) => [
   "main", {
     style: {
       paddingTop,
       backgroundImage: fromRAF().map((t) => {
         const x = Math.sin((t - offset) % period / rate) * rangePct
-        // return `radial-gradient(circle at ${x}% 50%, lightblue, #4200af)`
-        return `radial-gradient(circle at ${x}% 50%, lightgreen, lightblue)`
+        return prefersDarkMode.deref() ?
+          `radial-gradient(circle at ${x}% 50%, lightgreen, lightblue)` :
+          `radial-gradient(circle at ${x}% 50%, lightblue, #4200af)`
       })
     }
   },
@@ -151,7 +216,6 @@ const smixzyGist = async (_: Route) => [
 const smixzyGalleryIndex = (r: Route) => `${r.who}/${r.what} index`
 const smixzyGalleryItem = (r: Route) => `${r.who}/${r.what} item`
 const smixzyGallery = async (r: Route) => r.id ? smixzyGalleryItem(r) : smixzyGalleryIndex(r)
-const smixzyWords = async (r: Route) => `${r.who}/${r.what}`
 const smixzyRefs = async (r: Route) => `${r.who}/${r.what}`
 
 const capitalize = (s: string) => s.replace(/^\w/, c => c.toUpperCase())
@@ -164,28 +228,27 @@ const rdom = $compile([
     (r) => `${r.who}${capitalize(r.what)}`,
     {
       nolanGist,
-      nolanGallery: defaultComponent,
-      nolanWords: defaultComponent,
+      nolanGallery,
       nolanRefs: defaultComponent,
       nm8Gist,
       nm8Gallery: defaultComponent,
-      nm8Words: defaultComponent,
       nm8Refs: defaultComponent,
       OeGist,
       OeGallery: defaultComponent,
-      OeWords: defaultComponent,
       OeRefs: defaultComponent,
       smixzyGist,
       smixzyGallery: defaultComponent,
-      smixzyWords: defaultComponent,
       smixzyRefs: defaultComponent
     },
     async (err) => ["div", {}, route.map((r) => `ERROR ${err}; ${r.who}/${r.what}`)]
   )
 ])
 
-rdom.mount(body)
+rdom.mount(document.body)
 
 // TODO: window.resize listener
-const el = document.getElementsByTagName("nav")[0]
-paddingTop.next(el.clientHeight)
+// TODO: "layout"
+const navElement = document.getElementsByTagName("nav")[0]
+setTimeout(() => paddingTopPx.next(navElement.clientHeight))
+// setTimeout(() => gridControlTop.next(navElement.clientHeight))
+setTimeout(() => numGridColumns.next(DEFAULT_NUM_GRID_COLUMNS))

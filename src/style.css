@@ -1,6 +1,4 @@
 :root {
-  background: #e8e8e8;
-  color: #424242;
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   color-scheme: light dark;
   font-synthesis: none;
@@ -13,11 +11,11 @@
     -webkit-text-size-adjust: 100%;
   }
 }
+/* TODO: Javascript :root background for initial transition flash */
 
 body {
   box-sizing: border-box;
-  height: 100vh;
-  width: 100vw;
+  width: 100%;
   margin: 0;
   padding: 0;
   display: flex;
@@ -28,19 +26,23 @@ body * {
   box-sizing: border-box;
 }
 
+
+/* Nav */
+
 nav {
   position: fixed;
   top: 0;
   left: 0;
+	padding: 0.25rem;
 }
 nav select {
 	appearance: none;
 	border: none;
   cursor: pointer;
-	padding: 0.5rem 1.25rem 0.5rem 1rem;
+	padding: 0.5rem 1rem;
+  margin: 0 0.25rem 0 0;
 	border-radius: 3px;
-	margin: 0.25rem 0 0.25rem 0.25rem;
-	font-size: 1.25rem;
+	font-size: 1.125rem;
   font-family: ui-monospace,
                "Cascadia Mono",
                "Segoe UI Mono",
@@ -50,11 +52,13 @@ nav select {
                monospace;
 }
 
+
+/* Gist structure, spacing, font */
+
 body.gist main {
   width: 60%;
   padding: 0 0 0 0.25rem;
 }
-
 body.gist main h1 {
   font-size: 9.5rem;
   font-weight: 800;
@@ -75,6 +79,62 @@ body.gist main p, a {
   font-size: 1.25rem;
   font-weight: 500;
 }
+
+
+/* Gallery structure, spacing, font */
+
+body.gallery {
+  /* NOTE: scroll bar (dis)appearance triggers width change */
+  overflow-y: scroll;
+}
+body.gallery main {
+  width: 60%; /* 23/42 = 0.547619 */
+  padding: 0 0 0 0.25rem;
+}
+body.gallery main div.grid-container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+body.gallery main div.grid-container div.grid-item {
+  border: 1px dashed black; /* TODO: delete */
+  width: 49%;
+  aspect-ratio: 1 / 1;
+  transition: width 120ms ease, height 120ms ease;
+}
+body.gallery main div.grid-controls {
+  position: fixed;
+  /* top: 48px; */
+  right: calc(40% - 48px); /* TODO: js? */
+  /* right: 0.25rem; */
+  /* bottom: 0.25rem; */
+}
+
+/* TODO: overlap with select control */
+body.gallery main div.grid-controls button {
+  display: block;
+  appearance: none;
+	border: none;
+  cursor: pointer;
+	padding: 0.5rem 1rem;
+	border-radius: 3px;
+	margin: 0 0 0.25rem;
+	font-size: 1.25rem;
+  font-family: ui-monospace,
+               "Cascadia Mono",
+               "Segoe UI Mono",
+               "Ubuntu Mono",
+               "Roboto Mono",
+               Menlo, Monaco, Consolas,
+               monospace;
+  background: #424242;
+  color: #e8e8e8;
+  aspect-ratio: 1/1;
+}
+
+
+/* Colors, vibe */
 
 body.nolan {
   background: #e8e8e8 /* rgb(232,230,235) */;
@@ -100,14 +160,15 @@ body.nm8 nav select {
 body.Oe {
   background: white;
   color: black;
+  font-family: Fragment Mono, monospace; /* TODO: default monospace stack */
 }
 body.Oe nav select {
   background: white;
   color: black;
   border: 1px solid black;
 }
-body.Oe main h1 {
-  font-family: monospace;
+body.Oe.gist main p {
+  font-style: italic;
 }
 
 body.smixzy {
@@ -118,31 +179,44 @@ body.smixzy nav select {
   background: #4200af;
   color: lightblue;
 }
+
+/* TODO: prefixes */
 body.smixzy main {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 @media (prefers-color-scheme: dark) {
+  /* TODO: control overlap */
+  body.nolan.gallery main div.grid-controls button {
+    background: #242424;
+    border: 1px solid #afafaf; /* TODO: delete */
+    color: #ccc;
+  }
+  body.nolan.gallery main div.grid-container div.grid-item {
+    border: 1px dashed #afafaf; /* TODO: delete */
+  }
+
   body.nolan {
-    background: #424242;
-    color: #cecece;
+    background: #181818;
+    color: #777;
   }
   body.nolan nav select {
-    color: #cecece;
-    border: 1px solid #cecece;
+    background: #242424;
+    color: #ccc;
+    border: 1px solid #afafaf;
   }
 
   body.nm8,
   body.Oe {
     background: black;
-    color: white;
+    color: #ccc;
   }
   body.nm8 nav select,
   body.Oe nav select {
-    background: #212121;
-    color: white;
-    border: 1px solid white;
+    background: #121212;
+    color: #e8e8e8;
+    border: 1px solid #afafaf;
   }
 
   body.smixzy {
@@ -153,11 +227,6 @@ body.smixzy main {
     background: #4200af;
     color: lightblue;
     border: 1px solid lightblue;
-  }
-  body.smixzy main {
-    color: white !important;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
   }
 
 }
