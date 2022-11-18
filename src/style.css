@@ -143,6 +143,18 @@ body.gallery main div.gallery-container[data-gallery-columns="21"] div.gallery-i
   width: 4.76%;
 }
 
+body.gallery main div.gallery-container div.gallery-item > a {
+  /* width: 100%; */
+  height: 100%;
+  display: block;
+}
+body.gallery main div.gallery-container div.gallery-item img {
+  width: 100%;
+  object-fit: cover;
+  object-position: 15% 0;
+  aspect-ratio: 1/1;
+}
+
 /* TODO: overlap with nav select */
 body.gallery aside div.gallery-controls button {
   display: block;
@@ -175,7 +187,7 @@ body.nolan nav select {
   background: #424242;
   color: #e8e8e8;
 }
-body.nolan main a {
+body.nolan.gist main a {
   color: inherit;
 }
 body.nolan.gallery aside div.gallery-controls button {

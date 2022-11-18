@@ -1,4 +1,5 @@
 import './style.css'
+import type { ComponentLike } from "@thi.ng/rdom/api"
 import { $compile } from "@thi.ng/rdom/compile"
 import { $switch } from "@thi.ng/rdom/switch"
 import { $replace } from "@thi.ng/rdom/replace"
@@ -18,8 +19,22 @@ interface Route {
   id?: string
 }
 
+/* TODO: enums */
 const whoAll = ["nolan", "nm8", "Oe", "smixzy"]
-const whatAll = ["gist", "gallery", "refs"]
+const whatAll = ["gist", "gallery", "reference"]
+
+enum Who {
+  Nolan = "nolan",
+  Nm8 = "nm8",
+  Oe = "Oe",
+  Smixzy = "smixzy"
+}
+
+enum What {
+  Gist = "gist",
+  Gallery = "gallery",
+  Reference = "reference"
+}
 
 const routeFromHash = (s: string): Route => {
   const i = s.indexOf("#")
@@ -75,28 +90,47 @@ const navComponent = (r: Route) => [
 const defaultComponent = async (r: Route) =>
   ["main", {}, r.id ? `${r.who}/${r.what}/${r.id}` : `${r.who}/${r.what}`]
 
-/* TODO: refactor to attributes; data-gallery-cols, css selectors */
-const DEFAULT_NUM_GALLERY_COLUMNS_INDEX = 3
+const DEFAULT_NUM_GALLERY_COLUMNS_INDEX = 2
 const numGalleryColumnsAll = [1, 2, 3, 5, 8, 13, 21]
-const numGalleryColumnsIndex =
-  reactive(DEFAULT_NUM_GALLERY_COLUMNS_INDEX, { closeOut: CloseMode.NEVER })
+const numGalleryColumnsIndex = reactive(DEFAULT_NUM_GALLERY_COLUMNS_INDEX, { closeOut: CloseMode.NEVER })
+const galleryColumns = numGalleryColumnsIndex.map((i) => numGalleryColumnsAll[i], { closeOut: CloseMode.NEVER })
+/* TODO: review CloseMode */
 
-const gallery = () => [
-  "div.gallery-container",
+interface GalleryItem {
+  id: string,
+  previewComponent: (r: Route, xs: Map<string, GalleryItem>) => ComponentLike,
+  pageComponent: (r: Route, xs: Map<string, GalleryItem>) => ComponentLike
+}
+
+const nolanGalleryItems: Iterable<GalleryItem> = [
   {
-    "data-gallery-columns": numGalleryColumnsIndex.map((i) => numGalleryColumnsAll[i])
-  },
-  ...map((n) => ["div.gallery-item", {}, n], range(25))
+    id: "self",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/self" },
+        ["img", { src: "/jpg/nolan.4.jpg" }]]
+    ],
+    pageComponent: () => ["div", {}]
+  }
+]
+
+const nolanGalleryItemMap =
+  new Map(map((i) => [i.id, i], nolanGalleryItems))
+
+const gallery = (r: Route, galleryItemMap: Map<string, GalleryItem>) => [
+  "main", {},
+  ["div.gallery-container", { "data-gallery-columns": galleryColumns },
+    ...map((i) => i.previewComponent(r, galleryItemMap), galleryItemMap.values())]
 ]
 
 /* TODO: undefined checks */
-const decNumGalleryColumns = () => {
+const decNumGalleryColumnsIndex = () => {
   const i = numGalleryColumnsIndex.deref()!
   i === 0 ?
     numGalleryColumnsIndex.next(numGalleryColumnsAll.length - 1) :
     numGalleryColumnsIndex.next(i - 1)
 }
-const incNumGalleryColumns = () => {
+const incNumGalleryColumnsIndex = () => {
   const i = numGalleryColumnsIndex.deref()!
   numGalleryColumnsIndex.next((i + 1) % numGalleryColumnsAll.length)
 }
@@ -104,33 +138,54 @@ const incNumGalleryColumns = () => {
 const galleryControls = () => [
   "aside", {},
   ["div.gallery-controls", {},
-    ["button", { onclick: decNumGalleryColumns }, "+"],
-    ["button", { onclick: incNumGalleryColumns }, "-"]]
+    ["button", { onclick: decNumGalleryColumnsIndex }, "+"],
+    ["button", { onclick: incNumGalleryColumnsIndex }, "-"]]
 ]
 
 const nolanGist = async (r: Route) => [
   "main", {},
   ["h1", {}, "I'm nolan."],
-  ["h2", {}, "I've been called a reflector. I'm big on computers,\ngraphics, and all forms of animation."],
-  ["h3", {}, "This is where I put out on the internet, so stay awhile, and listen.\nEnjoy my post-social AIM profile."],
+  ["h2", {}, "I've been called a reflector. I'm into computers,\ngraphics, and all forms of animation."],
+  ["h3", {}, "This is where I textually put out on the internet, so stay awhile, and listen. Enjoy my post-social AIM profile."],
   ["a", { href: "mailto:nolan@usernolan.net" }, "nolan@usernolan.net"]
 ]
+/* TODO: contact? */
 
-const galleryIndex = (r: Route) => [
-  "main", {},
-  gallery()
-]
+const nolanGallery = async (r: Route) =>
+  r.id ?
+    nolanGalleryItemMap.get(r.id)?.pageComponent(r, nolanGalleryItemMap) || gallery(r, nolanGalleryItemMap) :
+    gallery(r, nolanGalleryItemMap)
 
-const nolanGalleryItem = (r: Route) => `${r.who}/${r.what} item`
-const nolanGallery = async (r: Route) => r.id ? nolanGalleryItem(r) : galleryIndex(r)
+const galleryItemMaps = new Map([
+  ["nolan", nolanGalleryItemMap],
+  ["nm8", nolanGalleryItemMap],
+  ["Oe", nolanGalleryItemMap],
+  ["smixzy", nolanGalleryItemMap]
+])
+
+const galleryItemObj = {
+  nolan: nolanGalleryItemMap,
+  nm8: nolanGalleryItemMap,
+  Oe: nolanGalleryItemMap,
+  smixzy: nolanGalleryItemMap
+}
+
+const galleryComponent = async (r: Route) => {
+  // const m = galleryItemMaps.get(r.who) || galleryItemMaps.get(whoAll[0])!
+  const m = galleryItemObj[r.who] || galleryItemObj[whoAll[0]]!
+  r.id ?
+    m.get(r.id)?.pageComponent(r, m) || gallery(r, m) :
+    gallery(r, m)
+}
+
 const nolanGalleryAside = async (r: Route) => galleryControls()
-const nolanRefs = async (r: Route) => `${r.who}/${r.what}`
+const nolanReference = async (r: Route) => `${r.who}/${r.what}`
 
 const nm8Gist = async (r: Route) => [
   "main", {},
   ["h1", {}, "I'm sorry."],
   ["h2", {}, "...about the JavaScript, Inter, and the\nwhole select-nav deal."],
-  ["h3", {}, "The web was never meant to be \"cool\" and \"work well\".\nThey have played us for absolute fools."],
+  ["h3", {}, "The web was never meant to be \"cool\" and \"work well.\"\nThey have played us for absolute fools."],
   ["p", {}, "like animate. or like my initials, nms.\n also mereological composition."],
 ]
 
@@ -138,7 +193,7 @@ const nm8GalleryIndex = (r: Route) => `${r.who}/${r.what} index`
 const nm8GalleryItem = (r: Route) => `${r.who}/${r.what} item`
 const nm8Gallery = async (r: Route) => r.id ? nm8GalleryItem(r) : galleryIndex(r)
 const nm8GalleryAside = async (r: Route) => galleryControls()
-const nm8Refs = async (r: Route) => `${r.who}/${r.what}`
+const nm8Reference = async (r: Route) => `${r.who}/${r.what}`
 
 const allChars = ["°", ".", "·", ":", "*", " ", "?"]
 const weights = [0.143, 0.143, 0.143, 0.143, 0.143, 0.286, 0.0143]
@@ -162,7 +217,7 @@ const OeGalleryIndex = (r: Route) => `${r.who}/${r.what} index`
 const OeGalleryItem = (r: Route) => `${r.who}/${r.what} item`
 const OeGallery = async (r: Route) => r.id ? OeGalleryItem(r) : galleryIndex(r)
 const OeGalleryAside = async (r: Route) => galleryControls()
-const OeRefs = async (r: Route) => `${r.who}/${r.what}`
+const OeReference = async (r: Route) => `${r.who}/${r.what}`
 
 const offset = 300
 const period = 2 * Math.PI * 1200
@@ -194,7 +249,7 @@ const smixzyGalleryIndex = (r: Route) => `${r.who}/${r.what} index`
 const smixzyGalleryItem = (r: Route) => `${r.who}/${r.what} item`
 const smixzyGallery = async (r: Route) => r.id ? smixzyGalleryItem(r) : galleryIndex(r)
 const smixzyGalleryAside = async (r: Route) => galleryControls()
-const smixzyRefs = async (r: Route) => `${r.who}/${r.what}`
+const smixzyReference = async (r: Route) => `${r.who}/${r.what}`
 
 const capitalize = (s: string) => s.replace(/^\w/, c => c.toUpperCase())
 
@@ -207,22 +262,22 @@ const rdom = $compile([
     {
       nolanGist,
       nolanGallery,
-      nolanRefs: defaultComponent,
+      nolanReference: defaultComponent,
       nm8Gist,
       nm8Gallery,
-      nm8Refs: defaultComponent,
+      nm8Reference: defaultComponent,
       OeGist,
       OeGallery,
-      OeRefs: defaultComponent,
+      OeReference: defaultComponent,
       smixzyGist,
       smixzyGallery,
-      smixzyRefs: defaultComponent
+      smixzyReference: defaultComponent
     },
     async (err) => ["div", {}, route.map((r) => `ERROR ${err}; ${r.who}/${r.what}`)]
   ),
   $switch(
     route,
-    (r) => `${r.who}${capitalize(r.what)}Aside`,
+    (r) => r.id ? "nothing" : `${r.who}${capitalize(r.what)}Aside`, /* TODO: fix aside for gallery item */
     {
       nolanGalleryAside,
       nm8GalleryAside,
@@ -239,4 +294,4 @@ rdom.mount(document.body)
 // TODO: "layout"; route listener
 // const navElement = document.getElementsByTagName("nav")[0]
 // setTimeout(() => paddingTop.next(navElement.clientHeight))
-setTimeout(() => numGalleryColumnsIndex.next(DEFAULT_NUM_GALLERY_COLUMNS_INDEX))
+// setTimeout(() => numGalleryColumnsIndex.next(DEFAULT_NUM_GALLERY_COLUMNS_INDEX))
