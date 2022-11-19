@@ -19,22 +19,9 @@ interface Route {
   id?: string
 }
 
-/* TODO: enums */
+/* TODO: revisit, string literal type */
 const whoAll = ["nolan", "nm8", "Oe", "smixzy"]
 const whatAll = ["gist", "gallery", "reference"]
-
-enum Who {
-  Nolan = "nolan",
-  Nm8 = "nm8",
-  Oe = "Oe",
-  Smixzy = "smixzy"
-}
-
-enum What {
-  Gist = "gist",
-  Gallery = "gallery",
-  Reference = "reference"
-}
 
 const routeFromHash = (s: string): Route => {
   const i = s.indexOf("#")
@@ -49,7 +36,7 @@ const routeFromHash = (s: string): Route => {
   const arr = s.substring(i).split("/")
 
   return {
-    who: arr[1] || whoAll[0],
+    who: arr[1] || whoAll[0], /* TODO: string literal types, validation */
     what: arr[2] || whatAll[0],
     id: arr[3]
   }
@@ -90,8 +77,8 @@ const navComponent = (r: Route) => [
 const defaultComponent = async (r: Route) =>
   ["main", {}, r.id ? `${r.who}/${r.what}/${r.id}` : `${r.who}/${r.what}`]
 
-const DEFAULT_NUM_GALLERY_COLUMNS_INDEX = 2
-const numGalleryColumnsAll = [1, 2, 3, 5, 8, 13, 21]
+const DEFAULT_NUM_GALLERY_COLUMNS_INDEX = 1
+const numGalleryColumnsAll = [2, 3, 5, 8, 13]
 const numGalleryColumnsIndex = reactive(DEFAULT_NUM_GALLERY_COLUMNS_INDEX, { closeOut: CloseMode.NEVER })
 const galleryColumns = numGalleryColumnsIndex.map((i) => numGalleryColumnsAll[i], { closeOut: CloseMode.NEVER })
 /* TODO: review CloseMode */
@@ -108,14 +95,1060 @@ const nolanGalleryItems: Iterable<GalleryItem> = [
     previewComponent: () => [
       "div.gallery-item", {},
       ["a", { href: "#/nolan/gallery/self" },
-        ["img", { src: "/jpg/nolan.4.jpg" }]]
+        ["img", {
+          src: "/jpeg/nolan.self.jpeg",
+          style: {
+            "object-position": "15% 0",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "persevere",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/persevere" },
+        ["img", {
+          src: "/jpeg/persevere.jpeg",
+          style: {
+            // "object-position": "15% 0",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "cloud-cover",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/cloud-cover" },
+        ["img", {
+          src: "/jpeg/cloud-cover.jpeg",
+          style: {
+            // "object-position": "15% 0",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "parents",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/parents" },
+        ["img", {
+          src: "/jpeg/parents.jpeg",
+          style: {
+            // "object-position": "15% 0",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "sister",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/sister" },
+        ["img", {
+          src: "/jpeg/sister.jpeg",
+          style: {
+            "object-position": "0 30%",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "louie",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/louie" },
+        ["img", {
+          src: "/jpeg/louie.jpeg",
+          style: {
+            // "object-position": "15% 0",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "petals",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/petals" },
+        ["img", {
+          src: "/jpeg/petals.jpeg",
+          style: {
+            // "object-position": "15% 0",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "boice",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/boice" },
+        ["img", {
+          src: "/jpeg/boice.jpeg",
+          style: {
+            // "object-position": "15% 0",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "watching",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/watching" },
+        ["img", {
+          src: "/jpeg/watching.jpeg",
+          style: {
+            // "object-position": "15% 0",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "dae-wee.3",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/dae-wee.3" },
+        ["img", {
+          src: "/jpeg/dae-wee.3.jpeg",
+          style: {
+            // "object-position": "15% 0",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "branch",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/branch" },
+        ["img", {
+          src: "/jpeg/branch.jpeg",
+          style: {
+            // "object-position": "15% 0",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "eli.4",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/eli.4" },
+        ["img", {
+          src: "/jpeg/eli.7.jpeg",
+          style: {
+            "object-position": "0 50%",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  // {
+  //   id: "light-squared",
+  //   previewComponent: () => [
+  //     "div.gallery-item", {},
+  //     ["a", { href: "#/nolan/gallery/light-squared" },
+  //       ["img", {
+  //         src: "/jpeg/light-squared.7.jpeg",
+  //         style: {
+  //           // "object-position": "0 62.5%",
+  //           // "border-top-right-radius": "1rem"
+  //         }
+  //       }]
+  //     ]
+  //   ],
+  //   pageComponent: () => ["div", {}]
+  // },
+
+  // {
+  //   id: "half-and-half",
+  //   previewComponent: () => [
+  //     "div.gallery-item", {},
+  //     ["a", { href: "#/nolan/gallery/half-and-half" },
+  //       ["img", {
+  //         src: "/jpeg/half-and-half.jpeg",
+  //         style: {
+  //           // "object-position": "15% 0",
+  //           // "border-top-right-radius": "1rem"
+  //         }
+  //       }]
+  //     ]
+  //   ],
+  //   pageComponent: () => ["div", {}]
+  // },
+
+  {
+    id: "bridge",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/bridge" },
+        ["img", {
+          src: "/jpeg/bridge.jpeg",
+          style: {
+            // "object-position": "15% 0",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  // {
+  //   id: "beach-violation",
+  //   previewComponent: () => [
+  //     "div.gallery-item", {},
+  //     ["a", { href: "#/nolan/gallery/beach-violation" },
+  //       ["img", {
+  //         src: "/jpeg/beach-violation.jpeg",
+  //         style: {
+  //           "object-position": "0 100%",
+  //           // "border-top-right-radius": "1rem"
+  //         }
+  //       }]
+  //     ]
+  //   ],
+  //   pageComponent: () => ["div", {}]
+  // },
+
+  // {
+  //   id: "facade",
+  //   previewComponent: () => [
+  //     "div.gallery-item", {},
+  //     ["a", { href: "#/nolan/gallery/facade" },
+  //       ["img", {
+  //         src: "/jpeg/facade.jpeg",
+  //         style: {
+  //           // "object-position": "15% 0",
+  //           // "border-top-right-radius": "1rem"
+  //         }
+  //       }]
+  //     ]
+  //   ],
+  //   pageComponent: () => ["div", {}]
+  // },
+
+  // {
+  //   id: "footprints",
+  //   previewComponent: () => [
+  //     "div.gallery-item", {},
+  //     ["a", { href: "#/nolan/gallery/footprints" },
+  //       ["img", {
+  //         src: "/jpeg/footprints.jpeg",
+  //         style: {
+  //           // "object-position": "15% 0",
+  //           // "border-top-right-radius": "1rem"
+  //         }
+  //       }]
+  //     ]
+  //   ],
+  //   pageComponent: () => ["div", {}]
+  // },
+
+]
+
+/* TODO: lollipop on wood */
+const nm8GalleryItems: Iterable<GalleryItem> = [
+  {
+    id: "self",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nm8/gallery/self" },
+        ["img", {
+          src: "/jpeg/nm8.self.jpeg",
+          style: { "object-position": "0 56%" }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "at-dot",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/at-dot" },
+        ["img", {
+          src: "/jpeg/at-dot.jpeg",
+          style: {
+            // "object-position": "15% 0",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "table.2",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/table.2" },
+        ["img", {
+          src: "/jpeg/table.2.jpeg",
+          style: {
+            // "object-position": "15% 0",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "couch.2",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/couch.2" },
+        ["img", {
+          src: "/jpeg/couch.2.jpeg",
+          style: {
+            // "object-position": "15% 0",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "skulls",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/skulls" },
+        ["img", {
+          src: "/jpeg/skulls.jpeg",
+          style: {
+            // "object-position": "15% 0",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "xacto",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/xacto" },
+        ["img", {
+          src: "/jpeg/xacto.jpeg",
+          style: {
+            // "object-position": "15% 0",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "buckets",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/buckets" },
+        ["img", {
+          src: "/jpeg/buckets.jpeg",
+          style: {
+            // "object-position": "15% 0",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "warhammer",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/warhammer" },
+        ["img", {
+          src: "/jpeg/warhammer.jpeg",
+          style: {
+            "object-position": "72.5%",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "rug",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/rug" },
+        ["img", {
+          src: "/jpeg/rug.jpeg",
+          style: {
+            // "object-position": "72.5% 50%",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "takach",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/takach" },
+        ["img", {
+          src: "/jpeg/takach.jpeg",
+          style: {
+            // "object-position": "0 70%",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "print",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/print" },
+        ["img", {
+          src: "/jpeg/print.jpeg",
+          style: {
+            // "object-position": "0 70%",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "sophisticated",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/sophisticated" },
+        ["img", {
+          src: "/jpeg/sophisticated.jpeg",
+          style: {
+            // "object-position": "72.5% 50%",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "frame",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/frame" },
+        ["img", {
+          src: "/jpeg/frame.jpeg",
+          style: {
+            // "object-position": "0 70%",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "screw",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/screw" },
+        ["img", {
+          src: "/jpeg/screw.jpeg",
+          style: {
+            // "object-position": "0 70%",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "4-avenue",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/4-avenue" },
+        ["img", {
+          src: "/jpeg/4-avenue.jpeg",
+          style: {
+            "object-position": "0 0",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "graphite-lollipops",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/graphite-lollipops" },
+        ["img", {
+          src: "/jpeg/graphite-lollipops.jpeg",
+          style: {
+            "object-position": "0 0",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "frames",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/frames" },
+        ["img", {
+          src: "/jpeg/frames.jpeg",
+          style: {
+            "object-position": "100% 50%",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  // {
+  //   id: "wash",
+  //   previewComponent: () => [
+  //     "div.gallery-item", {},
+  //     ["a", { href: "#/nolan/gallery/wash" },
+  //       ["img", {
+  //         src: "/jpeg/wash.jpeg",
+  //         style: {
+  //           // "object-position": "100% 50%",
+  //           // "border-top-right-radius": "1rem"
+  //         }
+  //       }]
+  //     ]
+  //   ],
+  //   pageComponent: () => ["div", {}]
+  // },
+
+  {
+    id: "fanny",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/fanny" },
+        ["img", {
+          src: "/jpeg/fanny.jpeg",
+          style: {
+            "object-position": "100% 50%",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  // {
+  //   id: "coffee",
+  //   previewComponent: () => [
+  //     "div.gallery-item", {},
+  //     ["a", { href: "#/nolan/gallery/coffee" },
+  //      ["img", {
+  //        src: "/jpeg/coffee.jpeg",
+  //        style: {
+  //          // "object-position": "100% 50%",
+  //          // "border-top-right-radius": "1rem"
+  //        }
+  //      }]
+  //     ]
+  //   ],
+  //   pageComponent: () => ["div", {}]
+  // },
+
+  // {
+  //   id: "ink",
+  //   previewComponent: () => [
+  //     "div.gallery-item", {},
+  //     ["a", { href: "#/nolan/gallery/ink" },
+  //      ["img", {
+  //        src: "/jpeg/ink.jpeg",
+  //        style: {
+  //          // "object-position": "100% 50%",
+  //          // "border-top-right-radius": "1rem"
+  //        }
+  //      }]
+  //     ]
+  //   ],
+  //   pageComponent: () => ["div", {}]
+  // },
+
+  {
+    id: "dinm8",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/dinm8" },
+        ["img", {
+          src: "/jpeg/dinm8.jpeg",
+          style: {
+            "object-position": "0 33%",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+]
+
+const OeGalleryItems: Iterable<GalleryItem> = [
+  {
+    id: "self",
+    previewComponent: () => ["div.gallery-item", {}],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "inf",
+    previewComponent: () => [
+      "div.gallery-item", {
+        style: {
+          border: "1px dashed white",
+          "border-radius": "2.5%"
+        }
+      }
     ],
     pageComponent: () => ["div", {}]
   }
 ]
 
-const nolanGalleryItemMap =
-  new Map(map((i) => [i.id, i], nolanGalleryItems))
+/* TODO: lollipop on wood */
+/* TODO: brain dump computer art (old macbook) */
+/* TODO: old macbook automata */
+const smixzyGalleryItems: Iterable<GalleryItem> = [
+  {
+    id: "self",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/smixzy/gallery/self" },
+        ["img", {
+          src: "/jpeg/smixzy.self.jpeg",
+          style: {
+            "object-position": "0 33%",
+            "border-radius": "50%"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "ass-drag",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/smixzy/gallery/ass-drag" },
+        ["img", {
+          src: "/jpeg/ass-drag.jpeg",
+          style: {
+            // "object-position": "0 33%",
+            // "border-radius": "50%"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "send-nudes",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/smixzy/gallery/send-nudes" },
+        ["img", {
+          src: "/jpeg/send-nudes.jpeg",
+          style: {
+            // "object-position": "0 33%",
+            // "border-radius": "50%"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "shit-in-my-mouth",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/smixzy/gallery/shit-in-my-mouth" },
+        ["img", {
+          src: "/jpeg/shit-in-my-mouth.jpeg",
+          style: {
+            // "object-position": "0 33%",
+            // "border-radius": "50%"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "fnd-ur-way",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/smixzy/gallery/fnd-ur-way" },
+        ["img", {
+          src: "/jpeg/fnd-ur-way.jpeg",
+          style: {
+            // "object-position": "0 33%",
+            // "border-radius": "50%"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "evolve-now",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/smixzy/gallery/evolve-now" },
+        ["img", {
+          src: "/jpeg/evolve-now.jpeg",
+          style: {
+            // "object-position": "0 33%",
+            // "border-radius": "50%"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+
+  {
+    id: "face",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/face" },
+        ["img", {
+          src: "/jpeg/face.jpeg",
+          style: {
+            // "object-position": "15% 0",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "sunglass-love",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/smixzy/gallery/sunglass-love" },
+        ["img", {
+          src: "/jpeg/sunglass-love.jpeg",
+          style: {
+            "object-position": "0 0",
+            // "border-radius": "50%"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "cross-roads",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/smixzy/gallery/cross-roads" },
+        ["img", {
+          src: "/jpeg/cross-roads.jpeg",
+          style: {
+            // "object-position": "0 0",
+            // "border-radius": "50%"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "theme-provider",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/smixzy/gallery/theme-provider" },
+        ["img", {
+          src: "/jpeg/theme-provider.jpeg",
+          style: {
+            // "object-position": "0 33%",
+            // "border-radius": "50%"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "dumpster-gram",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/smixzy/gallery/dumpster-gram" },
+        ["img", {
+          src: "/jpeg/dumpster-gram.jpeg",
+          style: {
+            // "object-position": "0 33%",
+            // "border-radius": "50%"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "post-it",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/smixzy/gallery/post-it" },
+        ["img", {
+          src: "/jpeg/post-it.jpeg",
+          style: {
+            // "object-position": "0 33%",
+            // "border-radius": "50%"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "sky",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/smixzy/gallery/sky" },
+        ["img", {
+          src: "/jpeg/sky.jpeg",
+          style: {
+            // "object-position": "0 33%",
+            // "border-radius": "50%"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "hyper-branch",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/smixzy/gallery/hyper-branch" },
+        ["img", {
+          src: "/jpeg/hyper-branch.jpeg",
+          style: {
+            // "object-position": "0 33%",
+            // "border-radius": "50%"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  // {
+  //   id: "new-balanced",
+  //   previewComponent: () => [
+  //     "div.gallery-item", {},
+  //     ["a", { href: "#/smixzy/gallery/new-balanced" },
+  //      ["img", {
+  //        src: "/jpeg/new-balanced.jpeg",
+  //        style: {
+  //          // "object-position": "0 33%",
+  //          // "border-radius": "50%"
+  //        }
+  //      }]
+  //     ]
+  //   ],
+  //   pageComponent: () => ["div", {}]
+  // },
+
+  {
+    id: "chalk",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/smixzy/gallery/chalk" },
+        ["img", {
+          src: "/jpeg/chalk.jpeg",
+          style: {
+            // "object-position": "0 33%",
+            // "border-radius": "50%"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "orb-birth",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/smixzy/gallery/orb-birth" },
+        ["img", {
+          src: "/jpeg/orb-birth.2.jpeg",
+          style: {
+            // "object-position": "0 33%",
+            // "border-radius": "50%"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "coral",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/smixzy/gallery/coral" },
+        ["img", {
+          src: "/jpeg/coral.jpeg",
+          style: {
+            // "object-position": "0 33%",
+            // "border-radius": "50%"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+  {
+    id: "thrift",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/smixzy/gallery/thrift" },
+        ["img", {
+          src: "/jpeg/thrift.2.jpeg",
+          style: {
+            // "object-position": "0 33%",
+            // "border-radius": "50%"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+
+  {
+    id: "mark",
+    previewComponent: () => [
+      "div.gallery-item", {},
+      ["a", { href: "#/nolan/gallery/mark" },
+        ["img", {
+          src: "/jpeg/mark.jpeg",
+          style: {
+            // "object-position": "15% 0",
+            // "border-top-right-radius": "1rem"
+          }
+        }]
+      ]
+    ],
+    pageComponent: () => ["div", {}]
+  },
+
+]
+
+/* TODO: compute lazily, cache */
+const galleryItemMaps = new Map([
+  ["nolan", new Map(map((i) => [i.id, i], nolanGalleryItems))],
+  ["nm8", new Map(map((i) => [i.id, i], nm8GalleryItems))],
+  ["Oe", new Map(map((i) => [i.id, i], OeGalleryItems))],
+  ["smixzy", new Map(map((i) => [i.id, i], smixzyGalleryItems))]
+])
 
 const gallery = (r: Route, galleryItemMap: Map<string, GalleryItem>) => [
   "main", {},
@@ -124,6 +1157,7 @@ const gallery = (r: Route, galleryItemMap: Map<string, GalleryItem>) => [
 ]
 
 /* TODO: undefined checks */
+/* TODO: debounce */
 const decNumGalleryColumnsIndex = () => {
   const i = numGalleryColumnsIndex.deref()!
   i === 0 ?
@@ -146,38 +1180,20 @@ const nolanGist = async (r: Route) => [
   "main", {},
   ["h1", {}, "I'm nolan."],
   ["h2", {}, "I've been called a reflector. I'm into computers,\ngraphics, and all forms of animation."],
-  ["h3", {}, "This is where I textually put out on the internet, so stay awhile, and listen. Enjoy my post-social AIM profile."],
+  ["h3", {}, "This is where I programmatically put out on the internet, so stay awhile, and listen. Enjoy my post-social AIM profile."],
   ["a", { href: "mailto:nolan@usernolan.net" }, "nolan@usernolan.net"]
 ]
 /* TODO: contact? */
 
-const nolanGallery = async (r: Route) =>
-  r.id ?
-    nolanGalleryItemMap.get(r.id)?.pageComponent(r, nolanGalleryItemMap) || gallery(r, nolanGalleryItemMap) :
-    gallery(r, nolanGalleryItemMap)
-
-const galleryItemMaps = new Map([
-  ["nolan", nolanGalleryItemMap],
-  ["nm8", nolanGalleryItemMap],
-  ["Oe", nolanGalleryItemMap],
-  ["smixzy", nolanGalleryItemMap]
-])
-
-const galleryItemObj = {
-  nolan: nolanGalleryItemMap,
-  nm8: nolanGalleryItemMap,
-  Oe: nolanGalleryItemMap,
-  smixzy: nolanGalleryItemMap
-}
-
-const galleryComponent = async (r: Route) => {
-  // const m = galleryItemMaps.get(r.who) || galleryItemMaps.get(whoAll[0])!
-  const m = galleryItemObj[r.who] || galleryItemObj[whoAll[0]]!
-  r.id ?
+/* TODO: not found */
+const galleryComponent = (r: Route) => {
+  const m = galleryItemMaps.get(r.who) || galleryItemMaps.get(whoAll[0])!
+  return r.id ?
     m.get(r.id)?.pageComponent(r, m) || gallery(r, m) :
     gallery(r, m)
 }
 
+const nolanGallery = async (r: Route) => galleryComponent(r)
 const nolanGalleryAside = async (r: Route) => galleryControls()
 const nolanReference = async (r: Route) => `${r.who}/${r.what}`
 
@@ -191,7 +1207,7 @@ const nm8Gist = async (r: Route) => [
 
 const nm8GalleryIndex = (r: Route) => `${r.who}/${r.what} index`
 const nm8GalleryItem = (r: Route) => `${r.who}/${r.what} item`
-const nm8Gallery = async (r: Route) => r.id ? nm8GalleryItem(r) : galleryIndex(r)
+const nm8Gallery = async (r: Route) => galleryComponent(r)
 const nm8GalleryAside = async (r: Route) => galleryControls()
 const nm8Reference = async (r: Route) => `${r.who}/${r.what}`
 
@@ -215,7 +1231,7 @@ const OeGist = async (r: Route) => [
 ]
 const OeGalleryIndex = (r: Route) => `${r.who}/${r.what} index`
 const OeGalleryItem = (r: Route) => `${r.who}/${r.what} item`
-const OeGallery = async (r: Route) => r.id ? OeGalleryItem(r) : galleryIndex(r)
+const OeGallery = async (r: Route) => galleryComponent(r)
 const OeGalleryAside = async (r: Route) => galleryControls()
 const OeReference = async (r: Route) => `${r.who}/${r.what}`
 
@@ -247,7 +1263,7 @@ const smixzyGist = async (_: Route) => [
 ]
 const smixzyGalleryIndex = (r: Route) => `${r.who}/${r.what} index`
 const smixzyGalleryItem = (r: Route) => `${r.who}/${r.what} item`
-const smixzyGallery = async (r: Route) => r.id ? smixzyGalleryItem(r) : galleryIndex(r)
+const smixzyGallery = async (r: Route) => galleryComponent(r)
 const smixzyGalleryAside = async (r: Route) => galleryControls()
 const smixzyReference = async (r: Route) => `${r.who}/${r.what}`
 
@@ -256,6 +1272,7 @@ const capitalize = (s: string) => s.replace(/^\w/, c => c.toUpperCase())
 const rdom = $compile([
   "div.rdom-root", {},
   $replace(route.map(navComponent)),
+  /* ALT: ...$switch(,,,); return [main, aside] */
   $switch(
     route,
     (r) => `${r.who}${capitalize(r.what)}`,
