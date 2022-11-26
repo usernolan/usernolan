@@ -49,6 +49,12 @@ const route = reactive(routeFromHash(location.hash))
 window.addEventListener("hashchange", (e) =>
   route.next(routeFromHash(e.newURL)))
 
+const prefersDarkModeMatch = window.matchMedia("(prefers-color-scheme: dark)")
+const prefersDarkMode = reactive(prefersDarkModeMatch.matches)
+prefersDarkModeMatch.addEventListener("change", (e) => {
+  prefersDarkMode.next(e.matches)
+})
+
 route.map((r) => document.body.className =
   r.id ?
     `${r.who} ${r.what} ${r.id}` :
@@ -87,8 +93,8 @@ const galleryColumns = numGalleryColumnsIndex.map((i) => numGalleryColumnsAll[i]
 
 interface GalleryItem {
   id: string,
-  previewComponent: (r: Route, xs: Map<string, GalleryItem>) => ComponentLike,
-  pageComponent: (r: Route, xs: Map<string, GalleryItem>) => ComponentLike
+  previewComponent: (r: Route, xs: Iterable<GalleryItem>) => ComponentLike,
+  pageComponent?: (r: Route, xs: Iterable<GalleryItem>) => ComponentLike
 }
 
 const nolanGalleryItems: Iterable<GalleryItem> = [
@@ -1825,7 +1831,19 @@ const galleryComponent = (r: Route) => {
     gallery(r, m)
 }
 
-const nolanReferences = [
+const nolanGallery = async (r: Route) => [
+  "main", {},
+  ["div.gallery-container",
+    {
+      "data-gallery-columns": galleryColumns,
+      style: { filter: galleryFilter.map((x) => x.filtered ? `grayscale(${x.amount}%)` : "none") }
+    },
+    ...map((i) => i.previewComponent(r, nolanGalleryItems), nolanGalleryItems)]
+]
+
+const nolanGalleryAside = async (r: Route) => galleryControls()
+
+const nolanReference = async (r: Route) => [
   "main", {},
   ["ul", {},
     ["li", {},
@@ -1881,10 +1899,6 @@ const nolanReferences = [
   ]
 ]
 
-const nolanGallery = async (r: Route) => galleryComponent(r)
-const nolanGalleryAside = async (r: Route) => galleryControls()
-const nolanReference = async (r: Route) => nolanReferences
-
 const nm8Gist = async (r: Route) => [
   "main", {},
   ["h1", {}, "I'm sorry."],
@@ -1893,42 +1907,61 @@ const nm8Gist = async (r: Route) => [
   ["p", {}, "like animate. or like my initials, nms.\n also mereological composition."],
 ]
 
-const nm8References = [
+const nm8GalleryIndex = (r: Route) => `${r.who}/${r.what} index`
+const nm8GalleryItem = (r: Route) => `${r.who}/${r.what} item`
+const nm8Gallery = async (r: Route) => galleryComponent(r)
+const nm8GalleryAside = async (r: Route) => galleryControls()
+
+const nm8Reference = async (r: Route) => [
   "main", {},
   ["ul", {},
     ["li", {},
-      ["h2", {}, "The Mess We're In"],
-      ["p", {}, "—Joe Armstrong"]
+      ["a", { href: "https://youtu.be/lKXe3HUG2l4" },
+        ["h2", {}, "The Mess We're In"],
+        ["p", {}, "—Joe Armstrong"]
+      ]
     ],
 
     ["li", {},
-      ["h2", {}, "How to Sweep."],
-      ["p", {}, "—Tom Sachs"]
+      ["a", { href: "https://youtu.be/Kt-VlZpz-8E" },
+        ["h2", {}, "How to Sweep."],
+        ["p", {}, "—Tom Sachs"]
+      ]
     ],
 
     ["li", {},
-      ["h2", {}, "Cool URIs don't change"],
-      ["p", {}, "—Tim BL"]
+      ["a", { href: "https://www.w3.org/Provider/Style/URI" },
+        ["h2", {}, "Cool URIs don't change"],
+        ["p", {}, "—Tim BL"]
+      ]
     ],
 
     ["li", {},
-      ["h2", {}, "The Language of the System"],
-      ["p", {}, "—Rich Hickey"]
+      ["a", { href: "https://youtu.be/ROor6_NGIWU" },
+        ["h2", {}, "The Language of the System"],
+        ["p", {}, "—Rich Hickey"]
+      ]
     ],
 
     ["li", {},
-      ["h2", {}, "The Value of Values"],
-      ["p", {}, "—Rich Hickey"]
+      ["a", { href: "https://youtu.be/-6BsiVyC1kM" },
+        ["h2", {}, "The Value of Values"],
+        ["p", {}, "—Rich Hickey"]
+      ]
     ],
 
     ["li", {},
-      ["h2", {}, "Just hard-fail it."],
-      ["p", {}, "—James Hamilton"]
+      ["a", { href: "https://www.usenix.org/legacy/event/lisa07/tech/full_papers/hamilton/hamilton_html/" },
+        ["h2", {}, "Just hard-fail it."],
+        ["p", {}, "—James Hamilton"]
+      ]
     ],
 
     ["li", {},
-      ["h2", {}, "thi.ng"],
-      ["p", {}, "—Karsten Schmidt"]
+      ["a", { href: "https://thi.ng/" },
+        ["h2", {}, "thi.ng"],
+        ["p", {}, "—Karsten Schmidt"]
+      ]
     ],
 
     ["li", {},
@@ -1937,12 +1970,6 @@ const nm8References = [
     ],
   ]
 ]
-
-const nm8GalleryIndex = (r: Route) => `${r.who}/${r.what} index`
-const nm8GalleryItem = (r: Route) => `${r.who}/${r.what} item`
-const nm8Gallery = async (r: Route) => galleryComponent(r)
-const nm8GalleryAside = async (r: Route) => galleryControls()
-const nm8Reference = async (r: Route) => nm8References
 
 const allChars = ["°", ".", "·", ":", "*", " ", "?"]
 const weights = [0.143, 0.143, 0.143, 0.143, 0.143, 0.286, 0.0143]
@@ -1963,51 +1990,56 @@ const OeGist = async (r: Route) => [
   ["p", {}, "observe ∘ explicate"]
 ]
 
-const OeReferences = [
-  "main", {},
-  ["ul", {},
-    ["li", {},
-      ["h2", {}, ".Mereology"],
-    ],
-
-    ["li", {},
-      ["h2", {}, ".Sequent Calculus"],
-    ],
-
-    ["li", {},
-      ["h2", {}, ".Algebraic Structure"],
-    ],
-
-    ["li", {},
-      ["h2", {}, ".Information"]
-    ],
-
-    ["li", {},
-      ["h2", {}, ".Process"]
-    ],
-
-    ["li", {},
-      ["h2", {}, ".Bohm"]
-    ],
-  ]
-]
-
 const OeGalleryIndex = (r: Route) => `${r.who}/${r.what} index`
 const OeGalleryItem = (r: Route) => `${r.who}/${r.what} item`
 const OeGallery = async (r: Route) => galleryComponent(r)
 const OeGalleryAside = async (r: Route) => galleryControls()
-const OeReference = async (r: Route) => OeReferences
+
+const OeReference = async (r: Route) => [
+  "main", {},
+  ["ul", {},
+    ["li", {},
+      ["a", { href: "https://en.wikipedia.org/wiki/Mereology" },
+        ["h2", {}, ".Mereology"]
+      ]
+    ],
+
+    ["li", {},
+      ["a", { href: "https://en.wikipedia.org/wiki/Sequent_calculus" },
+        ["h2", {}, ".Sequent Calculus"]
+      ]
+    ],
+
+    ["li", {},
+      ["a", { href: "https://en.wikipedia.org/wiki/Algebraic_structure" },
+        ["h2", {}, ".Algebraic Structure"]
+      ]
+    ],
+
+    ["li", {},
+      ["a", { href: "https://en.wikipedia.org/wiki/Information_theory" },
+        ["h2", {}, ".Information"]
+      ]
+    ],
+
+    ["li", {},
+      ["a", { href: "https://en.wikipedia.org/wiki/Process_philosophy" },
+        ["h2", {}, ".Process"]
+      ]
+    ],
+
+    ["li", {},
+      ["a", { href: "https://en.wikipedia.org/wiki/David_Bohm" },
+        ["h2", {}, ".Bohm"]
+      ]
+    ]
+  ]
+]
 
 const offset = 300
 const period = 2 * Math.PI * 1200
 const rate = 333
 const rangePct = 200
-
-const prefersDarkModeMatch = window.matchMedia("(prefers-color-scheme: dark)")
-const prefersDarkMode = reactive(prefersDarkModeMatch.matches)
-prefersDarkModeMatch.addEventListener("change", (e) => {
-  prefersDarkMode.next(e.matches)
-})
 
 const smixzyGist = async (_: Route) => [
   "main", {
@@ -2025,71 +2057,108 @@ const smixzyGist = async (_: Route) => [
   ["h3", {}, "in any combination. I love my desk.\nSoft immutability. Lv. 70 Arcane Mage."]
 ]
 
-const smixzyReferences = [
+const smixzyGalleryIndex = (r: Route) => `${r.who}/${r.what} index`
+const smixzyGalleryItem = (r: Route) => `${r.who}/${r.what} item`
+const smixzyGallery = async (r: Route) => galleryComponent(r)
+const smixzyGalleryAside = async (r: Route) => galleryControls()
+
+const smixzyReference = async (r: Route) => [
   "main", {},
   ["ul", {},
     ["li", {},
-      ["h2", {}, ".· Mark Hosford"]
+      ["a", { href: "https://sugarboypress.com/" },
+        ["h2", {}, ".· Mark Hosford"]
+      ]
     ],
 
     ["li", {},
-      ["h2", {}, ".· Ashlin Dolan"]
+      ["a", { href: "https://ashlindolanstudio.com/Home-II" },
+        ["h2", {}, ".· Ashlin Dolan"]
+      ]
     ],
 
     ["li", {},
-      ["h2", {}, ".· Tom Sachs"]
+      ["a", { href: "https://www.tomsachs.com/" },
+        ["h2", {}, ".· Tom Sachs"]
+      ]
     ],
 
     ["li", {},
-      ["h2", {}, ".· Hilma af Klint"]
+      ["a", { href: "https://en.wikipedia.org/wiki/Hilma_af_Klint" },
+        ["h2", {}, ".· Hilma af Klint"]
+      ]
     ],
 
     ["li", {},
-      ["h2", {}, ".· Karsten Schmidt"]
+      ["a", { href: "https://twitter.com/toxi" },
+        ["h2", {}, ".· Karsten Schmidt"]
+      ]
     ],
 
     ["li", {},
-      ["h2", {}, ".· Terry A. Davis"]
+      ["a", { href: "https://youtu.be/XkXPqvWJHg4" },
+        ["h2", {}, ".· Terry A. Davis"]
+      ]
     ],
 
     ["li", {},
-      ["h2", {}, ".· Jeff Soto"]
+      ["a", { href: "https://jeffsoto.com/" },
+        ["h2", {}, ".· Jeff Soto"]
+      ]
     ],
 
     ["li", {},
-      ["h2", {}, ".· Moebius"]
+      ["a", { href: "https://en.wikipedia.org/wiki/Jean_Giraud" },
+        ["h2", {}, ".· Moebius"]
+      ]
     ],
 
     ["li", {},
-      ["h2", {}, ".· Ulises Fariñas"]
+      ["a", { href: "https://ulisesfarinas.com/" },
+        ["h2", {}, ".· Ulises Fariñas"]
+      ]
     ],
 
     ["li", {},
-      ["h2", {}, ".· Thad Russell"]
+      ["a", { href: "https://www.thadrussell.com/" },
+        ["h2", {}, ".· Thad Russell"]
+      ]
     ],
 
     ["li", {},
-      ["h2", {}, ".· Steve Axford"]
+      ["a", { href: "https://steveaxford.smugmug.com/" },
+        ["h2", {}, ".· Steve Axford"]
+      ]
     ],
 
     ["li", {},
-      ["h2", {}, ".· Jim Bachor"]
+      ["a", { href: "https://www.bachor.com/pothole-installations-c1g1y" },
+        ["h2", {}, ".· Jim Bachor"]
+      ]
     ],
 
     ["li", {},
-      ["h2", {}, ".· Minjeong An"]
+      ["a", { href: "http://www.myartda.com/" },
+        ["h2", {}, ".· Minjeong An"]
+      ]
     ],
 
     ["li", {},
-      ["h2", {}, ".· Devine Lu Linvega"]
+      ["a", { href: "https://wiki.xxiivv.com/site/dinaisth.html" },
+        ["h2", {}, ".· Devine Lu Linvega"]
+      ]
     ],
 
     ["li", {},
-      ["h2", {}, ".· Stephen Cakebread"]
+      ["a", { href: "http://www.quantumrain.com/" },
+        ["h2", {}, ".· Stephen Cakebread"]
+      ]
     ],
 
     ["li", {},
-      ["h2", {}, ".· Jesse Jacobs"]
+      ["a", { href: "https://www.jessejacobsart.com/" },
+        ["h2", {}, ".· Jesse Jacobs"]
+      ]
     ],
 
     ["li", {},
@@ -2103,16 +2172,12 @@ const smixzyReferences = [
     // ],
 
     ["li", {},
-      ["h2", {}, "{ webring }"]
+      ["a", { href: "https://webring.xxiivv.com/" },
+        ["h2", {}, "{ webring }"]
+      ]
     ],
   ]
 ]
-
-const smixzyGalleryIndex = (r: Route) => `${r.who}/${r.what} index`
-const smixzyGalleryItem = (r: Route) => `${r.who}/${r.what} item`
-const smixzyGallery = async (r: Route) => galleryComponent(r)
-const smixzyGalleryAside = async (r: Route) => galleryControls()
-const smixzyReference = async (r: Route) => smixzyReferences
 
 const capitalize = (s: string) => s.replace(/^\w/, c => c.toUpperCase())
 
@@ -2122,7 +2187,9 @@ const rdom = $compile([
   /* ALT: ...$switch(,,,); return [main, aside] */
   $switch(
     route,
-    (r) => `${r.who}${capitalize(r.what)}`,
+    (r) => r.id ?
+      `${r.who}${capitalize(r.what)}${capitalize(r.id)}` :
+      `${r.who}${capitalize(r.what)}`,
     {
       nolanGist,
       nolanGallery,
@@ -2141,7 +2208,7 @@ const rdom = $compile([
   ),
   $switch(
     route,
-    (r) => r.id ? "nothing" : `${r.who}${capitalize(r.what)}Aside`, /* TODO: fix aside for gallery item */
+    (r) => r.id ? "" : `${r.who}${capitalize(r.what)}Aside`, /* TODO: fix aside for gallery item */
     {
       nolanGalleryAside,
       nm8GalleryAside,

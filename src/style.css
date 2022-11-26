@@ -89,7 +89,8 @@ body.gist main h3 {
   max-width: 780px;
   letter-spacing: -0.015rem;
 }
-body.gist main p, a {
+body.gist main p,
+body.gist main a {
   font-size: 1.25rem;
   font-weight: 500;
 }
@@ -112,6 +113,7 @@ body.gallery main div.gallery-container {
 }
 body.gallery main div.gallery-container div.gallery-item {
   /* border: 1px dashed black; /\* TODO: delete *\/ */
+  /* TODO: fix edge aspect ratio */
   /* aspect-ratio: 1 / 1; */ /* NOTE: causes resize bug in safari */
   transition: width 180ms ease, height 180ms ease;
   padding: 0 0.125rem 0.125rem 0;
@@ -216,19 +218,23 @@ body.reference main ul {
 body.reference main ul li {
   margin: 3rem 0;
 }
+body.reference main ul li a {
+  display: inline-block;
+  text-decoration: none;
+  color: inherit;
+}
 body.reference main ul li h2 {
-  letter-spacing: -0.0825rem;
+  margin: 0 0 0.75rem;
+  letter-spacing: -0.075rem;
 }
-body.reference main ul li h2,
 body.reference main ul li p {
-  margin: 0.75rem 0;
+  margin: 0;
+  letter-spacing: -0.025rem;
 }
-/* body.reference main ul li p { */
-/*   margin: 0.5rem 0.25rem; */
-/* } */
-/* body.smixzy.reference main ul li { */
-/*   margin: 3rem 1rem; */
-/* } */
+body.Oe.reference main ul li h2,
+body.smixzy.reference main ul li a h2 {
+  margin: 0;
+}
 
 
 /* Colors, vibe */
