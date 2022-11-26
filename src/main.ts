@@ -80,7 +80,7 @@ const defaultComponent = async (r: Route) =>
   ["main", {}, r.id ? `${r.who}/${r.what}/${r.id}` : `${r.who}/${r.what}`]
 
 const DEFAULT_NUM_GALLERY_COLUMNS_INDEX = 1
-const numGalleryColumnsAll = [2, 3, 5, 8]
+const numGalleryColumnsAll = [/*1,*/ 2, 3, 5, 8]
 const numGalleryColumnsIndex = reactive(DEFAULT_NUM_GALLERY_COLUMNS_INDEX, { closeOut: CloseMode.NEVER })
 const galleryColumns = numGalleryColumnsIndex.map((i) => numGalleryColumnsAll[i], { closeOut: CloseMode.NEVER })
 /* TODO: review CloseMode */
@@ -1755,21 +1755,38 @@ const galleryItemMaps = new Map([
   ["smixzy", new Map(map((i) => [i.id, i], smixzyGalleryItems))]
 ])
 
+const filtered = reactive(true)
+const amount = reactive(50)
+const galleryFilter = sync({ src: { filtered, amount }, closeOut: CloseMode.NEVER })
+
+// nolan `grayscale(${x.amount}%)` init 50
+// nm8 `contrast(${100 + (x.amount * 2.5)}%) saturate(${1 - (x.amount / 100)})` init 0
+// Oe `invert(${x.amount}%)` init 0
+// smixzy `saturate(1.5) hue-rotate(${(x.amount / 100) * 360}deg)` init 0
+
 const gallery = (r: Route, galleryItemMap: Map<string, GalleryItem>) => [
   "main", {},
-  ["div.gallery-container", { "data-gallery-columns": galleryColumns },
+  ["div.gallery-container",
+    {
+      "data-gallery-columns": galleryColumns,
+      style: { filter: galleryFilter.map((x) => x.filtered ? `grayscale(${x.amount}%)` : "none") }
+    },
     ...map((i) => i.previewComponent(r, galleryItemMap), galleryItemMap.values())]
 ]
 
 /* TODO: undefined checks */
 /* TODO: debounce */
 const decNumGalleryColumnsIndex = () => {
+  filtered.next(false)
+  setTimeout(() => filtered.next(true), 220)
   const i = numGalleryColumnsIndex.deref()!
   i === 0 ?
     numGalleryColumnsIndex.next(numGalleryColumnsAll.length - 1) :
     numGalleryColumnsIndex.next(i - 1)
 }
 const incNumGalleryColumnsIndex = () => {
+  filtered.next(false)
+  setTimeout(() => filtered.next(true), 220)
   const i = numGalleryColumnsIndex.deref()!
   numGalleryColumnsIndex.next((i + 1) % numGalleryColumnsAll.length)
 }
@@ -1778,7 +1795,17 @@ const galleryControls = () => [
   "aside", {},
   ["div.gallery-controls", {},
     ["button", { onclick: decNumGalleryColumnsIndex }, "+"],
-    ["button", { onclick: incNumGalleryColumnsIndex }, "-"]]
+    ["button", { onclick: incNumGalleryColumnsIndex }, "-"],
+    ["input", {
+      type: "range", value: amount, min: "0", max: "100", step: "1",
+      oninput: (e: { target: { value: number } }) => {
+        amount.next(e.target.value)
+      },
+      onchange: (e: { target: { value: number } }) => {
+        amount.next(e.target.value)
+      }
+    }]
+  ]
 ]
 
 const nolanGist = async (r: Route) => [
@@ -1803,51 +1830,53 @@ const nolanReferences = [
   ["ul", {},
     ["li", {},
       ["h2", {}, "My greatest concern was what to call it."],
-      ["p", {}, "-Claude Shannon"]
+      ["p", {}, "—Claude Shannon"]
     ],
+
     ["li", {},
       ["h2", {}, "We don't get to stop the world, especially not to observe it."],
-      ["p", {}, "-Rich Hickey"]
+      ["p", {}, "—Rich Hickey"]
     ],
+
     ["li", {},
       ["h2", {}, "Unpredictability is not randomness, but in some circumstances looks very much like it."],
-      ["p", {}, "-Wikipedia; Logistic Map"]
+      ["p", {}, "—Wikipedia; Logistic Map"]
     ],
-    ["li", {},
-      ["h2", {}, "Expectation is the mother of rhythm."],
-      ["p", {}, "-Bruno"]
-    ],
+
     ["li", {},
       ["h2", {}, "One main factor in the upward trend of animal life has been the power of wandering."],
-      ["p", {}, "-Alfred North Whitehead"]
+      ["p", {}, "—Alfred North Whitehead"]
     ],
+
     ["li", {},
       ["h2", {}, "Unlimited possibility and abstract creativity can procure nothing."],
-      ["p", {}, "-Alfred North Whitehead"]
+      ["p", {}, "—Alfred North Whitehead"]
     ],
+
     ["li", {},
       ["h2", {}, "A science that hesitates to forget its founders is lost."],
-      ["p", {}, "-Alfred North Whitehead"]
+      ["p", {}, "—Alfred North Whitehead"]
     ],
+
     ["li", {},
       ["h2", {}, "We think in generalities, but we live in details."],
-      ["p", {}, "-Alfred North Whitehead"]
+      ["p", {}, "—Alfred North Whitehead"]
     ],
+
     ["li", {},
-      ["h2", {}, "Answer is the dead stop. Probably creation shall prove a manifold instantaneous adjustment to thousandfold things."],
-      ["p", {}, "-William Fifield"]
+      ["h2", {}, "Answer is the dead stop."],
+      ["p", {}, "—William Fifield"]
     ],
+
     ["li", {},
       ["h2", {}, "The wholeness is made of parts, the parts are created by the wholeness."],
-      ["p", {}, "-Christopher Alexander (I had to! I literally couldn't not...)"]
+      ["p", {}, "—Christopher Alexander"]
+      // I had to! I literally couldn't not...
     ],
-    ["li", {},
-      ["h2", {}, "You should never have a prior that is non-updateable by sense data."],
-      ["p", {}, "-R.S."]
-    ],
+
     ["li", {},
       ["h2", {}, "These build on themselves. You notice that anything you are aware of is in the process of changing as you notice it."],
-      ["p", {}, "-R.S."]
+      ["p", {}, "—R.S."]
     ],
   ]
 ]
@@ -1864,11 +1893,56 @@ const nm8Gist = async (r: Route) => [
   ["p", {}, "like animate. or like my initials, nms.\n also mereological composition."],
 ]
 
+const nm8References = [
+  "main", {},
+  ["ul", {},
+    ["li", {},
+      ["h2", {}, "The Mess We're In"],
+      ["p", {}, "—Joe Armstrong"]
+    ],
+
+    ["li", {},
+      ["h2", {}, "How to Sweep."],
+      ["p", {}, "—Tom Sachs"]
+    ],
+
+    ["li", {},
+      ["h2", {}, "Cool URIs don't change"],
+      ["p", {}, "—Tim BL"]
+    ],
+
+    ["li", {},
+      ["h2", {}, "The Language of the System"],
+      ["p", {}, "—Rich Hickey"]
+    ],
+
+    ["li", {},
+      ["h2", {}, "The Value of Values"],
+      ["p", {}, "—Rich Hickey"]
+    ],
+
+    ["li", {},
+      ["h2", {}, "Just hard-fail it."],
+      ["p", {}, "—James Hamilton"]
+    ],
+
+    ["li", {},
+      ["h2", {}, "thi.ng"],
+      ["p", {}, "—Karsten Schmidt"]
+    ],
+
+    ["li", {},
+      ["h2", {}, "Everything worth saying, and everything else as well, can be said with two characters."],
+      ["p", {}, "—Quine"]
+    ],
+  ]
+]
+
 const nm8GalleryIndex = (r: Route) => `${r.who}/${r.what} index`
 const nm8GalleryItem = (r: Route) => `${r.who}/${r.what} item`
 const nm8Gallery = async (r: Route) => galleryComponent(r)
 const nm8GalleryAside = async (r: Route) => galleryControls()
-const nm8Reference = async (r: Route) => `${r.who}/${r.what}`
+const nm8Reference = async (r: Route) => nm8References
 
 const allChars = ["°", ".", "·", ":", "*", " ", "?"]
 const weights = [0.143, 0.143, 0.143, 0.143, 0.143, 0.286, 0.0143]
@@ -1888,11 +1962,41 @@ const OeGist = async (r: Route) => [
   ["h3", {}, "Language, logic, proof, etc.\nReal game of life hours, you know the one."],
   ["p", {}, "observe ∘ explicate"]
 ]
+
+const OeReferences = [
+  "main", {},
+  ["ul", {},
+    ["li", {},
+      ["h2", {}, ".Mereology"],
+    ],
+
+    ["li", {},
+      ["h2", {}, ".Sequent Calculus"],
+    ],
+
+    ["li", {},
+      ["h2", {}, ".Algebraic Structure"],
+    ],
+
+    ["li", {},
+      ["h2", {}, ".Information"]
+    ],
+
+    ["li", {},
+      ["h2", {}, ".Process"]
+    ],
+
+    ["li", {},
+      ["h2", {}, ".Bohm"]
+    ],
+  ]
+]
+
 const OeGalleryIndex = (r: Route) => `${r.who}/${r.what} index`
 const OeGalleryItem = (r: Route) => `${r.who}/${r.what} item`
 const OeGallery = async (r: Route) => galleryComponent(r)
 const OeGalleryAside = async (r: Route) => galleryControls()
-const OeReference = async (r: Route) => `${r.who}/${r.what}`
+const OeReference = async (r: Route) => OeReferences
 
 const offset = 300
 const period = 2 * Math.PI * 1200
@@ -1918,13 +2022,97 @@ const smixzyGist = async (_: Route) => [
   },
   ["h1", {}, "I'm garbage."],
   ["h2", {}, "Nonsense \\\\ Acrylic \\\\  Handmade"],
-  ["h3", {}, "in any combination. I love my desk.\nSoft immutable. Lv. 60 Arcane Mage."]
+  ["h3", {}, "in any combination. I love my desk.\nSoft immutability. Lv. 70 Arcane Mage."]
 ]
+
+const smixzyReferences = [
+  "main", {},
+  ["ul", {},
+    ["li", {},
+      ["h2", {}, ".· Mark Hosford"]
+    ],
+
+    ["li", {},
+      ["h2", {}, ".· Ashlin Dolan"]
+    ],
+
+    ["li", {},
+      ["h2", {}, ".· Tom Sachs"]
+    ],
+
+    ["li", {},
+      ["h2", {}, ".· Hilma af Klint"]
+    ],
+
+    ["li", {},
+      ["h2", {}, ".· Karsten Schmidt"]
+    ],
+
+    ["li", {},
+      ["h2", {}, ".· Terry A. Davis"]
+    ],
+
+    ["li", {},
+      ["h2", {}, ".· Jeff Soto"]
+    ],
+
+    ["li", {},
+      ["h2", {}, ".· Moebius"]
+    ],
+
+    ["li", {},
+      ["h2", {}, ".· Ulises Fariñas"]
+    ],
+
+    ["li", {},
+      ["h2", {}, ".· Thad Russell"]
+    ],
+
+    ["li", {},
+      ["h2", {}, ".· Steve Axford"]
+    ],
+
+    ["li", {},
+      ["h2", {}, ".· Jim Bachor"]
+    ],
+
+    ["li", {},
+      ["h2", {}, ".· Minjeong An"]
+    ],
+
+    ["li", {},
+      ["h2", {}, ".· Devine Lu Linvega"]
+    ],
+
+    ["li", {},
+      ["h2", {}, ".· Stephen Cakebread"]
+    ],
+
+    ["li", {},
+      ["h2", {}, ".· Jesse Jacobs"]
+    ],
+
+    ["li", {},
+      ["h2", {}, "You play through that."],
+      ["p", {}, "—2BFC"]
+    ],
+
+    // ["li", {},
+    //   ["h2", {}, "No, I... won't be doing that."],
+    //   ["p", {}, "—2BFC"]
+    // ],
+
+    ["li", {},
+      ["h2", {}, "{ webring }"]
+    ],
+  ]
+]
+
 const smixzyGalleryIndex = (r: Route) => `${r.who}/${r.what} index`
 const smixzyGalleryItem = (r: Route) => `${r.who}/${r.what} item`
 const smixzyGallery = async (r: Route) => galleryComponent(r)
 const smixzyGalleryAside = async (r: Route) => galleryControls()
-const smixzyReference = async (r: Route) => `${r.who}/${r.what}`
+const smixzyReference = async (r: Route) => smixzyReferences
 
 const capitalize = (s: string) => s.replace(/^\w/, c => c.toUpperCase())
 
@@ -1941,13 +2129,13 @@ const rdom = $compile([
       nolanReference,
       nm8Gist,
       nm8Gallery,
-      nm8Reference: defaultComponent,
+      nm8Reference,
       OeGist,
       OeGallery,
-      OeReference: defaultComponent,
+      OeReference,
       smixzyGist,
       smixzyGallery,
-      smixzyReference: defaultComponent
+      smixzyReference
     },
     async (err) => ["div", {}, route.map((r) => `ERROR ${err}; ${r.who}/${r.what}`)]
   ),

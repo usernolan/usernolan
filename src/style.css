@@ -112,8 +112,8 @@ body.gallery main div.gallery-container {
 }
 body.gallery main div.gallery-container div.gallery-item {
   /* border: 1px dashed black; /\* TODO: delete *\/ */
-  aspect-ratio: 1 / 1;
-  transition: width 120ms ease, height 120ms ease;
+  /* aspect-ratio: 1 / 1; */ /* NOTE: causes resize bug in safari */
+  transition: width 180ms ease, height 180ms ease;
   padding: 0 0.125rem 0.125rem 0;
 }
 body.gallery aside div.gallery-controls {
@@ -121,19 +121,28 @@ body.gallery aside div.gallery-controls {
   top: 0.25rem; /* TODO: keep at initial position relative to nav */
   padding: 0 0 0 0.125rem;
 }
+body.gallery aside div.gallery-controls input[type=range] {
+  /* width: 50%; */
+}
 
 /* TODO: nth-children padding */
 /* body.gallery main div.gallery-container[data-gallery-columns="1"] div.gallery-item { */
-/*   /\* width: 100%; *\/ */
+/*   width: 100%; */
 /*   /\* width: 82.5%; *\/ */
 /*   /\* width: 75%; *\/ */
 /*   /\* width: 60%; *\/ */
-/*   padding: 0; */
+/*   /\* padding: 0; *\/ */
 /* } */
 
-body.nolan.gallery main div.gallery-container div.gallery-item img {
-  filter: grayscale(21%);
-}
+/* TODO: fix padding, correct images, unapply filter while changing width, use direct widths? */
+/* NOTE: animated width with a filter is extremely slow in safari */
+/* NOTE: when inc/dec gallery column index, remove filtered class on container, setTimeout add class back */
+/* body.nolan.gallery main div.gallery-container { */
+/*   filter: grayscale(21%); */
+/* } */
+/* body.nm8.gallery main div.gallery-container { */
+/*   filter: contrast(1.5); */
+/* } */
 
 body.gallery main div.gallery-container[data-gallery-columns="2"] div.gallery-item {
   width: 50%;
@@ -166,6 +175,7 @@ body.gallery main div.gallery-container div.gallery-item > a {
 }
 body.gallery main div.gallery-container div.gallery-item img {
   width: 100%;
+  height: 100%;
   object-fit: cover;
   /* object-position: 15% 0; */
   aspect-ratio: 1/1;
@@ -215,6 +225,9 @@ body.reference main ul li p {
 }
 /* body.reference main ul li p { */
 /*   margin: 0.5rem 0.25rem; */
+/* } */
+/* body.smixzy.reference main ul li { */
+/*   margin: 3rem 1rem; */
 /* } */
 
 
@@ -308,7 +321,7 @@ body.smixzy.gallery aside div.gallery-controls button {
 
   body.nolan {
     background: #181818;
-    color: #777;
+    color: #afafaf;
   }
   body.nolan nav select {
     background: #242424;
@@ -319,7 +332,7 @@ body.smixzy.gallery aside div.gallery-controls button {
   body.nm8,
   body.Oe {
     background: black;
-    color: #ccc;
+    color: white;
   }
   body.nm8 nav select,
   body.Oe nav select {
