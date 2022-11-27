@@ -102,7 +102,7 @@ const nolanGalleryItems: Iterable<GalleryItem> = [
     id: "self",
     previewComponent: () => [
       "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/self" },
+      ["a", { href: "/jpeg/nolan.self.jpeg" },
         ["img", {
           src: "/jpeg/nolan.self.jpeg",
           style: {
@@ -1753,46 +1753,24 @@ const smixzyGalleryItems: Iterable<GalleryItem> = [
 
 ]
 
-/* TODO: compute lazily, cache */
-const galleryItemMaps = new Map([
-  ["nolan", new Map(map((i) => [i.id, i], nolanGalleryItems))],
-  ["nm8", new Map(map((i) => [i.id, i], nm8GalleryItems))],
-  ["Oe", new Map(map((i) => [i.id, i], OeGalleryItems))],
-  ["smixzy", new Map(map((i) => [i.id, i], smixzyGalleryItems))]
-])
-
+/* TODO: eliminate filtered? ensure gallery resize performance */
 const filtered = reactive(true)
-const amount = reactive(50)
-const galleryFilter = sync({ src: { filtered, amount }, closeOut: CloseMode.NEVER })
-
-// nolan `grayscale(${x.amount}%)` init 50
-// nm8 `contrast(${100 + (x.amount * 2.5)}%) saturate(${1 - (x.amount / 100)})` init 0
-// Oe `invert(${x.amount}%)` init 0
-// smixzy `saturate(1.5) hue-rotate(${(x.amount / 100) * 360}deg)` init 0
-
-const gallery = (r: Route, galleryItemMap: Map<string, GalleryItem>) => [
-  "main", {},
-  ["div.gallery-container",
-    {
-      "data-gallery-columns": galleryColumns,
-      style: { filter: galleryFilter.map((x) => x.filtered ? `grayscale(${x.amount}%)` : "none") }
-    },
-    ...map((i) => i.previewComponent(r, galleryItemMap), galleryItemMap.values())]
-]
+const filterValue = reactive(0)
+const galleryFilter = sync({ src: { filtered, filterValue }, closeOut: CloseMode.NEVER })
 
 /* TODO: undefined checks */
 /* TODO: debounce */
 const decNumGalleryColumnsIndex = () => {
-  filtered.next(false)
-  setTimeout(() => filtered.next(true), 220)
+  // filtered.next(false)
+  // setTimeout(() => filtered.next(true), 220)
   const i = numGalleryColumnsIndex.deref()!
   i === 0 ?
     numGalleryColumnsIndex.next(numGalleryColumnsAll.length - 1) :
     numGalleryColumnsIndex.next(i - 1)
 }
 const incNumGalleryColumnsIndex = () => {
-  filtered.next(false)
-  setTimeout(() => filtered.next(true), 220)
+  // filtered.next(false)
+  // setTimeout(() => filtered.next(true), 220)
   const i = numGalleryColumnsIndex.deref()!
   numGalleryColumnsIndex.next((i + 1) % numGalleryColumnsAll.length)
 }
@@ -1803,12 +1781,12 @@ const galleryControls = () => [
     ["button", { onclick: decNumGalleryColumnsIndex }, "+"],
     ["button", { onclick: incNumGalleryColumnsIndex }, "-"],
     ["input", {
-      type: "range", value: amount, min: "0", max: "100", step: "1",
+      type: "range", value: filterValue, min: "0", max: "100", step: "1",
       oninput: (e: { target: { value: number } }) => {
-        amount.next(e.target.value)
+        filterValue.next(e.target.value)
       },
       onchange: (e: { target: { value: number } }) => {
-        amount.next(e.target.value)
+        filterValue.next(e.target.value)
       }
     }]
   ]
@@ -1820,25 +1798,21 @@ const nolanGist = async (r: Route) => [
   ["h2", {}, "I've been called a reflector. I'm into computers,\ngraphics, and all forms of animation."],
   ["h3", {}, "This is where I programmatically put out on the internet, so stay awhile, and listen. Enjoy my post-social AIM profile."],
   ["a", { href: "mailto:nolan@usernolan.net" }, "nolan@usernolan.net"]
+  /* TODO: contact? */
 ]
-/* TODO: contact? */
-
-/* TODO: not found */
-const galleryComponent = (r: Route) => {
-  const m = galleryItemMaps.get(r.who) || galleryItemMaps.get(whoAll[0])!
-  return r.id ?
-    m.get(r.id)?.pageComponent(r, m) || gallery(r, m) :
-    gallery(r, m)
-}
 
 const nolanGallery = async (r: Route) => [
   "main", {},
   ["div.gallery-container",
     {
-      "data-gallery-columns": galleryColumns,
-      style: { filter: galleryFilter.map((x) => x.filtered ? `grayscale(${x.amount}%)` : "none") }
+      style: {
+        filter: galleryFilter.map((x) =>
+          x.filtered ? `grayscale(${x.filterValue}%)` : "none")
+      },
+      "data-gallery-columns": galleryColumns
     },
-    ...map((i) => i.previewComponent(r, nolanGalleryItems), nolanGalleryItems)]
+    ...map((i) => i.previewComponent(r, nolanGalleryItems), nolanGalleryItems)
+  ]
 ]
 
 const nolanGalleryAside = async (r: Route) => galleryControls()
@@ -1889,7 +1863,6 @@ const nolanReference = async (r: Route) => [
     ["li", {},
       ["h2", {}, "The wholeness is made of parts, the parts are created by the wholeness."],
       ["p", {}, "—Christopher Alexander"]
-      // I had to! I literally couldn't not...
     ],
 
     ["li", {},
@@ -1907,9 +1880,17 @@ const nm8Gist = async (r: Route) => [
   ["p", {}, "like animate. or like my initials, nms.\n also mereological composition."],
 ]
 
-const nm8GalleryIndex = (r: Route) => `${r.who}/${r.what} index`
-const nm8GalleryItem = (r: Route) => `${r.who}/${r.what} item`
-const nm8Gallery = async (r: Route) => galleryComponent(r)
+const nm8Gallery = async (r: Route) => [
+  "main", {},
+  ["div.gallery-container",
+    {
+      style: { filter: galleryFilter.map((x) => x.filtered ? `contrast(${100 + x.filterValue * 1}%) saturate(${1 - x.filterValue / 100})` : "none") },
+      "data-gallery-columns": galleryColumns
+    },
+    ...map((i) => i.previewComponent(r, nm8GalleryItems), nm8GalleryItems)
+  ]
+]
+
 const nm8GalleryAside = async (r: Route) => galleryControls()
 
 const nm8Reference = async (r: Route) => [
@@ -1990,9 +1971,17 @@ const OeGist = async (r: Route) => [
   ["p", {}, "observe ∘ explicate"]
 ]
 
-const OeGalleryIndex = (r: Route) => `${r.who}/${r.what} index`
-const OeGalleryItem = (r: Route) => `${r.who}/${r.what} item`
-const OeGallery = async (r: Route) => galleryComponent(r)
+const OeGallery = async (r: Route) => [
+  "main", {},
+  ["div.gallery-container",
+    {
+      style: { filter: galleryFilter.map((x) => x.filtered ? `invert(${x.filterValue}%)` : "none") },
+      "data-gallery-columns": galleryColumns
+    },
+    ...map((i) => i.previewComponent(r, OeGalleryItems), OeGalleryItems)
+  ]
+]
+
 const OeGalleryAside = async (r: Route) => galleryControls()
 
 const OeReference = async (r: Route) => [
@@ -2057,9 +2046,17 @@ const smixzyGist = async (_: Route) => [
   ["h3", {}, "in any combination. I love my desk.\nSoft immutability. Lv. 70 Arcane Mage."]
 ]
 
-const smixzyGalleryIndex = (r: Route) => `${r.who}/${r.what} index`
-const smixzyGalleryItem = (r: Route) => `${r.who}/${r.what} item`
-const smixzyGallery = async (r: Route) => galleryComponent(r)
+const smixzyGallery = async (r: Route) => [
+  "main", {},
+  ["div.gallery-container",
+    {
+      style: { filter: galleryFilter.map((x) => x.filtered ? `saturate(1.5) hue-rotate(${(x.filterValue / 100) * 360}deg)` : "none") },
+      "data-gallery-columns": galleryColumns
+    },
+    ...map((i) => i.previewComponent(r, smixzyGalleryItems), smixzyGalleryItems)
+  ]
+]
+
 const smixzyGalleryAside = async (r: Route) => galleryControls()
 
 const smixzyReference = async (r: Route) => [
@@ -2187,6 +2184,7 @@ const rdom = $compile([
   /* ALT: ...$switch(,,,); return [main, aside] */
   $switch(
     route,
+    /* TODO: formalize keyfns, split non-whitespace, camelCase, join */
     (r) => r.id ?
       `${r.who}${capitalize(r.what)}${capitalize(r.id)}` :
       `${r.who}${capitalize(r.what)}`,
@@ -2204,11 +2202,13 @@ const rdom = $compile([
       smixzyGallery,
       smixzyReference
     },
-    async (err) => ["div", {}, route.map((r) => `ERROR ${err}; ${r.who}/${r.what}`)]
+    async (err) => ["div", {}, route.map((r) => `ERROR ${err}; ${r.who}/${r.what}`)] /* TODO: fix, not found */
   ),
   $switch(
     route,
-    (r) => r.id ? "" : `${r.who}${capitalize(r.what)}Aside`, /* TODO: fix aside for gallery item */
+    (r) => r.id ?
+      `${r.who}${capitalize(r.what)}${capitalize(r.id)}Aside` :
+      `${r.who}${capitalize(r.what)}Aside`,
     {
       nolanGalleryAside,
       nm8GalleryAside,
