@@ -8,6 +8,7 @@ import { fromRAF } from "@thi.ng/rstream/raf"
 import { fromDOMEvent } from "@thi.ng/rstream/event"
 import { CloseMode } from "@thi.ng/rstream/api"
 import { sync } from "@thi.ng/rstream/sync"
+import { tweenNumber } from "@thi.ng/rstream/tween"
 import { map } from "@thi.ng/transducers/map"
 import { transduce } from "@thi.ng/transducers/transduce"
 import { push } from "@thi.ng/transducers/push"
@@ -57,7 +58,7 @@ prefersDarkModeMatch.addEventListener("change", (e) => {
 
 route.map((r) => document.body.className =
   r.id ?
-    `${r.who} ${r.what} ${r.id}` :
+    `${r.who} ${r.what} id ${r.id}` :
     `${r.who} ${r.what}`)
 
 const navComponent = (r: Route) => [
@@ -82,9 +83,7 @@ const navComponent = (r: Route) => [
   ]
 ]
 
-const defaultComponent = async (r: Route) =>
-  ["main", {}, r.id ? `${r.who}/${r.what}/${r.id}` : `${r.who}/${r.what}`]
-
+/* TODO: load/persist relevant state to localstorage */
 const DEFAULT_NUM_GALLERY_COLUMNS_INDEX = 1
 const numGalleryColumnsAll = [/*1,*/ 2, 3, 5, 8]
 const numGalleryColumnsIndex = reactive(DEFAULT_NUM_GALLERY_COLUMNS_INDEX, { closeOut: CloseMode.NEVER })
@@ -93,712 +92,240 @@ const galleryColumns = numGalleryColumnsIndex.map((i) => numGalleryColumnsAll[i]
 
 interface GalleryItem {
   id: string,
-  previewComponent: (r: Route, xs: Iterable<GalleryItem>) => ComponentLike,
-  pageComponent?: (r: Route, xs: Iterable<GalleryItem>) => ComponentLike
+  src?: string,
+  alt?: string,
+  href?: string,
+  style?: object, /* TODO: take style attribs type from rdom/hiccup */
+  preview?: (i: GalleryItem) => ComponentLike
+  main?: (i: GalleryItem) => ComponentLike
+  aside?: (i: GalleryItem) => ComponentLike
 }
 
-const nolanGalleryItems: Iterable<GalleryItem> = [
+const nolanGalleryItems: GalleryItem[] = [
+
   {
     id: "self",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "/jpeg/nolan.self.jpeg" },
-        ["img", {
-          src: "/jpeg/nolan.self.jpeg",
-          style: {
-            "object-position": "15% 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/nolan.self.jpeg",
+    alt: "Me in grayscale.",
+    style: { "object-position": "15% 0" }
   },
 
   {
     id: "persevere",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/persevere" },
-        ["img", {
-          src: "/jpeg/persevere.jpeg",
-          style: {
-            // "object-position": "15% 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/persevere.jpeg",
+    alt: "A large poster on an empty wall that reads 'PERSEVERE' in painted lettering.",
   },
 
   {
-    id: "cloud-cover",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/cloud-cover" },
-        ["img", {
-          src: "/jpeg/cloud-cover.jpeg",
-          style: {
-            // "object-position": "15% 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    id: "clouds",
+    src: "/jpeg/clouds.jpeg",
+    alt: "Heavy clouds over lush foothills.",
   },
 
   {
     id: "parents",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/parents" },
-        ["img", {
-          src: "/jpeg/parents.jpeg",
-          style: {
-            // "object-position": "15% 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/parents.jpeg",
+    alt: "My parents interacting extremely typically.",
   },
 
   {
-    id: "sister",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/sister" },
-        ["img", {
-          src: "/jpeg/sister.jpeg",
-          style: {
-            "object-position": "0 30%",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    id: "erica",
+    src: "/jpeg/erica.jpeg",
+    alt: "My sister across the table taking a picture of me, taking a picture of her, which is this picture.",
+    style: { "object-position": "0 30%" }
   },
 
   {
     id: "louie",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/louie" },
-        ["img", {
-          src: "/jpeg/louie.jpeg",
-          style: {
-            // "object-position": "15% 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/louie.jpeg",
+    alt: "My dog in the passenger seat politely requesting food and/or attention.",
+    style: { "object-position": "0 30%" }
   },
 
   {
     id: "petals",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/petals" },
-        ["img", {
-          src: "/jpeg/petals.jpeg",
-          style: {
-            // "object-position": "15% 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/petals.jpeg",
+    alt: "Pale pink flower petals gathering near a concrete sidewalk.",
   },
 
   {
-    id: "boice",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/boice" },
-        ["img", {
-          src: "/jpeg/boice.jpeg",
-          style: {
-            // "object-position": "15% 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    id: "pauszeks",
+    src: "/jpeg/pauszeks.jpeg",
+    alt: "Two brothers walking through a small mountain town with fresh coffee.\nOne peace sign, one cheers.",
   },
 
   {
     id: "watching",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/watching" },
-        ["img", {
-          src: "/jpeg/watching.jpeg",
-          style: {
-            // "object-position": "15% 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/watching.jpeg",
+    alt: "A lonely closed-circuit camera surveilling an empty parking lot labeled Lot P.",
   },
 
   {
-    id: "dae-wee.3",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/dae-wee.3" },
-        ["img", {
-          src: "/jpeg/dae-wee.3.jpeg",
-          style: {
-            // "object-position": "15% 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    id: "david",
+    src: "/jpeg/david.jpeg",
+    alt: "My sister's boyfriend-of-significant-duration (my brother-in-vibe?) flaunting nothing on the way back from a rickety vantage overlooking a suburb of Los Angeles.",
   },
 
   {
     id: "branch",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/branch" },
-        ["img", {
-          src: "/jpeg/branch.jpeg",
-          style: {
-            // "object-position": "15% 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/branch.jpeg",
+    alt: "A branch of a tree that seems to branch indefinitely.",
   },
 
   {
-    id: "eli.4",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/eli.4" },
-        ["img", {
-          src: "/jpeg/eli.7.jpeg",
-          style: {
-            "object-position": "0 50%",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    id: "eli",
+    src: "/jpeg/eli.jpeg",
+    alt: "Black sand washing into cloudy Pacific infinity; a familiar bummer in the foreground utterly ruining the shot.",
   },
-
-  // {
-  //   id: "light-squared",
-  //   previewComponent: () => [
-  //     "div.gallery-item", {},
-  //     ["a", { href: "#/nolan/gallery/light-squared" },
-  //       ["img", {
-  //         src: "/jpeg/light-squared.7.jpeg",
-  //         style: {
-  //           // "object-position": "0 62.5%",
-  //           // "border-top-right-radius": "1rem"
-  //         }
-  //       }]
-  //     ]
-  //   ],
-  //   pageComponent: () => ["div", {}]
-  // },
-
-  // {
-  //   id: "half-and-half",
-  //   previewComponent: () => [
-  //     "div.gallery-item", {},
-  //     ["a", { href: "#/nolan/gallery/half-and-half" },
-  //       ["img", {
-  //         src: "/jpeg/half-and-half.jpeg",
-  //         style: {
-  //           // "object-position": "15% 0",
-  //           // "border-top-right-radius": "1rem"
-  //         }
-  //       }]
-  //     ]
-  //   ],
-  //   pageComponent: () => ["div", {}]
-  // },
 
   {
     id: "bridge",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/bridge" },
-        ["img", {
-          src: "/jpeg/bridge.jpeg",
-          style: {
-            // "object-position": "15% 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
-  },
+    src: "/jpeg/bridge.jpeg",
+    alt: "Admiring my shoes on a narrow bridge above a rapid creek.",
+  }
 
   // {
-  //   id: "beach-violation",
-  //   previewComponent: () => [
-  //     "div.gallery-item", {},
-  //     ["a", { href: "#/nolan/gallery/beach-violation" },
-  //       ["img", {
-  //         src: "/jpeg/beach-violation.jpeg",
-  //         style: {
-  //           "object-position": "0 100%",
-  //           // "border-top-right-radius": "1rem"
-  //         }
-  //       }]
-  //     ]
-  //   ],
-  //   pageComponent: () => ["div", {}]
-  // },
-
-  // {
-  //   id: "facade",
-  //   previewComponent: () => [
-  //     "div.gallery-item", {},
-  //     ["a", { href: "#/nolan/gallery/facade" },
-  //       ["img", {
-  //         src: "/jpeg/facade.jpeg",
-  //         style: {
-  //           // "object-position": "15% 0",
-  //           // "border-top-right-radius": "1rem"
-  //         }
-  //       }]
-  //     ]
-  //   ],
-  //   pageComponent: () => ["div", {}]
-  // },
-
-  // {
-  //   id: "footprints",
-  //   previewComponent: () => [
-  //     "div.gallery-item", {},
-  //     ["a", { href: "#/nolan/gallery/footprints" },
-  //       ["img", {
-  //         src: "/jpeg/footprints.jpeg",
-  //         style: {
-  //           // "object-position": "15% 0",
-  //           // "border-top-right-radius": "1rem"
-  //         }
-  //       }]
-  //     ]
-  //   ],
-  //   pageComponent: () => ["div", {}]
+  //   id: "beach",
+  //   src: "/jpeg/beach.jpeg",
+  //   alt: "A secluded and rocky beach where I had been resting my eyes until immediately before becoming the bewildered subject of this photograph.",
   // },
 
 ]
 
 /* TODO: lollipop on wood */
-const nm8GalleryItems: Iterable<GalleryItem> = [
+/* TODO: rearrange, cluster, add furniture, cluster drawings, etc., organize by 3s */
+const nm8GalleryItems: GalleryItem[] = [
+
   {
     id: "self",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nm8/gallery/self" },
-        ["img", {
-          src: "/jpeg/nm8.self.jpeg",
-          style: { "object-position": "0 56%" }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/nm8.self.jpeg",
+    alt: "A robot with a 2x4 soul, visibly dissatisfied with its output.",
+    style: { "object-position": "0 56%" }
   },
 
+  /* TODO: at-dot gif */
   {
     id: "at-dot",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/at-dot" },
-        ["img", {
-          src: "/jpeg/at-dot.jpeg",
-          style: {
-            // "object-position": "15% 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/at-dot.jpeg",
+    alt: "A three dimensional @ printed in white, black, and mint green PLA."
   },
 
   {
-    id: "table.2",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/table.2" },
-        ["img", {
-          src: "/jpeg/table.2.jpeg",
-          style: {
-            // "object-position": "15% 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    id: "table",
+    src: "/jpeg/table.jpeg",
+    alt: "A diagram of a table on graph paper.\nA potential table."
   },
 
   {
-    id: "couch.2",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/couch.2" },
-        ["img", {
-          src: "/jpeg/couch.2.jpeg",
-          style: {
-            // "object-position": "15% 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    id: "couch",
+    src: "/jpeg/couch.jpeg",
+    alt: "The smallest but cleanest living room you've ever been in; cloudy day."
   },
 
   {
     id: "skulls",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/skulls" },
-        ["img", {
-          src: "/jpeg/skulls.jpeg",
-          style: {
-            // "object-position": "15% 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/skulls.jpeg",
+    alt: "Stackable cubic skulls printed in Martha Stewart®-themed PLA. The second greatest gift I've ever received.\nMemento mori d'Martha."
   },
 
   {
     id: "xacto",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/xacto" },
-        ["img", {
-          src: "/jpeg/xacto.jpeg",
-          style: {
-            // "object-position": "15% 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/xacto.jpeg",
+    alt: "An X-ACTO® knife. Fresh blade."
   },
 
   {
     id: "buckets",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/buckets" },
-        ["img", {
-          src: "/jpeg/buckets.jpeg",
-          style: {
-            // "object-position": "15% 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/buckets.jpeg",
+    alt: "Galvanized steel plumbing pipes and couplings sorted into resoundingly orange buckets, brought to you by Home Depot®."
   },
 
   {
     id: "warhammer",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/warhammer" },
-        ["img", {
-          src: "/jpeg/warhammer.jpeg",
-          style: {
-            "object-position": "72.5%",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/warhammer.jpeg",
+    alt: "Unpainted tabletop miniature. Sentient bipedal robot vibe, specifically T'au.",
+    style: { "object-position": "72.5%" }
   },
 
   {
     id: "rug",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/rug" },
-        ["img", {
-          src: "/jpeg/rug.jpeg",
-          style: {
-            // "object-position": "72.5% 50%",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/rug.jpeg",
+    alt: "Green rug, white couch, wooden table, gray blanket. But I'm not a rapper."
   },
 
   {
     id: "takach",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/takach" },
-        ["img", {
-          src: "/jpeg/takach.jpeg",
-          style: {
-            // "object-position": "0 70%",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/takach.jpeg",
+    alt: "Close-up of an etching press registration grid, brought to you by Takach Press®."
   },
 
   {
     id: "print",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/print" },
-        ["img", {
-          src: "/jpeg/print.jpeg",
-          style: {
-            // "object-position": "0 70%",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/print.jpeg",
+    alt: "A screen print hanging above a large manual screen printing press. There is a lot of care and meaning here to whoever took the picture, at least I get the sense. Who can really be sure?"
   },
 
-  {
-    id: "sophisticated",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/sophisticated" },
-        ["img", {
-          src: "/jpeg/sophisticated.jpeg",
-          style: {
-            // "object-position": "72.5% 50%",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
-  },
+  // {
+  //   id: "yards",
+  //   src: "/jpeg/yards.jpeg",
+  //   alt: "Shoegazing; peeping the yards on crumbling concrete."
+  // },
 
   {
     id: "frame",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/frame" },
-        ["img", {
-          src: "/jpeg/frame.jpeg",
-          style: {
-            // "object-position": "0 70%",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/frame.jpeg",
+    alt: "A fearlessly rainbow-striped frame sample sitting on immaculate construction paper."
   },
 
   {
     id: "screw",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/screw" },
-        ["img", {
-          src: "/jpeg/screw.jpeg",
-          style: {
-            // "object-position": "0 70%",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/screw.jpeg",
+    alt: "A black ballpoint pen drawing on white graph paper. It looks like a vaguely humanoid assemblage of shapes with screw-like rods for arms, stacked boxes for a torso, smooth pipe legs, and a plastic floret head. It's staring at a biblically accurate screw. In this world, even the most basic hardware fasteners are much larger than people."
   },
 
   {
     id: "4-avenue",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/4-avenue" },
-        ["img", {
-          src: "/jpeg/4-avenue.jpeg",
-          style: {
-            "object-position": "0 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/4-avenue.jpeg",
+    alt: "A gorgeous blue Werner® ladder waiting for the subway at 4th Avenue.",
+    style: { "object-position": "0 0" }
   },
 
   {
-    id: "graphite-lollipops",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/graphite-lollipops" },
-        ["img", {
-          src: "/jpeg/graphite-lollipops.jpeg",
-          style: {
-            "object-position": "0 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    id: "graphite",
+    src: "/jpeg/graphite.jpeg",
+    alt: "A rough graphite sketch of a detached plot of land floating in space populated by massive lollipops.",
+    style: { "object-position": "0 0" }
   },
 
   {
     id: "frames",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/frames" },
-        ["img", {
-          src: "/jpeg/frames.jpeg",
-          style: {
-            "object-position": "100% 50%",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/frames.jpeg",
+    alt: "A pile of candidate frame samples in front of an entire wall of more frame samples.",
+    style: { "object-position": "100% 50%" }
   },
-
-  // {
-  //   id: "wash",
-  //   previewComponent: () => [
-  //     "div.gallery-item", {},
-  //     ["a", { href: "#/nolan/gallery/wash" },
-  //       ["img", {
-  //         src: "/jpeg/wash.jpeg",
-  //         style: {
-  //           // "object-position": "100% 50%",
-  //           // "border-top-right-radius": "1rem"
-  //         }
-  //       }]
-  //     ]
-  //   ],
-  //   pageComponent: () => ["div", {}]
-  // },
 
   {
-    id: "fanny",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/fanny" },
-        ["img", {
-          src: "/jpeg/fanny.jpeg",
-          style: {
-            "object-position": "100% 50%",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    id: "pack",
+    src: "/jpeg/pack.jpeg",
+    alt: "A pristine dyneema fanny pack for use in the distant future, when my current fanny pack of a similar varietal falls irreparable."
   },
-
-  // {
-  //   id: "coffee",
-  //   previewComponent: () => [
-  //     "div.gallery-item", {},
-  //     ["a", { href: "#/nolan/gallery/coffee" },
-  //      ["img", {
-  //        src: "/jpeg/coffee.jpeg",
-  //        style: {
-  //          // "object-position": "100% 50%",
-  //          // "border-top-right-radius": "1rem"
-  //        }
-  //      }]
-  //     ]
-  //   ],
-  //   pageComponent: () => ["div", {}]
-  // },
-
-  // {
-  //   id: "ink",
-  //   previewComponent: () => [
-  //     "div.gallery-item", {},
-  //     ["a", { href: "#/nolan/gallery/ink" },
-  //      ["img", {
-  //        src: "/jpeg/ink.jpeg",
-  //        style: {
-  //          // "object-position": "100% 50%",
-  //          // "border-top-right-radius": "1rem"
-  //        }
-  //      }]
-  //     ]
-  //   ],
-  //   pageComponent: () => ["div", {}]
-  // },
 
   {
     id: "tom",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/tom" },
-        ["img", {
-          src: "/jpeg/tom.jpeg",
-          style: {
-            "object-position": "0 33%",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/tom.jpeg",
+    alt: "Tom Sachs yawning on a tour of the Budweiser factory."
   },
 
   {
     id: "dinm8",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/dinm8" },
-        ["img", {
-          src: "/jpeg/dinm8.jpeg",
-          style: {
-            "object-position": "0 33%",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
-  },
+    src: "/jpeg/dinm8.jpeg",
+    alt: "The greatest mother to have ever lived hauling her son's garbage through a hardware store, smiling.",
+    style: { "object-position": "50% 33.33%" }
+  }
 
 ]
 
-const lemniscatePoint = (t) => {
+const lemniscatePoint = (t: number) => {
   const a = 0.5
   const sin_t = Math.sin(t)
   const cos_t = Math.cos(t)
@@ -808,15 +335,26 @@ const lemniscatePoint = (t) => {
   return [x, y]
 }
 
-const lemniscatePoints = transduce(map(lemniscatePoint), push(), range(0, Math.PI * 2, 0.1))
-lemniscatePoints.push(lemniscatePoints[0])
+const lemniscatePoints = transduce(map(lemniscatePoint), push(), range(0, Math.PI * 2 + 0.1, 0.1))
+const strokeDashOffset = reactive(0, { closeOut: CloseMode.NEVER })
 
+/* TODO: refine sizes, rounding, tween; css */
 const lemniscateSvg = () => [
-  "svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 2.5 2.5" },
+  "svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 2.5 2.5",
+    style: {
+      "pointer-events": "none",
+      transition: "stroke-dashoffset 80ms ease",
+      // background: "black",
+      height: "100%",
+      width: "100%"
+    }
+  },
   ["g",
     {
       fill: "transparent",
-      stroke: "black",
+      stroke: "white",
       "stroke-width": "0.0125px",
       "stroke-linecap": "round"
     },
@@ -825,931 +363,347 @@ const lemniscateSvg = () => [
       transform: "translate(1.25 1.25)",
       style: {
         "stroke-dasharray": "1.311 0.1311 0.0655 0.1311 0.0655 0.1311 0.0655 0.1311 0.0655 0.1311 0.0655 0.1311 0.0655 0.1311",
-        "stroke-dashoffset": "0"
+        "stroke-dashoffset": tweenNumber(strokeDashOffset, 0, 0.05)
       }
     }]
   ]
 ]
 
-const OeGalleryItems: Iterable<GalleryItem> = [
+const OeGalleryItems: GalleryItem[] = [
+
   {
     id: "self",
-    previewComponent: () => ["div.gallery-item", {}],
-    pageComponent: () => ["div", {}]
+    preview: () => [
+      "div.gallery-item", {},
+      ["div", { style: { width: "100%", "aspect-ratio": "1 / 1" } }]
+    ]
   },
 
+  /* TODO: interactive, dark mode, id page */
   {
     id: "inf",
-    previewComponent: () => ["div.gallery-item", {} /* lemniscateSvg() */],
-    pageComponent: () => ["div", {}]
+    preview: () => [
+      "div.gallery-item", {
+        /* TODO: onmousemove, map x,y into (-1.311, 1.311) */
+        onmouseenter: () => strokeDashOffset.next(strokeDashOffset.deref() === 0 ? 1.311 : 0),
+        onmouseout: () => strokeDashOffset.next(strokeDashOffset.deref() === 0 ? 1.311 : 0),
+      },
+      lemniscateSvg()
+    ]
   },
 
   {
-    id: "speculative",
-    previewComponent: () => [
+    id: "self",
+    preview: () => [
       "div.gallery-item", {},
-      // ["div", {
-      //   style: {
-      //     width: "90%",
-      //     height: "90%",
-      //     border: "1px dashed black",
-      //     "border-radius": "2.5%"
-      //   }
-      // }]
-    ],
-    pageComponent: () => ["div", {}]
+      ["div", { style: { width: "100%", "aspect-ratio": "1 / 1" } }]
+    ]
   },
+
+  // /* TODO: change inversion, match lemniscate */
+  // {
+  //   id: "orbs",
+  //   src: "/jpeg/orbs.jpeg",
+  //   alt: ""
+  // },
 
   {
     id: "era",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/era" },
-        ["img", {
-          src: "/png/era.png",
-          style: {
-            // "object-position": "0 33%",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/png/era.png",
+    alt: "A black and white digital image of what looks like imperfectly pixelated flowers falling out of a pattern of random background noise."
   },
 
   {
-    id: "open-scad",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/open-scad" },
-        ["img", {
-          src: "/png/open-scad.png",
-          style: {
-            // "object-position": "0 33%",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    id: "scad",
+    src: "/png/scad.png",
+    alt: "A 3D modeling workspace populated with a repeating sinusoidal wave pattern colorized according to coordinate."
   },
 
+  /* TODO: rename jpeg, add rules to id page */
+  /* TODO: png? higher quality */
   {
-    id: "blue-rule",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/blue-rule" },
-        ["img", {
-          src: "/jpeg/abstract-blue-rule.jpeg",
-          style: {
-            // "object-position": "0 33%",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    id: "rule.blue",
+    src: "/jpeg/abstract-blue-rule.jpeg",
+    alt: "*.·-_ ?"
   },
 
   {
     id: "green",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/green" },
-        ["img", {
-          src: "/jpeg/abstract-green.jpeg",
-          style: {
-            // "object-position": "0 33%",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/abstract-green.jpeg",
+    alt: ".. *°* _"
   },
 
   {
     id: "pink",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/pink" },
-        ["img", {
-          src: "/jpeg/abstract-pink.jpeg",
-          style: {
-            // "object-position": "0 33%",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/abstract-pink.jpeg",
+    alt: ""
   },
 
   {
     id: "guy",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/guy" },
-        ["img", {
-          src: "/jpeg/abstract-guy.jpeg",
-          style: {
-            // "object-position": "0 33%",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/abstract-guy.jpeg",
+    alt: ""
   },
-
-  {
-    id: "sidewalk",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/sidewalk" },
-        ["img", {
-          src: "/jpeg/sidewalk.jpeg",
-          style: {
-            // "object-position": "0 33%",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
-  },
-
-  // {
-  //   id: "truck",
-  //   previewComponent: () => [
-  //     "div.gallery-item", {},
-  //     ["a", { href: "#/smixzy/gallery/truck" },
-  //       ["img", {
-  //         src: "/jpeg/truck.jpeg",
-  //         style: {
-  //           // "object-position": "0 33%",
-  //           // "border-radius": "50%"
-  //         }
-  //       }]
-  //     ]
-  //   ],
-  //   pageComponent: () => ["div", {}]
-  // },
-
-  // {
-  //   id: "martini",
-  //   previewComponent: () => [
-  //     "div.gallery-item", {},
-  //     ["a", { href: "#/smixzy/gallery/martini" },
-  //       ["img", {
-  //         src: "/jpeg/martini.jpeg",
-  //         style: {
-  //           // "object-position": "0 33%",
-  //           // "border-radius": "50%"
-  //         }
-  //       }]
-  //     ]
-  //   ],
-  //   pageComponent: () => ["div", {}]
-  // },
-
-  {
-    id: "stained-glass",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/stained-glass" },
-        ["img", {
-          src: "/jpeg/stained-glass.jpeg",
-          style: {
-            // "object-position": "0 33%",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
-  },
-
-  {
-    id: "closet",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/closet" },
-        ["img", {
-          src: "/jpeg/closet.jpeg",
-          style: {
-            // "object-position": "0 33%",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
-  },
-
-  {
-    id: "rice-pink",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/rice-pink" },
-        ["img", {
-          src: "/jpeg/rice-pink.jpeg",
-          style: {
-            // "object-position": "0 33%",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
-  },
-
-  {
-    id: "rice",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/rice" },
-        ["img", {
-          src: "/jpeg/rice.jpeg",
-          style: {
-            // "object-position": "0 33%",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
-  },
-
-  {
-    id: "universal-rect",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/universal-rect" },
-        ["img", {
-          src: "/jpeg/universal-rect.jpeg",
-          style: {
-            // "object-position": "15% 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
-  },
-
-  // {
-  //   id: "midway",
-  //   previewComponent: () => [
-  //     "div.gallery-item", {},
-  //     ["a", { href: "#/smixzy/gallery/midway" },
-  //       ["img", {
-  //         src: "/jpeg/midway.jpeg",
-  //         style: {
-  //           // "object-position": "0 33%",
-  //           // "border-radius": "50%"
-  //         }
-  //       }]
-  //     ]
-  //   ],
-  //   pageComponent: () => ["div", {}]
-  // },
-
-  // {
-  //   id: "color-creek",
-  //   previewComponent: () => [
-  //     "div.gallery-item", {},
-  //     ["a", { href: "#/smixzy/gallery/color-creek" },
-  //       ["img", {
-  //         src: "/jpeg/color-creek.jpeg",
-  //         style: {
-  //           // "object-position": "0 33%",
-  //           // "border-radius": "50%"
-  //         }
-  //       }]
-  //     ]
-  //   ],
-  //   pageComponent: () => ["div", {}]
-  // },
-
-  // {
-  //   id: "clouds",
-  //   previewComponent: () => [
-  //     "div.gallery-item", {},
-  //     ["a", { href: "#/smixzy/gallery/clouds" },
-  //      ["img", {
-  //        src: "/jpeg/clouds.jpeg",
-  //        style: {
-  //          // "object-position": "0 33%",
-  //          // "border-radius": "50%"
-  //        }
-  //      }]
-  //     ]
-  //   ],
-  //   pageComponent: () => ["div", {}]
-  // },
-
-  {
-    id: "orbs",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/orbs" },
-        ["img", {
-          src: "/jpeg/orbs.jpeg",
-          style: {
-            // "object-position": "0 33%",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
-  },
-
-  // {
-  //   id: "bmw",
-  //   previewComponent: () => [
-  //     "div.gallery-item", {},
-  //     ["a", { href: "#/smixzy/gallery/bmw" },
-  //       ["img", {
-  //         src: "/jpeg/bmw.jpeg",
-  //         style: {
-  //           // "object-position": "0 33%",
-  //           // "border-radius": "50%"
-  //         }
-  //       }]
-  //     ]
-  //   ],
-  //   pageComponent: () => ["div", {}]
-  // },
 
   {
     id: "abstract-stairs",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/abstract-stairs" },
-        ["img", {
-          src: "/png/abstract-stairs.png",
-          style: {
-            // "object-position": "0 33%",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/png/abstract-stairs.png",
+    alt: ""
   },
-
-  // {
-  //   id: "abstract-clouds",
-  //   previewComponent: () => [
-  //     "div.gallery-item", {},
-  //     ["a", { href: "#/nolan/gallery/abstract-clouds" },
-  //      ["img", {
-  //        src: "/jpeg/abstract-clouds.jpeg",
-  //        style: {
-  //          // "object-position": "15% 0",
-  //          // "border-top-right-radius": "1rem"
-  //        }
-  //      }]
-  //     ]
-  //   ],
-  //   pageComponent: () => ["div", {}]
-  // },
-
-  // {
-  //   id: "lightfloor",
-  //   previewComponent: () => [
-  //     "div.gallery-item", {},
-  //     ["a", { href: "#/nolan/gallery/lightfloor" },
-  //      ["img", {
-  //        src: "/jpeg/lightfloor.jpeg",
-  //        style: {
-  //          // filter: fromRAF().map((t) => `hue-rotate(${t % 360}deg), invert(100%)`)
-  //          // filter: "invert(100%)"
-  //          // "object-position": "15% 0",
-  //          // "border-top-right-radius": "1rem"
-  //        }
-  //      }]
-  //     ]
-  //   ],
-  //   pageComponent: () => ["div", {}]
-  // },
 
   {
     id: "abstract-white-rule",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/abstract-white-rule" },
-        ["img", {
-          src: "/jpeg/abstract-white-rule.jpeg",
-          style: {
-            // "object-position": "15% 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/abstract-white-rule.jpeg",
+    alt: ""
   },
 
   // {
   //   id: "in-the-flowers",
-  //   previewComponent: () => [
-  //     "div.gallery-item", {},
-  //     ["a", { href: "#/nolan/gallery/in-the-flowers" },
-  //       ["img", {
-  //         src: "/jpeg/in-the-flowers.jpeg",
-  //         style: {
-  //           // "object-position": "15% 0",
-  //           // "border-top-right-radius": "1rem"
-  //         }
-  //       }]
-  //     ]
-  //   ],
-  //   pageComponent: () => ["div", {}]
+  //   src: "/jpeg/in-the-flowers.jpeg",
+  //   alt: ""
   // },
 
   {
     id: "n",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/n" },
-        ["img", {
-          src: "/png/n.png",
-          style: {
-            // "object-position": "15% 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/png/n.png",
+    alt: ""
   },
 
   {
     id: "u",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/u" },
-        ["img", {
-          src: "/png/u.png",
-          style: {
-            // "object-position": "15% 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/png/u.png",
+    alt: ""
   },
 
   {
-    id: "rice-self",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/rice-self" },
-        ["img", {
-          src: "/jpeg/rice-self.jpeg",
-          style: {
-            // "object-position": "15% 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    id: "sidewalk",
+    src: "/jpeg/sidewalk.jpeg",
+    alt: ""
+  },
+
+  {
+    id: "closet",
+    src: "/jpeg/closet.jpeg",
+    alt: ""
+  },
+
+  {
+    id: "stained-glass",
+    src: "/jpeg/stained-glass.jpeg",
+    alt: ""
+  },
+
+  {
+    id: "martini",
+    src: "/jpeg/martini.jpeg",
+    alt: ""
+  },
+
+  {
+    id: "midway",
+    src: "/jpeg/midway.jpeg",
+    alt: ""
+  },
+
+  {
+    id: "truck",
+    src: "/jpeg/truck.jpeg",
+    alt: ""
+  },
+
+  {
+    id: "rice",
+    src: "/jpeg/rice.jpeg",
+    alt: ""
+  },
+
+  {
+    id: "universal-rect",
+    src: "/jpeg/universal-rect.jpeg",
+    alt: ""
+  },
+
+  {
+    id: "rice-pink",
+    src: "/jpeg/rice-pink.jpeg",
+    alt: ""
   },
 
   // {
-  //   id: "rock",
-  //   previewComponent: () => [
-  //     "div.gallery-item", {},
-  //     ["a", { href: "#/nolan/gallery/rock" },
-  //       ["img", {
-  //         src: "/png/rock.png",
-  //         style: {
-  //           // "object-position": "15% 0",
-  //           // "border-top-right-radius": "1rem"
-  //         }
-  //       }]
-  //     ]
-  //   ],
-  //   pageComponent: () => ["div", {}]
+  //   id: "color-creek",
+  //   src: "/jpeg/color-creek.jpeg",
+  //   alt: ""
+  // },
+
+
+  {
+    id: "rice-self",
+    src: "/jpeg/rice-self.jpeg",
+    alt: ""
+  },
+
+  // /* TODO: change inversion, match lemniscate */
+  // {
+  //   id: "orbs",
+  //   src: "/jpeg/orbs.jpeg",
+  //   alt: ""
   // },
 
 ]
 
-const smixzyGalleryItems: Iterable<GalleryItem> = [
+const smixzyGalleryItems: GalleryItem[] = [
+
   {
     id: "self",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/self" },
-        ["img", {
-          src: "/jpeg/smixzy.self.jpeg",
-          style: {
-            "object-position": "0 33%",
-            "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/smixzy.self.jpeg",
+    alt: "",
+    style: {
+      "object-position": "0 33%",
+      "border-radius": "50%"
+    }
   },
 
   {
     id: "ass-drag",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/ass-drag" },
-        ["img", {
-          src: "/jpeg/ass-drag.jpeg",
-          style: {
-            // "object-position": "0 33%",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/ass-drag.jpeg",
+    alt: ""
   },
 
   {
     id: "send-nudes",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/send-nudes" },
-        ["img", {
-          src: "/jpeg/send-nudes.jpeg",
-          style: {
-            // "object-position": "0 33%",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/send-nudes.jpeg",
+    alt: ""
   },
 
   {
     id: "shit-in-my-mouth",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/shit-in-my-mouth" },
-        ["img", {
-          src: "/jpeg/shit-in-my-mouth.jpeg",
-          style: {
-            // "object-position": "0 33%",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/shit-in-my-mouth.jpeg",
+    alt: ""
   },
 
   {
     id: "fnd-ur-way",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/fnd-ur-way" },
-        ["img", {
-          src: "/jpeg/fnd-ur-way.jpeg",
-          style: {
-            // "object-position": "0 33%",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/fnd-ur-way.jpeg",
+    alt: ""
   },
 
   {
     id: "evolve-now",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/evolve-now" },
-        ["img", {
-          src: "/jpeg/evolve-now.jpeg",
-          style: {
-            // "object-position": "0 33%",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/evolve-now.jpeg",
+    alt: ""
   },
 
-
+  /* TODO: use face.jpeg for id */
   {
     id: "face",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/face" },
-        ["img", {
-          src: "/jpeg/face.2.jpeg",
-          style: {
-            // "object-position": "15% 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/face.2.jpeg",
+    alt: ""
+    // style: { "object-position": "100% 0" }
   },
 
   {
     id: "sunglass-love",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/sunglass-love" },
-        ["img", {
-          src: "/jpeg/sunglass-love.jpeg",
-          style: {
-            "object-position": "0 0",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/sunglass-love.jpeg",
+    alt: "",
+    style: { "object-position": "0 0" }
   },
 
   {
     id: "cross-roads",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/cross-roads" },
-        ["img", {
-          src: "/jpeg/cross-roads.jpeg",
-          style: {
-            // "object-position": "0 0",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/cross-roads.jpeg",
+    alt: ""
   },
 
   {
     id: "theme-provider",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/theme-provider" },
-        ["img", {
-          src: "/jpeg/theme-provider.jpeg",
-          style: {
-            // "object-position": "0 33%",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/theme-provider.jpeg",
+    alt: ""
   },
 
   {
     id: "dumpster-gram",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/dumpster-gram" },
-        ["img", {
-          src: "/jpeg/dumpster-gram.jpeg",
-          style: {
-            // "object-position": "0 33%",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/dumpster-gram.jpeg",
+    alt: ""
   },
 
   {
     id: "post-it",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/post-it" },
-        ["img", {
-          src: "/jpeg/post-it.jpeg",
-          style: {
-            // "object-position": "0 33%",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/post-it.jpeg",
+    alt: ""
   },
 
   {
     id: "sky",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/sky" },
-        ["img", {
-          src: "/jpeg/sky.jpeg",
-          style: {
-            // "object-position": "0 33%",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/sky.jpeg",
+    alt: ""
   },
 
   {
     id: "hyper-branch",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/hyper-branch" },
-        ["img", {
-          src: "/jpeg/hyper-branch.jpeg",
-          style: {
-            // "object-position": "0 33%",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/hyper-branch.jpeg",
+    alt: ""
   },
 
   // {
   //   id: "new-balanced",
-  //   previewComponent: () => [
-  //     "div.gallery-item", {},
-  //     ["a", { href: "#/smixzy/gallery/new-balanced" },
-  //      ["img", {
-  //        src: "/jpeg/new-balanced.jpeg",
-  //        style: {
-  //          // "object-position": "0 33%",
-  //          // "border-radius": "50%"
-  //        }
-  //      }]
-  //     ]
-  //   ],
-  //   pageComponent: () => ["div", {}]
+  //   src: "/jpeg/new-balanced.jpeg",
+  //   alt: ""
   // },
-
 
   {
     id: "thrift",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/thrift" },
-        ["img", {
-          src: "/jpeg/thrift.2.jpeg",
-          style: {
-            // "object-position": "0 33%",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/thrift.jpeg",
+    alt: ""
   },
 
   {
     id: "orb-birth",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/orb-birth" },
-        ["img", {
-          src: "/jpeg/orb-birth.2.jpeg",
-          style: {
-            // "object-position": "0 33%",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/orb-birth.jpeg",
+    alt: ""
   },
 
   {
     id: "coral",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/coral" },
-        ["img", {
-          src: "/jpeg/coral.jpeg",
-          style: {
-            // "object-position": "0 33%",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/coral.jpeg",
+    alt: ""
   },
 
   {
     id: "chalk",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/smixzy/gallery/chalk" },
-        ["img", {
-          src: "/jpeg/chalk.jpeg",
-          style: {
-            // "object-position": "0 33%",
-            // "border-radius": "50%"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/chalk.jpeg",
+    alt: ""
   },
 
   {
     id: "spray-paint",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/spray-paint" },
-        ["img", {
-          src: "/jpeg/spray-paint.jpeg",
-          style: {
-            // "object-position": "15% 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/spray-paint.jpeg",
+    alt: ""
   },
 
   {
     id: "seating",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/seating" },
-        ["img", {
-          src: "/jpeg/seating.jpeg",
-          style: {
-            // "object-position": "15% 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/seating.jpeg",
+    alt: ""
   },
 
   {
     id: "concrete",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/concrete" },
-        ["img", {
-          src: "/jpeg/concrete.jpeg",
-          style: {
-            // "object-position": "15% 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/concrete.jpeg",
+    alt: ""
   },
 
   {
     id: "cable-tv",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/cable-tv" },
-        ["img", {
-          src: "/jpeg/cable-tv.jpeg",
-          style: {
-            // "object-position": "15% 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
+    src: "/jpeg/cable-tv.jpeg",
+    alt: ""
   },
 
   {
     id: "mark",
-    previewComponent: () => [
-      "div.gallery-item", {},
-      ["a", { href: "#/nolan/gallery/mark" },
-        ["img", {
-          src: "/jpeg/mark.jpeg",
-          style: {
-            // "object-position": "15% 0",
-            // "border-top-right-radius": "1rem"
-          }
-        }]
-      ]
-    ],
-    pageComponent: () => ["div", {}]
-  },
+    src: "/jpeg/mark.jpeg",
+    alt: "",
+    style: { "border-radius": "50%" }
+  }
 
 ]
 
@@ -1778,17 +732,24 @@ const incNumGalleryColumnsIndex = () => {
 const galleryControls = () => [
   "aside", {},
   ["div.gallery-controls", {},
-    ["button", { onclick: decNumGalleryColumnsIndex }, "+"],
-    ["button", { onclick: incNumGalleryColumnsIndex }, "-"],
-    ["input", {
-      type: "range", value: filterValue, min: "0", max: "100", step: "1",
-      oninput: (e: { target: { value: number } }) => {
-        filterValue.next(e.target.value)
-      },
-      onchange: (e: { target: { value: number } }) => {
-        filterValue.next(e.target.value)
-      }
-    }]
+    /* TODO: labels, accessibility, aria */
+    ["div", { id: "zoom-controls", class: "zoom-controls" },
+      ["button", { type: "button", title: "Zoom in.", onclick: decNumGalleryColumnsIndex }, "+"],
+      ["button", { type: "button", title: "Zoom out.", onclick: incNumGalleryColumnsIndex }, "-"],
+      ["label", { for: "zoom-controls" }, "zoom"],
+    ],
+    ["div.filter-controls", {},
+      ["input#filter-range", {
+        title: "Increase and decrease image filter intensity.",
+        type: "range", value: filterValue, min: "0", max: "100", step: "1",
+        oninput: (e: { target: { value: number } }) => {
+          filterValue.next(e.target.value)
+        },
+        onchange: (e: { target: { value: number } }) => {
+          filterValue.next(e.target.value)
+        }
+      }],
+      ["label", { for: "filter-range" }, "filter"]]
   ]
 ]
 
@@ -1796,22 +757,96 @@ const nolanGist = async (r: Route) => [
   "main", {},
   ["h1", {}, "I'm nolan."],
   ["h2", {}, "I've been called a reflector. I'm into computers,\ngraphics, and all forms of animation."],
-  ["h3", {}, "This is where I programmatically put out on the internet, so stay awhile, and listen. Enjoy my post-social AIM profile."],
+  ["h3", {}, "This is where I programmatically put out on the internet, so stay awhile and listen. Enjoy my post-social AIM profile."],
   ["a", { href: "mailto:nolan@usernolan.net" }, "nolan@usernolan.net"]
   /* TODO: contact? */
+]
+
+const defaultGalleryItemPreview = (r: Route, { id, href, src, style, alt }: GalleryItem) => [
+  "div.gallery-item", id ? { id } : {},
+  ["a", { href: href || `#/${r.who}/gallery/${id}` },
+    ["img", { src, alt, style }]
+  ]
+]
+
+const galleryItemPreview = (r: Route, i: GalleryItem) =>
+  i.preview ?
+    i.preview(i) :
+    defaultGalleryItemPreview(r, i)
+
+const nolanGalleryId = async (r: Route) => {
+  /* TODO: not found */
+  const { src, alt } = nolanGalleryItems.find((x) => x.id === r.id)!
+  return [
+    "main", {},
+    ["img", { src, alt }]
+  ]
+}
+
+/* TODO: prev/next */
+const nolanGalleryIdAside = async (r: Route) => [
+  "aside", {},
+  ["p", {}, nolanGalleryItems.find((x) => x.id === r.id)?.alt]
+]
+
+const nm8GalleryId = async (r: Route) => {
+  /* TODO: not found */
+  const { src, alt } = nm8GalleryItems.find((x) => x.id === r.id)!
+  return [
+    "main", {},
+    ["img", { src, alt }]
+  ]
+}
+
+/* TODO: prev/next */
+const nm8GalleryIdAside = async (r: Route) => [
+  "aside", {},
+  ["p", {}, nm8GalleryItems.find((x) => x.id === r.id)?.alt]
+]
+
+const OeGalleryId = async (r: Route) => {
+  /* TODO: not found */
+  const { src, alt } = OeGalleryItems.find((x) => x.id === r.id)!
+  return [
+    "main", {},
+    ["img", { src, alt }]
+  ]
+}
+
+/* TODO: prev/next */
+const OeGalleryIdAside = async (r: Route) => [
+  "aside", {},
+  ["p", {}, OeGalleryItems.find((x) => x.id === r.id)?.alt]
+]
+
+
+const smixzyGalleryId = async (r: Route) => {
+  /* TODO: not found */
+  const { src, alt } = smixzyGalleryItems.find((x) => x.id === r.id)!
+  return [
+    "main", {},
+    ["img", { src, alt }]
+  ]
+}
+
+/* TODO: prev/next */
+const smixzyGalleryIdAside = async (r: Route) => [
+  "aside", {},
+  ["p", {}, smixzyGalleryItems.find((x) => x.id === r.id)?.alt]
 ]
 
 const nolanGallery = async (r: Route) => [
   "main", {},
   ["div.gallery-container",
     {
+      "data-gallery-columns": galleryColumns,
       style: {
         filter: galleryFilter.map((x) =>
           x.filtered ? `grayscale(${x.filterValue}%)` : "none")
-      },
-      "data-gallery-columns": galleryColumns
+      }
     },
-    ...map((i) => i.previewComponent(r, nolanGalleryItems), nolanGalleryItems)
+    ...nolanGalleryItems.map((i) => galleryItemPreview(r, i))
+    // ...nolanGalleryItems.map(galleryItemPreview)
   ]
 ]
 
@@ -1880,19 +915,26 @@ const nm8Gist = async (r: Route) => [
   ["p", {}, "like animate. or like my initials, nms.\n also mereological composition."],
 ]
 
+/* TODO: eliminate filtered, optimize filters */
 const nm8Gallery = async (r: Route) => [
   "main", {},
   ["div.gallery-container",
     {
-      style: { filter: galleryFilter.map((x) => x.filtered ? `contrast(${100 + x.filterValue * 1}%) saturate(${1 - x.filterValue / 100})` : "none") },
-      "data-gallery-columns": galleryColumns
+      "data-gallery-columns": galleryColumns,
+      style: {
+        filter: galleryFilter.map((x) =>
+          x.filtered ?
+            `contrast(${100 + x.filterValue * 0.5}%) saturate(${1 - x.filterValue / 100})` :
+            "none")
+      }
     },
-    ...map((i) => i.previewComponent(r, nm8GalleryItems), nm8GalleryItems)
+    ...nm8GalleryItems.map((i) => galleryItemPreview(r, i))
   ]
 ]
 
 const nm8GalleryAside = async (r: Route) => galleryControls()
 
+/* TODO: datafy the references */
 const nm8Reference = async (r: Route) => [
   "main", {},
   ["ul", {},
@@ -1975,10 +1017,13 @@ const OeGallery = async (r: Route) => [
   "main", {},
   ["div.gallery-container",
     {
-      style: { filter: galleryFilter.map((x) => x.filtered ? `invert(${x.filterValue}%)` : "none") },
-      "data-gallery-columns": galleryColumns
+      "data-gallery-columns": galleryColumns,
+      style: {
+        filter: galleryFilter.map((x) =>
+          x.filtered ? `invert(${x.filterValue}%)` : "none")
+      }
     },
-    ...map((i) => i.previewComponent(r, OeGalleryItems), OeGalleryItems)
+    ...OeGalleryItems.map((i) => galleryItemPreview(r, i))
   ]
 ]
 
@@ -2050,10 +1095,13 @@ const smixzyGallery = async (r: Route) => [
   "main", {},
   ["div.gallery-container",
     {
-      style: { filter: galleryFilter.map((x) => x.filtered ? `saturate(1.5) hue-rotate(${(x.filterValue / 100) * 360}deg)` : "none") },
-      "data-gallery-columns": galleryColumns
+      "data-gallery-columns": galleryColumns,
+      style: {
+        filter: galleryFilter.map((x) =>
+          x.filtered ? `saturate(1.5) hue-rotate(${(x.filterValue / 100) * 360}deg)` : "none")
+      }
     },
-    ...map((i) => i.previewComponent(r, smixzyGalleryItems), smixzyGalleryItems)
+    ...smixzyGalleryItems.map((i) => galleryItemPreview(r, i))
   ]
 ]
 
@@ -2080,6 +1128,7 @@ const smixzyReference = async (r: Route) => [
       ]
     ],
 
+    /* TODO: find better link */
     ["li", {},
       ["a", { href: "https://en.wikipedia.org/wiki/Hilma_af_Klint" },
         ["h2", {}, ".· Hilma af Klint"]
@@ -2104,6 +1153,7 @@ const smixzyReference = async (r: Route) => [
       ]
     ],
 
+    /* TODO: find better link */
     ["li", {},
       ["a", { href: "https://en.wikipedia.org/wiki/Jean_Giraud" },
         ["h2", {}, ".· Moebius"]
@@ -2177,6 +1227,10 @@ const smixzyReference = async (r: Route) => [
 ]
 
 const capitalize = (s: string) => s.replace(/^\w/, c => c.toUpperCase())
+const routeKeyFn = (r: Route) =>
+  r.id ?
+    `${r.who}${capitalize(r.what)}Id` :
+    `${r.who}${capitalize(r.what)}`
 
 const rdom = $compile([
   "div.rdom-root", {},
@@ -2184,36 +1238,39 @@ const rdom = $compile([
   /* ALT: ...$switch(,,,); return [main, aside] */
   $switch(
     route,
-    /* TODO: formalize keyfns, split non-whitespace, camelCase, join */
-    (r) => r.id ?
-      `${r.who}${capitalize(r.what)}${capitalize(r.id)}` :
-      `${r.who}${capitalize(r.what)}`,
+    routeKeyFn,
     {
       nolanGist,
       nolanGallery,
+      nolanGalleryId,
       nolanReference,
       nm8Gist,
       nm8Gallery,
+      nm8GalleryId,
       nm8Reference,
       OeGist,
       OeGallery,
+      OeGalleryId,
       OeReference,
       smixzyGist,
       smixzyGallery,
+      smixzyGalleryId,
       smixzyReference
     },
     async (err) => ["div", {}, route.map((r) => `ERROR ${err}; ${r.who}/${r.what}`)] /* TODO: fix, not found */
   ),
   $switch(
     route,
-    (r) => r.id ?
-      `${r.who}${capitalize(r.what)}${capitalize(r.id)}Aside` :
-      `${r.who}${capitalize(r.what)}Aside`,
+    (r) => `${routeKeyFn(r)}Aside`,
     {
       nolanGalleryAside,
+      nolanGalleryIdAside,
       nm8GalleryAside,
+      nm8GalleryIdAside,
       OeGalleryAside,
-      smixzyGalleryAside
+      OeGalleryIdAside,
+      smixzyGalleryAside,
+      smixzyGalleryIdAside
     },
     async () => ["aside", {}]
   )

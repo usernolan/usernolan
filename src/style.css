@@ -122,10 +122,29 @@ body.gallery main div.gallery-container div.gallery-item {
 body.gallery aside div.gallery-controls {
   position: sticky;
   top: 0.25rem; /* TODO: keep at initial position relative to nav */
+  /* display: flex; */
   padding: 0 0 0 0.125rem;
+  font-family: Fragment Mono,
+               ui-monospace,
+               "Cascadia Mono",
+               "Segoe UI Mono",
+               "Ubuntu Mono",
+               "Roboto Mono",
+               Menlo, Monaco, Consolas,
+               monospace;
 }
-body.gallery aside div.gallery-controls input[type=range] {
-  /* width: 50%; */
+body.gallery aside div.gallery-controls div {
+  margin: 0 0 1rem 0;
+}
+body.gallery aside div.gallery-controls div label {
+  display: block;
+  margin: 0 0 0 0.125rem;
+}
+body.gallery aside div.gallery-controls div.filter-controls {
+  width: 100%;
+}
+body.gallery aside div.gallery-controls div.filter-controls input[type=range] {
+  width: 82.5%;
 }
 
 /* TODO: nth-children padding */
@@ -205,6 +224,28 @@ body.gallery aside div.gallery-controls button {
   aspect-ratio: 1/1;
 }
 
+
+/* Gallery Id */
+
+body.gallery.id div.rdom-root {
+  height: 100vh;
+}
+body.gallery.id main {
+  position: relative;
+}
+body.gallery.id main img {
+  position: absolute;
+  height: calc(100% - 0.25rem);
+  max-width: calc(100% - 0.25rem);
+  object-fit: cover;
+}
+
+body.gallery.id aside {
+  padding: 0 1rem;
+}
+body.gallery.id aside p {
+  /* margin: 0; */
+}
 
 /* Reference */
 
