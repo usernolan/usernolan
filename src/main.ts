@@ -262,7 +262,7 @@ const nm8GalleryItems: GalleryItem[] = [
   {
     id: "print",
     src: "/jpeg/print.jpeg",
-    alt: "A screen print hanging above a large manual screen printing press. There is a lot of care and meaning here to whoever took the picture, at least I get the sense. Who can really be sure?"
+    alt: "A screen print hanging on the wall above a large manual screen printing press. There is a lot of meaning here to whoever took the picture, at least I get that sense. Who can be sure, really?"
   },
 
   // {
@@ -313,7 +313,7 @@ const nm8GalleryItems: GalleryItem[] = [
   {
     id: "tom",
     src: "/jpeg/tom.jpeg",
-    alt: "Tom Sachs yawning on a tour of the Budweiser factory."
+    alt: "Tom Sachs yawning on a tour of the Budweiser® factory."
   },
 
   {
@@ -338,7 +338,7 @@ const lemniscatePoint = (t: number) => {
 const lemniscatePoints = transduce(map(lemniscatePoint), push(), range(0, Math.PI * 2 + 0.1, 0.1))
 const strokeDashOffset = reactive(0, { closeOut: CloseMode.NEVER })
 
-/* TODO: refine sizes, rounding, tween; css */
+/* TODO: refine sizing, rounding, tween; css */
 const lemniscateSvg = () => [
   "svg", {
     xmlns: "http://www.w3.org/2000/svg",
@@ -408,23 +408,21 @@ const OeGalleryItems: GalleryItem[] = [
   // },
 
   {
-    id: "era",
-    src: "/png/era.png",
-    alt: "A black and white digital image of what looks like imperfectly pixelated flowers falling out of a pattern of random background noise."
-  },
-
-  {
     id: "scad",
     src: "/png/scad.png",
     alt: "A 3D modeling workspace populated with a repeating sinusoidal wave pattern colorized according to coordinate."
   },
 
-  /* TODO: rename jpeg, add rules to id page */
-  /* TODO: png? higher quality */
   {
-    id: "rule.blue",
-    src: "/jpeg/abstract-blue-rule.jpeg",
-    alt: "*.·-_ ?"
+    id: "guy",
+    src: "/jpeg/abstract-guy.jpeg",
+    alt: ""
+  },
+
+  {
+    id: "era",
+    src: "/png/era.png",
+    alt: "A black and white digital image of what looks like imperfectly pixelated flowers falling out of a pattern of random background noise."
   },
 
   {
@@ -439,10 +437,12 @@ const OeGalleryItems: GalleryItem[] = [
     alt: ""
   },
 
+  /* TODO: rename jpeg, add rules to id page */
+  /* TODO: png? higher quality */
   {
-    id: "guy",
-    src: "/jpeg/abstract-guy.jpeg",
-    alt: ""
+    id: "rule.blue",
+    src: "/jpeg/abstract-blue-rule.jpeg",
+    alt: "*.·-_ ?"
   },
 
   {
@@ -496,7 +496,7 @@ const OeGalleryItems: GalleryItem[] = [
   {
     id: "martini",
     src: "/jpeg/martini.jpeg",
-    alt: ""
+    alt: "That's a martini."
   },
 
   {
@@ -518,14 +518,14 @@ const OeGalleryItems: GalleryItem[] = [
   },
 
   {
-    id: "universal-rect",
-    src: "/jpeg/universal-rect.jpeg",
+    id: "rice-pink",
+    src: "/jpeg/rice-pink.jpeg",
     alt: ""
   },
 
   {
-    id: "rice-pink",
-    src: "/jpeg/rice-pink.jpeg",
+    id: "universal-rect",
+    src: "/jpeg/universal-rect.jpeg",
     alt: ""
   },
 
@@ -534,7 +534,6 @@ const OeGalleryItems: GalleryItem[] = [
   //   src: "/jpeg/color-creek.jpeg",
   //   alt: ""
   // },
-
 
   {
     id: "rice-self",
