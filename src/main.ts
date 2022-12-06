@@ -23,6 +23,7 @@ interface Route {
 }
 
 /* TODO: revisit, string literal type */
+/* TODO: keybinds for nav; {shift, alt} {arrows, hjkl}, "next" vs. "down", "deeper" */
 const whoAll = ["nolan", "nm8", "Oe", "smixzy"]
 const whatAll = ["gist", "gallery", "reference"]
 
@@ -47,11 +48,25 @@ const routeFromHash = (s: string): Route => {
 
 const route = reactive(routeFromHash(location.hash))
 
-window.addEventListener("hashchange", (e) =>
-  route.next(routeFromHash(e.newURL)))
+/* TODO: find an alternative to doing this manually e.g. plain HTML and common
+modules to avoid repeatedly loading rdom, etc. */
+const scrollPositions = { nolan: 0, nm8: 0, Oe: 0, smixzy: 0 }
+
+window.addEventListener("hashchange", (e) => {
+  const old = routeFromHash(e.oldURL)
+  const r = routeFromHash(e.newURL)
+
+  if (old.what === "gallery" && !old.id)
+    scrollPositions[old.who] = window.scrollY
+
+  if (r.what === "gallery" && !r.id)
+    setTimeout(() => window.scrollTo(0, scrollPositions[r.who] || 0))
+
+  route.next(r)
+})
 
 const prefersDarkModeMatch = window.matchMedia("(prefers-color-scheme: dark)")
-const prefersDarkMode = reactive(prefersDarkModeMatch.matches)
+const prefersDarkMode = reactive(prefersDarkModeMatch.matches, { closeOut: CloseMode.NEVER })
 prefersDarkModeMatch.addEventListener("change", (e) => {
   prefersDarkMode.next(e.matches)
 })
@@ -131,14 +146,14 @@ const nolanGalleryItems: GalleryItem[] = [
   {
     id: "erica",
     src: "/jpeg/erica.jpeg",
-    alt: "My sister across the table taking a picture of me, taking a picture of her, which is this picture.",
+    alt: "My sister across the table taking a picture of me taking a picture of her, which is this picture.",
     style: { "object-position": "0 30%" }
   },
 
   {
     id: "louie",
     src: "/jpeg/louie.jpeg",
-    alt: "My dog in the passenger seat politely requesting food and/or attention.",
+    alt: "My dog in the passenger seat politely requesting attention.",
     style: { "object-position": "0 30%" }
   },
 
@@ -151,7 +166,7 @@ const nolanGalleryItems: GalleryItem[] = [
   {
     id: "pauszeks",
     src: "/jpeg/pauszeks.jpeg",
-    alt: "Two brothers walking through a small mountain town with fresh coffee.\nOne peace sign, one cheers.",
+    alt: "Two brothers walking through a small mountain town with fresh coffee; one peace sign, one cheers.",
   },
 
   {
@@ -192,6 +207,30 @@ const nolanGalleryItems: GalleryItem[] = [
 
 ]
 
+const atDotMain = ({ src, alt }: GalleryItem): ComponentLike => {
+  const hovered = reactive(false)
+  const clicked = reactive(false)
+  const state = sync({ src: { hovered, clicked } })
+  return [
+    "main", {},
+    $replace(state.map((x) =>
+      x.hovered || x.clicked ?
+        ["img", {
+          src: "/gif/at-dot.gif",
+          alt,
+          onclick: () => clicked.next(!x.clicked),
+          onmouseleave: () => hovered.next(false)
+        }] :
+        ["img", {
+          src,
+          alt,
+          onclick: () => clicked.next(!x.clicked),
+          onmouseenter: () => hovered.next(true)
+        }]
+    )),
+  ]
+}
+
 /* TODO: lollipop on wood */
 /* TODO: rearrange, cluster, add furniture, cluster drawings, etc., organize by 3s */
 const nm8GalleryItems: GalleryItem[] = [
@@ -207,7 +246,8 @@ const nm8GalleryItems: GalleryItem[] = [
   {
     id: "at-dot",
     src: "/jpeg/at-dot.jpeg",
-    alt: "A three dimensional @ printed in white, black, and mint green PLA."
+    alt: "A three dimensional @ printed in white, black, and mint green PLA.",
+    main: atDotMain
   },
 
   {
@@ -225,7 +265,7 @@ const nm8GalleryItems: GalleryItem[] = [
   {
     id: "skulls",
     src: "/jpeg/skulls.jpeg",
-    alt: "Stackable cubic skulls printed in Martha Stewart®-themed PLA. The second greatest gift I've ever received.\nMemento mori d'Martha."
+    alt: "Stackable cubic skulls printed in Martha Stewart®-themed PLA. The second greatest gift I've ever received: Memento mori d'Martha."
   },
 
   {
@@ -265,12 +305,6 @@ const nm8GalleryItems: GalleryItem[] = [
     alt: "A screen print hanging on the wall above a large manual screen printing press. There is a lot of meaning here to whoever took the picture, at least I get that sense. Who can be sure, really?"
   },
 
-  // {
-  //   id: "yards",
-  //   src: "/jpeg/yards.jpeg",
-  //   alt: "Shoegazing; peeping the yards on crumbling concrete."
-  // },
-
   {
     id: "frame",
     src: "/jpeg/frame.jpeg",
@@ -280,7 +314,7 @@ const nm8GalleryItems: GalleryItem[] = [
   {
     id: "screw",
     src: "/jpeg/screw.jpeg",
-    alt: "A black ballpoint pen drawing on white graph paper. It looks like a vaguely humanoid assemblage of shapes with screw-like rods for arms, stacked boxes for a torso, smooth pipe legs, and a plastic floret head. It's staring at a biblically accurate screw. In this world, even the most basic hardware fasteners are much larger than people."
+    alt: "A black ballpoint pen drawing on white graph paper. It looks like a vaguely humanoid assemblage of shapes with screw-like rods for arms, stacked boxes for a torso, smooth pipe legs, and a plastic floret head. It's staring at a biblically accurate screw. In this world, even the most basic fasteners are much larger than people."
   },
 
   {
@@ -293,7 +327,7 @@ const nm8GalleryItems: GalleryItem[] = [
   {
     id: "graphite",
     src: "/jpeg/graphite.jpeg",
-    alt: "A rough graphite sketch of a detached plot of land floating in space populated by massive lollipops.",
+    alt: "A rough graphite sketch of a detached plot of land floating in space populated by tree-sized lollipops.",
     style: { "object-position": "0 0" }
   },
 
@@ -334,6 +368,7 @@ const lemniscatePoint = (t: number) => {
   const y = (a * sin_t * cos_t) / (sin_t2 + 1)
   return [x, y]
 }
+/* TODO: compute perimeter length approximation */
 
 const lemniscatePoints = transduce(map(lemniscatePoint), push(), range(0, Math.PI * 2 + 0.1, 0.1))
 const strokeDashOffset = reactive(0, { closeOut: CloseMode.NEVER })
@@ -346,7 +381,6 @@ const lemniscateSvg = () => [
     style: {
       "pointer-events": "none",
       transition: "stroke-dashoffset 80ms ease",
-      // background: "black",
       height: "100%",
       width: "100%"
     }
@@ -354,7 +388,7 @@ const lemniscateSvg = () => [
   ["g",
     {
       fill: "transparent",
-      stroke: "white",
+      stroke: prefersDarkMode.map((x) => x ? "black" : "white"),
       "stroke-width": "0.0125px",
       "stroke-linecap": "round"
     },
@@ -369,6 +403,20 @@ const lemniscateSvg = () => [
   ]
 ]
 
+const lemniscatePreview = (): ComponentLike => {
+  const toggle = () => strokeDashOffset.next(strokeDashOffset.deref() === 0 ? 1.311 : 0)
+  return [
+    "div.gallery-item", {
+      /* TODO: onmousemove, map x,y into (-1.311, 1.311) */
+      /* TODO: onclick */
+      /* TODO: invert/"show" on hover */
+      onmouseenter: toggle,
+      onmouseout: toggle
+    },
+    lemniscateSvg()
+  ]
+}
+
 const OeGalleryItems: GalleryItem[] = [
 
   {
@@ -382,14 +430,7 @@ const OeGalleryItems: GalleryItem[] = [
   /* TODO: interactive, dark mode, id page */
   {
     id: "inf",
-    preview: () => [
-      "div.gallery-item", {
-        /* TODO: onmousemove, map x,y into (-1.311, 1.311) */
-        onmouseenter: () => strokeDashOffset.next(strokeDashOffset.deref() === 0 ? 1.311 : 0),
-        onmouseout: () => strokeDashOffset.next(strokeDashOffset.deref() === 0 ? 1.311 : 0),
-      },
-      lemniscateSvg()
-    ]
+    preview: lemniscatePreview
   },
 
   {
@@ -739,7 +780,7 @@ const galleryControls = () => [
     ],
     ["div.filter-controls", {},
       ["input#filter-range", {
-        title: "Increase and decrease image filter intensity.",
+        title: "Increase and decrease filter intensity.",
         type: "range", value: filterValue, min: "0", max: "100", step: "1",
         oninput: (e: { target: { value: number } }) => {
           filterValue.next(e.target.value)
@@ -1007,7 +1048,7 @@ const OeGist = async (r: Route) => [
     if (t % 12 === 0) prevChars = takeChars(numChars)
     return prevChars.join("")
   }))],
-  ["h2", {}, ".Process\n.Abstract machines"],
+  ["h2", {}, ".Abstract machines\n.Process"],
   ["h3", {}, "Language, logic, proof, etc.\nReal game of life hours, you know the one."],
   ["p", {}, "observe ∘ explicate"]
 ]
@@ -1087,7 +1128,8 @@ const smixzyGist = async (_: Route) => [
   },
   ["h1", {}, "I'm garbage."],
   ["h2", {}, "Nonsense \\\\ Acrylic \\\\  Handmade"],
-  ["h3", {}, "in any combination. I love my desk.\nSoft immutability. Lv. 70 Arcane Mage."]
+  ["h3", {}, "in any combination. I love my desk.\nSoft immutability. Lv. 70 Arcane Mage."],
+  ["p", {}, "Where concrete?"]
 ]
 
 const smixzyGallery = async (r: Route) => [
