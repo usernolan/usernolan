@@ -242,7 +242,6 @@ const nm8GalleryItems: GalleryItem[] = [
     style: { "object-position": "0 56%" }
   },
 
-  /* TODO: at-dot gif */
   {
     id: "at-dot",
     src: "/jpeg/at-dot.jpeg",
@@ -259,7 +258,7 @@ const nm8GalleryItems: GalleryItem[] = [
   {
     id: "couch",
     src: "/jpeg/couch.jpeg",
-    alt: "The smallest but cleanest living room you've ever been in; cloudy day."
+    alt: "The smallest living room, but clean; cloudy day."
   },
 
   {
@@ -314,7 +313,7 @@ const nm8GalleryItems: GalleryItem[] = [
   {
     id: "screw",
     src: "/jpeg/screw.jpeg",
-    alt: "A black ballpoint pen drawing on white graph paper. It looks like a vaguely humanoid assemblage of shapes with screw-like rods for arms, stacked boxes for a torso, smooth pipe legs, and a plastic floret head. It's staring at a biblically accurate screw. In this world, even the most basic fasteners are much larger than people."
+    alt: "A black ballpoint pen drawing on white graph paper. It looks like a vaguely humanoid assemblage of shapes with screw-like rods for arms, stacked boxes for a torso, smooth pipe legs, and a plastic floret head. It's worshipping a biblically accurate screw. In this world, even the most basic fasteners are much larger than people."
   },
 
   {
@@ -353,10 +352,9 @@ const nm8GalleryItems: GalleryItem[] = [
   {
     id: "dinm8",
     src: "/jpeg/dinm8.jpeg",
-    alt: "The greatest mother to have ever lived hauling her son's garbage through a hardware store, smiling.",
+    alt: "The greatest mother to have ever lived hauling garbage through a hardware store, smiling.",
     style: { "object-position": "50% 33.33%" }
   }
-
 ]
 
 const lemniscatePoint = (t: number) => {
@@ -693,7 +691,8 @@ const smixzyGalleryItems: GalleryItem[] = [
   {
     id: "thrift",
     src: "/jpeg/thrift.jpeg",
-    alt: ""
+    alt: "",
+    style: { "border-radius": "50%" }
   },
 
   {
@@ -793,10 +792,11 @@ const galleryControls = () => [
   ]
 ]
 
+/* TODO: check <br> points */
 const nolanGist = async (r: Route) => [
   "main", {},
   ["h1", {}, "I'm nolan."],
-  ["h2", {}, "I've been called a reflector. I'm into computers,\ngraphics, and all forms of animation."],
+  ["h2", {}, "I've been called a reflector.\nI'm into computers, graphics, and all forms of animation."],
   ["h3", {}, "This is where I programmatically put out on the internet, so stay awhile and listen. Enjoy my post-social AIM profile."],
   ["a", { href: "mailto:nolan@usernolan.net" }, "nolan@usernolan.net"]
   /* TODO: contact? */
@@ -816,26 +816,43 @@ const galleryItemPreview = (r: Route, i: GalleryItem) =>
 
 const nolanGalleryId = async (r: Route) => {
   /* TODO: not found */
-  const { src, alt } = nolanGalleryItems.find((x) => x.id === r.id)!
-  return [
-    "main", {},
-    ["img", { src, alt }]
-  ]
+  const i = nolanGalleryItems.find((x) => x.id === r.id)!
+  return i.main ?
+    i.main(i) : [
+      "main", {},
+      ["img", { src: i.src, alt: i.alt }]
+    ]
 }
 
 /* TODO: prev/next */
-const nolanGalleryIdAside = async (r: Route) => [
-  "aside", {},
-  ["p", {}, nolanGalleryItems.find((x) => x.id === r.id)?.alt]
-]
+const nolanGalleryIdAside = async (r: Route) => {
+  const idx = nolanGalleryItems.findIndex((x) => x.id === r.id)
+  if (idx < 0) return ["aside", {}] // TODO: not found
+
+  const { alt } = nolanGalleryItems[idx]
+  const maxIdx = nolanGalleryItems.length - 1
+  const prevIdx = idx === 0 ? maxIdx : idx - 1
+  const nextIdx = idx === maxIdx ? 0 : idx + 1
+
+  /* TODO: href + fallback */
+  return [
+    "aside", {},
+    ["nav", {},
+      ["a", { href: `#/${r.who}/gallery/${nolanGalleryItems[prevIdx].id}` }, "< prev"],
+      ["a", { href: `#/${r.who}/gallery` }, "gallery"],
+      ["a", { href: `#/${r.who}/gallery/${nolanGalleryItems[nextIdx].id}` }, "next >"]],
+    ["p", {}, alt]
+  ]
+}
 
 const nm8GalleryId = async (r: Route) => {
   /* TODO: not found */
-  const { src, alt } = nm8GalleryItems.find((x) => x.id === r.id)!
-  return [
-    "main", {},
-    ["img", { src, alt }]
-  ]
+  const i = nm8GalleryItems.find((x) => x.id === r.id)!
+  return i.main ?
+    i.main(i) : [
+      "main", {},
+      ["img", { src: i.src, alt: i.alt }]
+    ]
 }
 
 /* TODO: prev/next */
@@ -846,11 +863,12 @@ const nm8GalleryIdAside = async (r: Route) => [
 
 const OeGalleryId = async (r: Route) => {
   /* TODO: not found */
-  const { src, alt } = OeGalleryItems.find((x) => x.id === r.id)!
-  return [
-    "main", {},
-    ["img", { src, alt }]
-  ]
+  const i = OeGalleryItems.find((x) => x.id === r.id)!
+  return i.main ?
+    i.main(i) : [
+      "main", {},
+      ["img", { src: i.src, alt: i.alt }]
+    ]
 }
 
 /* TODO: prev/next */
@@ -859,14 +877,14 @@ const OeGalleryIdAside = async (r: Route) => [
   ["p", {}, OeGalleryItems.find((x) => x.id === r.id)?.alt]
 ]
 
-
 const smixzyGalleryId = async (r: Route) => {
   /* TODO: not found */
-  const { src, alt } = smixzyGalleryItems.find((x) => x.id === r.id)!
-  return [
-    "main", {},
-    ["img", { src, alt }]
-  ]
+  const i = smixzyGalleryItems.find((x) => x.id === r.id)!
+  return i.main ?
+    i.main(i) : [
+      "main", {},
+      ["img", { src: i.src, alt: i.alt }]
+    ]
 }
 
 /* TODO: prev/next */
@@ -950,7 +968,7 @@ const nolanReference = async (r: Route) => [
 const nm8Gist = async (r: Route) => [
   "main", {},
   ["h1", {}, "I'm sorry."],
-  ["h2", {}, "...about the JavaScript, Inter, and the\nwhole select-nav deal."],
+  ["h2", {}, "...about the JavaScript, Inter, and the whole select-nav deal."],
   ["h3", {}, "The web was never meant to be \"cool\" and \"work well.\"\nThey have played us for absolute fools."],
   ["p", {}, "like animate. or like my initials, nms.\n also mereological composition."],
 ]
@@ -980,6 +998,7 @@ const nm8Reference = async (r: Route) => [
   ["ul", {},
     ["li", {},
       ["a", { href: "https://youtu.be/lKXe3HUG2l4" },
+        ["p", {}, "youtube"],
         ["h2", {}, "The Mess We're In"],
         ["p", {}, "—Joe Armstrong"]
       ]
@@ -987,6 +1006,7 @@ const nm8Reference = async (r: Route) => [
 
     ["li", {},
       ["a", { href: "https://youtu.be/Kt-VlZpz-8E" },
+        ["p", {}, "youtube"],
         ["h2", {}, "How to Sweep."],
         ["p", {}, "—Tom Sachs"]
       ]
@@ -994,6 +1014,7 @@ const nm8Reference = async (r: Route) => [
 
     ["li", {},
       ["a", { href: "https://www.w3.org/Provider/Style/URI" },
+        ["p", {}, "w3.org"],
         ["h2", {}, "Cool URIs don't change"],
         ["p", {}, "—Tim BL"]
       ]
@@ -1001,6 +1022,7 @@ const nm8Reference = async (r: Route) => [
 
     ["li", {},
       ["a", { href: "https://youtu.be/ROor6_NGIWU" },
+        ["p", {}, "youtube"],
         ["h2", {}, "The Language of the System"],
         ["p", {}, "—Rich Hickey"]
       ]
@@ -1008,6 +1030,7 @@ const nm8Reference = async (r: Route) => [
 
     ["li", {},
       ["a", { href: "https://youtu.be/-6BsiVyC1kM" },
+        ["p", {}, "youtube"],
         ["h2", {}, "The Value of Values"],
         ["p", {}, "—Rich Hickey"]
       ]
@@ -1015,6 +1038,7 @@ const nm8Reference = async (r: Route) => [
 
     ["li", {},
       ["a", { href: "https://www.usenix.org/legacy/event/lisa07/tech/full_papers/hamilton/hamilton_html/" },
+        ["p", {}, "usenix"],
         ["h2", {}, "Just hard-fail it."],
         ["p", {}, "—James Hamilton"]
       ]
@@ -1022,6 +1046,7 @@ const nm8Reference = async (r: Route) => [
 
     ["li", {},
       ["a", { href: "https://thi.ng/" },
+        ["p", {}, "thi.ng"],
         ["h2", {}, "thi.ng"],
         ["p", {}, "—Karsten Schmidt"]
       ]
@@ -1074,36 +1099,42 @@ const OeReference = async (r: Route) => [
   ["ul", {},
     ["li", {},
       ["a", { href: "https://en.wikipedia.org/wiki/Mereology" },
+        ["p", {}, "wikipedia"],
         ["h2", {}, ".Mereology"]
       ]
     ],
 
     ["li", {},
       ["a", { href: "https://en.wikipedia.org/wiki/Sequent_calculus" },
+        ["p", {}, "wikipedia"],
         ["h2", {}, ".Sequent Calculus"]
       ]
     ],
 
     ["li", {},
       ["a", { href: "https://en.wikipedia.org/wiki/Algebraic_structure" },
+        ["p", {}, "wikipedia"],
         ["h2", {}, ".Algebraic Structure"]
       ]
     ],
 
     ["li", {},
       ["a", { href: "https://en.wikipedia.org/wiki/Information_theory" },
+        ["p", {}, "wikipedia"],
         ["h2", {}, ".Information"]
       ]
     ],
 
     ["li", {},
       ["a", { href: "https://en.wikipedia.org/wiki/Process_philosophy" },
+        ["p", {}, "wikipedia"],
         ["h2", {}, ".Process"]
       ]
     ],
 
     ["li", {},
       ["a", { href: "https://en.wikipedia.org/wiki/David_Bohm" },
+        ["p", {}, "wikipedia"],
         ["h2", {}, ".Bohm"]
       ]
     ]
@@ -1148,23 +1179,27 @@ const smixzyGallery = async (r: Route) => [
 
 const smixzyGalleryAside = async (r: Route) => galleryControls()
 
+/* TODO: add John Vermilyea, Anders Nilsen */
 const smixzyReference = async (r: Route) => [
   "main", {},
   ["ul", {},
     ["li", {},
       ["a", { href: "https://sugarboypress.com/" },
+        ["p", {}, "website"],
         ["h2", {}, ".· Mark Hosford"]
       ]
     ],
 
     ["li", {},
       ["a", { href: "https://ashlindolanstudio.com/Home-II" },
+        ["p", {}, "website"],
         ["h2", {}, ".· Ashlin Dolan"]
       ]
     ],
 
     ["li", {},
       ["a", { href: "https://www.tomsachs.com/" },
+        ["p", {}, "website"],
         ["h2", {}, ".· Tom Sachs"]
       ]
     ],
@@ -1172,24 +1207,28 @@ const smixzyReference = async (r: Route) => [
     /* TODO: find better link */
     ["li", {},
       ["a", { href: "https://en.wikipedia.org/wiki/Hilma_af_Klint" },
+        ["p", {}, "wikipedia"],
         ["h2", {}, ".· Hilma af Klint"]
       ]
     ],
 
     ["li", {},
       ["a", { href: "https://twitter.com/toxi" },
+        ["p", {}, "twitter"],
         ["h2", {}, ".· Karsten Schmidt"]
       ]
     ],
 
     ["li", {},
       ["a", { href: "https://youtu.be/XkXPqvWJHg4" },
+        ["p", {}, "youtube"],
         ["h2", {}, ".· Terry A. Davis"]
       ]
     ],
 
     ["li", {},
       ["a", { href: "https://jeffsoto.com/" },
+        ["p", {}, "website"],
         ["h2", {}, ".· Jeff Soto"]
       ]
     ],
@@ -1197,55 +1236,71 @@ const smixzyReference = async (r: Route) => [
     /* TODO: find better link */
     ["li", {},
       ["a", { href: "https://en.wikipedia.org/wiki/Jean_Giraud" },
+        ["p", {}, "wikipedia"],
         ["h2", {}, ".· Moebius"]
       ]
     ],
 
     ["li", {},
       ["a", { href: "https://ulisesfarinas.com/" },
+        ["p", {}, "website"],
         ["h2", {}, ".· Ulises Fariñas"]
       ]
     ],
 
     ["li", {},
       ["a", { href: "https://www.thadrussell.com/" },
+        ["p", {}, "website"],
         ["h2", {}, ".· Thad Russell"]
       ]
     ],
 
     ["li", {},
       ["a", { href: "https://steveaxford.smugmug.com/" },
+        ["p", {}, "website"],
         ["h2", {}, ".· Steve Axford"]
       ]
     ],
 
     ["li", {},
       ["a", { href: "https://www.bachor.com/pothole-installations-c1g1y" },
+        ["p", {}, "website"],
         ["h2", {}, ".· Jim Bachor"]
       ]
     ],
 
     ["li", {},
       ["a", { href: "http://www.myartda.com/" },
+        ["p", {}, "website"],
         ["h2", {}, ".· Minjeong An"]
       ]
     ],
 
     ["li", {},
       ["a", { href: "https://wiki.xxiivv.com/site/dinaisth.html" },
+        ["p", {}, "website"],
         ["h2", {}, ".· Devine Lu Linvega"]
       ]
     ],
 
     ["li", {},
       ["a", { href: "http://www.quantumrain.com/" },
+        ["p", {}, "website"],
         ["h2", {}, ".· Stephen Cakebread"]
       ]
     ],
 
     ["li", {},
       ["a", { href: "https://www.jessejacobsart.com/" },
+        ["p", {}, "website"],
         ["h2", {}, ".· Jesse Jacobs"]
+      ]
+    ],
+
+    ["li", {},
+      ["a", { href: "https://webring.xxiivv.com/" },
+        ["p", {}, "website"],
+        ["h2", {}, "{ webring }"]
       ]
     ],
 
@@ -1258,12 +1313,6 @@ const smixzyReference = async (r: Route) => [
     //   ["h2", {}, "No, I... won't be doing that."],
     //   ["p", {}, "—2BFC"]
     // ],
-
-    ["li", {},
-      ["a", { href: "https://webring.xxiivv.com/" },
-        ["h2", {}, "{ webring }"]
-      ]
-    ],
   ]
 ]
 

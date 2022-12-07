@@ -34,6 +34,14 @@ div.rdom-root {
   grid-template: auto 1fr / 82.5% auto;
 }
 
+@media (orientation: portrait) {
+  div.rdom-root {
+    display: grid;
+    grid-template: auto 1fr / 100%;
+  }
+}
+
+/* TODO: control overlap */
 nav {
   /* position: sticky; */
   top: 0;
@@ -67,6 +75,16 @@ aside {
   grid-column: 2 / 3;
 }
 
+@media (orientation: portrait) {
+  nav {
+    padding: 0.125rem;
+  }
+  nav select {
+    margin: 0 0.125rem 0 0;
+    border-radius: 2px;
+  }
+}
+
 
 /* Gist structure, spacing, font */
 
@@ -74,9 +92,10 @@ body.gist main {
   padding: 0 0 0 0.25rem;
 }
 body.gist main h1 {
-  font-size: 9.5rem;
+  font-size: 9.5rem; /* clamp(6.7rem, 2rem + 10vw, 9.5rem) */
   font-weight: 800;
   letter-spacing: -0.5rem;
+  /* line-height: 5.66rem */
 }
 body.gist main h2 {
   font-size: 2.66rem;
@@ -93,6 +112,16 @@ body.gist main p,
 body.gist main a {
   font-size: 1.25rem;
   font-weight: 500;
+}
+
+@media (orientation: portrait) {
+  body.gist main {
+    padding: 0 0.5rem 0 0.25rem;
+  }
+  body.gist main h1 {
+    font-size: clamp(0rem, 0.01111rem + 33.8889vw, 9.5rem); /* 9.5rem; */ /* clamp(6.7rem, 2rem + 10vw, 9.5rem) */
+    letter-spacing: -0.5rem; /* TODO: calc */
+  }
 }
 
 
@@ -202,6 +231,16 @@ body.gallery main div.gallery-container div.gallery-item img {
   /* object-position: 15% 0; */
   aspect-ratio: 1/1;
 }
+body.smixzy.gallery main div.gallery-container div.gallery-item:hover {
+  animation-name: smixzyHover;
+  animation-duration: 12s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+@keyframes smixzyHover {
+  from {filter:hue-rotate(0deg);}
+  to {filter:hue-rotate(360deg);}
+}
 
 /* TODO: overlap with nav select */
 body.gallery aside div.gallery-controls button {
@@ -222,6 +261,63 @@ body.gallery aside div.gallery-controls button {
                Menlo, Monaco, Consolas,
                monospace;
   aspect-ratio: 1/1;
+}
+
+@media (orientation: portrait) {
+  body.gallery main {
+    padding: 0 calc(0.125rem - 1px) 0 0.125rem;
+  }
+  body.gallery main div.gallery-container {
+    padding-bottom: 25vh; /* TODO: set in js? */
+  }
+  body.gallery main div.gallery-container div.gallery-item {
+    padding: 0 1px 1px 0;
+  }
+  body.gallery main div.gallery-container[data-gallery-columns="2"] div.gallery-item {
+    width: 100%;
+  }
+
+  body.gallery main div.gallery-container[data-gallery-columns="3"] div.gallery-item {
+    width: 50%;
+  }
+
+  body.gallery main div.gallery-container[data-gallery-columns="5"] div.gallery-item {
+    width: 33.33%;
+  }
+
+  body.gallery main div.gallery-container[data-gallery-columns="8"] div.gallery-item {
+    width: 20%;
+  }
+
+  body.gallery aside {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 5px rgba(0,0,0,0.25);
+    border-radius: 2px;
+  }
+  body.gallery aside div.gallery-controls {
+    display: flex;
+    flex-direction: row-reverse;
+    padding: 0.75rem 0.25rem;
+    align-items: center;
+    justify-content: space-around;
+  }
+  body.gallery aside div.gallery-controls div {
+    margin: 0;
+  }
+  body.gallery aside div.gallery-controls button {
+    margin: 0 0 0.125rem 0;
+    border-radius: 2px;
+  }
+  body.gallery aside div.gallery-controls div label {
+    margin: 0;
+  }
+  body.gallery aside div.gallery-controls div.filter-controls {
+    width: 82.5%;
+  }
 }
 
 
@@ -246,6 +342,26 @@ body.gallery.id aside {
 body.gallery.id aside p {
   /* margin: 0; */
 }
+body.gallery.id aside nav {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 0;
+  padding: 0 0.5rem 0.25rem 0; /* TODO: remove global nav styling */
+  /* padding: 0.25rem 0.5rem; */
+  border-bottom: 1px solid #424242;
+  /* background: #424242; */
+  /* color: #ccc; */
+  /* border-radius: 3px; */
+}
+body.gallery.id aside nav a {
+  color: inherit;
+  /* margin: 0 0.5rem 0 0; */
+  text-decoration: none;
+  /* padding: 0.25rem 0.5rem; */
+  /* border-radius: 3px; */
+  /* background: #424242; */
+  /* color: #ccc; */
+}
 
 /* Reference */
 
@@ -265,9 +381,12 @@ body.reference main ul li a {
   text-decoration: none;
   color: inherit;
 }
+body.reference main ul li a:hover h2 {
+  text-decoration: underline;
+}
 body.reference main ul li h2 {
   margin: 0 0 0.75rem;
-  letter-spacing: -0.075rem;
+  letter-spacing: -0.05rem;
 }
 body.reference main ul li p {
   margin: 0;
@@ -278,8 +397,14 @@ body.smixzy.reference main ul li a h2 {
   margin: 0;
 }
 
+@media (orientation: portrait) {
+  body.reference main {
+    padding: 0 0.25rem;
+  }
+}
 
 /* Colors, vibe */
+/* TODO: reduce, compress */
 
 body.nolan {
   background: #e8e8e8 /* rgb(232,230,235) */;
