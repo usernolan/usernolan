@@ -100,7 +100,7 @@ const navComponent = (r: Route) => [
 
 /* TODO: load/persist relevant state to localstorage */
 const DEFAULT_NUM_GALLERY_COLUMNS_INDEX = 1
-const numGalleryColumnsAll = [/*1,*/ 2, 3, 5, 8]
+const numGalleryColumnsAll = [2, 3, 5, 8]
 const numGalleryColumnsIndex = reactive(DEFAULT_NUM_GALLERY_COLUMNS_INDEX, { closeOut: CloseMode.NEVER })
 const galleryColumns = numGalleryColumnsIndex.map((i) => numGalleryColumnsAll[i], { closeOut: CloseMode.NEVER })
 /* TODO: review CloseMode */
@@ -264,7 +264,7 @@ const nm8GalleryItems: GalleryItem[] = [
   {
     id: "skulls",
     src: "/jpeg/skulls.jpeg",
-    alt: "Stackable cubic skulls printed in Martha Stewart®-themed PLA. The second greatest gift I've ever received: Memento mori d'Martha."
+    alt: "Stackable cubic skulls printed in Martha Stewart®-brand PLA. The second greatest gift I've ever received: Memento mori de Martha."
   },
 
   {
@@ -682,12 +682,6 @@ const smixzyGalleryItems: GalleryItem[] = [
     alt: ""
   },
 
-  // {
-  //   id: "new-balanced",
-  //   src: "/jpeg/new-balanced.jpeg",
-  //   alt: ""
-  // },
-
   {
     id: "thrift",
     src: "/jpeg/thrift.jpeg",
@@ -793,10 +787,10 @@ const galleryControls = () => [
 ]
 
 /* TODO: check <br> points */
-const nolanGist = async (r: Route) => [
+const nolanGist = async (_r: Route) => [
   "main", {},
   ["h1", {}, "I'm nolan."],
-  ["h2", {}, "I've been called a reflector.\nI'm into computers, graphics, and all forms of animation."],
+  ["h2", {}, "I've been called a reflector. I'm into computers, graphics, and all forms of animation."],
   ["h3", {}, "This is where I programmatically put out on the internet, so stay awhile and listen. Enjoy my post-social AIM profile."],
   ["a", { href: "mailto:nolan@usernolan.net" }, "nolan@usernolan.net"]
   /* TODO: contact? */
@@ -814,9 +808,8 @@ const galleryItemPreview = (r: Route, i: GalleryItem) =>
     i.preview(i) :
     defaultGalleryItemPreview(r, i)
 
-const nolanGalleryId = async (r: Route) => {
-  /* TODO: not found */
-  const i = nolanGalleryItems.find((x) => x.id === r.id)!
+const galleryId = (r: Route, xs: GalleryItem[]) => {
+  const i = xs.find((x) => x.id === r.id)!
   return i.main ?
     i.main(i) : [
       "main", {},
@@ -824,13 +817,12 @@ const nolanGalleryId = async (r: Route) => {
     ]
 }
 
-/* TODO: prev/next */
-const nolanGalleryIdAside = async (r: Route) => {
-  const idx = nolanGalleryItems.findIndex((x) => x.id === r.id)
+const galleryIdAside = (r: Route, xs: GalleryItem[]) => {
+  const idx = xs.findIndex((x) => x.id === r.id)
   if (idx < 0) return ["aside", {}] // TODO: not found
 
-  const { alt } = nolanGalleryItems[idx]
-  const maxIdx = nolanGalleryItems.length - 1
+  const { alt } = xs[idx]
+  const maxIdx = xs.length - 1
   const prevIdx = idx === 0 ? maxIdx : idx - 1
   const nextIdx = idx === maxIdx ? 0 : idx + 1
 
@@ -838,61 +830,43 @@ const nolanGalleryIdAside = async (r: Route) => {
   return [
     "aside", {},
     ["nav", {},
-      ["a", { href: `#/${r.who}/gallery/${nolanGalleryItems[prevIdx].id}` }, "< prev"],
+      ["a", { href: `#/${r.who}/gallery/${xs[prevIdx].id}` }, "< prev"],
       ["a", { href: `#/${r.who}/gallery` }, "gallery"],
-      ["a", { href: `#/${r.who}/gallery/${nolanGalleryItems[nextIdx].id}` }, "next >"]],
+      ["a", { href: `#/${r.who}/gallery/${xs[nextIdx].id}` }, "next >"]],
     ["p", {}, alt]
   ]
 }
 
-const nm8GalleryId = async (r: Route) => {
-  /* TODO: not found */
-  const i = nm8GalleryItems.find((x) => x.id === r.id)!
-  return i.main ?
-    i.main(i) : [
-      "main", {},
-      ["img", { src: i.src, alt: i.alt }]
-    ]
-}
+const nolanGalleryId = async (r: Route) => galleryId(r, nolanGalleryItems)
+const nolanGalleryIdAside = async (r: Route) => galleryIdAside(r, nolanGalleryItems)
+const nm8GalleryId = async (r: Route) => galleryId(r, nm8GalleryItems)
+const nm8GalleryIdAside = async (r: Route) => galleryIdAside(r, nm8GalleryItems)
+const OeGalleryId = async (r: Route) => galleryId(r, OeGalleryItems)
+const OeGalleryIdAside = async (r: Route) => galleryIdAside(r, OeGalleryItems)
+const smixzyGalleryId = async (r: Route) => galleryId(r, smixzyGalleryItems)
+const smixzyGalleryIdAside = async (r: Route) => galleryIdAside(r, smixzyGalleryItems)
 
-/* TODO: prev/next */
-const nm8GalleryIdAside = async (r: Route) => [
-  "aside", {},
-  ["p", {}, nm8GalleryItems.find((x) => x.id === r.id)?.alt]
-]
+// const gallery = (r: Route, opts: { filter: any, xs: GalleryItem[] }) => [
+//   "main", {},
+//   ["div.gallery-container",
+//     {
+//       "data-gallery-columns": galleryColumns,
+//       style: {
+//         filter: galleryFilter.map(opts.filter)
+//       }
+//     },
+//     ...opts.xs.map((i) => galleryItemPreview(r, i))
+//   ]
+// ]
 
-const OeGalleryId = async (r: Route) => {
-  /* TODO: not found */
-  const i = OeGalleryItems.find((x) => x.id === r.id)!
-  return i.main ?
-    i.main(i) : [
-      "main", {},
-      ["img", { src: i.src, alt: i.alt }]
-    ]
-}
+// const nolanGallery = async (r: Route) =>
+//   gallery(
+//     r, {
+//     xs: nolanGalleryItems,
+//     filter: (x: { filterValue: number }) => `grayscale(${x.filterValue}%)`
+//   })
 
-/* TODO: prev/next */
-const OeGalleryIdAside = async (r: Route) => [
-  "aside", {},
-  ["p", {}, OeGalleryItems.find((x) => x.id === r.id)?.alt]
-]
-
-const smixzyGalleryId = async (r: Route) => {
-  /* TODO: not found */
-  const i = smixzyGalleryItems.find((x) => x.id === r.id)!
-  return i.main ?
-    i.main(i) : [
-      "main", {},
-      ["img", { src: i.src, alt: i.alt }]
-    ]
-}
-
-/* TODO: prev/next */
-const smixzyGalleryIdAside = async (r: Route) => [
-  "aside", {},
-  ["p", {}, smixzyGalleryItems.find((x) => x.id === r.id)?.alt]
-]
-
+/* TODO: refactor */
 const nolanGallery = async (r: Route) => [
   "main", {},
   ["div.gallery-container",
@@ -904,13 +878,12 @@ const nolanGallery = async (r: Route) => [
       }
     },
     ...nolanGalleryItems.map((i) => galleryItemPreview(r, i))
-    // ...nolanGalleryItems.map(galleryItemPreview)
   ]
 ]
 
-const nolanGalleryAside = async (r: Route) => galleryControls()
+const nolanGalleryAside = async (_r: Route) => galleryControls()
 
-const nolanReference = async (r: Route) => [
+const nolanReference = async (_r: Route) => [
   "main", {},
   ["ul", {},
     ["li", {},
@@ -961,16 +934,16 @@ const nolanReference = async (r: Route) => [
     ["li", {},
       ["h2", {}, "These build on themselves. You notice that anything you are aware of is in the process of changing as you notice it."],
       ["p", {}, "—R.S."]
-    ],
+    ]
   ]
 ]
 
-const nm8Gist = async (r: Route) => [
+const nm8Gist = async (_r: Route) => [
   "main", {},
   ["h1", {}, "I'm sorry."],
   ["h2", {}, "...about the JavaScript, Inter, and the whole select-nav deal."],
-  ["h3", {}, "The web was never meant to be \"cool\" and \"work well.\"\nThey have played us for absolute fools."],
-  ["p", {}, "like animate. or like my initials, nms.\n also mereological composition."],
+  ["h3", {}, "The web was never meant to be \"cool\" and \"work well.\" They have played us for absolute fools."],
+  ["p", {}, "like animate. or like my initials, nms. also mereological composition."]
 ]
 
 /* TODO: eliminate filtered, optimize filters */
@@ -990,10 +963,11 @@ const nm8Gallery = async (r: Route) => [
   ]
 ]
 
-const nm8GalleryAside = async (r: Route) => galleryControls()
+const nm8GalleryAside = async (_r: Route) => galleryControls()
 
 /* TODO: datafy the references */
-const nm8Reference = async (r: Route) => [
+/* TODO: style link types */
+const nm8Reference = async (_r: Route) => [
   "main", {},
   ["ul", {},
     ["li", {},
@@ -1055,7 +1029,7 @@ const nm8Reference = async (r: Route) => [
     ["li", {},
       ["h2", {}, "Everything worth saying, and everything else as well, can be said with two characters."],
       ["p", {}, "—Quine"]
-    ],
+    ]
   ]
 ]
 
@@ -1067,14 +1041,14 @@ const numChars = 9
 // var prevCharsLinear = takeChars(1).concat([...take(numChars - 1, prevCharsLinear)])
 var prevChars = takeChars(numChars)
 
-const OeGist = async (r: Route) => [
+const OeGist = async (_r: Route) => [
   "main", {},
   ["h1", {}, $replace(fromRAF().map((t) => {
     if (t % 12 === 0) prevChars = takeChars(numChars)
     return prevChars.join("")
   }))],
   ["h2", {}, ".Abstract machines\n.Process"],
-  ["h3", {}, "Language, logic, proof, etc.\nReal game of life hours, you know the one."],
+  ["h3", {}, "Language, logic, proof, etc.: real game of life hours, you know the one."],
   ["p", {}, "observe ∘ explicate"]
 ]
 
@@ -1092,9 +1066,9 @@ const OeGallery = async (r: Route) => [
   ]
 ]
 
-const OeGalleryAside = async (r: Route) => galleryControls()
+const OeGalleryAside = async (_r: Route) => galleryControls()
 
-const OeReference = async (r: Route) => [
+const OeReference = async (_r: Route) => [
   "main", {},
   ["ul", {},
     ["li", {},
@@ -1141,12 +1115,24 @@ const OeReference = async (r: Route) => [
   ]
 ]
 
+// const reference = ({ destination, primary, secondary, href }: any) => {
+//   const children = [
+//     destination ? ["p", {}, destination] : null,
+//     ["h2", {}, primary],
+//     secondary ? ["p", {}, secondary] : null
+//   ]
+
+//   return href ?
+//     ["li", {}, ["a", { href }, ...children]] :
+//     ["li", {}, ...children]
+// }
+
 const offset = 300
 const period = 2 * Math.PI * 1200
 const rate = 333
-const rangePct = 200
+const rangePct = 300
 
-const smixzyGist = async (_: Route) => [
+const smixzyGist = async (_r: Route) => [
   "main", {
     style: {
       backgroundImage: fromRAF().map((t) => {
@@ -1159,8 +1145,8 @@ const smixzyGist = async (_: Route) => [
   },
   ["h1", {}, "I'm garbage."],
   ["h2", {}, "Nonsense \\\\ Acrylic \\\\  Handmade"],
-  ["h3", {}, "in any combination. I love my desk.\nSoft immutability. Lv. 70 Arcane Mage."],
-  ["p", {}, "Where concrete?"]
+  ["h3", {}, "in any combinatorial. I love my desk. Soft immutability. Lv. 70 arcane mage."],
+  ["p", {}, "Where concrete?"],
 ]
 
 const smixzyGallery = async (r: Route) => [
@@ -1177,10 +1163,10 @@ const smixzyGallery = async (r: Route) => [
   ]
 ]
 
-const smixzyGalleryAside = async (r: Route) => galleryControls()
+const smixzyGalleryAside = async (_r: Route) => galleryControls()
 
-/* TODO: add John Vermilyea, Anders Nilsen */
-const smixzyReference = async (r: Route) => [
+/* TODO: add Kandinsky, John Vermilyea, Anders Nilsen */
+const smixzyReference = async (_r: Route) => [
   "main", {},
   ["ul", {},
     ["li", {},

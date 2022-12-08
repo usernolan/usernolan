@@ -84,6 +84,11 @@ aside {
     border-radius: 2px;
   }
 }
+@media (orientation: portrait) and (max-width: 240px) {
+  nav select {
+    margin-bottom: 0.125rem;
+  }
+}
 
 
 /* Gist structure, spacing, font */
@@ -92,37 +97,90 @@ body.gist main {
   padding: 0 0 0 0.25rem;
 }
 body.gist main h1 {
-  font-size: 9.5rem; /* clamp(6.7rem, 2rem + 10vw, 9.5rem) */
+  font-size: 9.5rem;
   font-weight: 800;
   letter-spacing: -0.5rem;
-  /* line-height: 5.66rem */
 }
 body.gist main h2 {
   font-size: 2.66rem;
   font-weight: 700;
   letter-spacing: -0.075rem;
+  max-width: 920px;
 }
 body.gist main h3 {
   font-size: 1.5rem;
   font-weight: 600;
-  max-width: 780px;
   letter-spacing: -0.015rem;
+  max-width: 725px;
+}
+body.nm8.gist main h3 {
+  max-width: 625px;
+}
+body.smixzy.gist main h3 {
+  max-width: 432px;
 }
 body.gist main p,
 body.gist main a {
   font-size: 1.25rem;
-  font-weight: 500;
+}
+body.nm8.gist main p {
+  max-width: 340px;
 }
 
 @media (orientation: portrait) {
   body.gist main {
-    padding: 0 0.5rem 0 0.25rem;
+    padding: 0 0.25rem 1rem;
+    overflow-x: hidden;
   }
+  body.nolan.gist main {
+    padding-bottom: 2rem;
+  }
+
   body.gist main h1 {
-    font-size: clamp(0rem, 0.01111rem + 33.8889vw, 9.5rem); /* 9.5rem; */ /* clamp(6.7rem, 2rem + 10vw, 9.5rem) */
-    letter-spacing: -0.5rem; /* TODO: calc */
+    /* NOTE: (10, 3.4) (28, 9.5) */
+    font-size: clamp(0rem, 0.01111rem + 33.8889vw, 9.5rem);
+    /* NOTE: (10, -0.25) (28, -0.5) */
+    letter-spacing: clamp(-0.5rem, -0.1111rem - 1.3889vw, -0.25rem);
+    /* NOTE: (10, 3) (28, 8.25) */
+    line-height: clamp(0rem, 0.8333rem + 29.1667vw, 8.25rem);
+  }
+
+  body.Oe.gist main h1 {
+    white-space: nowrap;
+  }
+
+  body.gist main h2 {
+    /* NOTE: (10, 1.5) (28, 2.66) */
+    font-size: clamp(0rem, 0.8556rem + 6.444vw, 2.66rem);
+    /* NOTE: (10, -0.033) (28, -0.075) */
+    letter-spacing: clamp(-1rem, -0.009667rem - 0.2333vw, 0rem);
+    /* NOTE: (10, 1.625) (28, 3.25) */
+    line-height: clamp(0rem, 0.7222rem + 9.0278vw, 3.25rem);
+  }
+
+  body.Oe.gist main h2 {
+    /* NOTE: (10, 0.825) (28, 2.33) */
+    font-size: clamp(0rem, -0.01111rem + 8.3611vw, 2.33rem);
+  }
+
+  body.gist main h3 {
+    /* NOTE: (10, 1.125) (28, 1.5) */
+    font-size: clamp(0rem, 0.91667rem + 2.0833vw, 1.5rem);
+  }
+
+  body.Oe.gist main h3 {
+    /* NOTE: (25.875, 1.33) (28, 1.42) */
+    font-size: clamp(0rem, 0.23412rem + 4.2353vw, 1.5rem);
+  }
+
+  body.gist main a,
+  body.gist main p {
+    /* NOTE: (10, 0.8) (28, 1.25) */
+    font-size: clamp(0rem, 0.55rem + 2.5vw, 1.5rem);
   }
 }
+
+
 
 
 /* Gallery structure, spacing, font */
@@ -293,15 +351,16 @@ body.gallery aside div.gallery-controls button {
     position: fixed;
     bottom: 0;
     width: 100%;
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
+    /* background: rgba(255,255,255,0.42); */
+    -webkit-backdrop-filter: blur(1rem);
+    backdrop-filter: blur(1rem);
     box-shadow: 0 0 5px rgba(0,0,0,0.25);
     border-radius: 2px;
   }
   body.gallery aside div.gallery-controls {
     display: flex;
     flex-direction: row-reverse;
-    padding: 0.75rem 0.25rem;
+    padding: 0.75rem 0 0.5rem;
     align-items: center;
     justify-content: space-around;
   }
@@ -316,7 +375,10 @@ body.gallery aside div.gallery-controls button {
     margin: 0;
   }
   body.gallery aside div.gallery-controls div.filter-controls {
-    width: 82.5%;
+    width: 66.67%;
+  }
+  body.gallery aside div.gallery-controls div.filter-controls input[type=range] {
+    width: 100%;
   }
 }
 
@@ -362,6 +424,7 @@ body.gallery.id aside nav a {
   /* background: #424242; */
   /* color: #ccc; */
 }
+
 
 /* Reference */
 
