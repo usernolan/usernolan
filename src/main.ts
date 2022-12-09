@@ -258,7 +258,7 @@ const nm8GalleryItems: GalleryItem[] = [
   {
     id: "couch",
     src: "/jpeg/couch.jpeg",
-    alt: "The smallest living room, but clean; cloudy day."
+    alt: "The smallest living room you've ever been in; very clean, cloudy day."
   },
 
   {
@@ -282,7 +282,7 @@ const nm8GalleryItems: GalleryItem[] = [
   {
     id: "warhammer",
     src: "/jpeg/warhammer.jpeg",
-    alt: "Unpainted tabletop miniature. Sentient bipedal robot vibe, specifically T'au.",
+    alt: "Unpainted tabletop miniature. Sentient bipedal robot, specifically T'au.",
     style: { "object-position": "72.5%" }
   },
 
@@ -313,7 +313,7 @@ const nm8GalleryItems: GalleryItem[] = [
   {
     id: "screw",
     src: "/jpeg/screw.jpeg",
-    alt: "A black ballpoint pen drawing on white graph paper. It looks like a vaguely humanoid assemblage of shapes with screw-like rods for arms, stacked boxes for a torso, smooth pipe legs, and a plastic floret head. It's worshipping a biblically accurate screw. In this world, even the most basic fasteners are much larger than people."
+    alt: "A black ballpoint pen drawing on white graph paper. There's a vaguely humanoid assemblage of shapes with screw-like rods for arms, stacked boxes for a torso, smooth pipe legs, and a plastic floret head. It's worshipping a biblically accurate screw entity. In this world, even the most basic fasteners are much larger than people."
   },
 
   {
@@ -340,7 +340,7 @@ const nm8GalleryItems: GalleryItem[] = [
   {
     id: "pack",
     src: "/jpeg/pack.jpeg",
-    alt: "A pristine dyneema fanny pack for use in the distant future, when my current fanny pack of a similar varietal falls irreparable."
+    alt: "A pristine dyneema fanny pack for use in the distant future, when my current fanny pack falls irreparable."
   },
 
   {
@@ -352,7 +352,7 @@ const nm8GalleryItems: GalleryItem[] = [
   {
     id: "dinm8",
     src: "/jpeg/dinm8.jpeg",
-    alt: "The greatest mother to have ever lived hauling garbage through a hardware store, smiling.",
+    alt: "The greatest mother to have ever done it hauling offspring's garbage through a hardware store.",
     style: { "object-position": "50% 33.33%" }
   }
 ]

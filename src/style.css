@@ -331,20 +331,8 @@ body.gallery aside div.gallery-controls button {
   body.gallery main div.gallery-container div.gallery-item {
     padding: 0 1px 1px 0;
   }
-  body.gallery main div.gallery-container[data-gallery-columns="2"] div.gallery-item {
-    width: 100%;
-  }
-
-  body.gallery main div.gallery-container[data-gallery-columns="3"] div.gallery-item {
-    width: 50%;
-  }
-
-  body.gallery main div.gallery-container[data-gallery-columns="5"] div.gallery-item {
-    width: 33.33%;
-  }
-
   body.gallery main div.gallery-container[data-gallery-columns="8"] div.gallery-item {
-    width: 20%;
+    width: 100%;
   }
 
   body.gallery aside {
