@@ -111,7 +111,7 @@ interface GalleryItem {
   alt?: string,
   href?: string,
   style?: object, /* TODO: take style attribs type from rdom/hiccup */
-  preview?: (i: GalleryItem) => ComponentLike
+  preview?: (i: GalleryItem) => ComponentLike /* ALT: Route param */
   main?: (i: GalleryItem) => ComponentLike
   aside?: (i: GalleryItem) => ComponentLike
 }
@@ -378,6 +378,7 @@ const lemniscateSvg = () => [
     viewBox: "0 0 2.5 2.5",
     style: {
       "pointer-events": "none",
+      background: prefersDarkMode.map((x) => x ? "white" : "black"),
       transition: "stroke-dashoffset 80ms ease",
       height: "100%",
       width: "100%"
@@ -386,7 +387,10 @@ const lemniscateSvg = () => [
   ["g",
     {
       fill: "transparent",
-      stroke: prefersDarkMode.map((x) => x ? "black" : "white"),
+      stroke: galleryFilter.map((x) =>
+        `rgb(${x.filterValue / 100 * 255}, ${x.filterValue / 100 * 255}, ${x.filterValue / 100 * 255})`)
+    /* `rgb(${(100 - x.filterValue) / 100 * 255}, ${(100 - x.filterValue) / 100 * 255}, ${(100 - x.filterValue) / 100 * 255})` */
+    /* prefersDarkMode.map((x) => x ? "black" : "white") */,
       "stroke-width": "0.0125px",
       "stroke-linecap": "round"
     },
@@ -418,32 +422,37 @@ const lemniscatePreview = (): ComponentLike => {
 const OeGalleryItems: GalleryItem[] = [
 
   {
-    id: "self",
-    preview: () => [
-      "div.gallery-item", {},
-      ["div", { style: { width: "100%", "aspect-ratio": "1 / 1" } }]
-    ]
+    id: "guy",
+    src: "/jpeg/abstract-guy.jpeg",
+    alt: ""
   },
 
   /* TODO: interactive, dark mode, id page */
+  // {
+  //   id: "inf",
+  //   preview: lemniscatePreview
+  // },
+
   {
-    id: "inf",
-    preview: lemniscatePreview
+    id: "self",
+    preview: () => [
+      "div.gallery-item", {},
+      ["div", { style: { width: "100%", height: "100%", background: "white" } }]
+    ]
   },
 
   {
     id: "self",
     preview: () => [
       "div.gallery-item", {},
-      ["div", { style: { width: "100%", "aspect-ratio": "1 / 1" } }]
+      ["div", { style: { width: "100%", height: "100%", background: "black" } }]
     ]
   },
 
-  // /* TODO: change inversion, match lemniscate */
+  // /* TODO: interactive, dark mode, id page */
   // {
-  //   id: "orbs",
-  //   src: "/jpeg/orbs.jpeg",
-  //   alt: ""
+  //   id: "inf",
+  //   preview: lemniscatePreview
   // },
 
   {
@@ -454,7 +463,7 @@ const OeGalleryItems: GalleryItem[] = [
 
   {
     id: "guy",
-    src: "/jpeg/abstract-guy.jpeg",
+    src: "/jpeg/abstract-rule-diagonal.jpeg",
     alt: ""
   },
 
@@ -495,12 +504,6 @@ const OeGalleryItems: GalleryItem[] = [
     src: "/jpeg/abstract-white-rule.jpeg",
     alt: ""
   },
-
-  // {
-  //   id: "in-the-flowers",
-  //   src: "/jpeg/in-the-flowers.jpeg",
-  //   alt: ""
-  // },
 
   {
     id: "n",
@@ -568,25 +571,11 @@ const OeGalleryItems: GalleryItem[] = [
     alt: ""
   },
 
-  // {
-  //   id: "color-creek",
-  //   src: "/jpeg/color-creek.jpeg",
-  //   alt: ""
-  // },
-
   {
     id: "rice-self",
     src: "/jpeg/rice-self.jpeg",
-    alt: ""
+    alt: "Observing the observer."
   },
-
-  // /* TODO: change inversion, match lemniscate */
-  // {
-  //   id: "orbs",
-  //   src: "/jpeg/orbs.jpeg",
-  //   alt: ""
-  // },
-
 ]
 
 const smixzyGalleryItems: GalleryItem[] = [
@@ -631,12 +620,14 @@ const smixzyGalleryItems: GalleryItem[] = [
     alt: ""
   },
 
-  /* TODO: use face.jpeg for id */
   {
     id: "face",
-    src: "/jpeg/face.2.jpeg",
-    alt: ""
-    // style: { "object-position": "100% 0" }
+    src: "/jpeg/face.preview.jpeg",
+    alt: "",
+    main: ({ alt }: GalleryItem) => [
+      "main", {},
+      ["img", { src: "/jpeg/face.jpeg", alt }]
+    ]
   },
 
   {
@@ -762,6 +753,7 @@ const incNumGalleryColumnsIndex = () => {
   numGalleryColumnsIndex.next((i + 1) % numGalleryColumnsAll.length)
 }
 
+/* TODO: refactor to take in state to mutate */
 const galleryControls = () => [
   "aside", {},
   ["div.gallery-controls", {},
