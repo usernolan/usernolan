@@ -113,6 +113,9 @@ body.gist main h3 {
   letter-spacing: -0.015rem;
   max-width: 725px;
 }
+body.nm8.gist main h2 {
+  max-width: 720px;
+}
 body.nm8.gist main h3 {
   max-width: 625px;
 }
@@ -185,7 +188,7 @@ body.nm8.gist main p {
 
 /* Gallery structure, spacing, font */
 
-body.gallery {
+body.gallery:not(.id) {
   /* NOTE: scroll bar (dis)appearance triggers width change */
   overflow-y: scroll;
 }
@@ -286,9 +289,180 @@ body.gallery main div.gallery-container div.gallery-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* object-position: 15% 0; */
-  aspect-ratio: 1/1;
+  aspect-ratio: 1 / 1;
 }
+
+/* TODO: refactor to classes, add main; e.g. main.self */
+body.nolan.gallery:not(.id) #self img {
+  object-position: 15% 0;
+}
+body.nolan.gallery.id #persevere img {
+  object-position: 45% 50%;
+}
+body.nolan.gallery.id #parents img {
+  object-position: 60% 50%;
+}
+body.nolan.gallery:not(.id) #erica img {
+  object-position: 0 30%;
+}
+body.nolan.gallery:not(.id) #louie img {
+  object-position: 0 30%;
+}
+
+body.nm8.gallery:not(.id) #self img {
+  object-position: 0 56%;
+}
+body.nm8.gallery #warhammer img {
+  object-position: 72.5%;
+}
+body.nm8.gallery:not(.id) [id="4-avenue"] img {
+  object-position: 0 0;
+}
+body.nm8.gallery:not(.id) #graphite img {
+  object-position: 0 0;
+}
+body.nm8.gallery:not(.id) #frames img {
+  object-position: 100% 50%;
+}
+body.nm8.gallery:not(.id) #dinm8 img {
+  object-position: 50% 33.33%;
+}
+
+body.Oe.gallery.id.automata-2 {
+  background: black;
+  color: white;
+}
+body.Oe.gallery.id.automata-2 nav select {
+  background: black;
+  color: white;
+  border: 1px solid white;
+}
+body.Oe.gallery.id.automata-2 aside nav {
+  border-bottom: 1px solid white;
+}
+
+@media (prefers-color-scheme: dark) {
+  body.Oe.gallery.id #self img,
+  body.Oe.gallery.id [id="170"] img,
+  body.Oe.gallery.id [id="150"] img,
+  body.Oe.gallery.id #n img,
+  body.Oe.gallery.id #scad img
+  {
+    filter: invert(100%);
+  }
+
+  body.Oe.gallery.id.automata-2 {
+    background: white;
+    color: black;
+  }
+  body.Oe.gallery.id.automata-2 nav select {
+    background: white;
+    color: black;
+    border: 1px solid black;
+  }
+  body.Oe.gallery.id.automata-2 aside nav {
+    border-bottom: 1px solid #777;
+  }
+}
+
+body.Oe.gallery.id #green img {
+  object-position: 42.5% 50%;
+}
+body.Oe.gallery.id #pink img {
+  object-position: 42.5% 50%;
+}
+body.Oe.gallery.id #n img {
+  object-position: 100% 50%;
+}
+body.Oe.gallery.id #u img {
+  object-position: 25% 50%;
+}
+
+@media (orientation: portrait) {
+  body.Oe.gallery.id.automata-2 aside {
+    background: rgba(0,0,0,0.5);
+    color: white;
+  }
+  body.Oe.gallery.id.automata-2 aside nav {
+    border-bottom: 1px solid white;
+  }
+
+  body.Oe.gallery.id.green aside,
+  body.Oe.gallery.id.pink aside {
+    background: rgba(0,0,0,0);
+    color: black;
+  }
+
+  body.Oe.gallery.id.blue main img {
+    position: absolute;
+    height: calc(100% - 0.25rem);
+    width: calc(100% - 0.25rem);
+    object-fit: cover;
+  }
+}
+
+@media (orientation: portrait) and (prefers-color-scheme: dark) {
+  body.Oe.gallery.id.automata-2 aside {
+    background: rgba(255,255,255,0.5);
+    color: black;
+  }
+  body.Oe.gallery.id.automata-2 aside nav {
+    border-bottom: 1px solid black;
+  }
+}
+
+body.Oe.gallery.id #truck img {
+  object-position: 33% 50%;
+}
+body.Oe.gallery.id #universal-rectifier img {
+  object-position: 72.5% 50%;
+}
+
+body.smixzy.gallery:not(.id) #self img {
+  object-position: 0 33%;
+  border-radius: 50%;
+}
+body.smixzy.gallery.id #self img {
+  object-position: 62.5% 50%;
+}
+body.smixzy.gallery.id #instaworthy img {
+  object-position: 100% 50%;
+}
+body.smixzy.gallery.id #fnd-ur-way img {
+  object-position: 67% 50%;
+}
+body.smixzy.gallery:not(.id) #sunglasses img {
+  object-position: 0 0;
+}
+body.smixzy.gallery.id #dumpstergram img {
+  object-position: 33% 50%;
+}
+body.smixzy.gallery:not(.id) #thrift img {
+  border-radius: 50%;
+}
+body.smixzy.gallery.id #chalk img {
+  object-position: 0 0;
+}
+body.smixzy.gallery.id #spray-paint img {
+  object-position: 0 0;
+}
+
+@media (orientation: portrait) {
+  body.smixzy.gallery.id #seating img {
+    object-position: 0 0;
+  }
+}
+
+body.smixzy.gallery.id #concrete img {
+  object-position: 0 0;
+}
+body.smixzy.gallery:not(.id) #mark img {
+  border-radius: 50%
+}
+body.smixzy.gallery.id #mark img {
+  object-position: 0 0;
+}
+
 body.smixzy.gallery main div.gallery-container div.gallery-item:hover {
   animation-name: smixzyHover;
   animation-duration: 12s;
@@ -296,8 +470,12 @@ body.smixzy.gallery main div.gallery-container div.gallery-item:hover {
   animation-direction: alternate;
 }
 @keyframes smixzyHover {
-  from {filter:hue-rotate(0deg);}
-  to {filter:hue-rotate(360deg);}
+  from {
+    filter:hue-rotate(0deg);
+  }
+  to {
+    filter:hue-rotate(360deg);
+  }
 }
 
 /* TODO: overlap with nav select */
@@ -398,7 +576,6 @@ body.gallery.id aside nav {
   margin: 1rem 0;
   padding: 0 0.5rem 0.25rem 0; /* TODO: remove global nav styling */
   /* padding: 0.25rem 0.5rem; */
-  border-bottom: 1px solid #424242;
   /* background: #424242; */
   /* color: #ccc; */
   /* border-radius: 3px; */
@@ -442,6 +619,7 @@ body.reference main ul li h2 {
 body.reference main ul li p {
   margin: 0;
   letter-spacing: -0.025rem;
+  opacity: 0.56;
 }
 body.Oe.reference main ul li h2,
 body.smixzy.reference main ul li a h2 {
@@ -468,7 +646,15 @@ body.nolan nav select {
 body.nolan.gist main a {
   color: inherit;
 }
+body.nolan.gallery aside nav {
+  border-bottom: 1px solid #424242;
+}
 body.nolan.gallery aside div.gallery-controls button {
+  background: #424242;
+  color: #e8e8e8;
+}
+
+body.nolan ::selection {
   background: #424242;
   color: #e8e8e8;
 }
@@ -481,8 +667,15 @@ body.nm8 nav select {
   background: black;
   color: white;
 }
+body.nm8.gallery aside nav {
+  border-bottom: 1px solid black;
+}
 body.nm8.gallery aside div.gallery-controls button {
   background: black;
+  color: white;
+}
+body.nm8 ::selection {
+  background: #0000ff;
   color: white;
 }
 
@@ -499,10 +692,17 @@ body.Oe nav select {
 body.Oe.gist main p {
   font-style: italic;
 }
+body.Oe.gallery aside nav {
+  border-bottom: 1px solid black;
+}
 body.Oe.gallery aside div.gallery-controls button {
   background: white;
   color: black;
   border: 1px solid black;
+}
+body.Oe ::selection {
+  background: black;
+  color: white;
 }
 
 body.smixzy {
@@ -512,6 +712,12 @@ body.smixzy {
 body.smixzy nav select {
   background: #4200af;
   color: lightblue;
+}
+body.smixzy.gallery aside nav {
+  border-bottom: 1px solid #4200af;
+}
+body.smixzy ::selection {
+  background: rgba(173, 216, 230, 0.42);
 }
 
 /* TODO: check prefixes */
@@ -525,24 +731,6 @@ body.smixzy.gallery aside div.gallery-controls button {
 }
 
 @media (prefers-color-scheme: dark) {
-  /* TODO: control overlap */
-  body.nolan.gallery aside div.gallery-controls button {
-    background: #242424;
-    border: 1px solid #afafaf;
-    color: #ccc;
-  }
-
-  body.nm8.gallery aside div.gallery-controls button,
-  body.Oe.gallery aside div.gallery-controls button {
-    background: #121212;
-    color: #e8e8e8;
-    border: 1px solid #afafaf;
-  }
-
-  body.smixzy.gallery aside div.gallery-controls button {
-    border: 1px solid lightblue;
-  }
-
   body.nolan {
     background: #181818;
     color: #afafaf;
@@ -551,6 +739,10 @@ body.smixzy.gallery aside div.gallery-controls button {
     background: #242424;
     color: #ccc;
     border: 1px solid #afafaf;
+  }
+  body.nolan ::selection {
+    background: #afafaf;
+    color: #181818;
   }
 
   body.nm8,
@@ -564,6 +756,14 @@ body.smixzy.gallery aside div.gallery-controls button {
     color: #e8e8e8;
     border: 1px solid #afafaf;
   }
+  body.nm8 ::selection {
+    background: #0000ff;
+    color: white;
+  }
+  body.Oe ::selection {
+    background: white;
+    color: black;
+  }
 
   body.smixzy {
     background: #4200af;
@@ -573,5 +773,108 @@ body.smixzy.gallery aside div.gallery-controls button {
     background: #4200af;
     color: lightblue;
     border: 1px solid lightblue;
+  }
+  body.smixzy ::selection {
+    background: rgba(0, 255, 0, 0.5);
+  }
+
+  /* TODO: control overlap */
+  body.nolan.gallery aside div.gallery-controls button {
+    background: #242424;
+    border: 1px solid #afafaf;
+    color: #ccc;
+  }
+  body.nolan.gallery.id aside nav {
+    border-bottom: 1px solid #777;
+  }
+
+  body.nm8.gallery aside div.gallery-controls button,
+  body.Oe.gallery aside div.gallery-controls button {
+    background: #121212;
+    color: #e8e8e8;
+    border: 1px solid #afafaf;
+  }
+  body.nm8.gallery.id aside nav,
+  body.Oe.gallery.id aside nav {
+    border-bottom: 1px solid #777;
+  }
+
+  body.smixzy.gallery aside div.gallery-controls button {
+    border: 1px solid lightblue;
+  }
+  body.smixzy.gallery.id aside nav {
+    border-bottom: 1px solid lightblue;
+  }
+}
+
+@media (orientation: portrait) {
+  body.nolan.gallery aside {
+    background: rgba(232, 232, 232, 0.42);
+    color: black;
+  }
+  body.nolan.gallery.id aside {
+    background: rgba(255, 255, 255, 0.5);
+  }
+  /* body.nolan.gallery aside button { */
+  /*   background: rgba(72,72,72,0.8) !important; */
+  /* } */
+
+  body.nm8.gallery aside {
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  body.Oe.gallery aside {
+    background: rgba(255, 255, 255, 0.25);
+  }
+  body.Oe.gallery.id aside {
+    background: rgba(255, 255, 255, 0.5);
+  }
+  /* body.Oe.gallery aside button { */
+  /*   background: rgba(255,255,255,0.25) !important; */
+  /* } */
+
+  body.smixzy.gallery aside {
+    background: rgba(255, 255, 255, 0.25);
+  }
+  body.smixzy.gallery.id aside {
+    background: rgba(255, 255, 255, 0.5);
+  }
+}
+
+@media (orientation: portrait) and (prefers-color-scheme: dark) {
+  body.nolan.gallery aside {
+    background: rgba(36, 36, 36, 0.33);
+    color: #e8e8e8;
+  }
+  body.nolan.gallery.id aside {
+    background: rgba(36, 36, 36, 0.5);
+  }
+  body.nolan.gallery aside nav {
+    border-bottom: 1px solid #777;
+  }
+
+  body.nm8.gallery aside {
+    background: rgba(0, 0, 0, 0.33);
+  }
+  body.nm8.gallery.id aside {
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  body.Oe.gallery aside {
+    background: rgba(255, 255, 255, 0.125);
+  }
+  body.Oe.gallery.id aside {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+  }
+
+  body.smixzy.gallery aside {
+    background: rgba(66, 0, 175, 0.21);
+  }
+  body.smixzy.gallery.id aside {
+    background: rgba(66, 0, 255, 0.5);
+  }
+  body.smixzy.gallery aside nav {
+    border-bottom: 1px solid lightblue;
   }
 }

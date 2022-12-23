@@ -78,14 +78,16 @@ route.map((r) => document.body.className =
 
 const navComponent = (r: Route) => [
   "nav", {},
+  ["__COMMENT__", "Ah! I'm glad you're here. Some things are just better left to commentary. If you're wondering what the hell is going on with this site, search Internal Family Systems Model. It's not a cult or anything."],
   ["select.who",
     {
       onchange: (e: { target: HTMLSelectElement }) => {
-        location.hash = `#/${e?.target?.value || "nolan"}/${r.what || "gist"}`
+        const v = e?.target?.value === "Oə" ? "Oe" : e?.target?.value
+        location.hash = `#/${v || "nolan"}/${r.what || "gist"}`
         window.scrollTo(0, 0)
       }
     },
-    ...whoAll.map((x) => ["option", { selected: r.who === x }, x])
+    ...whoAll.map((x) => ["option", { selected: r.who === x }, x === "Oe" ? "Oə" : x])
   ],
   ["select.what",
     {
@@ -110,113 +112,101 @@ interface GalleryItem {
   src?: string,
   alt?: string,
   href?: string,
-  style?: object, /* TODO: take style attribs type from rdom/hiccup */
   preview?: (i: GalleryItem) => ComponentLike /* ALT: Route param */
   main?: (i: GalleryItem) => ComponentLike
   aside?: (i: GalleryItem) => ComponentLike
 }
 
 const nolanGalleryItems: GalleryItem[] = [
-
   {
     id: "self",
     src: "/jpeg/nolan.self.jpeg",
-    alt: "Me in grayscale.",
-    style: { "object-position": "15% 0" }
+    alt: "Me in grayscale."
   },
 
   {
     id: "persevere",
     src: "/jpeg/persevere.jpeg",
-    alt: "A large poster on an empty wall that reads 'PERSEVERE' in painted lettering.",
+    alt: "A large poster on an empty wall that reads 'PERSEVERE' in painted lettering."
   },
 
   {
     id: "clouds",
     src: "/jpeg/clouds.jpeg",
-    alt: "Heavy clouds over lush foothills.",
+    alt: "Heavy clouds over lush foothills."
   },
 
   {
     id: "parents",
     src: "/jpeg/parents.jpeg",
-    alt: "My parents interacting extremely typically.",
+    alt: "My parents interacting extremely typically."
   },
 
   {
     id: "erica",
     src: "/jpeg/erica.jpeg",
-    alt: "My sister across the table taking a picture of me taking a picture of her, which is this picture.",
-    style: { "object-position": "0 30%" }
+    alt: "My sister across the table taking a picture of me taking a picture of her, which is this picture."
   },
 
   {
     id: "louie",
     src: "/jpeg/louie.jpeg",
-    alt: "My dog in the passenger seat politely requesting attention.",
-    style: { "object-position": "0 30%" }
+    alt: "My dog in the passenger seat politely requesting attention."
   },
 
   {
     id: "petals",
     src: "/jpeg/petals.jpeg",
-    alt: "Pale pink flower petals gathering near a concrete sidewalk.",
+    alt: "Pale pink flower petals gathering near a concrete sidewalk."
   },
 
   {
     id: "pauszeks",
     src: "/jpeg/pauszeks.jpeg",
-    alt: "Two brothers walking through a small mountain town with fresh coffee; one peace sign, one cheers.",
+    alt: "Two brothers walking through a small mountain town with fresh coffee; one peace sign, one cheers."
   },
 
   {
     id: "watching",
     src: "/jpeg/watching.jpeg",
-    alt: "A lonely closed-circuit camera surveilling an empty parking lot labeled Lot P.",
+    alt: "A lonely closed-circuit camera surveilling an empty parking lot labeled Lot P."
   },
 
   {
     id: "david",
     src: "/jpeg/david.jpeg",
-    alt: "My sister's boyfriend-of-significant-duration (my brother-in-vibe?) flaunting nothing on the way back from a rickety vantage overlooking a suburb of Los Angeles.",
+    alt: "My sister's partner-of-significant-duration (my brother-in-vibe?) flaunting nothing on the way back from a rickety vantage overlooking a suburb of Los Angeles."
   },
 
   {
     id: "branch",
     src: "/jpeg/branch.jpeg",
-    alt: "A branch of a tree that seems to branch indefinitely.",
+    alt: "A branch of a tree that seems to branch indefinitely."
   },
 
   {
     id: "eli",
     src: "/jpeg/eli.jpeg",
-    alt: "Black sand washing into cloudy Pacific infinity; a familiar bummer in the foreground utterly ruining the shot.",
+    alt: "Black sand washing into cloudy Pacific infinity; a familiar bummer in the foreground utterly ruining the shot."
   },
 
   {
     id: "bridge",
     src: "/jpeg/bridge.jpeg",
-    alt: "Admiring my shoes on a narrow bridge above a rapid creek.",
+    alt: "Admiring my shoes on a narrow bridge above a rapid creek."
   }
-
-  // {
-  //   id: "beach",
-  //   src: "/jpeg/beach.jpeg",
-  //   alt: "A secluded and rocky beach where I had been resting my eyes until immediately before becoming the bewildered subject of this photograph.",
-  // },
-
 ]
 
-const atDotMain = ({ src, alt }: GalleryItem): ComponentLike => {
+const atMain = ({ id, src, alt }: GalleryItem): ComponentLike => {
   const hovered = reactive(false)
   const clicked = reactive(false)
   const state = sync({ src: { hovered, clicked } })
   return [
-    "main", {},
+    "main", { id },
     $replace(state.map((x) =>
       x.hovered || x.clicked ?
         ["img", {
-          src: "/gif/at-dot.gif",
+          src: "/gif/at.gif",
           alt,
           onclick: () => clicked.next(!x.clicked),
           onmouseleave: () => hovered.next(false)
@@ -231,22 +221,18 @@ const atDotMain = ({ src, alt }: GalleryItem): ComponentLike => {
   ]
 }
 
-/* TODO: lollipop on wood */
-/* TODO: rearrange, cluster, add furniture, cluster drawings, etc., organize by 3s */
 const nm8GalleryItems: GalleryItem[] = [
-
   {
     id: "self",
     src: "/jpeg/nm8.self.jpeg",
-    alt: "A robot with a 2x4 soul, visibly dissatisfied with its output.",
-    style: { "object-position": "0 56%" }
+    alt: "A robot with a 2x4 soul, visibly dissatisfied with its output."
   },
 
   {
-    id: "at-dot",
-    src: "/jpeg/at-dot.jpeg",
+    id: "at",
+    src: "/jpeg/at.jpeg",
     alt: "A three dimensional @ printed in white, black, and mint green PLA.",
-    main: atDotMain
+    main: atMain
   },
 
   {
@@ -258,13 +244,13 @@ const nm8GalleryItems: GalleryItem[] = [
   {
     id: "couch",
     src: "/jpeg/couch.jpeg",
-    alt: "The smallest living room you've ever been in; very clean, cloudy day."
+    alt: "The smallest but cleanest living room you've ever been in; cloudy day."
   },
 
   {
     id: "skulls",
     src: "/jpeg/skulls.jpeg",
-    alt: "Stackable cubic skulls printed in Martha Stewart®-brand PLA. The second greatest gift I've ever received: Memento mori de Martha."
+    alt: "Stackable cubic skulls printed in Martha Stewart®-brand PLA. The second greatest gift I've ever received: Martha's memento mori."
   },
 
   {
@@ -276,20 +262,19 @@ const nm8GalleryItems: GalleryItem[] = [
   {
     id: "buckets",
     src: "/jpeg/buckets.jpeg",
-    alt: "Galvanized steel plumbing pipes and couplings sorted into resoundingly orange buckets, brought to you by Home Depot®."
+    alt: "Galvanized steel plumbing pipes and fittings sorted into orange buckets, brought to you by Home Depot®."
   },
 
   {
     id: "warhammer",
     src: "/jpeg/warhammer.jpeg",
-    alt: "Unpainted tabletop miniature. Sentient bipedal robot, specifically T'au.",
-    style: { "object-position": "72.5%" }
+    alt: "Unpainted tabletop miniature. Sentient bipedal robot, specifically T'au."
   },
 
   {
     id: "rug",
     src: "/jpeg/rug.jpeg",
-    alt: "Green rug, white couch, wooden table, gray blanket. But I'm not a rapper."
+    alt: "Green rug, white couch, wood table, gray blanket."
   },
 
   {
@@ -301,46 +286,43 @@ const nm8GalleryItems: GalleryItem[] = [
   {
     id: "print",
     src: "/jpeg/print.jpeg",
-    alt: "A screen print hanging on the wall above a large manual screen printing press. There is a lot of meaning here to whoever took the picture, at least I get that sense. Who can be sure, really?"
+    alt: "A screen print hanging on the wall above a large manual screen printing press. Super meaningful to whoever took the picture, at least I get that sense. Who can be sure, really?"
   },
 
   {
     id: "frame",
     src: "/jpeg/frame.jpeg",
-    alt: "A fearlessly rainbow-striped frame sample sitting on immaculate construction paper."
+    alt: "A rainbow-striped frame sample sitting on immaculate construction paper."
   },
 
   {
     id: "screw",
     src: "/jpeg/screw.jpeg",
-    alt: "A black ballpoint pen drawing on white graph paper. There's a vaguely humanoid assemblage of shapes with screw-like rods for arms, stacked boxes for a torso, smooth pipe legs, and a plastic floret head. It's worshipping a biblically accurate screw entity. In this world, even the most basic fasteners are much larger than people."
+    alt: "A black ballpoint pen drawing on white graph paper. A vaguely humanoid assemblage of shapes with screw-like rod arms, stacked box torso, smooth pipe legs, and plastic floret head. It's worshipping a biblically accurate screw. In this world, even the most basic fasteners are much larger than people."
   },
 
   {
     id: "4-avenue",
     src: "/jpeg/4-avenue.jpeg",
-    alt: "A gorgeous blue Werner® ladder waiting for the subway at 4th Avenue.",
-    style: { "object-position": "0 0" }
+    alt: "Some gorgeous blue Werner® ladder waiting for the subway at 4th Avenue."
   },
 
   {
     id: "graphite",
     src: "/jpeg/graphite.jpeg",
-    alt: "A rough graphite sketch of a detached plot of land floating in space populated by tree-sized lollipops.",
-    style: { "object-position": "0 0" }
+    alt: "A rough graphite sketch of a detached plot of land floating in space, populated by tree-sized lollipops."
   },
 
   {
     id: "frames",
     src: "/jpeg/frames.jpeg",
-    alt: "A pile of candidate frame samples in front of an entire wall of more frame samples.",
-    style: { "object-position": "100% 50%" }
+    alt: "A pile of candidate frame samples in front of an entire wall of more frame samples."
   },
 
   {
     id: "pack",
     src: "/jpeg/pack.jpeg",
-    alt: "A pristine dyneema fanny pack for use in the distant future, when my current fanny pack falls irreparable."
+    alt: "A pristine dyneema fanny pack for use in the distant future when my current fanny pack falls irreparable."
   },
 
   {
@@ -352,278 +334,193 @@ const nm8GalleryItems: GalleryItem[] = [
   {
     id: "dinm8",
     src: "/jpeg/dinm8.jpeg",
-    alt: "The greatest mother to have ever done it hauling offspring's garbage through a hardware store.",
-    style: { "object-position": "50% 33.33%" }
+    alt: "The greatest mother to have ever done it hauling her offspring's garbage through a hardware store."
   }
 ]
 
-const lemniscatePoint = (t: number) => {
-  const a = 0.5
-  const sin_t = Math.sin(t)
-  const cos_t = Math.cos(t)
-  const sin_t2 = sin_t * sin_t
-  const x = (a * cos_t) / (sin_t2 + 1)
-  const y = (a * sin_t * cos_t) / (sin_t2 + 1)
-  return [x, y]
-}
-/* TODO: compute perimeter length approximation */
-
-const lemniscatePoints = transduce(map(lemniscatePoint), push(), range(0, Math.PI * 2 + 0.1, 0.1))
-const strokeDashOffset = reactive(0, { closeOut: CloseMode.NEVER })
-
-/* TODO: refine sizing, rounding, tween; css */
-const lemniscateSvg = () => [
-  "svg", {
-    xmlns: "http://www.w3.org/2000/svg",
-    viewBox: "0 0 2.5 2.5",
-    style: {
-      "pointer-events": "none",
-      background: prefersDarkMode.map((x) => x ? "white" : "black"),
-      transition: "stroke-dashoffset 80ms ease",
-      height: "100%",
-      width: "100%"
-    }
-  },
-  ["g",
-    {
-      fill: "transparent",
-      stroke: galleryFilter.map((x) =>
-        `rgb(${x.filterValue / 100 * 255}, ${x.filterValue / 100 * 255}, ${x.filterValue / 100 * 255})`)
-    /* `rgb(${(100 - x.filterValue) / 100 * 255}, ${(100 - x.filterValue) / 100 * 255}, ${(100 - x.filterValue) / 100 * 255})` */
-    /* prefersDarkMode.map((x) => x ? "black" : "white") */,
-      "stroke-width": "0.0125px",
-      "stroke-linecap": "round"
-    },
-    ["polyline", {
-      points: lemniscatePoints,
-      transform: "translate(1.25 1.25)",
-      style: {
-        "stroke-dasharray": "1.311 0.1311 0.0655 0.1311 0.0655 0.1311 0.0655 0.1311 0.0655 0.1311 0.0655 0.1311 0.0655 0.1311",
-        "stroke-dashoffset": tweenNumber(strokeDashOffset, 0, 0.05)
-      }
-    }]
-  ]
-]
-
-const lemniscatePreview = (): ComponentLike => {
-  const toggle = () => strokeDashOffset.next(strokeDashOffset.deref() === 0 ? 1.311 : 0)
-  return [
-    "div.gallery-item", {
-      /* TODO: onmousemove, map x,y into (-1.311, 1.311) */
-      /* TODO: onclick */
-      /* TODO: invert/"show" on hover */
-      onmouseenter: toggle,
-      onmouseout: toggle
-    },
-    lemniscateSvg()
-  ]
-}
-
 const OeGalleryItems: GalleryItem[] = [
-
-  {
-    id: "guy",
-    src: "/jpeg/abstract-guy.jpeg",
-    alt: ""
-  },
-
-  /* TODO: interactive, dark mode, id page */
-  // {
-  //   id: "inf",
-  //   preview: lemniscatePreview
-  // },
-
   {
     id: "self",
-    preview: () => [
-      "div.gallery-item", {},
-      ["div", { style: { width: "100%", height: "100%", background: "white" } }]
-    ]
+    src: "/jpeg/Oe.self.jpeg",
+    alt: "A selectively randomized, poorly pixelized sapiens approximate peeking out of a previously sealed box."
   },
 
   {
-    id: "self",
-    preview: () => [
-      "div.gallery-item", {},
-      ["div", { style: { width: "100%", height: "100%", background: "black" } }]
-    ]
+    id: "automata-1",
+    src: "/png/cell.1.png",
+    alt: "The inverse of what follows.",
+    main: () => ["main", {}]
   },
 
-  // /* TODO: interactive, dark mode, id page */
-  // {
-  //   id: "inf",
-  //   preview: lemniscatePreview
-  // },
+  {
+    id: "automata-2",
+    src: "/png/cell.2.png",
+    alt: "The inverse of what came before.",
+    main: () => ["main", {}]
+  },
 
   {
     id: "scad",
     src: "/png/scad.png",
-    alt: "A 3D modeling workspace populated with a repeating sinusoidal wave pattern colorized according to coordinate."
+    alt: "A 3D CAD workspace populated with a repeating sinusoidal wave colorized according to coordinate."
   },
 
   {
-    id: "guy",
-    src: "/jpeg/abstract-rule-diagonal.jpeg",
-    alt: ""
+    id: "170",
+    src: "/jpeg/rule.170.jpeg",
+    alt: "Rule 170: 1D cellular automaton with range = 1, where cells are shaped like keyholes, but I think it's bugged."
   },
 
   {
     id: "era",
-    src: "/png/era.png",
-    alt: "A black and white digital image of what looks like imperfectly pixelated flowers falling out of a pattern of random background noise."
+    src: "/png/rule.era.png",
+    alt: "Imperfectly pixelated flowers falling out of high-contrast background noise."
   },
 
   {
     id: "green",
-    src: "/jpeg/abstract-green.jpeg",
-    alt: ".. *°* _"
+    src: "/jpeg/rule.green.jpeg",
+    alt: "A grid of thin vertical lines with a unique fingerprint identified by empty grid coordinates; energetic green background."
   },
 
   {
     id: "pink",
-    src: "/jpeg/abstract-pink.jpeg",
-    alt: ""
-  },
-
-  /* TODO: rename jpeg, add rules to id page */
-  /* TODO: png? higher quality */
-  {
-    id: "rule.blue",
-    src: "/jpeg/abstract-blue-rule.jpeg",
-    alt: "*.·-_ ?"
+    src: "/jpeg/rule.pink.jpeg",
+    alt: "A grid of thin vertical lines with a unique fingerprint identified by empty grid coordinates; pill pink background."
   },
 
   {
-    id: "abstract-stairs",
-    src: "/png/abstract-stairs.png",
-    alt: ""
+    id: "blue",
+    src: "/jpeg/rule.blue.jpeg",
+    alt: "I think this is a poor approximation of rule 99; ultra blue background."
   },
 
   {
-    id: "abstract-white-rule",
-    src: "/jpeg/abstract-white-rule.jpeg",
-    alt: ""
+    id: "stairs",
+    src: "/png/rule.stairs.png",
+    alt: "Two bright souls conversing in a noisy perfectoid."
+  },
+
+  {
+    id: "150",
+    src: "/jpeg/rule.150.jpeg",
+    alt: "Rule 150, I think."
   },
 
   {
     id: "n",
     src: "/png/n.png",
-    alt: ""
+    alt: "An abstract division of components."
   },
 
   {
     id: "u",
     src: "/png/u.png",
-    alt: ""
+    alt: "A complementary division of components."
   },
 
   {
     id: "sidewalk",
     src: "/jpeg/sidewalk.jpeg",
-    alt: ""
+    alt: "Construction-filtered sunlight projecting a binary pattern on the sidewalk."
   },
 
   {
     id: "closet",
     src: "/jpeg/closet.jpeg",
-    alt: ""
+    alt: "The softest, most gorgeous mess you've ever faced."
   },
 
   {
     id: "stained-glass",
     src: "/jpeg/stained-glass.jpeg",
-    alt: ""
+    alt: "Stained glass casting neon on sandstone."
   },
 
   {
     id: "martini",
     src: "/jpeg/martini.jpeg",
-    alt: "That's a martini."
+    alt: "A martini efficiently brokering photons over its environment."
   },
 
   {
     id: "midway",
     src: "/jpeg/midway.jpeg",
-    alt: ""
+    alt: "The ultraheterochromatic hallway of Midway International Airport."
   },
 
   {
     id: "truck",
     src: "/jpeg/truck.jpeg",
-    alt: ""
+    alt: "A big yellow haul truck on the beach."
   },
 
   {
-    id: "rice",
-    src: "/jpeg/rice.jpeg",
-    alt: ""
+    id: "cups",
+    src: "/jpeg/turrell.cups.jpeg",
+    alt: "Two big gulps discussing Twilight Epiphany."
   },
 
   {
-    id: "rice-pink",
-    src: "/jpeg/rice-pink.jpeg",
-    alt: ""
+    id: "epiphany",
+    src: "/jpeg/turrell.pink.jpeg",
+    alt: "Pink angles."
   },
 
   {
-    id: "universal-rect",
-    src: "/jpeg/universal-rect.jpeg",
-    alt: ""
+    id: "universal-rectifier",
+    src: "/jpeg/universal-rectifier.jpeg",
+    alt: "A Universal Rectifiers, Inc.® Cathodic Protection Rectifier. A Hometown American Product."
   },
 
   {
-    id: "rice-self",
-    src: "/jpeg/rice-self.jpeg",
-    alt: "Observing the observer."
+    id: "observation",
+    src: "/jpeg/turrell.self.jpeg",
+    alt: "Metaobservation to positive consequent."
   },
 ]
 
 const smixzyGalleryItems: GalleryItem[] = [
-
   {
     id: "self",
     src: "/jpeg/smixzy.self.jpeg",
-    alt: "",
-    style: {
-      "object-position": "0 33%",
-      "border-radius": "50%"
-    }
+    alt: "Still me, but in my favorite clothes."
   },
 
   {
     id: "ass-drag",
     src: "/jpeg/ass-drag.jpeg",
-    alt: ""
+    alt: "A purple Post-it® with 'ASS DRAG' written on it in caps lock. There's so much more where this came from."
   },
 
   {
     id: "send-nudes",
     src: "/jpeg/send-nudes.jpeg",
-    alt: ""
+    alt: "A quintessential United States Postal Service® mailbox with 'SEND NUDES' painted on the side, right above the logo."
   },
 
   {
-    id: "shit-in-my-mouth",
-    src: "/jpeg/shit-in-my-mouth.jpeg",
-    alt: ""
+    id: "instaworthy",
+    src: "/jpeg/instaworthy.jpeg",
+    alt: "An Instagram®-worthy bedside table with 'SHIT IN MY MOUTH' lovingly expressed on the signboard."
   },
 
   {
     id: "fnd-ur-way",
     src: "/jpeg/fnd-ur-way.jpeg",
-    alt: ""
+    alt: "A hand-drawn sticker on a road sign that says 'FND UR WAY' under a skull with a staircase leading into the brain compartment."
   },
 
   {
     id: "evolve-now",
     src: "/jpeg/evolve-now.jpeg",
-    alt: ""
+    alt: "A printed sticker on a road sign with a person in sunglasses yelling 'EVOLVE NOW!'"
   },
 
   {
     id: "face",
     src: "/jpeg/face.preview.jpeg",
-    alt: "",
+    alt: "The word 'FACE' permanently etched into a concrete sidewalk.",
     main: ({ alt }: GalleryItem) => [
       "main", {},
       ["img", { src: "/jpeg/face.jpeg", alt }]
@@ -631,104 +528,100 @@ const smixzyGalleryItems: GalleryItem[] = [
   },
 
   {
-    id: "sunglass-love",
-    src: "/jpeg/sunglass-love.jpeg",
-    alt: "",
-    style: { "object-position": "0 0" }
+    id: "sunglasses",
+    src: "/jpeg/sunglasses.jpeg",
+    alt: "The sidewalk shadows of two people holding heart-shaped sunglasses up to sunlight."
   },
 
   {
-    id: "cross-roads",
-    src: "/jpeg/cross-roads.jpeg",
-    alt: ""
+    id: "crisscross",
+    src: "/jpeg/crisscross.jpeg",
+    alt: "Shoegazing at a crisscross pattern in the sidewalk."
   },
 
   {
     id: "theme-provider",
     src: "/jpeg/theme-provider.jpeg",
-    alt: ""
+    alt: "4 partially overlapping, heavily backlit bright pink Post-it® notes."
   },
 
   {
-    id: "dumpster-gram",
-    src: "/jpeg/dumpster-gram.jpeg",
-    alt: ""
+    id: "dumpstergram",
+    src: "/jpeg/dumpstergram.jpeg",
+    alt: "Two dumpsters in the middle of the woods. Unparalleled vibes."
   },
 
   {
     id: "post-it",
     src: "/jpeg/post-it.jpeg",
-    alt: ""
+    alt: "A closeup of Post-it® notes, with more Post-it® notes in the background."
   },
 
   {
     id: "sky",
     src: "/jpeg/sky.jpeg",
-    alt: ""
+    alt: "Purple night clouds over a busy street."
   },
 
   {
-    id: "hyper-branch",
-    src: "/jpeg/hyper-branch.jpeg",
-    alt: ""
+    id: "hypertwig",
+    src: "/jpeg/hypertwig.jpeg",
+    alt: "Closeup of a twig."
   },
 
   {
     id: "thrift",
     src: "/jpeg/thrift.jpeg",
-    alt: "",
-    style: { "border-radius": "50%" }
+    alt: "Maximum thrift store saturation."
   },
 
   {
-    id: "orb-birth",
-    src: "/jpeg/orb-birth.jpeg",
-    alt: ""
+    id: "orb",
+    src: "/jpeg/orb.jpeg",
+    alt: "A sketch of an amorphous manifold in blue, pink, and green ink."
   },
 
   {
     id: "coral",
     src: "/jpeg/coral.jpeg",
-    alt: ""
+    alt: "An attempt at ink-encoded coral."
   },
 
   {
     id: "chalk",
     src: "/jpeg/chalk.jpeg",
-    alt: ""
+    alt: "A sidewalk chalk portal to outer space."
   },
 
   {
     id: "spray-paint",
     src: "/jpeg/spray-paint.jpeg",
-    alt: ""
+    alt: "Spray paint blasted onto the sidewalk during construction."
   },
 
   {
     id: "seating",
     src: "/jpeg/seating.jpeg",
-    alt: ""
+    alt: "A strangely oriented concrete monolith, perfect for resting up to four asscheeks."
   },
 
   {
     id: "concrete",
     src: "/jpeg/concrete.jpeg",
-    alt: ""
+    alt: "More soft concrete."
   },
 
   {
     id: "cable-tv",
     src: "/jpeg/cable-tv.jpeg",
-    alt: ""
+    alt: "A classic mixup between the street lighting and television cable factions."
   },
 
   {
     id: "mark",
     src: "/jpeg/mark.jpeg",
-    alt: "",
-    style: { "border-radius": "50%" }
+    alt: "Professor Hosford popping in to say hi."
   }
-
 ]
 
 /* TODO: eliminate filtered? ensure gallery resize performance */
@@ -778,20 +671,19 @@ const galleryControls = () => [
   ]
 ]
 
-/* TODO: check <br> points */
 const nolanGist = async (_r: Route) => [
   "main", {},
   ["h1", {}, "I'm nolan."],
   ["h2", {}, "I've been called a reflector. I'm into computers, graphics, and all forms of animation."],
-  ["h3", {}, "This is where I programmatically put out on the internet, so stay awhile and listen. Enjoy my post-social AIM profile."],
+  ["h3", {}, "This is where I programmatically put out on the internet, so stay awhile, and listen. Enjoy my post-social AIM profile."],
   ["a", { href: "mailto:nolan@usernolan.net" }, "nolan@usernolan.net"]
-  /* TODO: contact? */
 ]
 
-const defaultGalleryItemPreview = (r: Route, { id, href, src, style, alt }: GalleryItem) => [
-  "div.gallery-item", id ? { id } : {},
+/* TODO: class instead of id */
+const defaultGalleryItemPreview = (r: Route, { id, href, src, alt }: GalleryItem) => [
+  "div.gallery-item", { id },
   ["a", { href: href || `#/${r.who}/gallery/${id}` },
-    ["img", { src, alt, style }]
+    ["img", { src, alt }]
   ]
 ]
 
@@ -804,7 +696,7 @@ const galleryId = (r: Route, xs: GalleryItem[]) => {
   const i = xs.find((x) => x.id === r.id)!
   return i.main ?
     i.main(i) : [
-      "main", {},
+      "main", { id: i.id },
       ["img", { src: i.src, alt: i.alt }]
     ]
 }
@@ -877,6 +769,7 @@ const nolanGalleryAside = async (_r: Route) => galleryControls()
 
 const nolanReference = async (_r: Route) => [
   "main", {},
+  ["__COMMENT__", "🙏 Lord forgive me for the cliché I'm about to rain down upon this page."],
   ["ul", {},
     ["li", {},
       ["h2", {}, "My greatest concern was what to call it."],
@@ -920,7 +813,8 @@ const nolanReference = async (_r: Route) => [
 
     ["li", {},
       ["h2", {}, "The wholeness is made of parts, the parts are created by the wholeness."],
-      ["p", {}, "—Christopher Alexander"]
+      ["p", {}, "—Christopher Alexander",
+        ["__COMMENT__", "I mean I had to... It's Chrissy A.!"]]
     ],
 
     ["li", {},
@@ -935,7 +829,8 @@ const nm8Gist = async (_r: Route) => [
   ["h1", {}, "I'm sorry."],
   ["h2", {}, "...about the JavaScript, Inter, and the whole select-nav deal."],
   ["h3", {}, "The web was never meant to be \"cool\" and \"work well.\" They have played us for absolute fools."],
-  ["p", {}, "like animate. or like my initials, nms. also mereological composition."]
+  ["p", {}, "like 'animate'. or like my initials, nms. also mereological composition.",
+    ["__COMMENT__", "also numismatic, technically n1m7 I guess."]]
 ]
 
 /* TODO: eliminate filtered, optimize filters */
@@ -958,7 +853,6 @@ const nm8Gallery = async (r: Route) => [
 const nm8GalleryAside = async (_r: Route) => galleryControls()
 
 /* TODO: datafy the references */
-/* TODO: style link types */
 const nm8Reference = async (_r: Route) => [
   "main", {},
   ["ul", {},
@@ -1157,9 +1051,9 @@ const smixzyGallery = async (r: Route) => [
 
 const smixzyGalleryAside = async (_r: Route) => galleryControls()
 
-/* TODO: add Kandinsky, John Vermilyea, Anders Nilsen */
 const smixzyReference = async (_r: Route) => [
   "main", {},
+  ["__COMMENT__", "Meet my friends. Hilma af Klint for example."],
   ["ul", {},
     ["li", {},
       ["a", { href: "https://sugarboypress.com/" },
@@ -1182,7 +1076,6 @@ const smixzyReference = async (_r: Route) => [
       ]
     ],
 
-    /* TODO: find better link */
     ["li", {},
       ["a", { href: "https://en.wikipedia.org/wiki/Hilma_af_Klint" },
         ["p", {}, "wikipedia"],
@@ -1191,8 +1084,15 @@ const smixzyReference = async (_r: Route) => [
     ],
 
     ["li", {},
-      ["a", { href: "https://twitter.com/toxi" },
-        ["p", {}, "twitter"],
+      ["a", { href: "https://en.wikipedia.org/wiki/Wassily_Kandinsky" },
+        ["p", {}, "wikipedia"],
+        ["h2", {}, ".· Wassily Kandinsky"]
+      ]
+    ],
+
+    ["li", {},
+      ["a", { href: "https://mastodon.thi.ng/@toxi" },
+        ["p", {}, "mastodon"],
         ["h2", {}, ".· Karsten Schmidt"]
       ]
     ],
@@ -1211,10 +1111,9 @@ const smixzyReference = async (_r: Route) => [
       ]
     ],
 
-    /* TODO: find better link */
     ["li", {},
-      ["a", { href: "https://en.wikipedia.org/wiki/Jean_Giraud" },
-        ["p", {}, "wikipedia"],
+      ["a", { href: "https://www.moebius.fr/Les-Collections.html" },
+        ["p", {}, "website"],
         ["h2", {}, ".· Moebius"]
       ]
     ],
@@ -1223,6 +1122,34 @@ const smixzyReference = async (_r: Route) => [
       ["a", { href: "https://ulisesfarinas.com/" },
         ["p", {}, "website"],
         ["h2", {}, ".· Ulises Fariñas"]
+      ]
+    ],
+
+    ["li", {},
+      ["a", { href: "http://www.jonvermilyea.com/" },
+        ["p", {}, "website"],
+        ["h2", {}, ".· Jon Vermilyea"]
+      ]
+    ],
+
+    ["li", {},
+      ["a", { href: "https://www.andersbrekhusnilsen.com/booksandcomics" },
+        ["p", {}, "website"],
+        ["h2", {}, ".· Anders Nilsen"]
+      ]
+    ],
+
+    ["li", {},
+      ["a", { href: "https://www.jessejacobsart.com/" },
+        ["p", {}, "website"],
+        ["h2", {}, ".· Jesse Jacobs"]
+      ]
+    ],
+
+    ["li", {},
+      ["a", { href: "https://www.instagram.com/presstube/" },
+        ["p", {}, "instagram"],
+        ["h2", {}, ".· James Paterson"]
       ]
     ],
 
@@ -1237,13 +1164,6 @@ const smixzyReference = async (_r: Route) => [
       ["a", { href: "https://steveaxford.smugmug.com/" },
         ["p", {}, "website"],
         ["h2", {}, ".· Steve Axford"]
-      ]
-    ],
-
-    ["li", {},
-      ["a", { href: "https://www.bachor.com/pothole-installations-c1g1y" },
-        ["p", {}, "website"],
-        ["h2", {}, ".· Jim Bachor"]
       ]
     ],
 
@@ -1269,16 +1189,9 @@ const smixzyReference = async (_r: Route) => [
     ],
 
     ["li", {},
-      ["a", { href: "https://www.jessejacobsart.com/" },
-        ["p", {}, "website"],
-        ["h2", {}, ".· Jesse Jacobs"]
-      ]
-    ],
-
-    ["li", {},
       ["a", { href: "https://webring.xxiivv.com/" },
         ["p", {}, "website"],
-        ["h2", {}, "{ webring }"]
+        ["h2", {}, ".· { webring }"]
       ]
     ],
 
@@ -1287,10 +1200,7 @@ const smixzyReference = async (_r: Route) => [
       ["p", {}, "—2BFC"]
     ],
 
-    // ["li", {},
-    //   ["h2", {}, "No, I... won't be doing that."],
-    //   ["p", {}, "—2BFC"]
-    // ],
+    ["__COMMENT__", "No, I... won't be doing that. —2BFC"]
   ]
 ]
 
@@ -1303,7 +1213,6 @@ const routeKeyFn = (r: Route) =>
 const rdom = $compile([
   "div.rdom-root", {},
   $replace(route.map(navComponent)),
-  /* ALT: ...$switch(,,,); return [main, aside] */
   $switch(
     route,
     routeKeyFn,
