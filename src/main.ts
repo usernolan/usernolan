@@ -23,7 +23,6 @@ interface Route {
 }
 
 /* TODO: revisit, string literal type */
-/* TODO: keybinds for nav; {shift, alt} {arrows, hjkl}, "next" vs. "down", "deeper" */
 const whoAll = ["nolan", "nm8", "Oe", "smixzy"]
 const whatAll = ["gist", "gallery", "reference"]
 
@@ -78,7 +77,7 @@ route.map((r) => document.body.className =
 
 const navComponent = (r: Route) => [
   "nav", {},
-  ["__COMMENT__", "Ah! I'm glad you're here. Some things are just better left to commentary. If you're wondering what the hell is going on with this site, search Internal Family Systems Model. It's not a cult or anything."],
+  ["__COMMENT__", "Ah! I'm glad you're here. If you're wondering what the hell is going on with this website, no you aren't, so am I, and wikipedia Internal Family Systems Model. Lastly if you're like me, your keyboard should work approximately the way you want it to. Welcome!!"],
   ["select.who",
     {
       onchange: (e: { target: HTMLSelectElement }) => {
@@ -100,6 +99,96 @@ const navComponent = (r: Route) => [
   ]
 ]
 
+document.addEventListener('keydown', (e: KeyboardEvent) => {
+
+  /* NOTE: primary nav; who, what */
+  if (e.key === "h") {
+    if (route.deref()?.what === "gallery" && route.deref()?.id) {
+      location.hash = document
+        .getElementsByTagName("aside")[0]
+        .getElementsByTagName("nav")[0]
+        .getElementsByTagName("a")[0].hash
+    } else {
+      const idx = whoAll.findIndex((x) => x === route.deref()?.who)
+      const prev = whoAll[(idx <= 0 ? whoAll.length : idx) - 1]
+      location.hash = `#/${prev || "nolan"}/${route.deref()?.what || "gist"}`
+      window.scrollTo(0, 0)
+    }
+  }
+
+  if (e.key === "j") {
+    if (route.deref()?.what === "gallery" && !route.deref()?.id) {
+      location.hash = document
+        .getElementsByClassName("gallery-container")[0]
+        .getElementsByTagName("a")[0].hash
+    } else {
+      const idx = whatAll.findIndex((x) => x === route.deref()?.what)
+      const next = whatAll[idx >= whatAll.length - 1 ? 0 : idx + 1]
+      location.hash = `#/${route.deref()?.who || "nolan"}/${next || "gist"}`
+      window.scrollTo(0, 0)
+    }
+  }
+
+  if (e.key === "k") {
+    if (route.deref()?.what === "gallery" && route.deref()?.id) {
+      location.hash = `#/${route.deref()?.who || "nolan"}/gallery`
+    } else {
+      const idx = whatAll.findIndex((x) => x === route.deref()?.what)
+      const prev = whatAll[(idx <= 0 ? whatAll.length : idx) - 1]
+      location.hash = `#/${route.deref()?.who || "nolan"}/${prev || "gist"}`
+      window.scrollTo(0, 0)
+    }
+  }
+
+  if (e.key === "l") {
+    if (route.deref()?.what === "gallery" && route.deref()?.id) {
+      location.hash = document
+        .getElementsByTagName("aside")[0]
+        .getElementsByTagName("nav")[0]
+        .getElementsByTagName("a")[2].hash
+    } else {
+      const idx = whoAll.findIndex((x) => x === route.deref()?.who)
+      const next = whoAll[idx >= whoAll.length - 1 ? 0 : idx + 1]
+      location.hash = `#/${next || "nolan"}/${route.deref()?.what || "gist"}`
+      window.scrollTo(0, 0)
+    }
+  }
+
+  /* NOTE: gallery zoom */
+  if (e.key === "=" && route.deref()?.what === "gallery" && !route.deref()?.id) {
+    decNumGalleryColumnsIndex()
+  }
+  if (e.key === "-" && route.deref()?.what === "gallery" && !route.deref()?.id) {
+    incNumGalleryColumnsIndex()
+  }
+
+  /* NOTE: gallery filter */
+  if (e.key === "." && route.deref()?.what === "gallery" && !route.deref()?.id) {
+    const cur = filterValue.deref() || 0
+    filterValue.next((cur + 2) % 100)
+  }
+  if (e.key === "," && route.deref()?.what === "gallery" && !route.deref()?.id) {
+    const cur = filterValue.deref() || 0
+    filterValue.next(cur <= 0 ? 100 : cur - 2)
+  }
+
+  /* NOTE: gallery navigation */
+  if (e.key.match(/[1-9]/) && route.deref()?.what === "gallery" && !route.deref()?.id) {
+    location.hash = document
+      .getElementsByClassName("gallery-container")[0]
+      .getElementsByTagName("a")[parseInt(e.key) - 1].hash
+  }
+})
+
+// var someLazyItemsVar: number | null = null;
+// const someLazyItems = () => {
+//   if (someLazyItemsVar) return someLazyItemsVar
+//   someLazyItemsVar = 1 /* expensive */
+//   return someLazyItemsVar;
+// }
+
+// someLazyItems()
+
 /* TODO: load/persist relevant state to localstorage */
 const DEFAULT_NUM_GALLERY_COLUMNS_INDEX = 1
 const numGalleryColumnsAll = [2, 3, 5, 8]
@@ -109,9 +198,8 @@ const galleryColumns = numGalleryColumnsIndex.map((i) => numGalleryColumnsAll[i]
 
 interface GalleryItem {
   id: string,
-  src?: string,
-  alt?: string,
-  href?: string,
+  src: string,
+  alt: string,
   preview?: (i: GalleryItem) => ComponentLike /* ALT: Route param */
   main?: (i: GalleryItem) => ComponentLike
   aside?: (i: GalleryItem) => ComponentLike
@@ -133,7 +221,7 @@ const nolanGalleryItems: GalleryItem[] = [
   {
     id: "clouds",
     src: "/jpeg/clouds.jpeg",
-    alt: "Heavy clouds over lush foothills."
+    alt: "Heavy clouds and green foothills."
   },
 
   {
@@ -157,7 +245,7 @@ const nolanGalleryItems: GalleryItem[] = [
   {
     id: "petals",
     src: "/jpeg/petals.jpeg",
-    alt: "Pale pink flower petals gathering near a concrete sidewalk."
+    alt: "Pink flower petals gathering against a concrete sidewalk."
   },
 
   {
@@ -286,7 +374,7 @@ const nm8GalleryItems: GalleryItem[] = [
   {
     id: "print",
     src: "/jpeg/print.jpeg",
-    alt: "A screen print hanging on the wall above a large manual screen printing press. Super meaningful to whoever took the picture, at least I get that sense. Who can be sure, really?"
+    alt: "A screen print hanging on the wall above a large manual screen printing press. Super meaningful to whoever took the picture, at least I get that sense."
   },
 
   {
@@ -298,7 +386,7 @@ const nm8GalleryItems: GalleryItem[] = [
   {
     id: "screw",
     src: "/jpeg/screw.jpeg",
-    alt: "A black ballpoint pen drawing on white graph paper. A vaguely humanoid assemblage of shapes with screw-like rod arms, stacked box torso, smooth pipe legs, and plastic floret head. It's worshipping a biblically accurate screw. In this world, even the most basic fasteners are much larger than people."
+    alt: "A black ballpoint pen drawing on white graph paper. A vaguely humanoid assemblage of shapes with screw-like rod arms, stacked box torso, smooth pipe legs, and plastic floret head. It's worshipping a biblically accurate screw of enormous proportion. In this world, even the most basic fasteners are much larger than people."
   },
 
   {
@@ -428,7 +516,7 @@ const OeGalleryItems: GalleryItem[] = [
   {
     id: "closet",
     src: "/jpeg/closet.jpeg",
-    alt: "The softest, most gorgeous mess you've ever faced."
+    alt: "The softest, most gorgeous spill you've ever faced."
   },
 
   {
@@ -488,7 +576,7 @@ const smixzyGalleryItems: GalleryItem[] = [
   },
 
   {
-    id: "ass-drag",
+    id: "ass",
     src: "/jpeg/ass-drag.jpeg",
     alt: "A purple Post-it® with 'ASS DRAG' written on it in caps lock. There's so much more where this came from."
   },
@@ -554,18 +642,18 @@ const smixzyGalleryItems: GalleryItem[] = [
   {
     id: "post-it",
     src: "/jpeg/post-it.jpeg",
-    alt: "A closeup of Post-it® notes, with more Post-it® notes in the background."
+    alt: "A closeup of Post-it® notes with more Post-it® notes in the background. That's a fresh cabinet pack of rare and discontinued Helsinki themed Greener Notes...damn."
   },
 
   {
     id: "sky",
     src: "/jpeg/sky.jpeg",
-    alt: "Purple night clouds over a busy street."
+    alt: "Purple night clouds hushing a busy street."
   },
 
   {
-    id: "hypertwig",
-    src: "/jpeg/hypertwig.jpeg",
+    id: "twig",
+    src: "/jpeg/twig.jpeg",
     alt: "Closeup of a twig."
   },
 
@@ -576,21 +664,21 @@ const smixzyGalleryItems: GalleryItem[] = [
   },
 
   {
-    id: "orb",
-    src: "/jpeg/orb.jpeg",
-    alt: "A sketch of an amorphous manifold in blue, pink, and green ink."
+    id: "manifold",
+    src: "/jpeg/manifold.jpeg",
+    alt: "Sketched amorphous manifold of blue, pink, and green ink."
   },
 
   {
     id: "coral",
     src: "/jpeg/coral.jpeg",
-    alt: "An attempt at ink-encoded coral."
+    alt: "Scattered ink-encoded coral."
   },
 
   {
     id: "chalk",
     src: "/jpeg/chalk.jpeg",
-    alt: "A sidewalk chalk portal to outer space."
+    alt: "Sidewalk chalk portal to outer space."
   },
 
   {
@@ -602,7 +690,7 @@ const smixzyGalleryItems: GalleryItem[] = [
   {
     id: "seating",
     src: "/jpeg/seating.jpeg",
-    alt: "A strangely oriented concrete monolith, perfect for resting up to four asscheeks."
+    alt: "Strangely oriented concrete monolith opimitzed for resting up to four asscheeks."
   },
 
   {
@@ -620,28 +708,22 @@ const smixzyGalleryItems: GalleryItem[] = [
   {
     id: "mark",
     src: "/jpeg/mark.jpeg",
-    alt: "Professor Hosford popping in to say hi."
+    alt: "Prof. Hos.!!!"
+    // aside: (i, xs) => {}
   }
 ]
 
-/* TODO: eliminate filtered? ensure gallery resize performance */
-const filtered = reactive(true)
-const filterValue = reactive(0)
-const galleryFilter = sync({ src: { filtered, filterValue }, closeOut: CloseMode.NEVER })
+const filterValue = reactive(0, { closeOut: CloseMode.NEVER })
 
 /* TODO: undefined checks */
 /* TODO: debounce */
 const decNumGalleryColumnsIndex = () => {
-  // filtered.next(false)
-  // setTimeout(() => filtered.next(true), 220)
   const i = numGalleryColumnsIndex.deref()!
   i === 0 ?
     numGalleryColumnsIndex.next(numGalleryColumnsAll.length - 1) :
     numGalleryColumnsIndex.next(i - 1)
 }
 const incNumGalleryColumnsIndex = () => {
-  // filtered.next(false)
-  // setTimeout(() => filtered.next(true), 220)
   const i = numGalleryColumnsIndex.deref()!
   numGalleryColumnsIndex.next((i + 1) % numGalleryColumnsAll.length)
 }
@@ -680,20 +762,21 @@ const nolanGist = async (_r: Route) => [
 ]
 
 /* TODO: class instead of id */
-const defaultGalleryItemPreview = (r: Route, { id, href, src, alt }: GalleryItem) => [
+const defaultGalleryItemPreview = (r: Route, { id, src, alt }: GalleryItem) => [
   "div.gallery-item", { id },
-  ["a", { href: href || `#/${r.who}/gallery/${id}` },
+  ["a", { href: `#/${r.who}/gallery/${id}` },
     ["img", { src, alt }]
   ]
 ]
 
+/* TODO: default in interface? */
 const galleryItemPreview = (r: Route, i: GalleryItem) =>
   i.preview ?
     i.preview(i) :
     defaultGalleryItemPreview(r, i)
 
 const galleryId = (r: Route, xs: GalleryItem[]) => {
-  const i = xs.find((x) => x.id === r.id)!
+  const i = xs.find((x) => x.id === r.id)! /* TODO: handle not found */
   return i.main ?
     i.main(i) : [
       "main", { id: i.id },
@@ -702,6 +785,7 @@ const galleryId = (r: Route, xs: GalleryItem[]) => {
 }
 
 const galleryIdAside = (r: Route, xs: GalleryItem[]) => {
+  /* TODO: custom aside */
   const idx = xs.findIndex((x) => x.id === r.id)
   if (idx < 0) return ["aside", {}] // TODO: not found
 
@@ -757,8 +841,7 @@ const nolanGallery = async (r: Route) => [
     {
       "data-gallery-columns": galleryColumns,
       style: {
-        filter: galleryFilter.map((x) =>
-          x.filtered ? `grayscale(${x.filterValue}%)` : "none")
+        filter: filterValue.map((x) => `grayscale(${x}%)`)
       }
     },
     ...nolanGalleryItems.map((i) => galleryItemPreview(r, i))
@@ -769,7 +852,6 @@ const nolanGalleryAside = async (_r: Route) => galleryControls()
 
 const nolanReference = async (_r: Route) => [
   "main", {},
-  ["__COMMENT__", "🙏 Lord forgive me for the cliché I'm about to rain down upon this page."],
   ["ul", {},
     ["li", {},
       ["h2", {}, "My greatest concern was what to call it."],
@@ -829,21 +911,16 @@ const nm8Gist = async (_r: Route) => [
   ["h1", {}, "I'm sorry."],
   ["h2", {}, "...about the JavaScript, Inter, and the whole select-nav deal."],
   ["h3", {}, "The web was never meant to be \"cool\" and \"work well.\" They have played us for absolute fools."],
-  ["p", {}, "like 'animate'. or like my initials, nms. also mereological composition.",
-    ["__COMMENT__", "also numismatic, technically n1m7 I guess."]]
+  ["p", {}, "like 'animate'. or like my initials, nms. also mereological composition."]
 ]
 
-/* TODO: eliminate filtered, optimize filters */
 const nm8Gallery = async (r: Route) => [
   "main", {},
   ["div.gallery-container",
     {
       "data-gallery-columns": galleryColumns,
       style: {
-        filter: galleryFilter.map((x) =>
-          x.filtered ?
-            `contrast(${100 + x.filterValue * 0.5}%) saturate(${1 - x.filterValue / 100})` :
-            "none")
+        filter: filterValue.map((x) => `contrast(${100 + x * 0.5}%) saturate(${1 - x / 100})`)
       }
     },
     ...nm8GalleryItems.map((i) => galleryItemPreview(r, i))
@@ -944,8 +1021,7 @@ const OeGallery = async (r: Route) => [
     {
       "data-gallery-columns": galleryColumns,
       style: {
-        filter: galleryFilter.map((x) =>
-          x.filtered ? `invert(${x.filterValue}%)` : "none")
+        filter: filterValue.map((x) => `invert(${x}%)`)
       }
     },
     ...OeGalleryItems.map((i) => galleryItemPreview(r, i))
@@ -1041,8 +1117,7 @@ const smixzyGallery = async (r: Route) => [
     {
       "data-gallery-columns": galleryColumns,
       style: {
-        filter: galleryFilter.map((x) =>
-          x.filtered ? `saturate(1.5) hue-rotate(${(x.filterValue / 100) * 360}deg)` : "none")
+        filter: filterValue.map((x) => `saturate(1.5) hue-rotate(${(x / 100) * 360}deg)`)
       }
     },
     ...smixzyGalleryItems.map((i) => galleryItemPreview(r, i))
@@ -1255,8 +1330,14 @@ const rdom = $compile([
 
 rdom.mount(document.body)
 
-// TODO: window.resize listener
-// TODO: "layout"; route listener
-// const navElement = document.getElementsByTagName("nav")[0]
-// setTimeout(() => paddingTop.next(navElement.clientHeight))
-// setTimeout(() => numGalleryColumnsIndex.next(DEFAULT_NUM_GALLERY_COLUMNS_INDEX))
+const preloads = [
+  { href: "/jpeg/nolan.self.jpeg", as: "image", rel: "preload" }
+]
+
+document.head.append(...nolanGalleryItems.map((x) => {
+  const el = document.createElement("link")
+  el.rel = "preloads"
+  el.as = "image"
+  el.href = x.src
+  return el
+}))

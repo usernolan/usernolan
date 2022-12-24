@@ -776,6 +776,7 @@ body.smixzy.gallery aside div.gallery-controls button {
   }
   body.smixzy ::selection {
     background: rgba(0, 255, 0, 0.5);
+    color: lightgreen;
   }
 
   /* TODO: control overlap */
