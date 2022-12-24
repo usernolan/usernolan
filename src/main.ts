@@ -107,12 +107,8 @@ const navComponent = (r: Route) => [
 ]
 
 
-/* NOTE: gallery state, interface, data, components */
+/* NOTE: gallery interfaces, data, state, components */
 
-const DEFAULT_NUM_GALLERY_COLUMNS_INDEX = 1
-const numGalleryColumnsAll = [2, 3, 5, 8]
-const numGalleryColumnsIndex = reactive(DEFAULT_NUM_GALLERY_COLUMNS_INDEX, { closeOut: CloseMode.NEVER })
-const galleryColumns = numGalleryColumnsIndex.map((i) => numGalleryColumnsAll[i], { closeOut: CloseMode.NEVER })
 
 interface GalleryItem {
   id: string,
@@ -223,7 +219,7 @@ const atMain = (_r: Route, { id, src, alt }: GalleryItem): ComponentLike => {
           onclick: () => clicked.next(!x.clicked),
           onmouseenter: () => hovered.next(true)
         }]
-    )),
+    ))
   ]
 }
 
@@ -627,10 +623,14 @@ const smixzyGalleryItems: GalleryItem[] = [
     id: "mark",
     src: "/jpeg/mark.jpeg",
     alt: "Prof. Hos.!!!"
-    // aside: (r, x, xs) => {} /* TODO: add link to aside */
+    // aside: (r, x, xs) => ["aside", {}] /* TODO: add link to aside */
   }
 ]
 
+const DEFAULT_NUM_GALLERY_COLUMNS_INDEX = 1
+const numGalleryColumnsAll = [2, 3, 5, 8]
+const numGalleryColumnsIndex = reactive(DEFAULT_NUM_GALLERY_COLUMNS_INDEX, { closeOut: CloseMode.NEVER })
+const galleryColumns = numGalleryColumnsIndex.map((i) => numGalleryColumnsAll[i], { closeOut: CloseMode.NEVER })
 const filterValue = reactive(0, { closeOut: CloseMode.NEVER })
 
 /* TODO: undefined checks */
@@ -712,26 +712,23 @@ const galleryIdAside = (r: Route, xs: GalleryItem[]) => {
   ]
 }
 
-// const gallery = (r: Route, opts: { filter: any, xs: GalleryItem[] }) => [
-//   "main", {},
-//   ["div.gallery-container",
-//     {
-//       "data-gallery-columns": galleryColumns,
-//       style: {
-//         filter: galleryFilter.map(opts.filter)
-//       }
-//     },
-//     ...opts.xs.map((i) => galleryItemPreview(r, i))
-//   ]
-// ]
+interface GalleryOpts {
+  xs: GalleryItem[]
+  filter: (v: number) => string,
+}
 
-// const nolanGallery = async (r: Route) =>
-//   gallery(
-//     r, {
-//     xs: nolanGalleryItems,
-//     filter: (x: { filterValue: number }) => `grayscale(${x.filterValue}%)`
-//   })
-
+const gallery = (r: Route, opts: GalleryOpts) => [
+  "main", {},
+  ["div.gallery-container",
+    {
+      "data-gallery-columns": galleryColumns,
+      style: {
+        filter: filterValue.map(opts.filter)
+      }
+    },
+    ...opts.xs.map((i) => galleryItemPreview(r, i))
+  ]
+]
 
 /* NOTE: primary components */
 
@@ -743,20 +740,11 @@ const nolanGist = async (_r: Route) => [
   ["a", { href: "mailto:nolan@usernolan.net" }, "nolan@usernolan.net"]
 ]
 
-/* TODO: refactor */
-const nolanGallery = async (r: Route) => [
-  "main", {},
-  ["div.gallery-container",
-    {
-      "data-gallery-columns": galleryColumns,
-      style: {
-        filter: filterValue.map((x) => `grayscale(${x}%)`)
-      }
-    },
-    ...nolanGalleryItems.map((i) => galleryItemPreview(r, i))
-  ]
-]
-
+const nolanGallery = async (r: Route) => {
+  const filter = (v: number) => `grayscale(${v}%)`
+  const xs = nolanGalleryItems
+  return gallery(r, { xs, filter })
+}
 const nolanGalleryAside = async (_r: Route) => galleryControls()
 const nolanGalleryId = async (r: Route) => galleryId(r, nolanGalleryItems)
 const nolanGalleryIdAside = async (r: Route) => galleryIdAside(r, nolanGalleryItems)
@@ -825,19 +813,11 @@ const nm8Gist = async (_r: Route) => [
   ["p", {}, "like 'animate'. or like my initials, nms. also mereological composition."]
 ]
 
-const nm8Gallery = async (r: Route) => [
-  "main", {},
-  ["div.gallery-container",
-    {
-      "data-gallery-columns": galleryColumns,
-      style: {
-        filter: filterValue.map((x) => `contrast(${100 + x * 0.5}%) saturate(${1 - x / 100})`)
-      }
-    },
-    ...nm8GalleryItems.map((i) => galleryItemPreview(r, i))
-  ]
-]
-
+const nm8Gallery = async (r: Route) => {
+  const filter = (v: number) => `contrast(${100 + v * 0.5}%) saturate(${1 - v / 100})`
+  const xs = nm8GalleryItems
+  return gallery(r, { xs, filter })
+}
 const nm8GalleryAside = async (_r: Route) => galleryControls()
 const nm8GalleryId = async (r: Route) => galleryId(r, nm8GalleryItems)
 const nm8GalleryIdAside = async (r: Route) => galleryIdAside(r, nm8GalleryItems)
@@ -925,19 +905,11 @@ const OeGist = async (_r: Route) => [
   ["p", {}, "observe ∘ explicate"]
 ]
 
-const OeGallery = async (r: Route) => [
-  "main", {},
-  ["div.gallery-container",
-    {
-      "data-gallery-columns": galleryColumns,
-      style: {
-        filter: filterValue.map((x) => `invert(${x}%)`)
-      }
-    },
-    ...OeGalleryItems.map((i) => galleryItemPreview(r, i))
-  ]
-]
-
+const OeGallery = async (r: Route) => {
+  const filter = (v: number) => `invert(${v}%)`
+  const xs = OeGalleryItems
+  return gallery(r, { xs, filter })
+}
 const OeGalleryAside = async (_r: Route) => galleryControls()
 const OeGalleryId = async (r: Route) => galleryId(r, OeGalleryItems)
 const OeGalleryIdAside = async (r: Route) => galleryIdAside(r, OeGalleryItems)
@@ -1011,19 +983,11 @@ const smixzyGist = async (_r: Route) => [
   ["p", {}, "Where concrete?"],
 ]
 
-const smixzyGallery = async (r: Route) => [
-  "main", {},
-  ["div.gallery-container",
-    {
-      "data-gallery-columns": galleryColumns,
-      style: {
-        filter: filterValue.map((x) => `saturate(1.5) hue-rotate(${(x / 100) * 360}deg)`)
-      }
-    },
-    ...smixzyGalleryItems.map((i) => galleryItemPreview(r, i))
-  ]
-]
-
+const smixzyGallery = async (r: Route) => {
+  const filter = (v: number) => `saturate(1.5) hue-rotate(${(v / 100) * 360}deg)`
+  const xs = smixzyGalleryItems
+  return gallery(r, { xs, filter })
+}
 const smixzyGalleryAside = async (_r: Route) => galleryControls()
 const smixzyGalleryId = async (r: Route) => galleryId(r, smixzyGalleryItems)
 const smixzyGalleryIdAside = async (r: Route) => galleryIdAside(r, smixzyGalleryItems)
