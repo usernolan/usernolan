@@ -350,14 +350,14 @@ const OeGalleryItems: GalleryItem[] = [
   {
     id: "automata-1",
     src: "/png/automata.1.png",
-    alt: "The inverse of what follows.",
+    alt: "The inverse of next.",
     main: () => ["main", {}]
   },
 
   {
     id: "automata-2",
     src: "/png/automata.2.png",
-    alt: "The inverse of what came before.",
+    alt: "The inverse of prev.",
     main: () => ["main", {}]
   },
 
@@ -1200,81 +1200,83 @@ rdom.mount(document.body)
 /* NOTE: keyboard interaction */
 
 document.addEventListener('keydown', (e: KeyboardEvent) => {
+  const r = route.deref()
+
   /* NOTE: primary nav */
   if (e.key === "h") {
-    if (route.deref()?.what === "gallery" && route.deref()?.id) {
+    if (r?.what === "gallery" && r?.id) {
       location.hash = document
         .getElementsByTagName("aside")[0]
         .getElementsByTagName("nav")[0]
         .getElementsByTagName("a")[0].hash
     } else {
-      const idx = whoAll.findIndex((x) => x === route.deref()?.who)
+      const idx = whoAll.findIndex((x) => x === r?.who)
       const prev = whoAll[(idx <= 0 ? whoAll.length : idx) - 1]
-      location.hash = `#/${prev || "nolan"}/${route.deref()?.what || "gist"}`
+      location.hash = `#/${prev || "nolan"}/${r?.what || "gist"}`
       window.scrollTo(0, 0)
     }
   }
 
   if (e.key === "j") {
-    if (route.deref()?.what === "gallery" && !route.deref()?.id) {
+    if (r?.what === "gallery" && !r?.id) {
       location.hash = document
         .getElementsByClassName("gallery-container")[0]
         .getElementsByTagName("a")[0].hash
     } else {
-      const idx = whatAll.findIndex((x) => x === route.deref()?.what)
+      const idx = whatAll.findIndex((x) => x === r?.what)
       const next = whatAll[idx >= whatAll.length - 1 ? 0 : idx + 1]
-      location.hash = `#/${route.deref()?.who || "nolan"}/${next || "gist"}`
+      location.hash = `#/${r?.who || "nolan"}/${next || "gist"}`
       window.scrollTo(0, 0)
     }
   }
 
   if (e.key === "k") {
-    if (route.deref()?.what === "gallery" && route.deref()?.id) {
-      location.hash = `#/${route.deref()?.who || "nolan"}/gallery`
+    if (r?.what === "gallery" && r?.id) {
+      location.hash = `#/${r?.who || "nolan"}/gallery`
     } else {
-      const idx = whatAll.findIndex((x) => x === route.deref()?.what)
+      const idx = whatAll.findIndex((x) => x === r?.what)
       const prev = whatAll[(idx <= 0 ? whatAll.length : idx) - 1]
-      location.hash = `#/${route.deref()?.who || "nolan"}/${prev || "gist"}`
+      location.hash = `#/${r?.who || "nolan"}/${prev || "gist"}`
       window.scrollTo(0, 0)
     }
   }
 
   if (e.key === "l") {
-    if (route.deref()?.what === "gallery" && route.deref()?.id) {
+    if (r?.what === "gallery" && r?.id) {
       location.hash = document
         .getElementsByTagName("aside")[0]
         .getElementsByTagName("nav")[0]
         .getElementsByTagName("a")[2].hash
     } else {
-      const idx = whoAll.findIndex((x) => x === route.deref()?.who)
+      const idx = whoAll.findIndex((x) => x === r?.who)
       const next = whoAll[idx >= whoAll.length - 1 ? 0 : idx + 1]
-      location.hash = `#/${next || "nolan"}/${route.deref()?.what || "gist"}`
+      location.hash = `#/${next || "nolan"}/${r?.what || "gist"}`
       window.scrollTo(0, 0)
     }
   }
 
   /* NOTE: gallery zoom */
-  if (e.key === "=" && route.deref()?.what === "gallery" && !route.deref()?.id) {
+  if (e.key === "=" && r?.what === "gallery" && !r?.id) {
     decNumGalleryColumnsIndex()
   }
 
-  if (e.key === "-" && route.deref()?.what === "gallery" && !route.deref()?.id) {
+  if (e.key === "-" && r?.what === "gallery" && !r?.id) {
     incNumGalleryColumnsIndex()
   }
 
   /* NOTE: gallery filter */
-  if (e.key === "." && route.deref()?.what === "gallery" && !route.deref()?.id) {
+  if (e.key === "." && r?.what === "gallery" && !r?.id) {
     const cur = filterValue.deref() || 0
     filterValue.next((cur + 2) % 100)
   }
 
-  if (e.key === "," && route.deref()?.what === "gallery" && !route.deref()?.id) {
+  if (e.key === "," && r?.what === "gallery" && !r?.id) {
     const cur = filterValue.deref() || 0
     filterValue.next(cur <= 0 ? 100 : cur - 2)
   }
 
   /* NOTE: gallery navigation */
-  if (e.key.match(/[1-9]/) && route.deref()?.what === "gallery" && !route.deref()?.id) {
+  if (e.key.match(/[1-9]/) && r?.what === "gallery" && !r?.id) {
     location.hash = document
       .getElementsByClassName("gallery-container")[0]
       .getElementsByTagName("a")[parseInt(e.key) - 1].hash
