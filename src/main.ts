@@ -75,6 +75,7 @@ route.map((r) => document.body.className =
     `${r.who} ${r.what} id ${r.id}` :
     `${r.who} ${r.what}`)
 
+/* ALT: read each selection onchange rather than react to route */
 const navComponent = (r: Route) => [
   "nav", {},
   ["__COMMENT__", "Ah! I'm glad you're here. If you're wondering what the hell is going on with this website, no you aren't, so am I, and wikipedia Internal Family Systems Model. Lastly if you're like me, your keyboard should work approximately the way you want it to. Welcome!!"],
@@ -180,16 +181,6 @@ document.addEventListener('keydown', (e: KeyboardEvent) => {
   }
 })
 
-// var someLazyItemsVar: number | null = null;
-// const someLazyItems = () => {
-//   if (someLazyItemsVar) return someLazyItemsVar
-//   someLazyItemsVar = 1 /* expensive */
-//   return someLazyItemsVar;
-// }
-
-// someLazyItems()
-
-/* TODO: load/persist relevant state to localstorage */
 const DEFAULT_NUM_GALLERY_COLUMNS_INDEX = 1
 const numGalleryColumnsAll = [2, 3, 5, 8]
 const numGalleryColumnsIndex = reactive(DEFAULT_NUM_GALLERY_COLUMNS_INDEX, { closeOut: CloseMode.NEVER })
@@ -202,7 +193,7 @@ interface GalleryItem {
   alt: string,
   preview?: (i: GalleryItem) => ComponentLike /* ALT: Route param */
   main?: (i: GalleryItem) => ComponentLike
-  aside?: (i: GalleryItem) => ComponentLike
+  aside?: (i: GalleryItem) => ComponentLike /* NOTE: receive GalleryItems[], prev, next, etc. */
 }
 
 const nolanGalleryItems: GalleryItem[] = [
@@ -435,14 +426,14 @@ const OeGalleryItems: GalleryItem[] = [
 
   {
     id: "automata-1",
-    src: "/png/cell.1.png",
+    src: "/png/automata.1.png",
     alt: "The inverse of what follows.",
     main: () => ["main", {}]
   },
 
   {
     id: "automata-2",
-    src: "/png/cell.2.png",
+    src: "/png/automata.2.png",
     alt: "The inverse of what came before.",
     main: () => ["main", {}]
   },
@@ -622,9 +613,9 @@ const smixzyGalleryItems: GalleryItem[] = [
   },
 
   {
-    id: "crisscross",
-    src: "/jpeg/crisscross.jpeg",
-    alt: "Shoegazing at a crisscross pattern in the sidewalk."
+    id: "intersection",
+    src: "/jpeg/intersection.jpeg",
+    alt: "Shoegazing at an intersection in the sidewalk."
   },
 
   {
@@ -709,7 +700,7 @@ const smixzyGalleryItems: GalleryItem[] = [
     id: "mark",
     src: "/jpeg/mark.jpeg",
     alt: "Prof. Hos.!!!"
-    // aside: (i, xs) => {}
+    // aside: (i, xs) => {} /* TODO: Add link to aside */
   }
 ]
 
@@ -728,11 +719,9 @@ const incNumGalleryColumnsIndex = () => {
   numGalleryColumnsIndex.next((i + 1) % numGalleryColumnsAll.length)
 }
 
-/* TODO: refactor to take in state to mutate */
 const galleryControls = () => [
   "aside", {},
   ["div.gallery-controls", {},
-    /* TODO: labels, accessibility, aria */
     ["div", { id: "zoom-controls", class: "zoom-controls" },
       ["button", { type: "button", title: "Zoom in.", onclick: decNumGalleryColumnsIndex }, "+"],
       ["button", { type: "button", title: "Zoom out.", onclick: incNumGalleryColumnsIndex }, "-"],
@@ -761,7 +750,6 @@ const nolanGist = async (_r: Route) => [
   ["a", { href: "mailto:nolan@usernolan.net" }, "nolan@usernolan.net"]
 ]
 
-/* TODO: class instead of id */
 const defaultGalleryItemPreview = (r: Route, { id, src, alt }: GalleryItem) => [
   "div.gallery-item", { id },
   ["a", { href: `#/${r.who}/gallery/${id}` },
@@ -776,7 +764,7 @@ const galleryItemPreview = (r: Route, i: GalleryItem) =>
     defaultGalleryItemPreview(r, i)
 
 const galleryId = (r: Route, xs: GalleryItem[]) => {
-  const i = xs.find((x) => x.id === r.id)! /* TODO: handle not found */
+  const i = xs.find((x) => x.id === r.id)! /* TODO: not found */
   return i.main ?
     i.main(i) : [
       "main", { id: i.id },
@@ -787,14 +775,13 @@ const galleryId = (r: Route, xs: GalleryItem[]) => {
 const galleryIdAside = (r: Route, xs: GalleryItem[]) => {
   /* TODO: custom aside */
   const idx = xs.findIndex((x) => x.id === r.id)
-  if (idx < 0) return ["aside", {}] // TODO: not found
+  if (idx < 0) return ["aside", {}] /* TODO: not found */
 
   const { alt } = xs[idx]
   const maxIdx = xs.length - 1
   const prevIdx = idx === 0 ? maxIdx : idx - 1
   const nextIdx = idx === maxIdx ? 0 : idx + 1
 
-  /* TODO: href + fallback */
   return [
     "aside", {},
     ["nav", {},
@@ -929,7 +916,6 @@ const nm8Gallery = async (r: Route) => [
 
 const nm8GalleryAside = async (_r: Route) => galleryControls()
 
-/* TODO: datafy the references */
 const nm8Reference = async (_r: Route) => [
   "main", {},
   ["ul", {},
@@ -1000,8 +986,6 @@ const allChars = ["°", ".", "·", ":", "*", " ", "?"]
 const weights = [0.143, 0.143, 0.143, 0.143, 0.143, 0.286, 0.0143]
 const takeChars = (n: number) => [...take(n, choices(allChars, weights))]
 const numChars = 9
-
-// var prevCharsLinear = takeChars(1).concat([...take(numChars - 1, prevCharsLinear)])
 var prevChars = takeChars(numChars)
 
 const OeGist = async (_r: Route) => [
@@ -1076,18 +1060,6 @@ const OeReference = async (_r: Route) => [
     ]
   ]
 ]
-
-// const reference = ({ destination, primary, secondary, href }: any) => {
-//   const children = [
-//     destination ? ["p", {}, destination] : null,
-//     ["h2", {}, primary],
-//     secondary ? ["p", {}, secondary] : null
-//   ]
-
-//   return href ?
-//     ["li", {}, ["a", { href }, ...children]] :
-//     ["li", {}, ...children]
-// }
 
 const offset = 300
 const period = 2 * Math.PI * 1200
@@ -1330,14 +1302,13 @@ const rdom = $compile([
 
 rdom.mount(document.body)
 
-const preloads = [
-  { href: "/jpeg/nolan.self.jpeg", as: "image", rel: "preload" }
-]
-
-document.head.append(...nolanGalleryItems.map((x) => {
+const preloadLinkFromGalleryItem = (x: GalleryItem) => {
   const el = document.createElement("link")
-  el.rel = "preloads"
+  el.rel = "preload"
   el.as = "image"
   el.href = x.src
   return el
-}))
+}
+for (const xs of [nolanGalleryItems, nm8GalleryItems, OeGalleryItems, smixzyGalleryItems]) {
+  document.head.append(...xs.map(preloadLinkFromGalleryItem))
+}
