@@ -3,18 +3,15 @@ import type { ComponentLike } from "@thi.ng/rdom/api"
 import { $compile } from "@thi.ng/rdom/compile"
 import { $switch } from "@thi.ng/rdom/switch"
 import { $replace } from "@thi.ng/rdom/replace"
-import { reactive, stream } from "@thi.ng/rstream/stream"
+import { reactive } from "@thi.ng/rstream/stream"
 import { fromRAF } from "@thi.ng/rstream/raf"
-import { fromDOMEvent } from "@thi.ng/rstream/event"
 import { CloseMode } from "@thi.ng/rstream/api"
 import { sync } from "@thi.ng/rstream/sync"
-import { tweenNumber } from "@thi.ng/rstream/tween"
-import { map } from "@thi.ng/transducers/map"
-import { transduce } from "@thi.ng/transducers/transduce"
-import { push } from "@thi.ng/transducers/push"
 import { take } from "@thi.ng/transducers/take"
 import { choices } from "@thi.ng/transducers/choices"
-import { range } from "@thi.ng/transducers/range"
+
+
+/* NOTE: routing */
 
 interface Route {
   who: string,
@@ -47,9 +44,17 @@ const routeFromHash = (s: string): Route => {
 
 const route = reactive(routeFromHash(location.hash))
 
+route.map((r) => document.body.className =
+  r.id ?
+    `${r.who} ${r.what} id ${r.id}` :
+    `${r.who} ${r.what}`)
+
+
+/* NOTE: scroll restoration special case */
+
 /* TODO: find an alternative to doing this manually e.g. plain HTML and common
 modules to avoid repeatedly loading rdom, etc. */
-const scrollPositions = { nolan: 0, nm8: 0, Oe: 0, smixzy: 0 }
+const scrollPositions: any = { nolan: 0, nm8: 0, Oe: 0, smixzy: 0 }
 
 window.addEventListener("hashchange", (e) => {
   const old = routeFromHash(e.oldURL)
@@ -64,16 +69,17 @@ window.addEventListener("hashchange", (e) => {
   route.next(r)
 })
 
+
+/* NOTE: system mode detection */
+
 const prefersDarkModeMatch = window.matchMedia("(prefers-color-scheme: dark)")
 const prefersDarkMode = reactive(prefersDarkModeMatch.matches, { closeOut: CloseMode.NEVER })
 prefersDarkModeMatch.addEventListener("change", (e) => {
   prefersDarkMode.next(e.matches)
 })
 
-route.map((r) => document.body.className =
-  r.id ?
-    `${r.who} ${r.what} id ${r.id}` :
-    `${r.who} ${r.what}`)
+
+/* NOTE: top-level nav component */
 
 /* ALT: read each selection onchange rather than react to route */
 const navComponent = (r: Route) => [
@@ -100,100 +106,21 @@ const navComponent = (r: Route) => [
   ]
 ]
 
-document.addEventListener('keydown', (e: KeyboardEvent) => {
 
-  /* NOTE: primary nav; who, what */
-  if (e.key === "h") {
-    if (route.deref()?.what === "gallery" && route.deref()?.id) {
-      location.hash = document
-        .getElementsByTagName("aside")[0]
-        .getElementsByTagName("nav")[0]
-        .getElementsByTagName("a")[0].hash
-    } else {
-      const idx = whoAll.findIndex((x) => x === route.deref()?.who)
-      const prev = whoAll[(idx <= 0 ? whoAll.length : idx) - 1]
-      location.hash = `#/${prev || "nolan"}/${route.deref()?.what || "gist"}`
-      window.scrollTo(0, 0)
-    }
-  }
-
-  if (e.key === "j") {
-    if (route.deref()?.what === "gallery" && !route.deref()?.id) {
-      location.hash = document
-        .getElementsByClassName("gallery-container")[0]
-        .getElementsByTagName("a")[0].hash
-    } else {
-      const idx = whatAll.findIndex((x) => x === route.deref()?.what)
-      const next = whatAll[idx >= whatAll.length - 1 ? 0 : idx + 1]
-      location.hash = `#/${route.deref()?.who || "nolan"}/${next || "gist"}`
-      window.scrollTo(0, 0)
-    }
-  }
-
-  if (e.key === "k") {
-    if (route.deref()?.what === "gallery" && route.deref()?.id) {
-      location.hash = `#/${route.deref()?.who || "nolan"}/gallery`
-    } else {
-      const idx = whatAll.findIndex((x) => x === route.deref()?.what)
-      const prev = whatAll[(idx <= 0 ? whatAll.length : idx) - 1]
-      location.hash = `#/${route.deref()?.who || "nolan"}/${prev || "gist"}`
-      window.scrollTo(0, 0)
-    }
-  }
-
-  if (e.key === "l") {
-    if (route.deref()?.what === "gallery" && route.deref()?.id) {
-      location.hash = document
-        .getElementsByTagName("aside")[0]
-        .getElementsByTagName("nav")[0]
-        .getElementsByTagName("a")[2].hash
-    } else {
-      const idx = whoAll.findIndex((x) => x === route.deref()?.who)
-      const next = whoAll[idx >= whoAll.length - 1 ? 0 : idx + 1]
-      location.hash = `#/${next || "nolan"}/${route.deref()?.what || "gist"}`
-      window.scrollTo(0, 0)
-    }
-  }
-
-  /* NOTE: gallery zoom */
-  if (e.key === "=" && route.deref()?.what === "gallery" && !route.deref()?.id) {
-    decNumGalleryColumnsIndex()
-  }
-  if (e.key === "-" && route.deref()?.what === "gallery" && !route.deref()?.id) {
-    incNumGalleryColumnsIndex()
-  }
-
-  /* NOTE: gallery filter */
-  if (e.key === "." && route.deref()?.what === "gallery" && !route.deref()?.id) {
-    const cur = filterValue.deref() || 0
-    filterValue.next((cur + 2) % 100)
-  }
-  if (e.key === "," && route.deref()?.what === "gallery" && !route.deref()?.id) {
-    const cur = filterValue.deref() || 0
-    filterValue.next(cur <= 0 ? 100 : cur - 2)
-  }
-
-  /* NOTE: gallery navigation */
-  if (e.key.match(/[1-9]/) && route.deref()?.what === "gallery" && !route.deref()?.id) {
-    location.hash = document
-      .getElementsByClassName("gallery-container")[0]
-      .getElementsByTagName("a")[parseInt(e.key) - 1].hash
-  }
-})
+/* NOTE: gallery state, interface, data, components */
 
 const DEFAULT_NUM_GALLERY_COLUMNS_INDEX = 1
 const numGalleryColumnsAll = [2, 3, 5, 8]
 const numGalleryColumnsIndex = reactive(DEFAULT_NUM_GALLERY_COLUMNS_INDEX, { closeOut: CloseMode.NEVER })
 const galleryColumns = numGalleryColumnsIndex.map((i) => numGalleryColumnsAll[i], { closeOut: CloseMode.NEVER })
-/* TODO: review CloseMode */
 
 interface GalleryItem {
   id: string,
   src: string,
   alt: string,
-  preview?: (i: GalleryItem) => ComponentLike /* ALT: Route param */
-  main?: (i: GalleryItem) => ComponentLike
-  aside?: (i: GalleryItem) => ComponentLike /* NOTE: receive GalleryItems[], prev, next, etc. */
+  preview?: (r: Route, x: GalleryItem) => ComponentLike
+  main?: (r: Route, x: GalleryItem, xs: GalleryItem[]) => ComponentLike
+  aside?: (r: Route, x: GalleryItem, xs: GalleryItem[]) => ComponentLike
 }
 
 const nolanGalleryItems: GalleryItem[] = [
@@ -276,7 +203,7 @@ const nolanGalleryItems: GalleryItem[] = [
   }
 ]
 
-const atMain = ({ id, src, alt }: GalleryItem): ComponentLike => {
+const atMain = (_r: Route, { id, src, alt }: GalleryItem): ComponentLike => {
   const hovered = reactive(false)
   const clicked = reactive(false)
   const state = sync({ src: { hovered, clicked } })
@@ -600,7 +527,7 @@ const smixzyGalleryItems: GalleryItem[] = [
     id: "face",
     src: "/jpeg/face.preview.jpeg",
     alt: "The word 'FACE' permanently etched into a concrete sidewalk.",
-    main: ({ alt }: GalleryItem) => [
+    main: (_r: Route, { alt }: GalleryItem) => [
       "main", {},
       ["img", { src: "/jpeg/face.jpeg", alt }]
     ]
@@ -700,7 +627,7 @@ const smixzyGalleryItems: GalleryItem[] = [
     id: "mark",
     src: "/jpeg/mark.jpeg",
     alt: "Prof. Hos.!!!"
-    // aside: (i, xs) => {} /* TODO: Add link to aside */
+    // aside: (r, x, xs) => {} /* TODO: add link to aside */
   }
 ]
 
@@ -742,14 +669,6 @@ const galleryControls = () => [
   ]
 ]
 
-const nolanGist = async (_r: Route) => [
-  "main", {},
-  ["h1", {}, "I'm nolan."],
-  ["h2", {}, "I've been called a reflector. I'm into computers, graphics, and all forms of animation."],
-  ["h3", {}, "This is where I programmatically put out on the internet, so stay awhile, and listen. Enjoy my post-social AIM profile."],
-  ["a", { href: "mailto:nolan@usernolan.net" }, "nolan@usernolan.net"]
-]
-
 const defaultGalleryItemPreview = (r: Route, { id, src, alt }: GalleryItem) => [
   "div.gallery-item", { id },
   ["a", { href: `#/${r.who}/gallery/${id}` },
@@ -757,49 +676,41 @@ const defaultGalleryItemPreview = (r: Route, { id, src, alt }: GalleryItem) => [
   ]
 ]
 
-/* TODO: default in interface? */
-const galleryItemPreview = (r: Route, i: GalleryItem) =>
-  i.preview ?
-    i.preview(i) :
-    defaultGalleryItemPreview(r, i)
+const galleryItemPreview = (r: Route, x: GalleryItem) =>
+  x.preview ?
+    x.preview(r, x) :
+    defaultGalleryItemPreview(r, x)
 
 const galleryId = (r: Route, xs: GalleryItem[]) => {
-  const i = xs.find((x) => x.id === r.id)! /* TODO: not found */
-  return i.main ?
-    i.main(i) : [
-      "main", { id: i.id },
-      ["img", { src: i.src, alt: i.alt }]
+  const x = xs.find((x) => x.id === r.id)! /* TODO: not found */
+  return x.main ?
+    x.main(r, x, xs) : [
+      "main", { id: x.id },
+      ["img", { src: x.src, alt: x.alt }]
     ]
 }
 
 const galleryIdAside = (r: Route, xs: GalleryItem[]) => {
-  /* TODO: custom aside */
-  const idx = xs.findIndex((x) => x.id === r.id)
-  if (idx < 0) return ["aside", {}] /* TODO: not found */
+  const i = xs.findIndex((x) => x.id === r.id)
+  if (i < 0) return ["aside", {}] /* TODO: not found */
 
-  const { alt } = xs[idx]
-  const maxIdx = xs.length - 1
-  const prevIdx = idx === 0 ? maxIdx : idx - 1
-  const nextIdx = idx === maxIdx ? 0 : idx + 1
+  const x = xs[i]
+  if (x.aside) return x.aside(r, x, xs)
+
+  const { alt } = xs[i]
+  const max = xs.length - 1
+  const prev = i === 0 ? max : i - 1
+  const next = i === max ? 0 : i + 1
 
   return [
     "aside", {},
     ["nav", {},
-      ["a", { href: `#/${r.who}/gallery/${xs[prevIdx].id}` }, "< prev"],
+      ["a", { href: `#/${r.who}/gallery/${xs[prev].id}` }, "< prev"],
       ["a", { href: `#/${r.who}/gallery` }, "gallery"],
-      ["a", { href: `#/${r.who}/gallery/${xs[nextIdx].id}` }, "next >"]],
+      ["a", { href: `#/${r.who}/gallery/${xs[next].id}` }, "next >"]],
     ["p", {}, alt]
   ]
 }
-
-const nolanGalleryId = async (r: Route) => galleryId(r, nolanGalleryItems)
-const nolanGalleryIdAside = async (r: Route) => galleryIdAside(r, nolanGalleryItems)
-const nm8GalleryId = async (r: Route) => galleryId(r, nm8GalleryItems)
-const nm8GalleryIdAside = async (r: Route) => galleryIdAside(r, nm8GalleryItems)
-const OeGalleryId = async (r: Route) => galleryId(r, OeGalleryItems)
-const OeGalleryIdAside = async (r: Route) => galleryIdAside(r, OeGalleryItems)
-const smixzyGalleryId = async (r: Route) => galleryId(r, smixzyGalleryItems)
-const smixzyGalleryIdAside = async (r: Route) => galleryIdAside(r, smixzyGalleryItems)
 
 // const gallery = (r: Route, opts: { filter: any, xs: GalleryItem[] }) => [
 //   "main", {},
@@ -821,6 +732,17 @@ const smixzyGalleryIdAside = async (r: Route) => galleryIdAside(r, smixzyGallery
 //     filter: (x: { filterValue: number }) => `grayscale(${x.filterValue}%)`
 //   })
 
+
+/* NOTE: primary components */
+
+const nolanGist = async (_r: Route) => [
+  "main", {},
+  ["h1", {}, "I'm nolan."],
+  ["h2", {}, "I've been called a reflector. I'm into computers, graphics, and all forms of animation."],
+  ["h3", {}, "This is where I programmatically put out on the internet, so stay awhile, and listen. Enjoy my post-social AIM profile."],
+  ["a", { href: "mailto:nolan@usernolan.net" }, "nolan@usernolan.net"]
+]
+
 /* TODO: refactor */
 const nolanGallery = async (r: Route) => [
   "main", {},
@@ -836,6 +758,8 @@ const nolanGallery = async (r: Route) => [
 ]
 
 const nolanGalleryAside = async (_r: Route) => galleryControls()
+const nolanGalleryId = async (r: Route) => galleryId(r, nolanGalleryItems)
+const nolanGalleryIdAside = async (r: Route) => galleryIdAside(r, nolanGalleryItems)
 
 const nolanReference = async (_r: Route) => [
   "main", {},
@@ -915,6 +839,8 @@ const nm8Gallery = async (r: Route) => [
 ]
 
 const nm8GalleryAside = async (_r: Route) => galleryControls()
+const nm8GalleryId = async (r: Route) => galleryId(r, nm8GalleryItems)
+const nm8GalleryIdAside = async (r: Route) => galleryIdAside(r, nm8GalleryItems)
 
 const nm8Reference = async (_r: Route) => [
   "main", {},
@@ -1013,6 +939,8 @@ const OeGallery = async (r: Route) => [
 ]
 
 const OeGalleryAside = async (_r: Route) => galleryControls()
+const OeGalleryId = async (r: Route) => galleryId(r, OeGalleryItems)
+const OeGalleryIdAside = async (r: Route) => galleryIdAside(r, OeGalleryItems)
 
 const OeReference = async (_r: Route) => [
   "main", {},
@@ -1097,6 +1025,8 @@ const smixzyGallery = async (r: Route) => [
 ]
 
 const smixzyGalleryAside = async (_r: Route) => galleryControls()
+const smixzyGalleryId = async (r: Route) => galleryId(r, smixzyGalleryItems)
+const smixzyGalleryIdAside = async (r: Route) => galleryIdAside(r, smixzyGalleryItems)
 
 const smixzyReference = async (_r: Route) => [
   "main", {},
@@ -1301,6 +1231,94 @@ const rdom = $compile([
 ])
 
 rdom.mount(document.body)
+
+
+/* NOTE: keyboard interaction */
+
+document.addEventListener('keydown', (e: KeyboardEvent) => {
+  /* NOTE: primary nav */
+  if (e.key === "h") {
+    if (route.deref()?.what === "gallery" && route.deref()?.id) {
+      location.hash = document
+        .getElementsByTagName("aside")[0]
+        .getElementsByTagName("nav")[0]
+        .getElementsByTagName("a")[0].hash
+    } else {
+      const idx = whoAll.findIndex((x) => x === route.deref()?.who)
+      const prev = whoAll[(idx <= 0 ? whoAll.length : idx) - 1]
+      location.hash = `#/${prev || "nolan"}/${route.deref()?.what || "gist"}`
+      window.scrollTo(0, 0)
+    }
+  }
+
+  if (e.key === "j") {
+    if (route.deref()?.what === "gallery" && !route.deref()?.id) {
+      location.hash = document
+        .getElementsByClassName("gallery-container")[0]
+        .getElementsByTagName("a")[0].hash
+    } else {
+      const idx = whatAll.findIndex((x) => x === route.deref()?.what)
+      const next = whatAll[idx >= whatAll.length - 1 ? 0 : idx + 1]
+      location.hash = `#/${route.deref()?.who || "nolan"}/${next || "gist"}`
+      window.scrollTo(0, 0)
+    }
+  }
+
+  if (e.key === "k") {
+    if (route.deref()?.what === "gallery" && route.deref()?.id) {
+      location.hash = `#/${route.deref()?.who || "nolan"}/gallery`
+    } else {
+      const idx = whatAll.findIndex((x) => x === route.deref()?.what)
+      const prev = whatAll[(idx <= 0 ? whatAll.length : idx) - 1]
+      location.hash = `#/${route.deref()?.who || "nolan"}/${prev || "gist"}`
+      window.scrollTo(0, 0)
+    }
+  }
+
+  if (e.key === "l") {
+    if (route.deref()?.what === "gallery" && route.deref()?.id) {
+      location.hash = document
+        .getElementsByTagName("aside")[0]
+        .getElementsByTagName("nav")[0]
+        .getElementsByTagName("a")[2].hash
+    } else {
+      const idx = whoAll.findIndex((x) => x === route.deref()?.who)
+      const next = whoAll[idx >= whoAll.length - 1 ? 0 : idx + 1]
+      location.hash = `#/${next || "nolan"}/${route.deref()?.what || "gist"}`
+      window.scrollTo(0, 0)
+    }
+  }
+
+  /* NOTE: gallery zoom */
+  if (e.key === "=" && route.deref()?.what === "gallery" && !route.deref()?.id) {
+    decNumGalleryColumnsIndex()
+  }
+
+  if (e.key === "-" && route.deref()?.what === "gallery" && !route.deref()?.id) {
+    incNumGalleryColumnsIndex()
+  }
+
+  /* NOTE: gallery filter */
+  if (e.key === "." && route.deref()?.what === "gallery" && !route.deref()?.id) {
+    const cur = filterValue.deref() || 0
+    filterValue.next((cur + 2) % 100)
+  }
+
+  if (e.key === "," && route.deref()?.what === "gallery" && !route.deref()?.id) {
+    const cur = filterValue.deref() || 0
+    filterValue.next(cur <= 0 ? 100 : cur - 2)
+  }
+
+  /* NOTE: gallery navigation */
+  if (e.key.match(/[1-9]/) && route.deref()?.what === "gallery" && !route.deref()?.id) {
+    location.hash = document
+      .getElementsByClassName("gallery-container")[0]
+      .getElementsByTagName("a")[parseInt(e.key) - 1].hash
+  }
+})
+
+
+/* NOTE: preloads */
 
 const preloadLinkFromGalleryItem = (x: GalleryItem) => {
   const el = document.createElement("link")
