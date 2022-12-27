@@ -892,13 +892,13 @@ const allChars = ["°", ".", "·", ":", "*", " ", "?"]
 const weights = [0.143, 0.143, 0.143, 0.143, 0.143, 0.286, 0.0143]
 const takeChars = (n: number) => [...take(n, choices(allChars, weights))]
 const numChars = 9
-var prevChars = takeChars(numChars)
+var OeChars = takeChars(numChars)
 
 const OeGist = async (_r: Route) => [
   "main", {},
   ["h1", {}, $replace(fromRAF().map((t) => {
-    if (t % 12 === 0) prevChars = takeChars(numChars)
-    return prevChars.join("")
+    if (t % 12 === 0) OeChars = takeChars(numChars)
+    return OeChars.join("")
   }))],
   ["h2", {}, ".Abstract machines\n.Process"],
   ["h3", {}, "Language, logic, proof, etc.: real game of life hours, you know the one."],
