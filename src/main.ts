@@ -306,7 +306,7 @@ const nm8GalleryItems: GalleryItem[] = [
   {
     id: "4-avenue",
     src: "/jpeg/4-avenue.jpeg",
-    alt: "Some gorgeous blue Werner® ladder waiting for the subway at 4th Avenue."
+    alt: "A blue Werner® ladder waiting for the subway at 4th Avenue."
   },
 
   {

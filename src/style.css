@@ -124,7 +124,7 @@ body.gist main h2 {
 
 body.gist main h3 {
   font-size: 1.5rem;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: -0.015rem;
   max-width: 725px;
 }
@@ -244,6 +244,10 @@ body.gallery main div.gallery-container div.gallery-item img {
   height: 100%;
   object-fit: cover;
   aspect-ratio: 1 / 1;
+}
+
+body.gallery aside {
+  touch-action: manipulation;
 }
 
 body.gallery aside div.gallery-controls {
@@ -671,6 +675,7 @@ body.nolan {
 body.nolan nav select {
   background: #424242;
   color: #e8e8e8;
+  border: 1px solid #424242;
 }
 
 body.nolan.gist main a {
@@ -684,6 +689,7 @@ body.nolan.gallery aside nav {
 body.nolan.gallery aside div.gallery-controls button {
   background: #424242;
   color: #e8e8e8;
+  border: 1px solid #424242;
 }
 
 body.nolan ::selection {
@@ -700,6 +706,7 @@ body.nm8 {
 body.nm8 nav select {
   background: black;
   color: white;
+  border: 1px solid black;
 }
 
 body.nm8.gallery aside nav {
@@ -709,6 +716,7 @@ body.nm8.gallery aside nav {
 body.nm8.gallery aside div.gallery-controls button {
   background: black;
   color: white;
+  border: 1px solid black;
 }
 
 body.nm8 ::selection {
@@ -757,6 +765,7 @@ body.smixzy {
 body.smixzy nav select {
   background: #4200af;
   color: lightblue;
+  border: 1px solid #4200af;
 }
 
 body.smixzy.gallery aside nav {
@@ -775,6 +784,7 @@ body.smixzy.gist main {
 body.smixzy.gallery aside div.gallery-controls button {
   background: #4200af;
   color: lightblue;
+  border: 1px solid #4200af;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -838,8 +848,8 @@ body.smixzy.gallery aside div.gallery-controls button {
 
   body.nolan.gallery aside div.gallery-controls button {
     background: #242424;
-    border: 1px solid #afafaf;
     color: #ccc;
+    border: 1px solid #afafaf;
   }
 
   body.nolan.gallery.id aside nav {
@@ -879,9 +889,9 @@ body.smixzy.gallery aside div.gallery-controls button {
     background: rgba(255, 255, 255, 0.5);
   }
 
-  /* body.nolan.gallery aside button { */
-  /*   background: rgba(72, 72, 72, 0.8) !important; */
-  /* } */
+  body.nolan.gallery aside div.gallery-controls button {
+    background: rgba(0, 0, 0, 0.5);
+  }
 
 
   body.nm8.gallery aside {
@@ -897,9 +907,9 @@ body.smixzy.gallery aside div.gallery-controls button {
     background: rgba(255, 255, 255, 0.5);
   }
 
-  /* body.Oe.gallery aside button { */
-  /*   background: rgba(255, 255, 255, 0.25) !important; */
-  /* } */
+  body.Oe.gallery aside div.gallery-controls button {
+    background: transparent;
+  }
 
 
   body.smixzy.gallery aside {
@@ -980,7 +990,7 @@ body main.error h2 {
 
 body main.error h3 {
   font-size: 1.5rem;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: -0.015rem;
   max-width: 725px;
 }
@@ -991,6 +1001,7 @@ body main.error p {
 
 body main.error ::selection {
   background: rgba(249, 204, 202, 0.5);
+  color: inherit;
 }
 
 @media (orientation: portrait) {
