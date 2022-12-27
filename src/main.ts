@@ -1151,6 +1151,14 @@ const routeKeyFn = (r: Route) =>
     `${r.who}${capitalize(r.what)}Id` :
     `${r.who}${capitalize(r.what)}`
 
+const errorComponent = async (err: Error) => [
+  "main.error", {},
+  ["h1", {}, "who?"],
+  ["h2", {}, "I don't recognize this route. Are you messing with me?"],
+  ["h3", {}, `Get out of here with your ${err}.`],
+  ["p", {}, "Drinkin' outta cups...get real."]
+]
+
 const rdom = $compile([
   "div.rdom-root", {},
   $replace(route.map(navComponent)),
@@ -1175,7 +1183,7 @@ const rdom = $compile([
       smixzyGalleryId,
       smixzyReference
     },
-    async (err) => ["div", {}, route.map((r) => `ERROR ${err}; ${r.who}/${r.what}`)] /* TODO: fix, not found */
+    errorComponent
   ),
   $switch(
     route,
