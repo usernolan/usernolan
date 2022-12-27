@@ -109,7 +109,6 @@ const navComponent = (r: Route) => [
 
 /* NOTE: gallery interfaces, data, state, components */
 
-
 interface GalleryItem {
   id: string,
   src: string,
@@ -729,6 +728,7 @@ const gallery = (r: Route, opts: GalleryOpts) => [
     ...opts.xs.map((i) => galleryItemPreview(r, i))
   ]
 ]
+
 
 /* NOTE: primary components */
 

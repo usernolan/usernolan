@@ -682,7 +682,7 @@ body.nolan.gist main a {
   color: inherit;
 }
 
-body.nolan.gallery aside nav {
+body.nolan.gallery.id aside nav {
   border-bottom: 1px solid #424242;
 }
 
@@ -709,7 +709,7 @@ body.nm8 nav select {
   border: 1px solid black;
 }
 
-body.nm8.gallery aside nav {
+body.nm8.gallery.id aside nav {
   border-bottom: 1px solid black;
 }
 
@@ -741,7 +741,7 @@ body.Oe.gist main p {
   font-style: italic;
 }
 
-body.Oe.gallery aside nav {
+body.Oe.gallery.id aside nav {
   border-bottom: 1px solid black;
 }
 
@@ -768,7 +768,7 @@ body.smixzy nav select {
   border: 1px solid #4200af;
 }
 
-body.smixzy.gallery aside nav {
+body.smixzy.gallery.id aside nav {
   border-bottom: 1px solid #4200af;
 }
 
@@ -927,17 +927,25 @@ body.smixzy.gallery aside div.gallery-controls button {
     color: #e8e8e8;
   }
 
+  body.nolan.gallery aside div.gallery-controls button {
+    border: 1px solid rgba(36, 36, 36, 0.33);
+  }
+
   body.nolan.gallery.id aside {
     background: rgba(36, 36, 36, 0.5);
   }
 
-  body.nolan.gallery aside nav {
+  body.nolan.gallery.id aside nav {
     border-bottom: 1px solid #777;
   }
 
 
   body.nm8.gallery aside {
     background: rgba(0, 0, 0, 0.33);
+  }
+
+  body.nm8.gallery aside div.gallery-controls button {
+    border: 1px solid #121212;
   }
 
   body.nm8.gallery.id aside {
@@ -947,6 +955,12 @@ body.smixzy.gallery aside div.gallery-controls button {
 
   body.Oe.gallery aside {
     background: rgba(255, 255, 255, 0.125);
+    color: black;
+  }
+
+  body.Oe.gallery aside div.gallery-controls button {
+    color: black;
+    border: 1px solid black;
   }
 
   body.Oe.gallery.id aside {
@@ -963,7 +977,7 @@ body.smixzy.gallery aside div.gallery-controls button {
     background: rgba(66, 0, 255, 0.5);
   }
 
-  body.smixzy.gallery aside nav {
+  body.smixzy.gallery.id aside nav {
     border-bottom: 1px solid lightblue;
   }
 }
