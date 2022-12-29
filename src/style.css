@@ -1,7 +1,4 @@
 /* NOTE: root styles */
-/* TODO: prune font weights */
-/* TODO: prefixes */
-/* TODO: control overlap */
 
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
@@ -351,6 +348,7 @@ body.gallery aside div.gallery-controls div.filter-controls input[type=range] {
   }
 
   body.gallery aside div.gallery-controls button {
+    padding: 0.42rem 0.91rem;
     margin: 0 0 0.125rem 0;
     border-radius: 2px;
   }
@@ -448,6 +446,10 @@ body.nm8.gallery main div.gallery-container div.gallery-item[id="4-avenue"] img 
   object-position: 0 0;
 }
 
+body.nm8.gallery.id main[id="4-avenue"] img {
+  object-position: 33% 50%;
+}
+
 body.nm8.gallery main div.gallery-container div.gallery-item#graphite img {
   object-position: 0 0;
 }
@@ -456,7 +458,11 @@ body.nm8.gallery main div.gallery-container div.gallery-item#frames img {
   object-position: 100% 50%;
 }
 
-body.nm8.gallery main div.gallery-container div.gallery-item#dinm8 img {
+body.nm8.gallery.id main#pack img {
+  object-position: 66% 50%;
+}
+
+body.nm8.gallery main div.gallery-container div.gallery-item#di img {
   object-position: 50% 33.33%;
 }
 
@@ -490,6 +496,10 @@ body.Oe.gallery.id main#n img {
 
 body.Oe.gallery.id main#u img {
   object-position: 25% 50%;
+}
+
+body.Oe.gallery.id main#midway img {
+  object-position: 60% 50%;
 }
 
 body.Oe.gallery.id main#truck img {
@@ -591,7 +601,7 @@ body.smixzy.gallery.id main#spray-paint img {
   object-position: 0 0;
 }
 
-body.smixzy.gallery.id main#seating img {
+body.smixzy.gallery.id main#monolith img {
   object-position: 0 0;
 }
 

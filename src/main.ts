@@ -84,7 +84,7 @@ prefersDarkModeMatch.addEventListener("change", (e) => {
 /* ALT: read each selection onchange rather than react to route */
 const navComponent = (r: Route) => [
   "nav", {},
-  ["__COMMENT__", "Ah! I'm glad you're here. If you're wondering what the hell is going on with this website, no you aren't, so am I, and wikipedia Internal Family Systems Model. Lastly if you're like me, your keyboard should work approximately the way you want it to. Welcome!!"],
+  ["__COMMENT__", "Ah! I'm glad you're here. If you're wondering wtf is going on with this website, no you aren't, so am I, and wikipedia Internal Family Systems Model. Lastly if you're like me, your keyboard should work approximately the way you want it to. Welcome!!"],
   ["select.who",
     {
       onchange: (e: { target: HTMLSelectElement }) => {
@@ -158,7 +158,7 @@ const nolanGalleryItems: GalleryItem[] = [
   {
     id: "petals",
     src: "/jpeg/petals.jpeg",
-    alt: "Pink flower petals gathering against a concrete sidewalk."
+    alt: "Pink flower petals gravitating toward a concrete sidewalk."
   },
 
   {
@@ -243,12 +243,6 @@ const nm8GalleryItems: GalleryItem[] = [
   },
 
   {
-    id: "couch",
-    src: "/jpeg/couch.jpeg",
-    alt: "The smallest but cleanest living room you've ever been in; cloudy day."
-  },
-
-  {
     id: "skulls",
     src: "/jpeg/skulls.jpeg",
     alt: "Stackable cubic skulls printed in Martha Stewart®-brand PLA. The second greatest gift I've ever received: Martha's memento mori."
@@ -293,13 +287,13 @@ const nm8GalleryItems: GalleryItem[] = [
   {
     id: "frame",
     src: "/jpeg/frame.jpeg",
-    alt: "A rainbow-striped frame sample sitting on immaculate construction paper."
+    alt: "A rainbow-chromatic striped frame sample sitting on construction paper."
   },
 
   {
     id: "screw",
     src: "/jpeg/screw.jpeg",
-    alt: "A black ballpoint pen drawing on white graph paper. A vaguely humanoid assemblage of shapes with screw-like rod arms, stacked box torso, smooth pipe legs, and plastic floret head. It's worshipping a biblically accurate screw of enormous proportion. In this world, even the most basic fasteners are much larger than people."
+    alt: "A black ballpoint pen drawing on white graph paper. A vaguely humanoid assemblage of shapes with screw-like rod arms, a stacked box torso, smooth pipe legs, and a plastic floret head. It's worshipping a biblically accurate screw of enormous proportion. In this world, even the most basic fasteners are much larger than people."
   },
 
   {
@@ -327,14 +321,8 @@ const nm8GalleryItems: GalleryItem[] = [
   },
 
   {
-    id: "tom",
-    src: "/jpeg/tom.jpeg",
-    alt: "Tom Sachs yawning on a tour of the Budweiser® factory."
-  },
-
-  {
-    id: "dinm8",
-    src: "/jpeg/dinm8.jpeg",
+    id: "di",
+    src: "/jpeg/di.jpeg",
     alt: "The greatest mother to have ever done it hauling her offspring's garbage through a hardware store."
   }
 ]
@@ -342,7 +330,7 @@ const nm8GalleryItems: GalleryItem[] = [
 const OeGalleryItems: GalleryItem[] = [
   {
     id: "self",
-    src: "/jpeg/Oe.self.jpeg",
+    src: "/png/Oe.self.png",
     alt: "A selectively randomized, poorly pixelized sapiens approximate peeking out of a previously sealed box."
   },
 
@@ -350,14 +338,14 @@ const OeGalleryItems: GalleryItem[] = [
     id: "automata-1",
     src: "/png/automata.1.png",
     alt: "The inverse of next.",
-    main: () => ["main", {}]
+    main: (_r: Route, { id }: GalleryItem) => ["main", { id }]
   },
 
   {
     id: "automata-2",
     src: "/png/automata.2.png",
     alt: "The inverse of prev.",
-    main: () => ["main", {}]
+    main: (_r: Route, { id }: GalleryItem) => ["main", { id }]
   },
 
   {
@@ -368,8 +356,8 @@ const OeGalleryItems: GalleryItem[] = [
 
   {
     id: "170",
-    src: "/jpeg/rule.170.jpeg",
-    alt: "Rule 170: 1D cellular automaton with range = 1, where cells are shaped like keyholes, but I think it's bugged."
+    src: "/png/rule.170.png",
+    alt: "Rule 170: 1D cellular automaton with range = 1, where cells are shaped like keyholes, but I think it's bugged. If you stare long enough it looks like a waterfall and starts to move."
   },
 
   {
@@ -380,31 +368,31 @@ const OeGalleryItems: GalleryItem[] = [
 
   {
     id: "green",
-    src: "/jpeg/rule.green.jpeg",
+    src: "/png/rule.green.png",
     alt: "A grid of thin vertical lines with a unique fingerprint identified by empty grid coordinates; energetic green background."
   },
 
   {
     id: "pink",
-    src: "/jpeg/rule.pink.jpeg",
-    alt: "A grid of thin vertical lines with a unique fingerprint identified by empty grid coordinates; pill pink background."
+    src: "/png/rule.pink.png",
+    alt: "A grid of thin vertical lines with a unique fingerprint identified by empty grid coordinates; pale-hot pink background."
   },
 
   {
     id: "blue",
-    src: "/jpeg/rule.blue.jpeg",
+    src: "/png/rule.blue.png",
     alt: "I think this is a poor approximation of rule 99; ultra blue background."
   },
 
   {
     id: "stairs",
     src: "/png/rule.stairs.png",
-    alt: "Two bright souls conversing in a noisy perfectoid."
+    alt: "Two bright perfectoids conversing in a noisy category."
   },
 
   {
     id: "150",
-    src: "/jpeg/rule.150.jpeg",
+    src: "/png/rule.150.png",
     alt: "Rule 150, I think."
   },
 
@@ -427,21 +415,21 @@ const OeGalleryItems: GalleryItem[] = [
   },
 
   {
-    id: "closet",
-    src: "/jpeg/closet.jpeg",
+    id: "spill",
+    src: "/jpeg/spill.jpeg",
     alt: "The softest, most gorgeous spill you've ever faced."
   },
 
   {
-    id: "stained-glass",
-    src: "/jpeg/stained-glass.jpeg",
-    alt: "Stained glass casting neon on sandstone."
+    id: "stained",
+    src: "/jpeg/stained.jpg",
+    alt: "Neon-stained sandstone."
   },
 
   {
     id: "martini",
     src: "/jpeg/martini.jpeg",
-    alt: "A martini efficiently brokering photons over its environment."
+    alt: "A martini efficiently brokering photons."
   },
 
   {
@@ -489,6 +477,12 @@ const smixzyGalleryItems: GalleryItem[] = [
   },
 
   {
+    id: "concrete",
+    src: "/jpeg/concrete.jpeg",
+    alt: "Soft concrete."
+  },
+
+  {
     id: "ass",
     src: "/jpeg/ass-drag.jpeg",
     alt: "A purple Post-it® with 'ASS DRAG' written on it in caps lock. There's so much more where this came from."
@@ -513,17 +507,11 @@ const smixzyGalleryItems: GalleryItem[] = [
   },
 
   {
-    id: "evolve-now",
-    src: "/jpeg/evolve-now.jpeg",
-    alt: "A printed sticker on a road sign with a person in sunglasses yelling 'EVOLVE NOW!'"
-  },
-
-  {
     id: "face",
     src: "/jpeg/face.preview.jpeg",
     alt: "The word 'FACE' permanently etched into a concrete sidewalk.",
-    main: (_r: Route, { alt }: GalleryItem) => [
-      "main", {},
+    main: (_r: Route, { id, alt }: GalleryItem) => [
+      "main", { id },
       ["img", { src: "/jpeg/face.jpeg", alt }]
     ]
   },
@@ -549,13 +537,13 @@ const smixzyGalleryItems: GalleryItem[] = [
   {
     id: "dumpstergram",
     src: "/jpeg/dumpstergram.jpeg",
-    alt: "Two dumpsters in the middle of the woods. Unparalleled vibes."
+    alt: "Two dumpsters in the middle of the woods. Unparalleled vibe."
   },
 
   {
     id: "post-it",
     src: "/jpeg/post-it.jpeg",
-    alt: "A closeup of Post-it® notes with more Post-it® notes in the background. That's a fresh cabinet pack of rare and discontinued Helsinki themed Greener Notes...damn."
+    alt: "A closeup of Post-it® notes with more Post-it® notes in the background; not to brag but it's a fresh cabinet pack of Helsinki themed Greener Notes."
   },
 
   {
@@ -590,8 +578,12 @@ const smixzyGalleryItems: GalleryItem[] = [
 
   {
     id: "chalk",
-    src: "/jpeg/chalk.jpeg",
-    alt: "Sidewalk chalk portal to outer space."
+    src: "/jpeg/chalk.preview.jpeg",
+    alt: "Sidewalk chalk portal to outer space.",
+    main: (_r: Route, { id, alt }: GalleryItem) => [
+      "main", { id },
+      ["img", { src: "/jpeg/chalk.jpeg", alt }]
+    ]
   },
 
   {
@@ -601,20 +593,15 @@ const smixzyGalleryItems: GalleryItem[] = [
   },
 
   {
-    id: "seating",
-    src: "/jpeg/seating.jpeg",
+    id: "monolith",
+    src: "/jpeg/monolith.jpeg",
     alt: "Strangely oriented concrete monolith opimitzed for resting up to four asscheeks."
   },
 
-  {
-    id: "concrete",
-    src: "/jpeg/concrete.jpeg",
-    alt: "More soft concrete."
-  },
 
   {
-    id: "cable-tv",
-    src: "/jpeg/cable-tv.jpeg",
+    id: "cable",
+    src: "/jpeg/cable.jpeg",
     alt: "A classic mixup between the street lighting and television cable factions."
   },
 
@@ -984,7 +971,7 @@ const smixzyGist = async (_r: Route) => [
 ]
 
 const smixzyGallery = async (r: Route) => {
-  const filter = (v: number) => `saturate(1.5) hue-rotate(${(v / 100) * 360}deg)`
+  const filter = (v: number) => `saturate(1.125) hue-rotate(${(v / 100) * 360}deg)`
   const xs = smixzyGalleryItems
   return gallery(r, { xs, filter })
 }
