@@ -84,7 +84,7 @@ prefersDarkModeMatch.addEventListener("change", (e) => {
 /* ALT: read each selection onchange rather than react to route */
 const navComponent = (r: Route) => [
   "nav", {},
-  ["__COMMENT__", "Ah! I'm glad you're here. If you're wondering wtf is going on with this website, no you aren't, so am I, and wikipedia Internal Family Systems Model. Lastly if you're like me, your keyboard should work approximately the way you want it to. Welcome!!"],
+  ["__COMMENT__", "Ah! I'm glad you're here. If you're wondering wtf is going on with this website, no you aren't, so am I, and you should wikipedia the Internal Family Systems Model. Lastly if you're like me, your keyboard should work approximately the way you want it to. Welcome!!"],
   ["select.who",
     {
       onchange: (e: { target: HTMLSelectElement }) => {
