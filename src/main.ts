@@ -441,7 +441,7 @@ const OeGalleryItems: GalleryItem[] = [
   {
     id: "truck",
     src: "/jpeg/truck.jpeg",
-    alt: "A big yellow haul truck on the beach."
+    alt: "A yellow haul truck on the beach."
   },
 
   {
@@ -543,7 +543,7 @@ const smixzyGalleryItems: GalleryItem[] = [
   {
     id: "post-it",
     src: "/jpeg/post-it.jpeg",
-    alt: "A closeup of Post-it® notes with more Post-it® notes in the background; not to brag but it's a fresh cabinet pack of Helsinki themed Greener Notes."
+    alt: "A closeup of Post-it® notes with more Post-it® notes in the background; not to brag but it's a fresh cabinet pack of Helsinki-themed Greener Notes."
   },
 
   {
@@ -595,7 +595,7 @@ const smixzyGalleryItems: GalleryItem[] = [
   {
     id: "monolith",
     src: "/jpeg/monolith.jpeg",
-    alt: "Strangely oriented concrete monolith opimitzed for resting up to four asscheeks."
+    alt: "A strangely oriented concrete monolith opimitzed for resting up to four asscheeks."
   },
 
 
