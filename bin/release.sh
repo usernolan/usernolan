@@ -10,4 +10,4 @@ if [ -z $DEPLOYMENT_TARGET ]; then
 fi
 echo "DEPLOYMENT_TARGET: " $DEPLOYMENT_TARGET
 
-aws s3 sync dist/ s3://$DEPLOYMENT_TARGET --acl public-read --delete
+aws s3 sync dist/ s3://$DEPLOYMENT_TARGET --acl public-read
