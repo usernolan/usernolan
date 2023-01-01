@@ -387,7 +387,7 @@ const OeGalleryItems: GalleryItem[] = [
   {
     id: "stairs",
     src: "/png/rule.stairs.png",
-    alt: "Two bright perfectoids conversing in a noisy category."
+    alt: "Two bright perfectoids conversing in a noisy universe."
   },
 
   {
