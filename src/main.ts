@@ -788,6 +788,11 @@ const nolanReference = async (_r: Route) => [
     ["li", {},
       ["h2", {}, "These build on themselves. You notice that anything you are aware of is in the process of changing as you notice it."],
       ["p", {}, "—R.S."]
+    ],
+
+    ["li", {},
+      ["h2", {}, "There can be no fixed method for this; it’s inherently improvisational."],
+      ["p", {}, "—David Chapman"]
     ]
   ]
 ]
@@ -903,6 +908,7 @@ const OeGalleryIdAside = async (r: Route) => galleryIdAside(r, OeGalleryItems)
 
 const OeReference = async (_r: Route) => [
   "main", {},
+  ["__COMMENT__", "Best rabbit holes."],
   ["ul", {},
     ["li", {},
       ["a", { href: "https://en.wikipedia.org/wiki/Mereology" },
@@ -922,6 +928,13 @@ const OeReference = async (_r: Route) => [
       ["a", { href: "https://en.wikipedia.org/wiki/Algebraic_structure" },
         ["p", {}, "wikipedia"],
         ["h2", {}, ".Algebraic Structure"]
+      ]
+    ],
+
+    ["li", {},
+      ["a", { href: "https://en.wikipedia.org/wiki/Schismogenesis" },
+        ["p", {}, "wikipedia"],
+        ["h2", {}, ".Schismogenesis"]
       ]
     ],
 
