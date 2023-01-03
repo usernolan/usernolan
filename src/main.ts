@@ -84,7 +84,7 @@ prefersDarkModeMatch.addEventListener("change", (e) => {
 /* ALT: read each selection onchange rather than react to route */
 const navComponent = (r: Route) => [
   "nav", {},
-  ["__COMMENT__", "Ah! I'm glad you're here. If you're wondering wtf is going on with this website, no you aren't, so am I, and you should wikipedia the Internal Family Systems Model. Lastly if you're like me, your keyboard should work approximately the way you want it to. Welcome!!"],
+  ["__COMMENT__", "Ah! I'm glad you're here. If you're wondering what on earth is going on with this website, no you aren't, so am I, and you should wikipedia the Internal Family Systems Model. Lastly if you're like me, your keyboard should work approximately the way you want it to. Welcome!"],
   ["select.who",
     {
       onchange: (e: { target: HTMLSelectElement }) => {
@@ -723,8 +723,10 @@ const nolanGist = async (_r: Route) => [
   "main", {},
   ["h1", {}, "I'm nolan."],
   ["h2", {}, "I've been called a reflector. I'm into computers, graphics, and all forms of animation."],
-  ["h3", {}, "This is where I programmatically put out on the internet, so stay awhile, and listen. Enjoy my post-social AIM profile."],
-  ["a", { href: "mailto:nolan@usernolan.net" }, "nolan@usernolan.net"]
+  ["h3", {}, "This is where I systematically overshare on the internet, so stay awhile, and listen; enjoy my post-social AIM profile."],
+  ["__COMMENT__", "This is where I programmatically put out on the internet, because that's what all these personal sites really are, right? <Blizzard reference>. <Throwback to AOL>. Am I doing this right?"],
+  ["p", {}, "user<name>: ",
+    ["a", { href: "mailto:nolan@usernolan.net" }, "nolan@usernolan.net"]]
 ]
 
 const nolanGallery = async (r: Route) => {
@@ -799,10 +801,9 @@ const nolanReference = async (_r: Route) => [
 
 const nm8Gist = async (_r: Route) => [
   "main", {},
-  ["h1", {}, "I'm sorry."],
-  ["h2", {}, "...about the JavaScript, Inter, and the whole select-nav deal."],
-  ["h3", {}, "The web was never meant to be \"cool\" and \"work well.\" They have played us for absolute fools."],
-  ["p", {}, "like 'animate'. or like my initials, nms. also mereological composition."]
+  ["h1", {}, "I'm nolan."],
+  ["h2", {}, "I build sketchy websites and primitive furniture. I love both."],
+  ["p", {}, "nm8 comes from my initials, nms. like 'animate'"]
 ]
 
 const nm8Gallery = async (r: Route) => {
@@ -874,6 +875,14 @@ const nm8Reference = async (_r: Route) => [
     ],
 
     ["li", {},
+      ["a", { href: "https://www.dreamsongs.com/RiseOfWorseIsBetter.html" },
+        ["p", {}, "website"],
+        ["h2", {}, "Worse is Better."],
+        ["p", {}, "—Richard Gabriel"]
+      ]
+    ],
+
+    ["li", {},
       ["h2", {}, "Everything worth saying, and everything else as well, can be said with two characters."],
       ["p", {}, "—Quine"]
     ]
@@ -892,8 +901,8 @@ const OeGist = async (_r: Route) => [
     if (t % 12 === 0) OeChars = takeChars(numChars)
     return OeChars.join("")
   }))],
-  ["h2", {}, ".Abstract machines\n.Process"],
-  ["h3", {}, "Language, logic, proof, etc.: real game of life hours, you know the one."],
+  ["h2", {}, "I think a lot about language, logic, proof, etc.."],
+  ["h3", {}, "Real game of life hours, you know the one."],
   ["p", {}, "observe ∘ explicate"]
 ]
 
@@ -977,10 +986,10 @@ const smixzyGist = async (_r: Route) => [
       })
     }
   },
-  ["h1", {}, "I'm garbage."],
-  ["h2", {}, "Nonsense \\\\ Acrylic \\\\  Handmade"],
-  ["h3", {}, "in any combinatorial. I love my desk. Soft immutability. Lv. 70 arcane mage."],
-  ["p", {}, "Where concrete?"],
+  ["h1", {}, "I'm nolan."],
+  ["h2", {}, "I generate a lot of nonsense, acrylic, and handmade garbage."],
+  ["h3", {}, "I love my desk. Big on concrete. Also Post-it notes. Soft immutability."],
+  ["p", {}, "Lv. 70 arcane mage"]
 ]
 
 const smixzyGallery = async (r: Route) => {
