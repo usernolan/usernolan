@@ -721,12 +721,10 @@ const gallery = (r: Route, opts: GalleryOpts) => [
 
 const nolanGist = async (_r: Route) => [
   "main", {},
-  ["h1", {}, "I'm nolan."],
-  ["h2", {}, "I've been called a reflector. I'm into computers, graphics, and all forms of animation."],
+  ["h3", {}, "I'm nolan. I've been called a reflector. I'm into computers, graphics, and all forms of animation."],
   ["h3", {}, "This is where I systematically overshare on the internet, so stay awhile, and listen; enjoy my post-social AIM profile."],
   ["__COMMENT__", "This is where I programmatically put out on the internet, because that's what all these personal sites really are, right? <Blizzard reference>. <Throwback to AOL>. Am I doing this right?"],
-  ["p", {}, "user<name>: ",
-    ["a", { href: "mailto:nolan@usernolan.net" }, "nolan@usernolan.net"]]
+  ["a", { href: "mailto:nolan@usernolan.net" }, "nolan@usernolan.net"]
 ]
 
 const nolanGallery = async (r: Route) => {
@@ -801,8 +799,7 @@ const nolanReference = async (_r: Route) => [
 
 const nm8Gist = async (_r: Route) => [
   "main", {},
-  ["h1", {}, "I'm nolan."],
-  ["h2", {}, "I build sketchy websites and primitive furniture. I love both."],
+  ["h3", {}, "I build sketchy websites and primitive furniture. I love both."],
   ["p", {}, "nm8 comes from my initials, nms. like 'animate'"]
 ]
 
@@ -897,12 +894,11 @@ var OeChars = takeChars(numChars)
 
 const OeGist = async (_r: Route) => [
   "main", {},
-  ["h1", {}, $replace(fromRAF().map((t) => {
+  ["h2", {}, $replace(fromRAF().map((t) => {
     if (t % 12 === 0) OeChars = takeChars(numChars)
     return OeChars.join("")
   }))],
-  ["h2", {}, "I think a lot about language, logic, proof, etc.."],
-  ["h3", {}, "Real game of life hours, you know the one."],
+  ["h3", {}, "I think a lot about language, logic, proof, etc.: real game of life hours, you know the one."],
   ["p", {}, "observe ∘ explicate"]
 ]
 
@@ -986,9 +982,7 @@ const smixzyGist = async (_r: Route) => [
       })
     }
   },
-  ["h1", {}, "I'm nolan."],
-  ["h2", {}, "I generate a lot of nonsense, acrylic, and handmade garbage."],
-  ["h3", {}, "I love my desk. Big on concrete. Also Post-it notes. Soft immutability."],
+  ["h3", {}, "I generate a lot of nonsense, acrylic, and handmade garbage."],
   ["p", {}, "Lv. 70 arcane mage"]
 ]
 
