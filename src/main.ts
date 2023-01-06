@@ -9,6 +9,8 @@ import { CloseMode } from "@thi.ng/rstream/api"
 import { sync } from "@thi.ng/rstream/sync"
 import { take } from "@thi.ng/transducers/take"
 import { choices } from "@thi.ng/transducers/choices"
+import Shuffle from "shufflejs"
+import { serialize } from "@thi.ng/hiccup"
 
 
 /* NOTE: routing */
@@ -1162,148 +1164,154 @@ const errorComponent = async (err: Error) => [
   ["p", {}, "Drinkin' outta cups...get real."]
 ]
 
+// const rdom = $compile([
+//   "div.rdom-root", {},
+//   $replace(route.map(navComponent)),
+//   $switch(
+//     route,
+//     routeKeyFn,
+//     {
+//       nolanGist,
+//       nolanGallery,
+//       nolanGalleryId,
+//       nolanReference,
+//       nm8Gist,
+//       nm8Gallery,
+//       nm8GalleryId,
+//       nm8Reference,
+//       OeGist,
+//       OeGallery,
+//       OeGalleryId,
+//       OeReference,
+//       smixzyGist,
+//       smixzyGallery,
+//       smixzyGalleryId,
+//       smixzyReference
+//     },
+//     errorComponent
+//   ),
+//   $switch(
+//     route,
+//     (r) => `${routeKeyFn(r)}Aside`,
+//     {
+//       nolanGalleryAside,
+//       nolanGalleryIdAside,
+//       nm8GalleryAside,
+//       nm8GalleryIdAside,
+//       OeGalleryAside,
+//       OeGalleryIdAside,
+//       smixzyGalleryAside,
+//       smixzyGalleryIdAside
+//     },
+//     async () => ["aside", {}]
+//   )
+// ])
+
+const items: any = [
+  {
+    id: "id1",
+    component: (_x: any, _items: any) => {
+      return ["p.item", { style: { width: "200px" } }, "I'm nolan. I've been called a reflector and I've been reeling ever since. This is where I programmatically overshare on the internet; pretty much everything about me can be learned by clicking the following button:"]
+    }
+  },
+
+  {
+    id: "id2",
+    component: (_x: any, _items: any) => {
+      return ["p.item", { style: { width: "500px" } }, "I'm nolan. I've been called a reflector and I've been reeling ever since. This is where I programmatically overshare on the internet; pretty much everything about me can be learned by clicking the following button:"]
+    }
+  },
+
+  {
+    id: "id3",
+    component: (_x: any, _items: any) => {
+      return ["p.item", { style: { width: "400px" } }, "I'm nolan. I've been called a reflector and I've been reeling ever since. This is where I programmatically overshare on the internet; pretty much everything about me can be learned by clicking the following button:"]
+    }
+  },
+
+  {
+    id: "id4",
+    component: (_x: any, _items: any) => {
+      return ["p.item", { style: { width: "200px" } }, "I'm nolan. I've been called a reflector and I've been reeling ever since. This is where I programmatically overshare on the internet; pretty much everything about me can be learned by clicking the following button:"]
+    }
+  },
+
+  {
+    id: "id5",
+    component: (_x: any, _items: any) => {
+      return ["p.item", { style: { width: "400px" } }, "I'm nolan. I've been called a reflector and I've been reeling ever since. This is where I programmatically overshare on the internet; pretty much everything about me can be learned by clicking the following button:"]
+    }
+  },
+
+  {
+    id: "id6",
+    component: (_x: any, _items: any) => {
+      return ["p.item", { style: { width: "200px" } }, "I'm nolan. I've been called a reflector and I've been reeling ever since. This is where I programmatically overshare on the internet; pretty much everything about me can be learned by clicking the following button:"]
+    }
+  },
+
+{
+    id: "id1",
+    component: (_x: any, _items: any) => {
+      return ["p.item", { style: { width: "200px" } }, "I'm nolan. I've been called a reflector and I've been reeling ever since. This is where I programmatically overshare on the internet; pretty much everything about me can be learned by clicking the following button:"]
+    }
+  },
+
+  {
+    id: "id2",
+    component: (_x: any, _items: any) => {
+      return ["p.item", { style: { width: "500px" } }, "I'm nolan. I've been called a reflector and I've been reeling ever since. This is where I programmatically overshare on the internet; pretty much everything about me can be learned by clicking the following button:"]
+    }
+  },
+
+  {
+    id: "id3",
+    component: (_x: any, _items: any) => {
+      return ["p.item", { style: { width: "400px" } }, "I'm nolan. I've been called a reflector and I've been reeling ever since. This is where I programmatically overshare on the internet; pretty much everything about me can be learned by clicking the following button:"]
+    }
+  },
+
+  {
+    id: "id4",
+    component: (_x: any, _items: any) => {
+      return ["p.item", { style: { width: "200px" } }, "I'm nolan. I've been called a reflector and I've been reeling ever since. This is where I programmatically overshare on the internet; pretty much everything about me can be learned by clicking the following button:"]
+    }
+  },
+
+  {
+    id: "id5",
+    component: (_x: any, _items: any) => {
+      return ["p.item", { style: { width: "400px" } }, "I'm nolan. I've been called a reflector and I've been reeling ever since. This is where I programmatically overshare on the internet; pretty much everything about me can be learned by clicking the following button:"]
+    }
+  },
+
+  {
+    id: "id6",
+    component: (_x: any, _items: any) => {
+      return ["p.item", { style: { width: "300px" } }, "I'm nolan. I've been called a reflector and I've been reeling ever since. This is where I programmatically overshare on the internet; pretty much everything about me can be learned by clicking the following button:"]
+    }
+  },
+]
+
+const controls = () => [
+  "div", {},
+  ["p", {}, "Im aside"]
+]
+
 const rdom = $compile([
-  "div.rdom-root", {},
-  $replace(route.map(navComponent)),
-  $switch(
-    route,
-    routeKeyFn,
-    {
-      nolanGist,
-      nolanGallery,
-      nolanGalleryId,
-      nolanReference,
-      nm8Gist,
-      nm8Gallery,
-      nm8GalleryId,
-      nm8Reference,
-      OeGist,
-      OeGallery,
-      OeGalleryId,
-      OeReference,
-      smixzyGist,
-      smixzyGallery,
-      smixzyGalleryId,
-      smixzyReference
-    },
-    errorComponent
-  ),
-  $switch(
-    route,
-    (r) => `${routeKeyFn(r)}Aside`,
-    {
-      nolanGalleryAside,
-      nolanGalleryIdAside,
-      nm8GalleryAside,
-      nm8GalleryIdAside,
-      OeGalleryAside,
-      OeGalleryIdAside,
-      smixzyGalleryAside,
-      smixzyGalleryIdAside
-    },
-    async () => ["aside", {}]
-  )
+  "div", {},
+  ["main#shuffle", {},
+    ...items.map((x: any) => x.component(x, items)),
+    ["div.sizer", { style: { width: "200px" } }]],
+  ["aside", {}, controls()]
 ])
 
-rdom.mount(document.body)
+await rdom.mount(document.body)
 
-
-/* NOTE: keyboard interaction */
-
-document.addEventListener('keydown', (e: KeyboardEvent) => {
-  const r = route.deref()
-
-  /* NOTE: primary nav */
-  if (e.key === "h") {
-    if (r?.what === "gallery" && r?.id) {
-      location.hash = document
-        .getElementsByTagName("aside")[0]
-        .getElementsByTagName("nav")[0]
-        .getElementsByTagName("a")[0].hash
-    } else {
-      const idx = whoAll.findIndex((x) => x === r?.who)
-      const prev = whoAll[(idx <= 0 ? whoAll.length : idx) - 1]
-      location.hash = `#/${prev || "nolan"}/${r?.what || "gist"}`
-      window.scrollTo(0, 0)
-    }
+const shuffle = new Shuffle(
+  document.getElementById("shuffle")!,
+  {
+    itemSelector: '.item',
+    sizer: '.sizer'
   }
-
-  if (e.key === "j") {
-    if (r?.what === "gallery" && !r?.id) {
-      location.hash = document
-        .getElementsByClassName("gallery-container")[0]
-        .getElementsByTagName("a")[0].hash
-    } else {
-      const idx = whatAll.findIndex((x) => x === r?.what)
-      const next = whatAll[idx >= whatAll.length - 1 ? 0 : idx + 1]
-      location.hash = `#/${r?.who || "nolan"}/${next || "gist"}`
-      window.scrollTo(0, 0)
-    }
-  }
-
-  if (e.key === "k") {
-    if (r?.what === "gallery" && r?.id) {
-      location.hash = `#/${r?.who || "nolan"}/gallery`
-    } else {
-      const idx = whatAll.findIndex((x) => x === r?.what)
-      const prev = whatAll[(idx <= 0 ? whatAll.length : idx) - 1]
-      location.hash = `#/${r?.who || "nolan"}/${prev || "gist"}`
-      window.scrollTo(0, 0)
-    }
-  }
-
-  if (e.key === "l") {
-    if (r?.what === "gallery" && r?.id) {
-      location.hash = document
-        .getElementsByTagName("aside")[0]
-        .getElementsByTagName("nav")[0]
-        .getElementsByTagName("a")[2].hash
-    } else {
-      const idx = whoAll.findIndex((x) => x === r?.who)
-      const next = whoAll[idx >= whoAll.length - 1 ? 0 : idx + 1]
-      location.hash = `#/${next || "nolan"}/${r?.what || "gist"}`
-      window.scrollTo(0, 0)
-    }
-  }
-
-  /* NOTE: gallery zoom */
-  if (e.key === "=" && r?.what === "gallery" && !r?.id) {
-    decNumGalleryColumnsIndex()
-  }
-
-  if (e.key === "-" && r?.what === "gallery" && !r?.id) {
-    incNumGalleryColumnsIndex()
-  }
-
-  /* NOTE: gallery filter */
-  if (e.key === "." && r?.what === "gallery" && !r?.id) {
-    const cur = filterValue.deref() || 0
-    filterValue.next((cur + 2) % 100)
-  }
-
-  if (e.key === "," && r?.what === "gallery" && !r?.id) {
-    const cur = filterValue.deref() || 0
-    filterValue.next(cur <= 0 ? 100 : cur - 2)
-  }
-
-  /* NOTE: gallery navigation */
-  if (e.key.match(/[1-9]/) && r?.what === "gallery" && !r?.id) {
-    location.hash = document
-      .getElementsByClassName("gallery-container")[0]
-      .getElementsByTagName("a")[parseInt(e.key) - 1].hash
-  }
-})
-
-
-/* NOTE: preloads */
-
-const preloadLinkFromGalleryItem = (x: GalleryItem) => {
-  const el = document.createElement("link")
-  el.rel = "preload"
-  el.as = "image"
-  el.href = x.src
-  return el
-}
-for (const xs of [nolanGalleryItems, nm8GalleryItems, OeGalleryItems, smixzyGalleryItems]) {
-  document.head.append(...xs.map(preloadLinkFromGalleryItem))
-}
+)
