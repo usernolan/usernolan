@@ -144,7 +144,7 @@ div.controls fieldset {
 
 fieldset.tag, fieldset.type, fieldset.mode {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   flex-wrap: wrap;
 }
 
@@ -164,6 +164,7 @@ fieldset.color div {
 #item--intro {
   padding: 0.5rem 1rem 2rem;
 }
+
 
 /* NOTE: debug */
 

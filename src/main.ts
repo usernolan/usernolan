@@ -1151,57 +1151,161 @@ const smixzyReference = async (_r: Route) => [
   ]
 ]
 
-interface Item {
-  id: string,
-  component: (x: Item, xs: Item[]) => any
-
-  [x: string]: unknown;
+interface ImageOpts {
+  src: string;
+  alt: string;
 }
 
-const columnClasses = ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9"]
+interface HoverableImageOpts extends ImageOpts {
+  hoverSrc: string;
+}
+
+interface Item {
+  id: string,
+  component: (x: this /*, i?: number, xs?: this[] */) => any
+  groups?: string[],
+
+  // image?: ImageOpts | HoverableImageOpts,
+  // quote?: string,
+  // link?: { href: string }
+  // artist?: { href: string, name: string }
+}
+
+interface ImageItem extends Item {
+  src: string,
+  alt: string
+}
+
+interface HoverableImageItem extends ImageItem {
+  hoverSrc: string
+}
+
+const aComp = (x: Item) => {
+  return x.id;
+}
+
+const bComp = (x: ImageItem) => {
+  return x.alt;
+}
+
+const cComp = (x: HoverableImageItem) => {
+  return x.hoverSrc
+}
+
+interface GarbageItem extends Item {
+  garbage: string
+}
+
+const dComp = (x: GarbageItem) => {
+  return x.garbage
+}
+
+type I =
+  Item
+  | ImageItem
+  | HoverableImageItem
+  | GarbageItem
+
+const aItems: Array<I> = [
+  {
+    id: "123",
+    component: aComp
+  },
+  {
+    id: "143",
+    src: "1232",
+    alt: "345",
+    component: bComp
+  },
+  {
+    id: "123",
+    src: "1245",
+    alt: "35",
+    hoverSrc: "1352",
+    component: cComp
+  },
+  {
+    id: "123",
+    garbage: "abce",
+    component: dComp
+  },
+]
+
+console.log(aItems.map((x) => x.component(x as any)))
+
+const srcs =
+  nolanGalleryItems
+    .concat(nm8GalleryItems, smixzyGalleryItems, OeGalleryItems)
+    .map((x) => x.src)
+
+const columnClasses = ["c1", "c2", "c3", "c4"]
 const columnWeights = [0.66, 0.33, 0.11, 0.055, 0.0275, 0.0275, 0.01375, 0.01375, 0.0065375]
 const aspectRatios = ["16 / 9", "3 / 2", "1 / 1", "4 / 3", "5 / 6", "3 / 4"]
-const exampleComponent = (x: Item, _xs: Item[]) => {
+
+const exampleComponent = (x: Item) => {
   const col = [...take(1, choices(columnClasses, columnWeights))][0]
   const ar = [...take(1, choices(aspectRatios))][0]
+  const isImage = Math.random() >= 0.5
+  const isAspect = Math.random() >= 0.5
   return [
     "div.example",
     {
       id: `item--${x.id}`,
       class: `item ${col}`,
       style: {
-        "aspect-ratio": `${ar}`,
-        border: `1px dashed`
+        "aspect-ratio": isAspect ? `${ar}` : "none",
       },
-      "data-groups": '""'
+      "data-groups": JSON.stringify(["none"])
     },
-    `${x.id} :: ${col} :: ${ar}`
+    isImage ?
+      `${x.id} :: ${col} :: ${isAspect ? ar : "none"}` :
+      ["img",
+        {
+          src: srcs[Math.floor(Math.random() * srcs.length)],
+          style: {
+            "object-fit": "cover",
+            width: "100%",
+            height: "100%",
+            // "object-position": "50% 10%"
+          }
+        }
+      ]
   ]
 }
 
-const exampleItems = [...repeatedly((i) => ({ id: `id${i}`, component: exampleComponent }), 20)]
+const exampleItems = [
+  ...repeatedly((i) => (
+    {
+      id: `id${i}`,
+      component: exampleComponent
+    }
+  ), 20)
+]
 
-const intro = (x: Item) => [
+const intro = (x: Item, _i: number, _xs: Item[]) => [
   "div.item.c3",
   {
     id: `item--${x.id}`,
-    "data-groups": JSON.stringify(["intro"])
+    "data-groups": JSON.stringify(x.groups)
   },
-  ["p", {}, "I'm nolan. This is where I systematically overshare on the internet; pretty much everything about me can be learned by clicking the following button:"],
-  ["button", {}, "learn everything"]
+  ["h1", {}, "I'm nolan."],
 ]
 
 const items: Item[] = [
   {
-    id: "intro",
+    id: "nolan",
+    src: "jpeg/",
+    alt: "abc",
+    groups: ["nolan", "gist"],
     component: intro
   },
-  ...exampleItems
+  ...exampleItems,
+  imgItem
 ]
 
 const controls = () => [
   "div.controls", {},
-  ["fieldset", {},
+  ["fieldset.filters", {},
     ["legend", {}, "filters"],
 
     ["fieldset.search", {},
@@ -1229,9 +1333,6 @@ const controls = () => [
     ["fieldset.type", {},
       ["legend", {}, "type"],
       ["div", {},
-        ["label", { for: "filter--type--intro" }, "intro"],
-        ["input#filter--type--intro", { type: "checkbox" }]],
-      ["div", {},
         ["label", { for: "filter--type--gist" }, "gist"],
         ["input#filter--type--gist", { type: "checkbox" }]],
       ["div", {},
@@ -1242,7 +1343,10 @@ const controls = () => [
         ["input#filter--type--link", { type: "checkbox" }]],
       ["div", {},
         ["label", { for: "filter--type--quote" }, "quote"],
-        ["input#filter--type--quote", { type: "checkbox" }]
+        ["input#filter--type--quote", { type: "checkbox" }]],
+      ["div", {},
+        ["label", { for: "filter--type--artist" }, "artist"],
+        ["input#filter--type--artist", { type: "checkbox" }]
       ]
     ]
   ],
@@ -1287,7 +1391,7 @@ const controls = () => [
 const root = [
   "div.body", {},
   ["main", { class: "grid-container", "data-grid-columns": "9" },
-    ...items.map((x) => x.component(x, items)),
+    ...items.map((x, i, xs) => x.component(x, i, xs)),
     ["div.sizer.c1", {}]
   ],
   ["aside", {},
@@ -1308,9 +1412,20 @@ const shuffle = new Shuffle(
   {
     itemSelector: '.item',
     sizer: '.sizer',
-    group: "intro"
+    // group: "intro"
   }
 )
+
+const tags = ["nolan"]
+const types = ["gist"]
+const groups = ["nolan", "gist"]
+
+const afilter: boolean = (el: HTMLElement) => {
+  const attr = el.getAttribute("data-groups") || "[]"
+  const groups = JSON.parse(attr) as string[]
+  return (tags.length === 0 || tags.some((t) => groups.find((x) => x === t)))
+    && (types.length === 0 || types.some((t) => groups.find((x) => x === t)))
+}
 
 // shuffle.filter("intro")
 
