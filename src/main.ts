@@ -8,6 +8,7 @@ import { fromRAF } from "@thi.ng/rstream/raf"
 import { CloseMode } from "@thi.ng/rstream/api"
 import { sync } from "@thi.ng/rstream/sync"
 import { take } from "@thi.ng/transducers/take"
+import { repeatedly } from "@thi.ng/transducers/repeatedly"
 import { choices } from "@thi.ng/transducers/choices"
 import Shuffle from "shufflejs"
 import { serialize } from "@thi.ng/hiccup"
@@ -1150,168 +1151,177 @@ const smixzyReference = async (_r: Route) => [
   ]
 ]
 
-const capitalize = (s: string) => s.replace(/^\w/, c => c.toUpperCase())
-const routeKeyFn = (r: Route) =>
-  r.id ?
-    `${r.who}${capitalize(r.what)}Id` :
-    `${r.who}${capitalize(r.what)}`
+interface Item {
+  id: string,
+  component: (x: Item, xs: Item[]) => any
 
-const errorComponent = async (err: Error) => [
-  "main.error", {},
-  ["h1", {}, "who?"],
-  ["h2", {}, "I don't recognize this route. Are you messing with me?"],
-  ["h3", {}, `Get out of here with your ${err}.`],
-  ["p", {}, "Drinkin' outta cups...get real."]
+  [x: string]: unknown;
+}
+
+const columnClasses = ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9"]
+const columnWeights = [0.66, 0.33, 0.11, 0.055, 0.0275, 0.0275, 0.01375, 0.01375, 0.0065375]
+const aspectRatios = ["16 / 9", "3 / 2", "1 / 1", "4 / 3", "5 / 6", "3 / 4"]
+const exampleComponent = (x: Item, _xs: Item[]) => {
+  const col = [...take(1, choices(columnClasses, columnWeights))][0]
+  const ar = [...take(1, choices(aspectRatios))][0]
+  return [
+    "div.example",
+    {
+      id: `item--${x.id}`,
+      class: `item ${col}`,
+      style: {
+        "aspect-ratio": `${ar}`,
+        border: `1px dashed`
+      },
+      "data-groups": '""'
+    },
+    `${x.id} :: ${col} :: ${ar}`
+  ]
+}
+
+const exampleItems = [...repeatedly((i) => ({ id: `id${i}`, component: exampleComponent }), 20)]
+
+const intro = (x: Item) => [
+  "div.item.c3",
+  {
+    id: `item--${x.id}`,
+    "data-groups": JSON.stringify(["intro"])
+  },
+  ["p", {}, "I'm nolan. This is where I systematically overshare on the internet; pretty much everything about me can be learned by clicking the following button:"],
+  ["button", {}, "learn everything"]
 ]
 
-// const rdom = $compile([
-//   "div.rdom-root", {},
-//   $replace(route.map(navComponent)),
-//   $switch(
-//     route,
-//     routeKeyFn,
-//     {
-//       nolanGist,
-//       nolanGallery,
-//       nolanGalleryId,
-//       nolanReference,
-//       nm8Gist,
-//       nm8Gallery,
-//       nm8GalleryId,
-//       nm8Reference,
-//       OeGist,
-//       OeGallery,
-//       OeGalleryId,
-//       OeReference,
-//       smixzyGist,
-//       smixzyGallery,
-//       smixzyGalleryId,
-//       smixzyReference
-//     },
-//     errorComponent
-//   ),
-//   $switch(
-//     route,
-//     (r) => `${routeKeyFn(r)}Aside`,
-//     {
-//       nolanGalleryAside,
-//       nolanGalleryIdAside,
-//       nm8GalleryAside,
-//       nm8GalleryIdAside,
-//       OeGalleryAside,
-//       OeGalleryIdAside,
-//       smixzyGalleryAside,
-//       smixzyGalleryIdAside
-//     },
-//     async () => ["aside", {}]
-//   )
-// ])
-
-const items: any = [
+const items: Item[] = [
   {
-    id: "id1",
-    component: (_x: any, _items: any) => {
-      return ["p.item", { style: { width: "200px" } }, "I'm nolan. I've been called a reflector and I've been reeling ever since. This is where I programmatically overshare on the internet; pretty much everything about me can be learned by clicking the following button:"]
-    }
+    id: "intro",
+    component: intro
   },
-
-  {
-    id: "id2",
-    component: (_x: any, _items: any) => {
-      return ["p.item", { style: { width: "500px" } }, "I'm nolan. I've been called a reflector and I've been reeling ever since. This is where I programmatically overshare on the internet; pretty much everything about me can be learned by clicking the following button:"]
-    }
-  },
-
-  {
-    id: "id3",
-    component: (_x: any, _items: any) => {
-      return ["p.item", { style: { width: "400px" } }, "I'm nolan. I've been called a reflector and I've been reeling ever since. This is where I programmatically overshare on the internet; pretty much everything about me can be learned by clicking the following button:"]
-    }
-  },
-
-  {
-    id: "id4",
-    component: (_x: any, _items: any) => {
-      return ["p.item", { style: { width: "200px" } }, "I'm nolan. I've been called a reflector and I've been reeling ever since. This is where I programmatically overshare on the internet; pretty much everything about me can be learned by clicking the following button:"]
-    }
-  },
-
-  {
-    id: "id5",
-    component: (_x: any, _items: any) => {
-      return ["p.item", { style: { width: "400px" } }, "I'm nolan. I've been called a reflector and I've been reeling ever since. This is where I programmatically overshare on the internet; pretty much everything about me can be learned by clicking the following button:"]
-    }
-  },
-
-  {
-    id: "id6",
-    component: (_x: any, _items: any) => {
-      return ["p.item", { style: { width: "200px" } }, "I'm nolan. I've been called a reflector and I've been reeling ever since. This is where I programmatically overshare on the internet; pretty much everything about me can be learned by clicking the following button:"]
-    }
-  },
-
-{
-    id: "id1",
-    component: (_x: any, _items: any) => {
-      return ["p.item", { style: { width: "200px" } }, "I'm nolan. I've been called a reflector and I've been reeling ever since. This is where I programmatically overshare on the internet; pretty much everything about me can be learned by clicking the following button:"]
-    }
-  },
-
-  {
-    id: "id2",
-    component: (_x: any, _items: any) => {
-      return ["p.item", { style: { width: "500px" } }, "I'm nolan. I've been called a reflector and I've been reeling ever since. This is where I programmatically overshare on the internet; pretty much everything about me can be learned by clicking the following button:"]
-    }
-  },
-
-  {
-    id: "id3",
-    component: (_x: any, _items: any) => {
-      return ["p.item", { style: { width: "400px" } }, "I'm nolan. I've been called a reflector and I've been reeling ever since. This is where I programmatically overshare on the internet; pretty much everything about me can be learned by clicking the following button:"]
-    }
-  },
-
-  {
-    id: "id4",
-    component: (_x: any, _items: any) => {
-      return ["p.item", { style: { width: "200px" } }, "I'm nolan. I've been called a reflector and I've been reeling ever since. This is where I programmatically overshare on the internet; pretty much everything about me can be learned by clicking the following button:"]
-    }
-  },
-
-  {
-    id: "id5",
-    component: (_x: any, _items: any) => {
-      return ["p.item", { style: { width: "400px" } }, "I'm nolan. I've been called a reflector and I've been reeling ever since. This is where I programmatically overshare on the internet; pretty much everything about me can be learned by clicking the following button:"]
-    }
-  },
-
-  {
-    id: "id6",
-    component: (_x: any, _items: any) => {
-      return ["p.item", { style: { width: "300px" } }, "I'm nolan. I've been called a reflector and I've been reeling ever since. This is where I programmatically overshare on the internet; pretty much everything about me can be learned by clicking the following button:"]
-    }
-  },
+  ...exampleItems
 ]
 
 const controls = () => [
-  "div", {},
-  ["p", {}, "Im aside"]
+  "div.controls", {},
+  ["fieldset", {},
+    ["legend", {}, "filters"],
+
+    ["fieldset.search", {},
+      ["legend", {}, "search"],
+      ["input", { type: "search" }]
+    ],
+
+    ["fieldset.tag", {},
+      ["legend", {}, "tag"],
+      ["div", {},
+        ["label", { for: "filter--tag--nolan" }, "nolan"],
+        ["input#filter--tag--nolan", { type: "checkbox" }]],
+      ["div", {},
+        ["label", { for: "filter--tag--nm8" }, "nm8"],
+        ["input#filter--tag--nm8", { type: "checkbox" }]],
+      ["div", {},
+        ["label", { for: "filter--tag--smixzy" }, "smixzy"],
+        ["input#filter--tag--smixzy", { type: "checkbox" }]],
+      ["div", {},
+        ["label", { for: "filter--tag--Oe" }, ".•"],
+        ["input#filter--tag--Oe", { type: "checkbox" }]
+      ]
+    ],
+
+    ["fieldset.type", {},
+      ["legend", {}, "type"],
+      ["div", {},
+        ["label", { for: "filter--type--intro" }, "intro"],
+        ["input#filter--type--intro", { type: "checkbox" }]],
+      ["div", {},
+        ["label", { for: "filter--type--gist" }, "gist"],
+        ["input#filter--type--gist", { type: "checkbox" }]],
+      ["div", {},
+        ["label", { for: "filter--type--image" }, "image"],
+        ["input#filter--type--image", { type: "checkbox" }]],
+      ["div", {},
+        ["label", { for: "filter--type--link" }, "link"],
+        ["input#filter--type--link", { type: "checkbox" }]],
+      ["div", {},
+        ["label", { for: "filter--type--quote" }, "quote"],
+        ["input#filter--type--quote", { type: "checkbox" }]
+      ]
+    ]
+  ],
+
+  ["fieldset.mode", {},
+    ["legend", {}, "mode"],
+    ["div", {},
+      ["label", { for: "mode--system" }, "system"],
+      ["input#mode--system", { type: "radio", name: "mode" }]],
+    ["div", {},
+      ["label", { for: "mode--light" }, "light"],
+      ["input#mode--light", { type: "radio", name: "mode" }]],
+    ["div", {},
+      ["label", { for: "mode--dark" }, "dark"],
+      ["input#mode--dark", { type: "radio", name: "mode" }]
+    ]
+  ],
+
+  ["fieldset.color", {},
+    ["legend", {}, "color"],
+    ["div", {},
+      ["label", { for: "color--contrast" }, "contrast"],
+      ["input#color--contrast", { type: "range" }]],
+    ["div", {},
+      ["label", { for: "color--saturation" }, "saturation"],
+      ["input#color--saturation", { type: "range" }]],
+    ["div", {},
+      ["label", { for: "color--hue" }, "hue"],
+      ["input#color--hue", { type: "range" }]],
+    ["div", {},
+      ["label", { for: "color--invert" }, "invert"],
+      ["input#color--invert", { type: "range" }]
+    ]
+  ],
+
+  ["fieldset.layout", {},
+    ["legend", {}, "layout"],
+    ["button", {}, "randomize"]
+  ],
 ]
 
-const rdom = $compile([
-  "div", {},
-  ["main#shuffle", {},
-    ...items.map((x: any) => x.component(x, items)),
-    ["div.sizer", { style: { width: "200px" } }]],
-  ["aside", {}, controls()]
-])
+const root = [
+  "div.body", {},
+  ["main", { class: "grid-container", "data-grid-columns": "9" },
+    ...items.map((x) => x.component(x, items)),
+    ["div.sizer.c1", {}]
+  ],
+  ["aside", {},
+    ["button.show", {}, "+"],
+    controls()
+  ]
+]
 
+const rdom = $compile(root)
 await rdom.mount(document.body)
 
+
+/* NOTE: lib */
+/* TODO: noscript */
+
 const shuffle = new Shuffle(
-  document.getElementById("shuffle")!,
+  document.querySelector(".grid-container")!,
   {
     itemSelector: '.item',
-    sizer: '.sizer'
+    sizer: '.sizer',
+    group: "intro"
   }
 )
+
+// shuffle.filter("intro")
+
+const grid = document.querySelector(".grid-container")
+const aside = document.querySelector("aside")
+
+document.querySelector("button.show")?.addEventListener("click", () => {
+  aside?.classList.toggle("show")
+  const next = grid?.getAttribute("data-grid-columns") === "9" ? "7" : "9"
+  grid?.setAttribute("data-grid-columns", next)
+})
+
+document.querySelectorAll("fieldset").forEach((el) =>
+  el.addEventListener("change", console.log))

@@ -20,7 +20,7 @@ body {
   width: 100%;
   margin: 0;
   padding: 0;
-  transition: background 400ms ease, color 400ms ease;
+  transition: background 250ms ease, color 250ms ease;
 }
 
 body * {
@@ -28,988 +28,145 @@ body * {
 }
 
 
-/* NOTE: top-level layout */
+/* NOTE: "body"; tmp */
 
-div.rdom-root {
-  display: grid;
-  grid-template: auto 1fr / auto 17.5%;
-}
-
-@media (orientation: landscape) {
-  body.gallery.id div.rdom-root {
-    grid-template-columns: auto minmax(260px, 17.5%);
-  }
-}
-
-@media (orientation: portrait) {
-  div.rdom-root {
-    display: grid;
-    grid-template: auto 1fr / 100%;
-  }
-}
-
-
-/* NOTE: nav */
-
-nav {
-	padding: 0.25rem;
-  grid-column: 1 / 3;
-}
-
-nav select {
-	appearance: none;
-	border: none;
-  cursor: pointer;
-	padding: 0.5rem 1rem;
-  margin: 0 0.25rem 0 0;
-	border-radius: 3px;
-	font-size: 1.125rem;
-  font-family: Fragment Mono,
-               ui-monospace,
-               "Cascadia Mono",
-               "Segoe UI Mono",
-               "Ubuntu Mono",
-               "Roboto Mono",
-               Menlo, Monaco, Consolas,
-               monospace;
-}
-
-main {
-  grid-column: 1 / 2;
-}
-
-aside {
-  grid-column: 2 / 3;
-}
-
-@media (orientation: portrait) {
-  nav {
-    padding: 0.125rem;
-  }
-
-  nav select {
-    margin: 0 0.125rem 0 0;
-    border-radius: 2px;
-  }
-}
-
-@media (orientation: portrait) and (max-width: 240px) {
-  nav select {
-    margin-bottom: 0.125rem;
-  }
-}
-
-
-/* NOTE: gist structure, spacing, font */
-
-body.gist main,
-body main.error {
-  padding: 0 0 0 0.25rem;
-}
-
-body.gist main h1,
-body main.error h1 {
-  font-size: 9.5rem;
-  font-weight: 800;
-  letter-spacing: -0.5rem;
-}
-
-body.gist main h2,
-body main.error h2 {
-  font-size: 2.66rem;
-  font-weight: 700;
-  letter-spacing: -0.075rem;
-  max-width: 920px;
-}
-
-body.gist main h3,
-body main.error h3 {
-  font-size: 1.5rem;
-  font-weight: 500;
-  letter-spacing: -0.015rem;
-  max-width: 725px;
-}
-
-body.gist main a,
-body.gist main p,
-body main.error p {
-  font-size: 1.25rem;
-}
-
-body.nm8.gist main h2 {
-  max-width: 780px;
-}
-
-body.nm8.gist main h3 {
-  max-width: 625px;
-}
-
-body.nm8.gist main p {
-  max-width: 340px;
-}
-
-body.Oe.gist main h2 {
-  max-width: 730px;
-}
-
-body.smixzy.gist main h3 {
-  max-width: 560px;
-}
-
-@media (orientation: portrait) {
-  body.gist main,
-  body main.error {
-    padding: 0 0.25rem 1rem;
-    overflow-x: hidden;
-  }
-
-  body.gist main h1,
-  body main.error h1 {
-    font-size: clamp(0rem, 0.01111rem + 33.8889vw, 9.5rem); /* NOTE: (10, 3.4) (28, 9.5) */
-    letter-spacing: clamp(-0.5rem, -0.1111rem - 1.3889vw, -0.25rem); /* NOTE: (10, -0.25) (28, -0.5) */
-    line-height: clamp(0rem, 0.8333rem + 29.1667vw, 8.25rem); /* NOTE: (10, 3) (28, 8.25) */
-  }
-
-  body.gist main h2,
-  body main.error h2 {
-    font-size: clamp(0rem, 0.8556rem + 6.444vw, 2.66rem); /* NOTE: (10, 1.5) (28, 2.66) */
-    letter-spacing: clamp(-1rem, -0.009667rem - 0.2333vw, 0rem); /* NOTE: (10, -0.033) (28, -0.075) */
-    line-height: clamp(0rem, 0.7222rem + 9.0278vw, 3.25rem); /* NOTE: (10, 1.625) (28, 3.25) */
-  }
-
-  body.gist main h3,
-  body main.error h3 {
-    font-size: clamp(0rem, 0.91667rem + 2.0833vw, 1.5rem); /* NOTE: (10, 1.125) (28, 1.5) */
-  }
-
-  body.gist main a,
-  body.gist main p,
-  body main.error p {
-    font-size: clamp(0rem, 0.55rem + 2.5vw, 1.5rem); /* NOTE: (10, 0.8) (28, 1.25) */
-  }
-
-  body.nolan.gist main {
-    padding-bottom: 2rem;
-  }
-
-  body.Oe.gist main h1 {
-    white-space: nowrap;
-  }
-
-  body.Oe.gist main h2 {
-    font-size: clamp(0rem, -0.01111rem + 8.3611vw, 2.33rem); /* NOTE: (10, 0.825) (28, 2.33) */
-  }
-
-  body.Oe.gist main h3 {
-    font-size: clamp(0rem, 0.23412rem + 4.2353vw, 1.5rem); /* NOTE: (25.875, 1.33) (28, 1.42) */
-  }
-}
-
-
-/* NOTE: gallery structure, spacing, font */
-
-/* TODO: this is repeated across all body.* main; collapsable */
-body.gallery main {
-  padding: 0 0 0 0.25rem;
-}
-
-body.gallery:not(.id) {
-  overflow-y: scroll; /* NOTE: scroll bar (dis)appearance triggers width change */
-}
-
-body.gallery main div.gallery-container {
-  width: 100%;
+.body {
   display: flex;
-  flex-wrap: wrap;
-  transform: translateZ(0); /* NOTE: trick desktop Safari to render using GPU */
 }
 
-body.gallery main div.gallery-container div.gallery-item {
-  transition: width 180ms ease, height 180ms ease;
-  padding: 0 0.125rem 0.125rem 0;
+.body main {
+  width: 100%
 }
 
-body.gallery main div.gallery-container[data-gallery-columns="2"] div.gallery-item {
-  width: 50%;
+.body aside {
+  width: 0%;
+  transition: width 250ms ease; /* NOTE: same as shuffle */
 }
 
-body.gallery main div.gallery-container[data-gallery-columns="3"] div.gallery-item {
-  width: 33.33%;
-}
-
-body.gallery main div.gallery-container[data-gallery-columns="5"] div.gallery-item {
-  width: 20%;
-}
-
-body.gallery main div.gallery-container[data-gallery-columns="8"] div.gallery-item {
-  width: 12.5%;
-}
-
-body.gallery main div.gallery-container div.gallery-item > a {
-  height: 100%;
-  display: block;
-}
-
-body.gallery main div.gallery-container div.gallery-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  aspect-ratio: 1 / 1;
-}
-
-body.gallery aside {
-  touch-action: manipulation;
-}
-
-body.gallery aside div.gallery-controls {
-  position: sticky;
-  top: 0.25rem;
-  padding: 0 0 0 0.125rem;
-  font-family: Fragment Mono,
-               ui-monospace,
-               "Cascadia Mono",
-               "Segoe UI Mono",
-               "Ubuntu Mono",
-               "Roboto Mono",
-               Menlo, Monaco, Consolas,
-               monospace;
-}
-
-body.gallery aside div.gallery-controls div {
-  margin: 0 0 1rem 0;
-}
-
-body.gallery aside div.gallery-controls label {
-  display: block;
-  margin: 0 0 0 0.125rem;
-}
-
-body.gallery aside div.gallery-controls button {
-  display: block;
-  appearance: none;
-	border: none;
-  cursor: pointer;
-	padding: 0.5rem 1rem;
-	border-radius: 3px;
-	margin: 0 0 0.25rem;
-	font-size: 1.25rem;
-  font-family: Fragment Mono,
-               ui-monospace,
-               "Cascadia Mono",
-               "Segoe UI Mono",
-               "Ubuntu Mono",
-               "Roboto Mono",
-               Menlo, Monaco, Consolas,
-               monospace;
-  aspect-ratio: 1/1;
-}
-
-body.gallery aside div.gallery-controls div.filter-controls {
-  width: 100%;
-}
-
-body.gallery aside div.gallery-controls div.filter-controls input[type=range] {
-  width: 82.5%;
-}
-
-@media (orientation: portrait) {
-  body.gallery main {
-    padding: 0 calc(0.125rem - 1px) 0 0.125rem; /* NOTE: extra pixel for scroll bar */
-  }
-
-  body.gallery main div.gallery-container {
-    padding-bottom: 25vh;
-  }
-
-  body.gallery main div.gallery-container div.gallery-item {
-    padding: 0 1px 1px 0;
-  }
-
-  body.gallery main div.gallery-container[data-gallery-columns="8"] div.gallery-item {
-    width: 100%;
-  }
-
-  body.gallery aside {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    -webkit-backdrop-filter: blur(1rem);
-    backdrop-filter: blur(1rem);
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
-    border-radius: 2px;
-  }
-
-  body.gallery aside div.gallery-controls {
-    display: flex;
-    flex-direction: row-reverse;
-    padding: 0.75rem 0 0.5rem;
-    align-items: center;
-    justify-content: space-around;
-  }
-
-  body.gallery aside div.gallery-controls div {
-    margin: 0;
-  }
-
-  body.gallery aside div.gallery-controls button {
-    padding: 0.42rem 0.91rem;
-    margin: 0 0 0.125rem 0;
-    border-radius: 2px;
-  }
-
-  body.gallery aside div.gallery-controls label {
-    margin: 0;
-  }
-
-  body.gallery aside div.gallery-controls div.filter-controls {
-    width: 66.67%;
-  }
-
-  body.gallery aside div.gallery-controls div.filter-controls input[type=range] {
-    width: 100%;
-  }
+.body aside.show {
+  width: 22.222%;
+  flex-shrink: 0; /* NOTE: may interact poorly with scroll bar if present on hidden aside */
 }
 
 
-/* NOTE: gallery id */
+/* NOTE: container */
 
-body.gallery.id div.rdom-root {
-  height: 100vh;
-}
-
-body.gallery.id main {
+.grid-container {
   position: relative;
 }
 
-body.gallery.id main img {
-  position: absolute;
-  height: calc(100% - 0.25rem);
-  max-width: calc(100% - 0.25rem);
-  object-fit: cover;
+/* TODO: nesting? */
+.grid-container[data-grid-columns="9"] .c1 {width: 11.111%;}
+.grid-container[data-grid-columns="9"] .c2 {width: 22.222%;}
+.grid-container[data-grid-columns="9"] .c3 {width: 33.333%;}
+.grid-container[data-grid-columns="9"] .c4 {width: 44.444%;}
+.grid-container[data-grid-columns="9"] .c5 {width: 55.555%;}
+.grid-container[data-grid-columns="9"] .c6 {width: 66.666%;}
+.grid-container[data-grid-columns="9"] .c7 {width: 77.777%;}
+.grid-container[data-grid-columns="9"] .c8 {width: 88.888%;}
+.grid-container[data-grid-columns="9"] .c9 {width: 100%;}
+
+.grid-container[data-grid-columns="7"] .c1 {width: 14.2857%;}
+.grid-container[data-grid-columns="7"] .c2 {width: 28.5714%;}
+.grid-container[data-grid-columns="7"] .c3 {width: 42.8571%;}
+.grid-container[data-grid-columns="7"] .c4 {width: 57.1428%;}
+.grid-container[data-grid-columns="7"] .c5 {width: 71.4285%;}
+.grid-container[data-grid-columns="7"] .c6 {width: 85.7142%;}
+.grid-container[data-grid-columns="7"] .c7 {width: 100%;}
+.grid-container[data-grid-columns="7"] .c8 {width: 100%;}
+.grid-container[data-grid-columns="7"] .c9 {width: 100%;}
+
+
+/* NOTE: aside */
+
+button.show {
+  position: fixed;
+  width: 8vh;
+  height: 8vh;
+  transform: translate(calc(-100% - 2vh), 90vh);
+  padding-bottom: 0.5rem; /* TODO: eliminate w/ centered svg */
+  backdrop-filter: blur(2px);
+  background: none;
+  font-size: 3rem;
+  border-radius: 0.66rem;
+  border: 1px solid;
+  cursor: pointer;
+  /* font-family: Fragment Mono; */
 }
 
-body.gallery.id aside {
-  padding: 0 1rem;
+button.show:hover {
+  background: rgba(36,36,36,0.25);
 }
 
-body.gallery.id aside nav {
+
+/* NOTE: controls */
+
+div.controls {
+  position: fixed;
+  height: 100vh;
+  width: inherit;
+  padding: 0.33rem 0.5rem;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+div.controls::-webkit-scrollbar {
+  display: none;
+}
+
+div.controls, div.controls button {
+  /* border: 1px solid black; */
+  /* border: none; */
+  font-family: Fragment Mono;
+}
+
+div.controls input[type="search"] {
+  width: 100%;
+  font-family: Fragment Mono;
+}
+
+div.controls input[type="checkbox"] {
+  /* display: none; */
+}
+
+div.controls fieldset {
+  /* width: 98%; */
+  /* display: flex; */
+  /* flex-wrap: wrap; */
+  /* justify-content: space-between; */
+  border-radius: 3px;
+  /* border: 1px solid lightgray; */
+}
+/* div.controls > fieldset:not(:last-child) { */
+/*   margin-bottom: 1rem; */
+/* } */
+
+fieldset.tag, fieldset.type, fieldset.mode {
   display: flex;
   justify-content: space-between;
-  margin: 1rem 0;
-  padding: 0 0.5rem 0.25rem 0; /* TODO: remove global nav styling */
+  flex-wrap: wrap;
 }
 
-body.gallery.id aside nav a {
-  color: inherit;
-  text-decoration: none;
+fieldset.tag div, fieldset.type div, fieldset.mode div {
+  padding: 0.33rem 0.5rem;
 }
 
-@media (orientation: portrait) {
-  body.gallery.id main img {
-    width: calc(100% - 0.25rem);
-  }
+fieldset.color div {
+  margin: 0.25rem 0;
+  display: flex;
+  justify-content: space-between;
 }
 
 
-/* NOTE: gallery special cases */
+/* NOTE: items */
 
-body.nolan.gallery main div.gallery-container div.gallery-item#self img {
-  object-position: 15% 0;
+#item--intro {
+  padding: 0.5rem 1rem 2rem;
 }
 
-body.nolan.gallery.id main#persevere img {
-  object-position: 45% 50%;
-}
-
-body.nolan.gallery.id main#parents img {
-  object-position: 60% 50%;
-}
-
-body.nolan.gallery main div.gallery-container div.gallery-item#erica img {
-  object-position: 0 30%;
-}
-
-body.nolan.gallery main div.gallery-container div.gallery-item#louie img {
-  object-position: 0 30%;
-}
-
-
-body.nm8.gallery main div.gallery-container div.gallery-item#self img {
-  object-position: 0 56%;
-}
-
-body.nm8.gallery main div.gallery-container div.gallery-item#warhammer img {
-  object-position: 72.5%;
-}
-
-body.nm8.gallery.id main#warhammer img {
-  object-position: 72.5%;
-}
-
-body.nm8.gallery main div.gallery-container div.gallery-item[id="4-avenue"] img {
-  object-position: 0 0;
-}
-
-body.nm8.gallery.id main[id="4-avenue"] img {
-  object-position: 33% 50%;
-}
-
-body.nm8.gallery main div.gallery-container div.gallery-item#graphite img {
-  object-position: 0 0;
-}
-
-body.nm8.gallery main div.gallery-container div.gallery-item#frames img {
-  object-position: 100% 50%;
-}
-
-body.nm8.gallery.id main#pack img {
-  object-position: 66% 50%;
-}
-
-body.nm8.gallery main div.gallery-container div.gallery-item#di img {
-  object-position: 50% 33.33%;
-}
-
-
-body.Oe.gallery.id.automata-2 {
-  background: black;
-  color: white;
-}
-
-body.Oe.gallery.id.automata-2 nav select {
-  background: black;
-  color: white;
-  border: 1px solid white;
-}
-
-body.Oe.gallery.id.automata-2 aside nav {
-  border-bottom: 1px solid white;
-}
-
-body.Oe.gallery.id main#green img {
-  object-position: 42.5% 50%;
-}
-
-body.Oe.gallery.id main#pink img {
-  object-position: 42.5% 50%;
-}
-
-body.Oe.gallery.id main#n img {
-  object-position: 100% 50%;
-}
-
-body.Oe.gallery.id main#u img {
-  object-position: 25% 50%;
-}
-
-body.Oe.gallery.id main#midway img {
-  object-position: 60% 50%;
-}
-
-body.Oe.gallery.id main#truck img {
-  object-position: 33% 50%;
-}
-
-body.Oe.gallery.id main#universal-rectifier img {
-  object-position: 72.5% 50%;
-}
-
-@media (orientation: portrait) {
-  body.Oe.gallery.id.automata-2 aside {
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-  }
-
-  body.Oe.gallery.id.automata-2 aside nav {
-    border-bottom: 1px solid white;
-  }
-
-  body.Oe.gallery.id.green aside,
-  body.Oe.gallery.id.pink aside {
-    background: rgba(0, 0, 0, 0);
-    color: black;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  body.Oe.gallery.id main#self img,
-  body.Oe.gallery.id main[id="170"] img,
-  body.Oe.gallery.id main[id="150"] img,
-  body.Oe.gallery.id main#n img,
-  body.Oe.gallery.id main#scad img {
-    filter: invert(100%);
-  }
-
-  body.Oe.gallery.id.automata-2 {
-    background: white;
-    color: black;
-  }
-
-  body.Oe.gallery.id.automata-2 nav select {
-    background: white;
-    color: black;
-    border: 1px solid black;
-  }
-
-  body.Oe.gallery.id.automata-2 aside nav {
-    border-bottom: 1px solid #777;
-  }
-}
-
-@media (orientation: portrait) and (prefers-color-scheme: dark) {
-  body.Oe.gallery.id.automata-2 aside {
-    background: rgba(255, 255, 255, 0.5);
-    color: black;
-  }
-
-  body.Oe.gallery.id.automata-2 aside nav {
-    border-bottom: 1px solid black;
-  }
-}
-
-
-body.smixzy.gallery main div.gallery-container div.gallery-item#self img {
-  object-position: 0 33%;
-  border-radius: 50%;
-}
-
-body.smixzy.gallery.id main#self img {
-  object-position: 62.5% 50%;
-}
-
-body.smixzy.gallery.id main#instaworthy img {
-  object-position: 100% 50%;
-}
-
-body.smixzy.gallery.id main#fnd-ur-way img {
-  object-position: 67% 50%;
-}
-
-body.smixzy.gallery main div.gallery-container div.gallery-item#sunglasses img {
-  object-position: 0 0;
-}
-
-body.smixzy.gallery.id main#dumpstergram img {
-  object-position: 33% 50%;
-}
-
-body.smixzy.gallery main div.gallery-container div.gallery-item#thrift img {
-  border-radius: 50%;
-}
-
-body.smixzy.gallery.id main#chalk img {
-  object-position: 45% 50%;
-}
-
-body.smixzy.gallery.id main#spray-paint img {
-  object-position: 42% 50%;
-}
-
-body.smixzy.gallery.id main#monolith img {
-  object-position: 0 0;
-}
-
-body.smixzy.gallery.id main#concrete img {
-  object-position: 0 0;
-}
-
-body.smixzy.gallery main div.gallery-container div.gallery-item#mark img {
-  border-radius: 50%
-}
-
-body.smixzy.gallery.id main#mark img {
-  object-position: 0 0;
-}
-
-body.smixzy.gallery main div.gallery-container div.gallery-item:hover,
-body.smixzy.gallery.id main img:hover {
-  animation-name: smixzyHover;
-  animation-duration: 12s;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-}
-
-@keyframes smixzyHover {
-  from {
-    filter: hue-rotate(0deg);
-  }
-
-  to {
-    filter: hue-rotate(360deg);
-  }
-}
-
-
-/* NOTE: reference */
-
-body.reference main {
-  padding: 0 0 0 0.25rem;
-}
-
-body.reference main ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-body.reference main ul li {
-  margin: 3rem 0;
-}
-
-body.reference main ul li a {
-  display: inline-block;
-  text-decoration: none;
-  color: inherit;
-}
-
-body.reference main ul li a:hover h2 {
-  text-decoration: underline;
-}
-
-body.reference main ul li h2 {
-  margin: 0 0 0.75rem;
-  letter-spacing: -0.05rem;
-}
-
-body.reference main ul li p {
-  margin: 0;
-  letter-spacing: -0.025rem;
-  opacity: 0.56;
-}
-
-body.Oe.reference main ul li h2,
-body.smixzy.reference main ul li a h2 {
-  margin: 0;
-}
-
-@media (orientation: portrait) {
-  body.reference main {
-    padding: 0 0.25rem;
-  }
-}
-
-
-/* NOTE: colors */
-
-body.nolan {
-  background: #e8e8e8;
-  color: #424242;
-}
-
-body.nolan nav select {
-  background: #424242;
-  color: #e8e8e8;
-  border: 1px solid #424242;
-}
-
-body.nolan.gist main a {
-  color: inherit;
-}
-
-body.nolan.gallery.id aside nav {
-  border-bottom: 1px solid #424242;
-}
-
-body.nolan.gallery aside div.gallery-controls button {
-  background: #424242;
-  color: #e8e8e8;
-  border: 1px solid #424242;
-}
-
-body.nolan ::selection {
-  background: #424242;
-  color: #e8e8e8;
-}
-
-
-body.nm8 {
-  background: white;
-  color: black;
-}
-
-body.nm8 nav select {
-  background: black;
-  color: white;
-  border: 1px solid black;
-}
-
-body.nm8.gallery.id aside nav {
-  border-bottom: 1px solid black;
-}
-
-body.nm8.gallery aside div.gallery-controls button {
-  background: black;
-  color: white;
-  border: 1px solid black;
-}
-
-body.nm8 ::selection {
-  background: #0000ff;
-  color: white;
-}
-
-
-body.Oe {
-  background: white;
-  color: black;
-  font-family: Fragment Mono, monospace; /* TODO: default monospace stack */
-}
-
-body.Oe nav select {
-  background: white;
-  color: black;
-  border: 1px solid black;
-}
-
-body.Oe.gist main p {
-  font-style: italic;
-}
-
-body.Oe.gallery.id aside nav {
-  border-bottom: 1px solid black;
-}
-
-body.Oe.gallery aside div.gallery-controls button {
-  background: white;
-  color: black;
-  border: 1px solid black;
-}
-
-body.Oe ::selection {
-  background: black;
-  color: white;
-}
-
-
-body.smixzy {
-  background: white;
-  color: #4200af;
-}
-
-body.smixzy nav select {
-  background: #4200af;
-  color: lightblue;
-  border: 1px solid #4200af;
-}
-
-body.smixzy.gallery.id aside nav {
-  border-bottom: 1px solid #4200af;
-}
-
-body.smixzy ::selection {
-  background: rgba(173, 216, 230, 0.42);
-}
-
-body.smixzy.gist main {
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-body.smixzy.gallery aside div.gallery-controls button {
-  background: #4200af;
-  color: lightblue;
-  border: 1px solid #4200af;
-}
+/* NOTE: debug */
 
-@media (prefers-color-scheme: dark) {
-  body.nolan {
-    background: #181818;
-    color: #afafaf;
-  }
-
-  body.nolan nav select {
-    background: #242424;
-    color: #ccc;
-    border: 1px solid #afafaf;
-  }
-
-  body.nolan ::selection {
-    background: #afafaf;
-    color: #181818;
-  }
-
-
-  body.nm8,
-  body.Oe {
-    background: black;
-    color: white;
-  }
-
-  body.nm8 nav select,
-  body.Oe nav select {
-    background: #121212;
-    color: #e8e8e8;
-    border: 1px solid #afafaf;
-  }
-
-  body.nm8 ::selection {
-    background: #0000ff;
-    color: white;
-  }
-
-  body.Oe ::selection {
-    background: white;
-    color: black;
-  }
-
-
-  body.smixzy {
-    background: #4200af;
-    color: lightblue;
-  }
-
-  body.smixzy nav select {
-    background: #4200af;
-    color: lightblue;
-    border: 1px solid lightblue;
-  }
-
-  body.smixzy ::selection {
-    background: rgba(0, 255, 0, 0.5);
-    color: lightgreen;
-  }
-
-
-  body.nolan.gallery aside div.gallery-controls button {
-    background: #242424;
-    color: #ccc;
-    border: 1px solid #afafaf;
-  }
-
-  body.nolan.gallery.id aside nav {
-    border-bottom: 1px solid #777;
-  }
-
-
-  body.nm8.gallery aside div.gallery-controls button,
-  body.Oe.gallery aside div.gallery-controls button {
-    background: #121212;
-    color: #e8e8e8;
-    border: 1px solid #afafaf;
-  }
-
-  body.nm8.gallery.id aside nav,
-  body.Oe.gallery.id aside nav {
-    border-bottom: 1px solid #777;
-  }
-
-
-  body.smixzy.gallery aside div.gallery-controls button {
-    border: 1px solid lightblue;
-  }
-
-  body.smixzy.gallery.id aside nav {
-    border-bottom: 1px solid lightblue;
-  }
-}
-
-@media (orientation: portrait) {
-  body.nolan.gallery aside {
-    background: rgba(232, 232, 232, 0.42);
-    color: black;
-  }
-
-  body.nolan.gallery.id aside {
-    background: rgba(255, 255, 255, 0.5);
-  }
-
-  body.nolan.gallery aside div.gallery-controls button {
-    background: rgba(0, 0, 0, 0.5);
-  }
-
-
-  body.nm8.gallery aside {
-    background: rgba(255, 255, 255, 0.5);
-  }
-
-
-  body.Oe.gallery aside {
-    background: rgba(255, 255, 255, 0.25);
-  }
-
-  body.Oe.gallery.id aside {
-    background: rgba(255, 255, 255, 0.5);
-  }
-
-  body.Oe.gallery aside div.gallery-controls button {
-    background: transparent;
-  }
-
-
-  body.smixzy.gallery aside {
-    background: rgba(255, 255, 255, 0.25);
-  }
-
-  body.smixzy.gallery.id aside {
-    background: rgba(255, 255, 255, 0.5);
-  }
-}
-
-@media (orientation: portrait) and (prefers-color-scheme: dark) {
-  body.nolan.gallery aside {
-    background: rgba(36, 36, 36, 0.33);
-    color: #e8e8e8;
-  }
-
-  body.nolan.gallery aside div.gallery-controls button {
-    border: 1px solid rgba(36, 36, 36, 0.33);
-  }
-
-  body.nolan.gallery.id aside {
-    background: rgba(36, 36, 36, 0.5);
-  }
-
-  body.nolan.gallery.id aside nav {
-    border-bottom: 1px solid #777;
-  }
-
-
-  body.nm8.gallery aside {
-    background: rgba(0, 0, 0, 0.33);
-  }
-
-  body.nm8.gallery aside div.gallery-controls button {
-    border: 1px solid #121212;
-  }
-
-  body.nm8.gallery.id aside {
-    background: rgba(0, 0, 0, 0.5);
-  }
-
-
-  body.Oe.gallery aside {
-    background: rgba(255, 255, 255, 0.125);
-    color: black;
-  }
-
-  body.Oe.gallery aside div.gallery-controls button {
-    color: black;
-    border: 1px solid black;
-  }
-
-  body.Oe.gallery.id aside {
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-  }
-
-
-  body.smixzy.gallery aside {
-    background: rgba(66, 0, 175, 0.21);
-  }
-
-  body.smixzy.gallery.id aside {
-    background: rgba(66, 0, 255, 0.5);
-  }
-
-  body.smixzy.gallery.id aside nav {
-    border-bottom: 1px solid lightblue;
-  }
-}
-
-
-/* NOTE: error component */
-
-body main.error ::selection {
-  background: rgba(250, 204, 202, 0.5);
-  color: inherit;
-}
+/* .item { */
+/*   border: 1px dotted black; */
+/* } */
