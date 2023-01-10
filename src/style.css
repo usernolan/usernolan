@@ -161,13 +161,17 @@ fieldset.color div {
 
 /* NOTE: items */
 
+.item {
+  overflow-x: hidden;
+}
+
 .item.gist {
   padding: 0.5rem 1rem;
 }
 
 .item.image img {
   width: 100%;
-  object-position: cover;
+  object-fit: cover;
 }
 
 .item.quote {
