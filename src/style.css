@@ -161,8 +161,69 @@ fieldset.color div {
 
 /* NOTE: items */
 
+.item.gist {
+  padding: 0.5rem 1rem;
+}
+
+.item.image img {
+  width: 100%;
+  object-position: cover;
+}
+
+.item.quote {
+  padding: 0.5rem 1rem;
+}
+
+.item.link {
+  padding: 1rem;
+}
+
+.item.link a {
+  display: inline-block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.item.link p {
+	margin: 0;
+	opacity: 0.56;
+}
+
+.item.link h2 {
+	margin: 0 0 0.75rem;
+}
+
+.item.link a:hover h2 {
+	text-decoration: underline;
+}
+
+/* NOTE: special cases */
+
 #item--intro {
-  padding: 0.5rem 1rem 2rem;
+  padding: 0.5rem 1rem;
+  font-size: 2rem;
+  letter-spacing: -0.1rem;
+}
+
+#item--nm8 {
+  font-weight: bold;
+}
+
+.item.gist.smixzy {
+  font-family: Fragment Mono;
+  font-style: italic;
+}
+
+#item--Oe {
+  font-style: italic;
+}
+
+.item.gist.Oe {
+  font-family: Fragment Mono;
+}
+
+.item.link.Oe {
+  font-family: Fragment Mono;
 }
 
 
