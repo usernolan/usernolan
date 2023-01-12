@@ -14,13 +14,7 @@ import Shuffle from "shufflejs"
 import { serialize } from "@thi.ng/hiccup"
 
 
-/* NOTE: system mode detection */
-
-const prefersDarkModeMatch = window.matchMedia("(prefers-color-scheme: dark)")
-const prefersDarkMode = reactive(prefersDarkModeMatch.matches, { closeOut: CloseMode.NEVER })
-prefersDarkModeMatch.addEventListener("change", (e) => {
-  prefersDarkMode.next(e.matches)
-})
+/* TODO: quote formatting */
 
 // const atMain = (_r: Route, { id, src, alt }: GalleryItem): ComponentLike => {
 //   const hovered = reactive(false)
@@ -1341,16 +1335,51 @@ const items: Array<I> = [
   // TODO: add color waterfall image
 ]
 
+interface RangeOpts {
+  name: string,
+  min?: number,
+  max?: number,
+  step?: number,
+  value?: number
+}
+
 const tags = [...new Set(items.flatMap((x) => x.tags || []))]
 const types = [...new Set(items.flatMap((x) => x.types || []))]
+const modes = ["system", "light", "dark"]
+
+const colors: RangeOpts[] = [
+  { name: "contrast", min: 50, max: 150, value: 100 },
+  { name: "saturate", min: 0, max: 200, value: 100 },
+  { name: "hue", min: 0, max: 360, value: 0 },
+  { name: "invert", value: 0 }
+]
 
 const filterCheckboxComponent = (kind: string) => (x: string) => {
-  const id = `filter--${kind}--${x}`
+  const id = `checkbox--filter--${kind}--${x}`
   const label = x === "Oe" ? ".•" : x
   return [
     "div", {},
     ["label", { for: id }, label],
     ["input", { id, type: "checkbox", name: x }]
+  ]
+}
+
+const radioComponent = (kind: string, checkedVal?: string) => (x: string) => {
+  const id = `$radio--{kind}--${x}`
+  const checked = x === checkedVal
+  return [
+    "div", {},
+    ["label", { for: id }, x],
+    ["input", { id, type: "radio", name: kind, value: x, checked }]
+  ]
+}
+
+const rangeComponent = (kind: string) => (opts: RangeOpts) => {
+  const id = `$range--${kind}--${opts.name}`
+  return [
+    "div", {},
+    ["label", { for: id }, opts.name],
+    ["input", { id, type: "range", ...opts }]
   ]
 }
 
@@ -1377,33 +1406,12 @@ const controls = () => [
 
   ["fieldset.mode", {},
     ["legend", {}, "mode"],
-    ["div", {},
-      ["label", { for: "mode--system" }, "system"],
-      ["input#mode--system", { type: "radio", name: "mode" }]],
-    ["div", {},
-      ["label", { for: "mode--light" }, "light"],
-      ["input#mode--light", { type: "radio", name: "mode" }]],
-    ["div", {},
-      ["label", { for: "mode--dark" }, "dark"],
-      ["input#mode--dark", { type: "radio", name: "mode" }]
-    ]
+    ...modes.map(radioComponent("mode", modes[0]))
   ],
 
   ["fieldset.color", {},
     ["legend", {}, "color"],
-    ["div", {},
-      ["label", { for: "color--contrast" }, "contrast"],
-      ["input#color--contrast", { type: "range" }]],
-    ["div", {},
-      ["label", { for: "color--saturation" }, "saturation"],
-      ["input#color--saturation", { type: "range" }]],
-    ["div", {},
-      ["label", { for: "color--hue" }, "hue"],
-      ["input#color--hue", { type: "range" }]],
-    ["div", {},
-      ["label", { for: "color--invert" }, "invert"],
-      ["input#color--invert", { type: "range" }]
-    ]
+    ...colors.map(rangeComponent("color"))
   ],
 
   ["fieldset.layout", {},
@@ -1411,7 +1419,8 @@ const controls = () => [
     ["button", {}, "randomize"]
   ],
 
-  // TODO: sort
+  // TODO: sort?
+  // TODO: controls; invert, reset
 ]
 
 const shuffleArray = (arr: Array<any>) => {
@@ -1441,9 +1450,16 @@ await rdom.mount(document.body)
 /* TODO: lib */
 /* TODO: noscript */
 /* TODO: refine querySelectors */
+/* TODO: undo, back, state history, sharing */
+
+
+/* NOTE: global selectors */
 
 const grid = document.querySelector(".grid-container") as HTMLElement
 const filters = document.querySelector("fieldset.filters")
+
+
+/* NOTE: shuffle, isotope, grid */
 
 const shuffle = new Shuffle(
   grid,
@@ -1453,6 +1469,9 @@ const shuffle = new Shuffle(
   }
 )
 
+
+/* NOTE: controls */
+
 document.querySelector("button.show")?.addEventListener("click", () => {
   const next = grid?.getAttribute("data-grid-columns") === "9" ? "7" : "9"
   const aside = document.querySelector('aside')
@@ -1460,6 +1479,9 @@ document.querySelector("button.show")?.addEventListener("click", () => {
   grid?.setAttribute("data-grid-columns", next)
   aside?.classList.toggle("show")
 })
+
+
+/* NOTE: filters */
 
 const searchResult = (el: HTMLElement, searchInput: HTMLInputElement) => {
   const v = searchInput.value.toLowerCase()
@@ -1471,6 +1493,7 @@ const searchResult = (el: HTMLElement, searchInput: HTMLInputElement) => {
     || x.src.toLowerCase().indexOf(v) >= 0)
 }
 
+/* TODO: refactor forEach */
 const compositeFilter = (
   searchInput: HTMLInputElement,
   tagInputArray: HTMLInputElement[],
@@ -1489,13 +1512,13 @@ const compositeFilter = (
 
 const filterEventListener = (_e: Event) => {
   const searchInput = filters?.querySelector('fieldset.search input[type="search"]')
-  const tagInputs = filters?.querySelectorAll('fieldset.tag input[type="checkbox"]') || []
-  const typeInputs = filters?.querySelectorAll('fieldset.type input[type="checkbox"]') || []
+  const tagInputs = filters?.querySelectorAll('fieldset.tag input[type="checkbox"]')
+  const typeInputs = filters?.querySelectorAll('fieldset.type input[type="checkbox"]')
 
   const f = compositeFilter(
     searchInput as HTMLInputElement,
-    Array.from(tagInputs) as HTMLInputElement[],
-    Array.from(typeInputs) as HTMLInputElement[]
+    Array.from(tagInputs || []) as HTMLInputElement[],
+    Array.from(typeInputs || []) as HTMLInputElement[]
   )
 
   shuffle.filter(f)
@@ -1510,5 +1533,39 @@ const debounce = (f: Function, interval: number) => {
   }
 }
 
-filters?.addEventListener("change", filterEventListener)
-filters?.addEventListener("keyup", debounce(filterEventListener, 200))
+filters?.addEventListener('input', debounce(filterEventListener, 120))
+
+
+/* NOTE: mode, color-scheme */
+
+const modeChangeEventListener = (e: Event) => {
+  const v = (e?.target as HTMLInputElement)?.value
+  const root = document.querySelector(':root')
+
+  v === 'system' ?
+    root?.removeAttribute('data-color-scheme') :
+    root?.setAttribute('data-color-scheme', v)
+}
+
+document.querySelector('fieldset.mode')?.addEventListener('change', modeChangeEventListener)
+
+
+/* NOTE: color */
+
+const htmlRoot = document.querySelector(':root') as HTMLElement
+const colorFieldset = document.querySelector('fieldset.color')
+const rangeInputs = colorFieldset?.querySelectorAll('input[type="range"]')
+const contrastStyle = document.createElement('style')
+document.head.appendChild(contrastStyle)
+
+/* NOTE: filter causes issues when applied to parent of position: fixed child; block creation */
+const colorChangeEventListener = (_e: Event) => {
+  const c = (rangeInputs?.item(0) as HTMLInputElement).value
+  const s = (rangeInputs?.item(1) as HTMLInputElement).value
+  const h = (rangeInputs?.item(2) as HTMLInputElement).value
+  const i = (rangeInputs?.item(3) as HTMLInputElement).value
+  htmlRoot.style.filter = `saturate(${s}%) hue-rotate(${h}deg) invert(${i}%)`
+  contrastStyle.innerText = `main, div.controls { filter: contrast(${c}%); }`
+}
+
+colorFieldset?.addEventListener('input', colorChangeEventListener)

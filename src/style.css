@@ -1,4 +1,5 @@
 /* NOTE: root styles */
+/* TODO: fix :root background when overscrolled */
 
 :root {
   font-family: Inter, Helvetica Neue, Avenir, Helvetica, Arial, sans-serif;
@@ -7,6 +8,14 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+:root[data-color-scheme="dark"] {
+  color-scheme: dark;
+}
+
+:root[data-color-scheme="light"] {
+  color-scheme: light;
 }
 
 @supports (-webkit-text-size-adjust: 100%) {
@@ -21,6 +30,7 @@ body {
   margin: 0;
   padding: 0;
   transition: background 250ms ease, color 250ms ease;
+  overflow-y: scroll; /* NOTE: force scroll bar */
 }
 
 body * {
