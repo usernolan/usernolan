@@ -80,9 +80,14 @@ prefersDarkModeMatch.addEventListener("change", (e) => {
 
 interface Item {
   id: string,
-  component: (x: this) => any /* TODO: refine `any` */
-  columns?: string[]
-  groups?: string[],
+  columns?: string[],
+  tags?: string[],
+  types?: string[],
+  component: (x: this) => any
+}
+
+interface GistItem extends Item {
+  textComponent: any[] | (() => any)
 }
 
 interface ImageItem extends Item {
@@ -108,47 +113,82 @@ interface LinkItem extends Item {
 
 const randNth = (arr: Array<any>) => arr[Math.floor(Math.random() * arr.length)]
 const defaultColumns = ["c1", "c2", "c3"]
+// const randWeighted(["c1", 0.1], ["c2", 0.5], ["c3", 0.1], ["c9", 0.01])
+// const randW = (...arr: [any, number][]) => {
+//   const xs = arr.map((x) => x[0])
+//   const ws = arr.map((x) => x[1])
+//   console.log(xs, ws)
+// }
+
+// randW(["x", 0.1], ["y", 0.2], ["z", 0.1])
+
+const gistComponent = ({ id, textComponent, columns = defaultColumns, tags = [], types = [] }: GistItem) => {
+  const groups = tags.concat(types)
+  return [
+    "div",
+    {
+      id: `item--${id}`,
+      class: `item gist ${randNth(columns)} ${groups.join(" ")}`,
+      "data-groups": JSON.stringify(groups)
+    },
+    Array.isArray(textComponent) ? textComponent : textComponent()
+  ]
+}
 
 /* TODO: onclick toggle expand */
 /* TODO: refine class string */
 /* TODO: weighted columns */
-const imageComponent = ({ id, src, alt, columns = defaultColumns, groups = [] }: ImageItem) => [
-  "div",
-  {
-    id: `item--${id}`,
-    class: `item image ${randNth(columns)} ${groups.join(" ")}`,
-    "data-groups": JSON.stringify(groups)
-  },
-  ["img", { src, alt }]
-]
-
-const quoteComponent = ({ id, quote, author, columns = defaultColumns, groups = [] }: QuoteItem) => [
-  "div",
-  {
-    id: `item--${id}`,
-    class: `item quote ${randNth(columns)} ${groups.join(" ")}`,
-    "data-groups": JSON.stringify(groups)
-  },
-  ["h2", {}, quote],
-  ["p", {}, `—${author}`]
-]
-
-const linkComponent = ({ id, href, destination, title, author, columns = defaultColumns, groups = [] }: LinkItem) => [
-  "div",
-  {
-    id: `item--${id}`,
-    class: `item link ${randNth(columns)} ${groups.join(" ")}`,
-    "data-groups": JSON.stringify(groups)
-  },
-  ["a", { href },
-    ["p", {}, destination],
-    ["h2", {}, title],
-    author ? ["p", {}, `—${author}`] : null
+/* TODO: lazy loaded */
+/* NOTE: include type in class so styling doesn't depend on filter */
+const imageComponent = ({ id, src, alt, columns = defaultColumns, tags = [], types = [] }: ImageItem) => {
+  const groups = tags.concat(types)
+  return [
+    "div",
+    {
+      id: `item--${id}`,
+      class: `item image ${randNth(columns)} ${groups.join(" ")}`,
+      "data-groups": JSON.stringify(groups)
+    },
+    ["img", { src, alt }]
   ]
-]
+}
+
+/* TODO: hoverableImageComponent */
+
+const quoteComponent = ({ id, quote, author, columns = defaultColumns, tags = [], types = [] }: QuoteItem) => {
+  const groups = tags.concat(types)
+  return [
+    "div",
+    {
+      id: `item--${id}`,
+      class: `item quote ${randNth(columns)} ${groups.join(" ")}`,
+      "data-groups": JSON.stringify(groups)
+    },
+    ["h2", {}, quote],
+    ["p", {}, `—${author}`]
+  ]
+}
+
+const linkComponent = ({ id, href, destination, title, author, columns = defaultColumns, tags = [], types = [] }: LinkItem) => {
+  const groups = tags.concat(types)
+  return [
+    "div",
+    {
+      id: `item--${id}`,
+      class: `item link ${randNth(columns)} ${groups.join(" ")}`,
+      "data-groups": JSON.stringify(groups)
+    },
+    ["a", { href },
+      ["p", {}, destination],
+      ["h2", {}, title],
+      author ? ["p", {}, `—${author}`] : null
+    ]
+  ]
+}
 
 type I =
   Item
+  | GistItem
   | ImageItem
   | HoverableImageItem
   | QuoteItem
@@ -157,91 +197,57 @@ type I =
 const items: Array<I> = [
   {
     id: "intro",
-    groups: ["nolan", "gist"],
-    component: ({ id, groups }: Item) => [
-      "div",
-      {
-        id: `item--${id}`,
-        class: "item gist c3", // TODO: add groups to class
-        "data-groups": JSON.stringify(groups)
-      },
-      ["h1", {}, "I'm nolan."],
-    ]
+    columns: ["c3"],
+    tags: ["nolan"],
+    types: ["gist"],
+    textComponent: ["h1", {}, "I'm nolan."],
+    component: gistComponent
   },
 
   {
     id: "nm8",
-    groups: ["nm8", "gist"],
-    component: ({ id, groups }: Item) => [
-      "div",
-      {
-        id: `item--${id}`,
-        class: `item ${groups ? groups.join(" ") : ""} ${randNth(["c2", "c3"])}`,
-        "data-groups": JSON.stringify(groups)
-      },
-      ["p", {}, "I build sketchy websites and primitive furniture. They're beautiful in the same way my sister's dog is beautiful. I promise they're beautiful."]
-    ]
+    columns: ["c2", "c3"],
+    tags: ["nm8"],
+    types: ["gist"],
+    textComponent: ["p", {}, "I build sketchy websites and primitive furniture. They're beautiful in the same way my sister's dog is beautiful. I promise they're beautiful."],
+    component: gistComponent
   },
 
   {
     id: "smixzy",
-    groups: ["smixzy", "gist"],
-    component: ({ id, groups }: Item) => [
-      "div",
-      {
-        id: `item--${id}`,
-        class: `item ${groups ? groups.join(" ") : ""} ${randNth(["c1", "c2", "c3"])}`,
-        "data-groups": JSON.stringify(groups)
-      },
-      ["h3", {}, "I generate a lot of nonsense, acrylic, and handmade garbage. 🤢"]
-    ]
+    tags: ["smixzy"],
+    types: ["gist"],
+    textComponent: ["h3", {}, "I generate a lot of nonsense, acrylic, and handmade garbage. 🤢"],
+    component: gistComponent
   },
 
   {
     id: "arcane-mage",
-    groups: ["smixzy", "gist"],
-    component: ({ id, groups }: Item) => [
-      "div",
-      {
-        id: `item--${id}`,
-        class: `item ${groups ? groups.join(" ") : ""} ${randNth(["c1", "c2", "c3"])}`,
-        "data-groups": JSON.stringify(groups)
-      },
-      ["p", {}, "Lv. 70 arcane mage"]
-    ]
+    tags: ["smixzy"],
+    types: ["gist"],
+    textComponent: ["p", {}, "Lv. 70 arcane mage"],
+    component: gistComponent
   },
 
   {
-    id: ".•",
-    groups: [".•", "gist"],
-    component: ({ id, groups }: Item) => [
-      "div",
-      {
-        id: `item--${id}`,
-        class: `item gist Oe ${randNth(["c1", "c2", "c3"])}`,
-        "data-groups": JSON.stringify(groups)
-      },
-      ["p", {}, "I think a lot about language, logic, proof, etc.: real game of life hours, you know the one."]
-    ]
+    id: "-•",
+    tags: ["Oe"],
+    types: ["gist"],
+    textComponent: ["p", {}, "I think a lot about language, logic, proof, etc.: real game of life hours, you know the one."],
+    component: gistComponent
   },
 
   {
     id: "Oe",
-    groups: [".•", "gist"],
-    component: ({ id, groups }: Item) => [
-      "div",
-      {
-        id: `item--${id}`,
-        class: `item gist Oe ${randNth(["c2", "c3"])}`,
-        "data-groups": JSON.stringify(groups)
-      },
-      ["p", {}, "observe ∘ explicate"]
-    ]
+    tags: ["Oe"],
+    types: ["gist"],
+    textComponent: ["p", {}, "observe ∘ explicate"],
+    component: gistComponent
   },
 
   {
     id: "blizzard",
-    groups: ["quote"],
+    types: ["quote"],
     quote: "Stay a while, and listen.",
     author: "Deckard Cain",
     component: quoteComponent
@@ -249,7 +255,8 @@ const items: Array<I> = [
 
   {
     id: "nolan-self",
-    groups: ["nolan", "image"],
+    tags: ["nolan"],
+    types: ["image"],
     src: `/jpeg/nolan.self.${randNth([1, 2])}.jpeg`,
     alt: "Me in grayscale",
     component: imageComponent
@@ -257,6 +264,8 @@ const items: Array<I> = [
 
   {
     id: "persevere",
+    tags: ["nolan"],
+    types: ["image"],
     src: "/jpeg/persevere.jpeg",
     alt: "A large poster on an empty wall that reads 'PERSEVERE' in painted lettering.",
     component: imageComponent
@@ -264,6 +273,8 @@ const items: Array<I> = [
 
   {
     id: "clouds",
+    tags: ["nolan"],
+    types: ["image"],
     src: "/jpeg/clouds.jpeg",
     alt: "Heavy clouds and green foothills.",
     component: imageComponent
@@ -271,6 +282,8 @@ const items: Array<I> = [
 
   {
     id: "parents",
+    tags: ["nolan"],
+    types: ["image"],
     src: "/jpeg/parents.jpeg",
     alt: "My parents interacting extremely typically.",
     component: imageComponent
@@ -278,6 +291,8 @@ const items: Array<I> = [
 
   {
     id: "erica",
+    tags: ["nolan"],
+    types: ["image"],
     src: "/jpeg/erica.jpeg",
     alt: "My sister across the table taking a picture of me taking a picture of her, which is this picture.",
     component: imageComponent
@@ -285,6 +300,8 @@ const items: Array<I> = [
 
   {
     id: "louie",
+    tags: ["nolan"],
+    types: ["image"],
     src: "/jpeg/louie.jpeg",
     alt: "My dog in the passenger seat politely requesting attention.",
     component: imageComponent
@@ -292,6 +309,8 @@ const items: Array<I> = [
 
   {
     id: "petals",
+    tags: ["nolan"],
+    types: ["image"],
     src: "/jpeg/petals.jpeg",
     alt: "Pink flower petals gravitating toward a concrete sidewalk.",
     component: imageComponent
@@ -299,6 +318,8 @@ const items: Array<I> = [
 
   {
     id: "pauszeks",
+    tags: ["nolan"],
+    types: ["image"],
     src: "/jpeg/pauszeks.jpeg",
     alt: "Two brothers walking through a small mountain town with fresh coffee; one peace sign, one cheers.",
     component: imageComponent
@@ -306,6 +327,8 @@ const items: Array<I> = [
 
   {
     id: "watching",
+    tags: ["nolan"],
+    types: ["image"],
     src: "/jpeg/watching.jpeg",
     alt: "A lonely closed-circuit camera surveilling an empty parking lot labeled Lot P.",
     component: imageComponent
@@ -313,6 +336,8 @@ const items: Array<I> = [
 
   {
     id: "david",
+    tags: ["nolan"],
+    types: ["image"],
     src: "/jpeg/david.jpeg",
     alt: "My sister's partner-of-significant-duration (my brother-in-vibe?) flaunting nothing on the way back from a rickety vantage overlooking a suburb of Los Angeles.",
     component: imageComponent
@@ -320,6 +345,8 @@ const items: Array<I> = [
 
   {
     id: "branch",
+    tags: ["nolan"],
+    types: ["image"],
     src: "/jpeg/branch.jpeg",
     alt: "A branch of a tree that seems to branch indefinitely.",
     component: imageComponent
@@ -327,6 +354,8 @@ const items: Array<I> = [
 
   {
     id: "eli",
+    tags: ["nolan"],
+    types: ["image"],
     src: "/jpeg/eli.jpeg",
     alt: "Black sand washing into cloudy Pacific infinity; a familiar bummer in the foreground utterly ruining the shot.",
     component: imageComponent
@@ -334,13 +363,17 @@ const items: Array<I> = [
 
   {
     id: "bridge",
+    tags: ["nolan"],
+    types: ["image"],
     src: "/jpeg/bridge.jpeg",
     alt: "Admiring my shoes on a narrow bridge above a rapid creek.",
     component: imageComponent
   },
 
   {
-    id: "self",
+    id: "nm8-self",
+    tags: ["nm8"],
+    types: ["image"],
     src: "/jpeg/nm8.self.jpeg",
     alt: "A robot with a 2x4 soul, visibly dissatisfied with its output.",
     component: imageComponent
@@ -348,6 +381,8 @@ const items: Array<I> = [
 
   {
     id: "at",
+    tags: ["nm8"],
+    types: ["image"],
     src: "/jpeg/at.jpeg",
     alt: "A three dimensional @ printed in white, black, and mint green PLA.",
     component: imageComponent
@@ -355,6 +390,8 @@ const items: Array<I> = [
 
   {
     id: "table",
+    tags: ["nm8"],
+    types: ["image"],
     src: "/jpeg/table.jpeg",
     alt: "A diagram of a table on graph paper.\nA potential table.",
     component: imageComponent
@@ -362,6 +399,8 @@ const items: Array<I> = [
 
   {
     id: "skulls",
+    tags: ["nm8"],
+    types: ["image"],
     src: "/jpeg/skulls.jpeg",
     alt: "Stackable cubic skulls printed in Martha Stewart®-brand PLA. The second greatest gift I've ever received: Martha's memento mori.",
     component: imageComponent
@@ -369,6 +408,8 @@ const items: Array<I> = [
 
   {
     id: "xacto",
+    tags: ["nm8"],
+    types: ["image"],
     src: "/jpeg/xacto.jpeg",
     alt: "An X-ACTO® knife. Fresh blade.",
     component: imageComponent
@@ -376,6 +417,8 @@ const items: Array<I> = [
 
   {
     id: "buckets",
+    tags: ["nm8"],
+    types: ["image"],
     src: "/jpeg/buckets.jpeg",
     alt: "Galvanized steel plumbing pipes and fittings sorted into orange buckets, brought to you by Home Depot®.",
     component: imageComponent
@@ -383,6 +426,8 @@ const items: Array<I> = [
 
   {
     id: "warhammer",
+    tags: ["nm8"],
+    types: ["image"],
     src: "/jpeg/warhammer.jpeg",
     alt: "Unpainted tabletop miniature. Sentient bipedal robot, specifically T'au.",
     component: imageComponent
@@ -390,6 +435,8 @@ const items: Array<I> = [
 
   {
     id: "rug",
+    tags: ["nm8"],
+    types: ["image"],
     src: "/jpeg/rug.jpeg",
     alt: "Green rug, white couch, wood table, gray blanket.",
     component: imageComponent
@@ -397,6 +444,8 @@ const items: Array<I> = [
 
   {
     id: "takach",
+    tags: ["nm8"],
+    types: ["image"],
     src: "/jpeg/takach.jpeg",
     alt: "Close-up of an etching press registration grid, brought to you by Takach Press®.",
     component: imageComponent
@@ -404,6 +453,8 @@ const items: Array<I> = [
 
   {
     id: "print",
+    tags: ["nm8"],
+    types: ["image"],
     src: "/jpeg/print.jpeg",
     alt: "A screen print hanging on the wall above a large manual screen printing press. Super meaningful to whoever took the picture, at least I get that sense.",
     component: imageComponent
@@ -411,6 +462,8 @@ const items: Array<I> = [
 
   {
     id: "frame",
+    tags: ["nm8"],
+    types: ["image"],
     src: "/jpeg/frame.jpeg",
     alt: "A rainbow-chromatic striped frame sample sitting on construction paper.",
     component: imageComponent
@@ -418,20 +471,26 @@ const items: Array<I> = [
 
   {
     id: "screw",
+    tags: ["nm8"],
+    types: ["image"],
     src: "/jpeg/screw.jpeg",
     alt: "A black ballpoint pen drawing on white graph paper. A vaguely humanoid assemblage of shapes with screw-like rod arms, a stacked box torso, smooth pipe legs, and a plastic floret head. It's worshipping a biblically accurate screw of enormous proportion. In this world, even the most basic fasteners are much larger than people.",
     component: imageComponent
   },
 
   {
-    id: "4-avenue",
-    src: "/jpeg/4-avenue.jpeg",
+    id: "fourth-avenue",
+    tags: ["nm8"],
+    types: ["image"],
+    src: "/jpeg/fourth-avenue.jpeg",
     alt: "A blue Werner® ladder waiting for the subway at 4th Avenue.",
     component: imageComponent
   },
 
   {
     id: "graphite",
+    tags: ["nm8"],
+    types: ["image"],
     src: "/jpeg/graphite.jpeg",
     alt: "A rough graphite sketch of a detached plot of land floating in space, populated by tree-sized lollipops.",
     component: imageComponent
@@ -439,6 +498,8 @@ const items: Array<I> = [
 
   {
     id: "frames",
+    tags: ["nm8"],
+    types: ["image"],
     src: "/jpeg/frames.jpeg",
     alt: "A pile of candidate frame samples in front of an entire wall of more frame samples.",
     component: imageComponent
@@ -446,6 +507,8 @@ const items: Array<I> = [
 
   {
     id: "pack",
+    tags: ["nm8"],
+    types: ["image"],
     src: "/jpeg/pack.jpeg",
     alt: "A pristine dyneema fanny pack for use in the distant future when my current fanny pack falls irreparable.",
     component: imageComponent
@@ -453,13 +516,17 @@ const items: Array<I> = [
 
   {
     id: "di",
+    tags: ["nm8"],
+    types: ["image"],
     src: "/jpeg/di.jpeg",
     alt: "The greatest mother to have ever done it hauling her offspring's garbage through a hardware store.",
     component: imageComponent
   },
 
   {
-    id: "self",
+    id: "Oe-self",
+    tags: ["Oe"],
+    types: ["image"],
     src: "/png/Oe.self.png",
     alt: "A selectively randomized, poorly pixelized sapiens approximate peeking out of a previously sealed box.",
     component: imageComponent
@@ -467,6 +534,8 @@ const items: Array<I> = [
 
   {
     id: "scad",
+    tags: ["Oe"],
+    types: ["image"],
     src: "/png/scad.png",
     alt: "A 3D CAD workspace populated with a repeating sinusoidal wave colorized according to coordinate.",
     component: imageComponent
@@ -474,6 +543,8 @@ const items: Array<I> = [
 
   {
     id: "170",
+    tags: ["Oe"],
+    types: ["image"],
     src: "/png/rule.170.png",
     alt: "Rule 170: 1D cellular automaton with range = 1, where cells are shaped like keyholes, but I think it's bugged. If you stare long enough it looks like a waterfall and starts to move.",
     component: imageComponent
@@ -481,6 +552,8 @@ const items: Array<I> = [
 
   {
     id: "era",
+    tags: ["Oe"],
+    types: ["image"],
     src: "/png/rule.era.png",
     alt: "Imperfectly pixelated flowers falling out of high-contrast background noise.",
     component: imageComponent
@@ -488,6 +561,8 @@ const items: Array<I> = [
 
   {
     id: "green",
+    tags: ["Oe"],
+    types: ["image"],
     src: "/png/rule.green.png",
     alt: "A grid of thin vertical lines with a unique fingerprint identified by empty grid coordinates; energetic green background.",
     component: imageComponent
@@ -495,6 +570,8 @@ const items: Array<I> = [
 
   {
     id: "pink",
+    tags: ["Oe"],
+    types: ["image"],
     src: "/png/rule.pink.png",
     alt: "A grid of thin vertical lines with a unique fingerprint identified by empty grid coordinates; pale-hot pink background.",
     component: imageComponent
@@ -502,6 +579,8 @@ const items: Array<I> = [
 
   {
     id: "blue",
+    tags: ["Oe"],
+    types: ["image"],
     src: "/png/rule.blue.png",
     alt: "I think this is a poor approximation of rule 99; ultra blue background.",
     component: imageComponent
@@ -509,6 +588,8 @@ const items: Array<I> = [
 
   {
     id: "stairs",
+    tags: ["Oe"],
+    types: ["image"],
     src: "/png/rule.stairs.png",
     alt: "Two bright perfectoids conversing in a noisy universe.",
     component: imageComponent
@@ -516,6 +597,8 @@ const items: Array<I> = [
 
   {
     id: "150",
+    tags: ["Oe"],
+    types: ["image"],
     src: "/png/rule.150.png",
     alt: "Rule 150, I think.",
     component: imageComponent
@@ -523,6 +606,8 @@ const items: Array<I> = [
 
   {
     id: "sidewalk",
+    tags: ["Oe"],
+    types: ["image"],
     src: "/jpeg/sidewalk.jpeg",
     alt: "Construction-filtered sunlight projecting a binary pattern on the sidewalk.",
     component: imageComponent
@@ -530,6 +615,8 @@ const items: Array<I> = [
 
   {
     id: "spill",
+    tags: ["Oe"],
+    types: ["image"],
     src: "/jpeg/spill.jpeg",
     alt: "The softest, most gorgeous spill you've ever faced.",
     component: imageComponent
@@ -537,6 +624,8 @@ const items: Array<I> = [
 
   {
     id: "stained",
+    tags: ["Oe"],
+    types: ["image"],
     src: "/jpeg/stained.jpg",
     alt: "Neon-stained sandstone.",
     component: imageComponent
@@ -544,6 +633,8 @@ const items: Array<I> = [
 
   {
     id: "martini",
+    tags: ["Oe"],
+    types: ["image"],
     src: "/jpeg/martini.jpeg",
     alt: "A martini efficiently brokering photons.",
     component: imageComponent
@@ -551,6 +642,8 @@ const items: Array<I> = [
 
   {
     id: "midway",
+    tags: ["Oe"],
+    types: ["image"],
     src: "/jpeg/midway.jpeg",
     alt: "The ultraheterochromatic hallway of Midway International Airport.",
     component: imageComponent
@@ -558,6 +651,8 @@ const items: Array<I> = [
 
   {
     id: "truck",
+    tags: ["Oe"],
+    types: ["image"],
     src: "/jpeg/truck.jpeg",
     alt: "A yellow haul truck on the beach.",
     component: imageComponent
@@ -565,6 +660,8 @@ const items: Array<I> = [
 
   {
     id: "cups",
+    tags: ["Oe"],
+    types: ["image"],
     src: "/jpeg/turrell.cups.jpeg",
     alt: "Two big gulps discussing Twilight Epiphany.",
     component: imageComponent
@@ -572,6 +669,8 @@ const items: Array<I> = [
 
   {
     id: "epiphany",
+    tags: ["Oe"],
+    types: ["image"],
     src: "/jpeg/turrell.pink.jpeg",
     alt: "Pink angles.",
     component: imageComponent
@@ -579,6 +678,8 @@ const items: Array<I> = [
 
   {
     id: "universal-rectifier",
+    tags: ["Oe"],
+    types: ["image"],
     src: "/jpeg/universal-rectifier.jpeg",
     alt: "A Universal Rectifiers, Inc.® Cathodic Protection Rectifier. A Hometown American Product.",
     component: imageComponent
@@ -586,13 +687,17 @@ const items: Array<I> = [
 
   {
     id: "observation",
+    tags: ["Oe"],
+    types: ["image"],
     src: "/jpeg/turrell.self.jpeg",
     alt: "Metaobservation to positive consequent.",
     component: imageComponent
   },
 
   {
-    id: "self",
+    id: "smixzy-self",
+    tags: ["smixzy"],
+    types: ["image"],
     src: "/jpeg/smixzy.self.jpeg",
     alt: "Still me, but in my favorite clothes.",
     component: imageComponent
@@ -600,6 +705,8 @@ const items: Array<I> = [
 
   {
     id: "concrete",
+    tags: ["smixzy"],
+    types: ["image"],
     src: "/jpeg/concrete.jpeg",
     alt: "Soft concrete.",
     component: imageComponent
@@ -607,6 +714,8 @@ const items: Array<I> = [
 
   {
     id: "ass",
+    tags: ["smixzy"],
+    types: ["image"],
     src: "/jpeg/ass-drag.jpeg",
     alt: "A purple Post-it® with 'ASS DRAG' written on it in caps lock. There's so much more where this came from.",
     component: imageComponent
@@ -614,6 +723,8 @@ const items: Array<I> = [
 
   {
     id: "send-nudes",
+    tags: ["smixzy"],
+    types: ["image"],
     src: "/jpeg/send-nudes.jpeg",
     alt: "A quintessential United States Postal Service® mailbox with 'SEND NUDES' painted on the side, right above the logo.",
     component: imageComponent
@@ -621,6 +732,8 @@ const items: Array<I> = [
 
   {
     id: "instaworthy",
+    tags: ["smixzy"],
+    types: ["image"],
     src: "/jpeg/instaworthy.jpeg",
     alt: "An Instagram®-worthy bedside table with 'SHIT IN MY MOUTH' lovingly expressed on the signboard.",
     component: imageComponent
@@ -628,6 +741,8 @@ const items: Array<I> = [
 
   {
     id: "fnd-ur-way",
+    tags: ["smixzy"],
+    types: ["image"],
     src: "/jpeg/fnd-ur-way.jpeg",
     alt: "A hand-drawn sticker on a road sign that says 'FND UR WAY' under a skull with a staircase leading into the brain compartment.",
     component: imageComponent
@@ -635,6 +750,8 @@ const items: Array<I> = [
 
   {
     id: "face",
+    tags: ["smixzy"],
+    types: ["image"],
     src: "/jpeg/face.preview.jpeg",
     alt: "The word 'FACE' permanently etched into a concrete sidewalk.",
     component: imageComponent
@@ -642,6 +759,8 @@ const items: Array<I> = [
 
   {
     id: "sunglasses",
+    tags: ["smixzy"],
+    types: ["image"],
     src: "/jpeg/sunglasses.jpeg",
     alt: "The sidewalk shadows of two people holding heart-shaped sunglasses up to sunlight.",
     component: imageComponent
@@ -649,6 +768,8 @@ const items: Array<I> = [
 
   {
     id: "intersection",
+    tags: ["smixzy"],
+    types: ["image"],
     src: "/jpeg/intersection.jpeg",
     alt: "Shoegazing at an intersection in the sidewalk.",
     component: imageComponent
@@ -656,6 +777,8 @@ const items: Array<I> = [
 
   {
     id: "theme-provider",
+    tags: ["smixzy"],
+    types: ["image"],
     src: "/jpeg/theme-provider.jpeg",
     alt: "4 partially overlapping, heavily backlit bright pink Post-it® notes.",
     component: imageComponent
@@ -663,6 +786,8 @@ const items: Array<I> = [
 
   {
     id: "dumpstergram",
+    tags: ["smixzy"],
+    types: ["image"],
     src: "/jpeg/dumpstergram.jpeg",
     alt: "Two dumpsters in the middle of the woods. Unparalleled vibe.",
     component: imageComponent
@@ -670,6 +795,8 @@ const items: Array<I> = [
 
   {
     id: "post-it",
+    tags: ["smixzy"],
+    types: ["image"],
     src: "/jpeg/post-it.jpeg",
     alt: "A closeup of Post-it® notes with more Post-it® notes in the background; not to brag but it's a fresh cabinet pack of Helsinki-themed Greener Notes.",
     component: imageComponent
@@ -677,6 +804,8 @@ const items: Array<I> = [
 
   {
     id: "sky",
+    tags: ["smixzy"],
+    types: ["image"],
     src: "/jpeg/sky.jpeg",
     alt: "Purple night clouds hushing a busy street.",
     component: imageComponent
@@ -684,6 +813,8 @@ const items: Array<I> = [
 
   {
     id: "twig",
+    tags: ["smixzy"],
+    types: ["image"],
     src: "/jpeg/twig.jpeg",
     alt: "Closeup of a twig.",
     component: imageComponent
@@ -691,6 +822,8 @@ const items: Array<I> = [
 
   {
     id: "thrift",
+    tags: ["smixzy"],
+    types: ["image"],
     src: "/jpeg/thrift.jpeg",
     alt: "Maximum thrift store saturation.",
     component: imageComponent
@@ -698,6 +831,8 @@ const items: Array<I> = [
 
   {
     id: "manifold",
+    tags: ["smixzy"],
+    types: ["image"],
     src: "/jpeg/manifold.jpeg",
     alt: "Sketched amorphous manifold of blue, pink, and green ink.",
     component: imageComponent
@@ -705,6 +840,8 @@ const items: Array<I> = [
 
   {
     id: "coral",
+    tags: ["smixzy"],
+    types: ["image"],
     src: "/jpeg/coral.jpeg",
     alt: "Scattered ink-encoded coral.",
     component: imageComponent
@@ -712,6 +849,8 @@ const items: Array<I> = [
 
   {
     id: "chalk",
+    tags: ["smixzy"],
+    types: ["image"],
     src: "/jpeg/chalk.preview.jpeg",
     alt: "Sidewalk chalk portal to outer space.",
     component: imageComponent
@@ -719,6 +858,8 @@ const items: Array<I> = [
 
   {
     id: "spray-paint",
+    tags: ["smixzy"],
+    types: ["image"],
     src: "/jpeg/spray-paint.jpeg",
     alt: "Spray paint blasted onto the sidewalk during construction.",
     component: imageComponent
@@ -726,6 +867,8 @@ const items: Array<I> = [
 
   {
     id: "monolith",
+    tags: ["smixzy"],
+    types: ["image"],
     src: "/jpeg/monolith.jpeg",
     alt: "A strangely oriented concrete monolith opimitzed for resting up to four asscheeks.",
     component: imageComponent
@@ -733,6 +876,8 @@ const items: Array<I> = [
 
   {
     id: "cable",
+    tags: ["smixzy"],
+    types: ["image"],
     src: "/jpeg/cable.jpeg",
     alt: "A classic mixup between the street lighting and television cable factions.",
     component: imageComponent
@@ -740,6 +885,8 @@ const items: Array<I> = [
 
   {
     id: "prof-hos",
+    tags: ["smixzy"],
+    types: ["image"],
     src: "/jpeg/mark.jpeg",
     alt: "Prof. Hos.!!!",
     component: imageComponent
@@ -747,6 +894,8 @@ const items: Array<I> = [
 
   {
     id: "claude",
+    tags: ["nolan"],
+    types: ["quote"],
     quote: "My greatest concern was what to call it.",
     author: "Claude Shannon",
     component: quoteComponent
@@ -754,6 +903,8 @@ const items: Array<I> = [
 
   {
     id: "rich",
+    tags: ["nolan"],
+    types: ["quote"],
     quote: "We don't get to stop the world, especially not to observe it.",
     author: "Rich Hickey",
     component: quoteComponent
@@ -761,6 +912,8 @@ const items: Array<I> = [
 
   {
     id: "logistic-map",
+    tags: ["nolan"],
+    types: ["quote"],
     quote: "Unpredictability is not randomness, but in some circumstances looks very much like it.",
     author: "Wikipedia; Logistic Map",
     component: quoteComponent
@@ -768,6 +921,8 @@ const items: Array<I> = [
 
   {
     id: "anw-1",
+    tags: ["nolan"],
+    types: ["quote"],
     quote: "One main factor in the upward trend of animal life has been the power of wandering.",
     author: "Alfred North Whitehead",
     component: quoteComponent
@@ -775,6 +930,8 @@ const items: Array<I> = [
 
   {
     id: "anw-2",
+    tags: ["nolan"],
+    types: ["quote"],
     quote: "Unlimited possibility and abstract creativity can procure nothing.",
     author: "Alfred North Whitehead",
     component: quoteComponent
@@ -782,6 +939,8 @@ const items: Array<I> = [
 
   {
     id: "anw-3",
+    tags: ["nolan"],
+    types: ["quote"],
     quote: "A science that hesitates to forget its founders is lost.",
     author: "Alfred North Whitehead",
     component: quoteComponent
@@ -789,6 +948,8 @@ const items: Array<I> = [
 
   {
     id: "anw-4",
+    tags: ["nolan"],
+    types: ["quote"],
     quote: "We think in generalities, but we live in details.",
     author: "Alfred North Whitehead",
     component: quoteComponent
@@ -796,6 +957,8 @@ const items: Array<I> = [
 
   {
     id: "fifield",
+    tags: ["nolan"],
+    types: ["quote"],
     quote: "Answer is the dead stop.",
     author: "William Fifield",
     component: quoteComponent
@@ -803,6 +966,8 @@ const items: Array<I> = [
 
   {
     id: "chris-a",
+    tags: ["nolan"],
+    types: ["quote"],
     quote: "The wholeness is made of parts, the parts are created by the wholeness.",
     author: "Christopher Alexander",
     component: quoteComponent
@@ -810,6 +975,8 @@ const items: Array<I> = [
 
   {
     id: "rs",
+    tags: ["nolan"],
+    types: ["quote"],
     quote: "These build on themselves. You notice that anything you are aware of is in the process of changing as you notice it.",
     author: "R.S.",
     component: quoteComponent
@@ -817,6 +984,8 @@ const items: Array<I> = [
 
   {
     id: "chapman",
+    tags: ["nolan"],
+    types: ["quote"],
     quote: "There can be no fixed method for this; it’s inherently improvisational.",
     author: "David Chapman",
     component: quoteComponent
@@ -824,6 +993,8 @@ const items: Array<I> = [
 
   {
     id: "the-mess-were-in",
+    tags: ["nm8"],
+    types: ["link"],
     href: "https://youtu.be/lKXe3HUG2l4",
     destination: "youtube",
     title: "The Mess We're In",
@@ -833,6 +1004,8 @@ const items: Array<I> = [
 
   {
     id: "how-to-sweep",
+    tags: ["nm8"],
+    types: ["link"],
     href: "https://youtu.be/Kt-VlZpz-8E",
     destination: "youtube",
     title: "How to Sweep.",
@@ -842,6 +1015,8 @@ const items: Array<I> = [
 
   {
     id: "cool-uris",
+    tags: ["nm8"],
+    types: ["link"],
     href: "https://www.w3.org/Provider/Style/URI",
     destination: "w3.org",
     title: "Cool URIs don't change.",
@@ -851,6 +1026,8 @@ const items: Array<I> = [
 
   {
     id: "the-language-of-the-system",
+    tags: ["nm8"],
+    types: ["link"],
     href: "https://youtu.be/ROor6_NGIWU",
     destination: "youtube",
     title: "The Language of the System",
@@ -860,6 +1037,8 @@ const items: Array<I> = [
 
   {
     id: "the-value-of-values",
+    tags: ["nm8"],
+    types: ["link"],
     href: "https://youtu.be/-6BsiVyC1kM",
     destination: "youtube",
     title: "The Value of Values",
@@ -869,6 +1048,8 @@ const items: Array<I> = [
 
   {
     id: "just-hard-fail-it",
+    tags: ["nm8"],
+    types: ["link"],
     href: "https://www.usenix.org/legacy/event/lisa07/tech/full_papers/hamilton/hamilton_html/",
     destination: "usenix",
     title: "Just hard-fail it.",
@@ -878,6 +1059,8 @@ const items: Array<I> = [
 
   {
     id: "thi-ng",
+    tags: ["nm8"],
+    types: ["link"],
     href: "https://thi.ng/",
     destination: "thi.ng",
     title: "thi.ng",
@@ -887,6 +1070,8 @@ const items: Array<I> = [
 
   {
     id: "worse-is-better",
+    tags: ["nm8"],
+    types: ["link"],
     href: "https://www.dreamsongs.com/RiseOfWorseIsBetter.html",
     destination: "website",
     title: "Worse is Better",
@@ -896,6 +1081,8 @@ const items: Array<I> = [
 
   {
     id: "quine",
+    tags: ["nm8"],
+    types: ["quote"],
     quote: "Everything worth saying, and everything else as well, can be said with two characters.",
     author: "Quine",
     component: quoteComponent
@@ -903,223 +1090,248 @@ const items: Array<I> = [
 
   {
     id: "mereology",
+    tags: ["Oe"],
+    types: ["link"],
     href: "https://en.wikipedia.org/wiki/Mereology",
     destination: "wikipedia",
     title: ".Mereology",
-    groups: ["Oe"],
     component: linkComponent
   },
 
   {
     id: "sequent-calculus",
+    tags: ["Oe"],
+    types: ["link"],
     href: "https://en.wikipedia.org/wiki/Sequent_calculus",
     destination: "wikipedia",
     title: ".Sequent Calculus",
-    groups: ["Oe"],
     component: linkComponent
   },
 
   {
     id: "algebraic-structure",
+    tags: ["Oe"],
+    types: ["link"],
     href: "https://en.wikipedia.org/wiki/Algebraic_structure",
     destination: "wikipedia",
     title: ".Algebraic Structure",
-    groups: ["Oe"],
     component: linkComponent
   },
 
   {
     id: "schismogenesis",
+    tags: ["Oe"],
+    types: ["link"],
     href: "https://en.wikipedia.org/wiki/Schismogenesis",
     destination: "wikipedia",
     title: ".Schismogenesis",
-    columns: ["c2", "c3", "c9"],
-    groups: ["Oe"],
     component: linkComponent
   },
 
   {
     id: "information",
+    tags: ["Oe"],
+    types: ["link"],
     href: "https://en.wikipedia.org/wiki/Information_theory",
     destination: "wikipedia",
     title: ".Information",
-    groups: ["Oe"],
     component: linkComponent
   },
 
   {
     id: "process",
+    tags: ["Oe"],
+    types: ["link"],
     href: "https://en.wikipedia.org/wiki/Process_philosophy",
     destination: "wikipedia",
     title: ".Process",
-    groups: ["Oe"],
     component: linkComponent
   },
 
   {
     id: "bohm",
+    tags: ["Oe"],
+    types: ["link"],
     href: "https://en.wikipedia.org/wiki/David_Bohm",
     destination: "wikipedia",
     title: ".Bohm",
-    groups: ["Oe"],
     component: linkComponent
   },
 
   {
     id: "mark",
+    tags: ["smixzy"],
+    types: ["artist", "link"],
     href: "https://sugarboypress.com/",
     destination: "website",
     title: ".• Mark Hosford",
-    groups: ["smixzy", "artist", "link"],
     component: linkComponent
   },
 
   {
     id: "ashlin",
+    tags: ["smixzy"],
+    types: ["artist", "link"],
     href: "https://ashlindolanstudio.com/Home-II",
     destination: "website",
     title: ".• Ashlin Dolan",
-    groups: ["smixzy", "artist", "link"],
     component: linkComponent
   },
 
   {
     id: "tom",
+    tags: ["smixzy"],
+    types: ["artist", "link"],
     href: "https://www.tomsachs.com/",
     destination: "website",
     title: ".• Tom Sachs",
-    groups: ["smixzy", "artist", "link"],
     component: linkComponent
   },
 
   {
     id: "hilma",
+    tags: ["smixzy"],
+    types: ["artist", "link"],
     href: "https://en.wikipedia.org/wiki/Hilma_af_Klint",
     destination: "wikipedia",
     title: ".• Hilma af Klint",
-    groups: ["smixzy", "artist", "link"],
     component: linkComponent
   },
 
   {
     id: "kandinsky",
+    tags: ["smixzy"],
+    types: ["artist", "link"],
     href: "https://en.wikipedia.org/wiki/Wassily_Kandinsky",
     destination: "wikipedia",
     title: ".• Kandinsky",
-    groups: ["smixzy", "artist", "link"],
     component: linkComponent
   },
 
   {
     id: "toxi",
+    tags: ["smixzy"],
+    types: ["artist", "link"],
     href: "https://mastodon.thi.ng/@toxi",
     destination: "mastodon",
     title: ".• Karsten Schmidt",
-    groups: ["smixzy", "artist", "link"],
     component: linkComponent
   },
 
   {
     id: "terry-a-davis",
+    tags: ["smixzy"],
+    types: ["artist", "link"],
     href: "https://youtu.be/XkXPqvWJHg4",
     destination: "youtube",
     title: ".• Terry A. Davis",
-    groups: ["smixzy", "artist", "link"],
     component: linkComponent
   },
 
   {
     id: "moebius",
+    tags: ["smixzy"],
+    types: ["artist", "link"],
     href: "https://www.moebius.fr/Les-Collections.html",
     destination: "website",
     title: ".• Moebius",
-    groups: ["smixzy", "artist", "link"],
     component: linkComponent
   },
 
   {
     id: "ulises-farinas",
+    tags: ["smixzy"],
+    types: ["artist", "link"],
     href: "https://ulisesfarinas.com/",
     destination: "website",
     title: ".• Ulises Fariñas",
-    groups: ["smixzy", "artist", "link"],
     component: linkComponent
   },
 
   {
     id: "john-vermilyea",
+    tags: ["smixzy"],
+    types: ["artist", "link"],
     href: "http://www.jonvermilyea.com/",
     destination: "website",
     title: ".• Jon Vermilyea",
-    groups: ["smixzy", "artist", "link"],
     component: linkComponent
   },
 
   {
     id: "anders-nilsen",
+    tags: ["smixzy"],
+    types: ["artist", "link"],
     href: "https://www.andersbrekhusnilsen.com/booksandcomics",
     destination: "website",
     title: ".• Anders Nilsen",
-    groups: ["smixzy", "artist", "link"],
     component: linkComponent
   },
 
   {
     id: "jesse-jacobs",
+    tags: ["smixzy"],
+    types: ["artist", "link"],
     href: "https://www.jessejacobsart.com/",
     destination: "website",
     title: ".• Jesse Jacobs",
-    groups: ["smixzy", "artist", "link"],
     component: linkComponent
   },
 
   {
     id: "steve-axford",
+    tags: ["smixzy"],
+    types: ["artist", "link"],
     href: "https://steveaxford.smugmug.com/",
     destination: "smugmug",
     title: ".• Steve Axford",
-    groups: ["smixzy", "artist", "link"],
     component: linkComponent
   },
 
   {
     id: "minjeong-an",
+    tags: ["smixzy"],
+    types: ["artist", "link"],
     href: "http://www.myartda.com/",
     destination: "website",
     title: ".• Minjeong An",
-    groups: ["smixzy", "artist", "link"],
     component: linkComponent
   },
 
   {
     id: "devine-lu-linvega",
+    tags: ["smixzy"],
+    types: ["artist", "link"],
     href: "https://wiki.xxiivv.com/site/dinaisth.html",
     destination: "website",
     title: ".• Devine Lu Linvega",
-    groups: ["smixzy", "artist", "link"],
     component: linkComponent
   },
 
   {
     id: "cakebread",
+    tags: ["smixzy"],
+    types: ["artist", "link"],
     href: "http://www.quantumrain.com/",
     destination: "website",
     title: ".• Stephen Cakebread",
-    groups: ["smixzy", "artist", "link"],
     component: linkComponent
   },
 
   {
     id: "webring",
+    tags: ["smixzy"],
+    types: ["link"],
     href: "https://webring.xxiivv.com/",
     destination: "website",
     title: "{ webring }",
-    groups: ["smixzy", "artist", "link"],
     component: linkComponent
   },
 
   {
-    id: "2bfc-1",
+    id: "twobfc",
+    tags: ["smixzy"],
+    types: ["quote"],
     quote: "You play through that.",
     author: "2BFC",
     component: quoteComponent
@@ -1128,6 +1340,19 @@ const items: Array<I> = [
   // TODO: add cowboy
   // TODO: add color waterfall image
 ]
+
+const tags = [...new Set(items.flatMap((x) => x.tags || []))]
+const types = [...new Set(items.flatMap((x) => x.types || []))]
+
+const filterCheckboxComponent = (kind: string) => (x: string) => {
+  const id = `filter--${kind}--${x}`
+  const label = x === "Oe" ? ".•" : x
+  return [
+    "div", {},
+    ["label", { for: id }, label],
+    ["input", { id, type: "checkbox", name: x }]
+  ]
+}
 
 const controls = () => [
   "div.controls", {},
@@ -1141,39 +1366,12 @@ const controls = () => [
 
     ["fieldset.tag", {},
       ["legend", {}, "tag"],
-      ["div", {},
-        ["label", { for: "filter--tag--nolan" }, "nolan"],
-        ["input#filter--tag--nolan", { type: "checkbox" }]],
-      ["div", {},
-        ["label", { for: "filter--tag--nm8" }, "nm8"],
-        ["input#filter--tag--nm8", { type: "checkbox" }]],
-      ["div", {},
-        ["label", { for: "filter--tag--smixzy" }, "smixzy"],
-        ["input#filter--tag--smixzy", { type: "checkbox" }]],
-      ["div", {},
-        ["label", { for: "filter--tag--Oe" }, ".•"],
-        ["input#filter--tag--Oe", { type: "checkbox" }]
-      ]
+      ...tags.map(filterCheckboxComponent("tag")),
     ],
 
     ["fieldset.type", {},
       ["legend", {}, "type"],
-      ["div", {},
-        ["label", { for: "filter--type--gist" }, "gist"],
-        ["input#filter--type--gist", { type: "checkbox" }]],
-      ["div", {},
-        ["label", { for: "filter--type--image" }, "image"],
-        ["input#filter--type--image", { type: "checkbox" }]],
-      ["div", {},
-        ["label", { for: "filter--type--link" }, "link"],
-        ["input#filter--type--link", { type: "checkbox" }]],
-      ["div", {},
-        ["label", { for: "filter--type--quote" }, "quote"],
-        ["input#filter--type--quote", { type: "checkbox" }]],
-      ["div", {},
-        ["label", { for: "filter--type--artist" }, "artist"],
-        ["input#filter--type--artist", { type: "checkbox" }]
-      ]
+      ...types.map(filterCheckboxComponent("type"))
     ]
   ],
 
@@ -1240,39 +1438,77 @@ const rdom = $compile(root)
 await rdom.mount(document.body)
 
 
-/* NOTE: lib */
+/* TODO: lib */
 /* TODO: noscript */
+/* TODO: refine querySelectors */
+
+const grid = document.querySelector(".grid-container") as HTMLElement
+const filters = document.querySelector("fieldset.filters")
 
 const shuffle = new Shuffle(
-  document.querySelector(".grid-container")!,
+  grid,
   {
     itemSelector: '.item',
     sizer: '.sizer'
-    // group: "intro"
   }
 )
 
-const tags = ["nolan"]
-const types = ["gist"]
-const groups = ["nolan", "gist"]
-
-const afilter: boolean = (el: HTMLElement) => {
-  const attr = el.getAttribute("data-groups") || "[]"
-  const groups = JSON.parse(attr) as string[]
-  return (tags.length === 0 || tags.some((t) => groups.find((x) => x === t)))
-    && (types.length === 0 || types.some((t) => groups.find((x) => x === t)))
-}
-
-// shuffle.filter("intro")
-
-const grid = document.querySelector(".grid-container")
-const aside = document.querySelector("aside")
-
 document.querySelector("button.show")?.addEventListener("click", () => {
-  aside?.classList.toggle("show")
   const next = grid?.getAttribute("data-grid-columns") === "9" ? "7" : "9"
+  const aside = document.querySelector('aside')
+
   grid?.setAttribute("data-grid-columns", next)
+  aside?.classList.toggle("show")
 })
 
-document.querySelectorAll("fieldset").forEach((el) =>
-  el.addEventListener("change", console.log))
+const searchResult = (el: HTMLElement, searchInput: HTMLInputElement) => {
+  const v = searchInput.value.toLowerCase()
+  if ((el.textContent || "").toLowerCase().indexOf(v) >= 0)
+    return true
+
+  const imgs = Array.from(el.querySelectorAll('img'))
+  return imgs.some((x) => x.alt.toLowerCase().indexOf(v) >= 0
+    || x.src.toLowerCase().indexOf(v) >= 0)
+}
+
+const compositeFilter = (
+  searchInput: HTMLInputElement,
+  tagInputArray: HTMLInputElement[],
+  typeInputArray: HTMLInputElement[]
+) => {
+  const tagNames = tagInputArray.filter((x) => x.checked).map((x) => x.name)
+  const typeNames = typeInputArray.filter((x) => x.checked).map((x) => x.name)
+
+  return (el: HTMLElement) => {
+    const groups = JSON.parse(el.getAttribute("data-groups") || '[]') as string[]
+    return (tagNames.length === 0 || tagNames.some((t) => groups.find((x) => x === t)))
+      && (typeNames.length === 0 || typeNames.some((t) => groups.find((x) => x === t)))
+      && (searchInput?.value.length === 0 || searchResult(el, searchInput))
+  }
+}
+
+const filterEventListener = (_e: Event) => {
+  const searchInput = filters?.querySelector('fieldset.search input[type="search"]')
+  const tagInputs = filters?.querySelectorAll('fieldset.tag input[type="checkbox"]') || []
+  const typeInputs = filters?.querySelectorAll('fieldset.type input[type="checkbox"]') || []
+
+  const f = compositeFilter(
+    searchInput as HTMLInputElement,
+    Array.from(tagInputs) as HTMLInputElement[],
+    Array.from(typeInputs) as HTMLInputElement[]
+  )
+
+  shuffle.filter(f)
+}
+
+const debounce = (f: Function, interval: number) => {
+  var t: number | undefined = undefined
+  return function(this: any) {
+    clearTimeout(t)
+    t = setTimeout(() => f.apply(this, arguments), interval)
+    return t
+  }
+}
+
+filters?.addEventListener("change", filterEventListener)
+filters?.addEventListener("keyup", debounce(filterEventListener, 200))
