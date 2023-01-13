@@ -1416,11 +1416,24 @@ const controls = () => [
 
   ["fieldset.layout", {},
     ["legend", {}, "layout"],
-    ["button", {}, "randomize"]
+    ["button", {}, "randomize"],
+    ["button", {}, "resize"],
+    ["button", {}, "reset"] // ??
   ],
 
-  // TODO: sort?
-  // TODO: controls; invert, reset
+  ["fieldset.controls", {},
+    ["legend", {}, "controls"],
+    ["button", {}, "randomize"],
+    ["button", {}, "invert"],
+    ["button", {}, "reset"]
+  ],
+
+  ["fieldset.import", {},
+    ["legend", {}, "import/export"],
+    ["input", { type: "text", placeholder: "paste configuration string" }],
+    ["button", {}, "import"],
+    ["button", {}, "copy configuration string to clipboard"]
+  ],
 ]
 
 const shuffleArray = (arr: Array<any>) => {
@@ -1502,8 +1515,9 @@ const searchResult = (el: HTMLElement, searchInput: HTMLInputElement) => {
     return true
 
   const imgs = Array.from(el.querySelectorAll('img'))
-  return imgs.some((x) => x.alt.toLowerCase().indexOf(v) >= 0
-    || x.src.toLowerCase().indexOf(v) >= 0)
+  return imgs.some((x) =>
+    x.src.toLowerCase().indexOf(v) >= 0 ||
+    x.alt.toLowerCase().indexOf(v) >= 0)
 }
 
 const compositeFilter = (
@@ -1536,7 +1550,6 @@ const filterEventListener = (_e: Event) => {
 
   shuffle.filter(f)
 }
-
 
 filters?.addEventListener('input', debounce(filterEventListener, 120))
 
