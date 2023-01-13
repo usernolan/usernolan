@@ -91,21 +91,25 @@ body * {
 
 button.show {
   position: fixed;
-  width: 8vh;
-  height: 8vh;
-  transform: translate(calc(-100% - 2vh), 90vh);
-  padding-bottom: 0.5rem; /* TODO: eliminate w/ centered svg */
-  backdrop-filter: blur(2px);
+  width: 4rem;
+  height: 4rem;
+  transform: translate(calc(-100% - 2vh), calc(98vh - 4rem));
+  padding-bottom: 0.33rem; /* TODO: eliminate w/ centered svg */
+  backdrop-filter: blur(3rem);
   background: none;
-  font-size: 3rem;
-  border-radius: 0.66rem;
+  font-size: 2rem;
   border: 1px solid;
+  /* border-radius: 2px; */
   cursor: pointer;
   /* font-family: Fragment Mono; */
+  /* filter: invert(); */
+  /* background: rgba(255,255,255,0.33); */
 }
 
 button.show:hover {
-  background: rgba(36,36,36,0.25);
+  /* background: rgba(36,36,36,0.25); */
+  /* background: rgba(128,128,128,0.5); */
+  filter: invert();
 }
 
 
@@ -145,8 +149,8 @@ div.controls fieldset {
   /* display: flex; */
   /* flex-wrap: wrap; */
   /* justify-content: space-between; */
-  border-radius: 3px;
   /* border: 1px solid lightgray; */
+  border-radius: 3px;
 }
 /* div.controls > fieldset:not(:last-child) { */
 /*   margin-bottom: 1rem; */
@@ -188,6 +192,16 @@ fieldset.color div {
   width: 100%;
   object-fit: cover;
   padding: 0 0.125rem;
+}
+
+.item.smixzy.image img:hover,
+.item.Oe.image img:hover {
+  animation: 18s infinite alternate hueRotation;
+}
+
+@keyframes hueRotation {
+  from {filter: hue-rotate(0deg);}
+  to {filter: hue-rotate(360deg);}
 }
 
 .item.quote {

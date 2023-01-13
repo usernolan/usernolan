@@ -1431,7 +1431,7 @@ const shuffleArray = (arr: Array<any>) => {
   return arr
 }
 
-const root = [
+const rdomRoot = [
   "div.body", {},
   ["main", { class: "grid-container", "data-grid-columns": "9" },
     ...shuffleArray(items.slice(0)).map((x) => x.component(x as any)),
@@ -1443,7 +1443,7 @@ const root = [
   ]
 ]
 
-const rdom = $compile(root)
+const rdom = $compile(rdomRoot)
 await rdom.mount(document.body)
 
 
@@ -1453,13 +1453,10 @@ await rdom.mount(document.body)
 /* TODO: undo, back, state history, sharing */
 
 
-/* NOTE: global selectors */
+/* NOTE: shuffle, isotope, grid */
+/* TODO: revisit top level naming; els etc. */
 
 const grid = document.querySelector(".grid-container") as HTMLElement
-const filters = document.querySelector("fieldset.filters")
-
-
-/* NOTE: shuffle, isotope, grid */
 
 const shuffle = new Shuffle(
   grid,
@@ -1470,11 +1467,25 @@ const shuffle = new Shuffle(
 )
 
 
+/* NOTE: utils */
+
+const debounce = (f: Function, interval: number) => {
+  var t: number | undefined = undefined
+  return function(this: any) {
+    clearTimeout(t)
+    t = setTimeout(() => f.apply(this, arguments), interval)
+    return t
+  }
+}
+
+
 /* NOTE: controls */
 
-document.querySelector("button.show")?.addEventListener("click", () => {
+const showControlsButton = document.querySelector("button.show") as HTMLButtonElement
+const aside = document.querySelector('aside') as HTMLElement
+
+showControlsButton?.addEventListener("click", () => {
   const next = grid?.getAttribute("data-grid-columns") === "9" ? "7" : "9"
-  const aside = document.querySelector('aside')
 
   grid?.setAttribute("data-grid-columns", next)
   aside?.classList.toggle("show")
@@ -1483,8 +1494,10 @@ document.querySelector("button.show")?.addEventListener("click", () => {
 
 /* NOTE: filters */
 
+const filters = document.querySelector("fieldset.filters") as HTMLFieldSetElement
+
 const searchResult = (el: HTMLElement, searchInput: HTMLInputElement) => {
-  const v = searchInput.value.toLowerCase()
+  const v = searchInput?.value.toLowerCase()
   if ((el.textContent || "").toLowerCase().indexOf(v) >= 0)
     return true
 
@@ -1493,7 +1506,6 @@ const searchResult = (el: HTMLElement, searchInput: HTMLInputElement) => {
     || x.src.toLowerCase().indexOf(v) >= 0)
 }
 
-/* TODO: refactor forEach */
 const compositeFilter = (
   searchInput: HTMLInputElement,
   tagInputArray: HTMLInputElement[],
@@ -1510,6 +1522,7 @@ const compositeFilter = (
   }
 }
 
+/* TODO: refactor forEach */
 const filterEventListener = (_e: Event) => {
   const searchInput = filters?.querySelector('fieldset.search input[type="search"]')
   const tagInputs = filters?.querySelectorAll('fieldset.tag input[type="checkbox"]')
@@ -1524,27 +1537,20 @@ const filterEventListener = (_e: Event) => {
   shuffle.filter(f)
 }
 
-const debounce = (f: Function, interval: number) => {
-  var t: number | undefined = undefined
-  return function(this: any) {
-    clearTimeout(t)
-    t = setTimeout(() => f.apply(this, arguments), interval)
-    return t
-  }
-}
 
 filters?.addEventListener('input', debounce(filterEventListener, 120))
 
 
 /* NOTE: mode, color-scheme */
 
+const root = document.querySelector(':root') as HTMLElement
+
 const modeChangeEventListener = (e: Event) => {
   const v = (e?.target as HTMLInputElement)?.value
-  const root = document.querySelector(':root')
 
   v === 'system' ?
-    root?.removeAttribute('data-color-scheme') :
-    root?.setAttribute('data-color-scheme', v)
+    root.removeAttribute('data-color-scheme') :
+    root.setAttribute('data-color-scheme', v)
 }
 
 document.querySelector('fieldset.mode')?.addEventListener('change', modeChangeEventListener)
@@ -1552,19 +1558,20 @@ document.querySelector('fieldset.mode')?.addEventListener('change', modeChangeEv
 
 /* NOTE: color */
 
-const htmlRoot = document.querySelector(':root') as HTMLElement
 const colorFieldset = document.querySelector('fieldset.color')
-const rangeInputs = colorFieldset?.querySelectorAll('input[type="range"]')
+const rangeInputs = colorFieldset?.querySelectorAll('input[type="range"]') as NodeListOf<HTMLInputElement>
 const contrastStyle = document.createElement('style')
+
 document.head.appendChild(contrastStyle)
 
 /* NOTE: filter causes issues when applied to parent of position: fixed child; block creation */
 const colorChangeEventListener = (_e: Event) => {
-  const c = (rangeInputs?.item(0) as HTMLInputElement).value
-  const s = (rangeInputs?.item(1) as HTMLInputElement).value
-  const h = (rangeInputs?.item(2) as HTMLInputElement).value
-  const i = (rangeInputs?.item(3) as HTMLInputElement).value
-  htmlRoot.style.filter = `saturate(${s}%) hue-rotate(${h}deg) invert(${i}%)`
+  const c = rangeInputs?.item(0).value
+  const s = rangeInputs?.item(1).value
+  const h = rangeInputs?.item(2).value
+  const i = rangeInputs?.item(3).value
+
+  root.style.filter = `saturate(${s}%) hue-rotate(${h}deg) invert(${i}%)`
   contrastStyle.innerText = `main, div.controls { filter: contrast(${c}%); }`
 }
 
