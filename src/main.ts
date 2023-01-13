@@ -130,7 +130,6 @@ const gistComponent = ({ id, textComponent, columns = defaultColumns, tags = [],
 }
 
 /* TODO: onclick toggle expand */
-/* TODO: refine class string */
 /* TODO: weighted columns */
 /* TODO: lazy loaded */
 /* NOTE: include type in class so styling doesn't depend on filter */
@@ -147,7 +146,18 @@ const imageComponent = ({ id, src, alt, columns = defaultColumns, tags = [], typ
   ]
 }
 
-/* TODO: hoverableImageComponent */
+const hoverableImageComponent = ({ id, src, alt, hoverSrc, columns = defaultColumns, tags = [], types = [] }: HoverableImageItem) => {
+  const groups = tags.concat(types)
+  return [
+    "div",
+    {
+      id: `item--${id}`,
+      class: `item image hoverable ${randNth(columns)} ${groups.join(" ")}`,
+      "data-groups": JSON.stringify(groups)
+    },
+    ["img", { src, alt, "data-hover-src": hoverSrc }]
+  ]
+}
 
 const quoteComponent = ({ id, quote, author, columns = defaultColumns, tags = [], types = [] }: QuoteItem) => {
   const groups = tags.concat(types)
@@ -379,7 +389,8 @@ const items: Array<I> = [
     types: ["image"],
     src: "/jpeg/at.jpeg",
     alt: "A three dimensional @ printed in white, black, and mint green PLA.",
-    component: imageComponent
+    hoverSrc: "/gif/at.gif",
+    component: hoverableImageComponent
   },
 
   {
@@ -1589,3 +1600,21 @@ const colorChangeEventListener = (_e: Event) => {
 }
 
 colorFieldset?.addEventListener('input', colorChangeEventListener)
+
+
+/* NOTE: hoverable images */
+
+const hoverableImages = document.querySelectorAll('.hoverable img') as NodeListOf<HTMLImageElement>
+
+const swapSrcs = (e: MouseEvent) => {
+  const el = e.target as HTMLImageElement
+  const src = el.src
+
+  el.src = el.getAttribute('data-hover-src') || src
+  el.setAttribute('data-hover-src', src)
+}
+
+hoverableImages.forEach((x) => {
+  x.addEventListener('mouseenter', swapSrcs)
+  x.addEventListener('mouseleave', swapSrcs)
+})
