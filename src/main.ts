@@ -105,6 +105,7 @@ interface LinkItem extends Item {
   author?: string
 }
 
+/* TODO: weighted columns */
 const randNth = (arr: Array<any>) => arr[Math.floor(Math.random() * arr.length)]
 const defaultColumns = ["c1", "c2", "c3"]
 // const randWeighted(["c1", 0.1], ["c2", 0.5], ["c3", 0.1], ["c9", 0.01])
@@ -116,6 +117,7 @@ const defaultColumns = ["c1", "c2", "c3"]
 
 // randW(["x", 0.1], ["y", 0.2], ["z", 0.1])
 
+/* NOTE: include type in class so styling doesn't depend on filter */
 const gistComponent = ({ id, textComponent, columns = defaultColumns, tags = [], types = [] }: GistItem) => {
   const groups = tags.concat(types)
   return [
@@ -129,10 +131,7 @@ const gistComponent = ({ id, textComponent, columns = defaultColumns, tags = [],
   ]
 }
 
-/* TODO: onclick toggle expand */
-/* TODO: weighted columns */
-/* TODO: lazy loaded */
-/* NOTE: include type in class so styling doesn't depend on filter */
+/* TODO: lazy loaded? */
 const imageComponent = ({ id, src, alt, columns = defaultColumns, tags = [], types = [] }: ImageItem) => {
   const groups = tags.concat(types)
   return [
@@ -146,6 +145,7 @@ const imageComponent = ({ id, src, alt, columns = defaultColumns, tags = [], typ
   ]
 }
 
+/* TODO: lazy loaded? */
 const hoverableImageComponent = ({ id, src, alt, hoverSrc, columns = defaultColumns, tags = [], types = [] }: HoverableImageItem) => {
   const groups = tags.concat(types)
   return [
@@ -1518,7 +1518,7 @@ showControlsButton?.addEventListener("click", () => {
 
 /* NOTE: filters */
 
-const filters = document.querySelector("fieldset.filters") as HTMLFieldSetElement
+const filters = aside.querySelector("fieldset.filters") as HTMLFieldSetElement
 
 const searchResult = (el: HTMLElement, searchInput: HTMLInputElement) => {
   const v = searchInput?.value.toLowerCase()
@@ -1582,7 +1582,7 @@ document.querySelector('fieldset.mode')?.addEventListener('change', modeChangeEv
 
 /* NOTE: color */
 
-const colorFieldset = document.querySelector('fieldset.color')
+const colorFieldset = aside.querySelector('fieldset.color')
 const rangeInputs = colorFieldset?.querySelectorAll('input[type="range"]') as NodeListOf<HTMLInputElement>
 const contrastStyle = document.createElement('style')
 
@@ -1602,11 +1602,52 @@ const colorChangeEventListener = (_e: Event) => {
 colorFieldset?.addEventListener('input', colorChangeEventListener)
 
 
+/* NOTE: image resizing */
+
+const images = grid.querySelectorAll('.image') as NodeListOf<HTMLElement>
+
+const defaultColumnWidthStr = "2"
+const maxColumnWidth = 4
+
+const modColumnSizeEventListener = (e: MouseEvent) => {
+  const el = (e.target as HTMLElement).closest('.image') as HTMLElement
+  const matches = el.className.match("c(?<widthStr>[1-9])")
+  const prev = parseInt(matches?.groups?.widthStr || defaultColumnWidthStr)
+  const next = e.shiftKey ?
+    prev === 1 ? maxColumnWidth : prev - 1 :
+    prev === maxColumnWidth ? 1 : prev + 1
+
+  matches?.[0] ?
+    el.classList.replace(matches[0], `c${next}`) :
+    el.classList.add(`c${next}`)
+
+  shuffle.layout()
+}
+
+images.forEach((x) =>
+  x.addEventListener('click', modColumnSizeEventListener))
+
+var mouseTarget: HTMLElement | undefined = undefined
+document.addEventListener('mousemove', (e: MouseEvent) => {
+  mouseTarget = e.target as HTMLElement
+})
+
+document.addEventListener('keydown', (e: KeyboardEvent) => {
+  if (e.key === "Shift" && mouseTarget?.matches('.image img'))
+    mouseTarget.classList.add('cursorZoomOut')
+})
+
+document.addEventListener('keyup', (e: KeyboardEvent) => {
+  if (e.key === "Shift" && mouseTarget?.matches('.image img'))
+    mouseTarget.classList.remove('cursorZoomOut')
+})
+
+
 /* NOTE: hoverable images */
 
-const hoverableImages = document.querySelectorAll('.hoverable img') as NodeListOf<HTMLImageElement>
+const hoverableImgs = grid.querySelectorAll('.hoverable img') as NodeListOf<HTMLImageElement>
 
-const swapSrcs = (e: MouseEvent) => {
+const swapImgSrcsEventListener = (e: MouseEvent) => {
   const el = e.target as HTMLImageElement
   const src = el.src
 
@@ -1614,7 +1655,7 @@ const swapSrcs = (e: MouseEvent) => {
   el.setAttribute('data-hover-src', src)
 }
 
-hoverableImages.forEach((x) => {
-  x.addEventListener('mouseenter', swapSrcs)
-  x.addEventListener('mouseleave', swapSrcs)
+hoverableImgs.forEach((x) => {
+  x.addEventListener('mouseenter', swapImgSrcsEventListener)
+  x.addEventListener('mouseleave', swapImgSrcsEventListener)
 })

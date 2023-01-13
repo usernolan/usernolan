@@ -188,6 +188,14 @@ fieldset.color div {
   padding: 0.5rem 1rem;
 }
 
+.item.image {
+  cursor: crosshair;
+}
+
+.item.image .cursorZoomOut {
+  cursor: zoom-out;
+}
+
 .item.image img {
   width: 100%;
   object-fit: cover;
