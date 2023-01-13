@@ -141,7 +141,8 @@ const imageComponent = ({ id, src, alt, columns = defaultColumns, tags = [], typ
       class: `item image ${randNth(columns)} ${groups.join(" ")}`,
       "data-groups": JSON.stringify(groups)
     },
-    ["img", { src, alt }]
+    ["img", { src, alt }],
+    ["p", {}, alt]
   ]
 }
 
@@ -155,7 +156,8 @@ const hoverableImageComponent = ({ id, src, alt, hoverSrc, columns = defaultColu
       class: `item image hoverable ${randNth(columns)} ${groups.join(" ")}`,
       "data-groups": JSON.stringify(groups)
     },
-    ["img", { src, alt, "data-hover-src": hoverSrc }]
+    ["img", { src, alt, "data-hover-src": hoverSrc }],
+    ["p", {}, alt]
   ]
 }
 
@@ -1344,6 +1346,7 @@ const items: Array<I> = [
 
   // TODO: add cowboy
   // TODO: add color waterfall image
+  // TODO: add hints
 ]
 
 interface RangeOpts {
@@ -1429,6 +1432,7 @@ const controls = () => [
     ["legend", {}, "layout"],
     ["button", {}, "randomize"],
     ["button", {}, "resize"],
+    ["button", {}, "toggle alt text"],
     ["button", {}, "reset"] // ??
   ],
 
@@ -1602,7 +1606,7 @@ const colorChangeEventListener = (_e: Event) => {
 colorFieldset?.addEventListener('input', colorChangeEventListener)
 
 
-/* NOTE: image resizing */
+/* NOTE: image resize, alt */
 
 const images = grid.querySelectorAll('.image') as NodeListOf<HTMLElement>
 
@@ -1633,13 +1637,18 @@ document.addEventListener('mousemove', (e: MouseEvent) => {
 })
 
 document.addEventListener('keydown', (e: KeyboardEvent) => {
-  if (e.key === "Shift" && mouseTarget?.matches('.image img'))
-    mouseTarget.classList.add('cursorZoomOut')
+  if (e.key === "Shift" && mouseTarget?.matches('.image *'))
+    mouseTarget.closest('.image')?.classList.add('cursorZoomOut')
+
+  if (e.key === "Alt" && mouseTarget?.matches('.image *'))
+    e.shiftKey ? // ALT: alt+a, like cmd+a
+      images.forEach((x) => x.classList.toggle('showAlt')) :
+      mouseTarget.closest('.image')?.classList.toggle('showAlt')
 })
 
 document.addEventListener('keyup', (e: KeyboardEvent) => {
-  if (e.key === "Shift" && mouseTarget?.matches('.image img'))
-    mouseTarget.classList.remove('cursorZoomOut')
+  if (e.key === "Shift" && mouseTarget?.matches('.image *'))
+    mouseTarget.closest('.image')?.classList.remove('cursorZoomOut')
 })
 
 

@@ -10,12 +10,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-:root[data-color-scheme="dark"] {
-  color-scheme: dark;
-}
-
 :root[data-color-scheme="light"] {
   color-scheme: light;
+}
+
+:root[data-color-scheme="dark"] {
+  color-scheme: dark;
 }
 
 @supports (-webkit-text-size-adjust: 100%) {
@@ -192,7 +192,7 @@ fieldset.color div {
   cursor: crosshair;
 }
 
-.item.image .cursorZoomOut {
+.item.image.cursorZoomOut {
   cursor: zoom-out;
 }
 
@@ -200,6 +200,50 @@ fieldset.color div {
   width: 100%;
   object-fit: cover;
   padding: 0 0.125rem;
+}
+
+.item.image p {
+  z-index: -1;
+  position: absolute;
+  bottom: 0;
+  margin: 0 0.125rem 0.25rem;
+  padding: min(5%, 1rem);
+  width: calc(100% - 0.25rem);
+  max-height: 100%;
+  backdrop-filter: blur(3rem);
+  opacity: 0;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.item.image p::-webkit-scrollbar {
+  display: none;
+}
+
+.item.image.showAlt p {
+  z-index: 10;
+  opacity: 1;
+}
+
+:root[data-color-scheme="light"] .item.image p {
+  background: rgba(255,255,255,0.56);
+}
+
+:root[data-color-scheme="dark"] .item.image p {
+  background: rgba(0,0,0,0.42);
+}
+
+@media (prefers-color-scheme: light) {
+  .item.image p {
+    background: rgba(255,255,255,0.56);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .item.image p {
+    background: rgba(0,0,0,0.42);
+  }
 }
 
 .item.smixzy.image img:hover,
