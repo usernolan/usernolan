@@ -1,7 +1,7 @@
 import "./style.css"
 // import { take } from "@thi.ng/transducers/take"
 // import { repeatedly } from "@thi.ng/transducers/repeatedly"
-// import { choices } from "@thi.ng/transducers/choices"
+import { choices } from "@thi.ng/transducers/choices"
 import Shuffle from "shufflejs"
 
 /* TODO: quote formatting */
@@ -198,25 +198,72 @@ const colorChangeEventListener = (_e: Event) => {
 colorFieldset?.addEventListener('input', colorChangeEventListener)
 
 
-/* NOTE: layout */
+/* NOTE: layout actions */
 
 const layoutFieldset = aside.querySelector("fieldset.layout") as HTMLFieldSetElement
-// const items = grid.querySelectorAll(".item") as NodeListOf<HTMLElement>
+const items = grid.querySelectorAll(".item") as NodeListOf<HTMLElement>
+
+const defaultSpanChoicesStr = "1,2,3"
+
+const spanChoices = (el: HTMLElement) =>
+  (el.getAttribute('data-span-choices') || defaultSpanChoicesStr)
+    .split(",")
+    .map((el) => parseInt(el))
+
+const spanWeights = (el: HTMLElement) =>
+  el.getAttribute('data-span-weights')
+    ?.split(",")
+    .map((el) => parseFloat(el))
+
+const respan = (el: HTMLElement) => {
+  const cs = spanChoices(el)
+  const ws = spanWeights(el)
+  const next = choices(cs, ws).next().value || defaultSpanStr
+
+  if (!el.getAttribute('data-span-init')) {
+    el.setAttribute('data-span-init', el.getAttribute('data-span') || defaultSpanStr)
+  }
+
+  el.setAttribute('data-span', next)
+}
+
+const resetSpan = (el: HTMLElement) => {
+  const init = el.getAttribute('data-span-init')
+  if (init) el.setAttribute('data-span', init)
+}
 
 layoutFieldset?.querySelector('button[id$="randomize"]')
-  ?.addEventListener('click', () =>
-    shuffle.sort({ randomize: true }))
-
-// layoutFieldset?.querySelector('button[id$="resize"]')
-//   ?.addEventListener('click', (e: Event) => {
-//     items.forEach
-//   })
+  ?.addEventListener('click', () => {
+    items.forEach(respan)
+    shuffle.sort({ randomize: true })
+  })
 
 layoutFieldset?.querySelector('button[id$="toggle-alt-text"]')
   ?.addEventListener('click', () =>
     images.forEach((x) => x.classList.toggle('showAlt')))
 
 layoutFieldset?.querySelector('button[id$="reset"]')
-  ?.addEventListener('click', () =>
-    // TODO: original span
-    shuffle.sort({}))
+  ?.addEventListener('click', () => {
+    items.forEach(resetSpan)
+    shuffle.sort({})
+  })
+
+
+/* NOTE: control actions */
+
+const controlsFieldset = aside.querySelector("fieldset.controls") as HTMLFieldSetElement
+
+controlsFieldset?.querySelector('button[id$="randomize"]')
+  ?.addEventListener('click', (e: Event) => {
+    console.log(e)
+  })
+
+controlsFieldset?.querySelector('button[id$="invert"]')
+  ?.addEventListener('click', (e: Event) => {
+    console.log(e)
+  })
+
+controlsFieldset?.querySelector('button[id$="reset"]')
+  ?.addEventListener('click', (e: Event) => {
+    console.log(e)
+  })

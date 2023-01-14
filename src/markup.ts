@@ -1344,7 +1344,6 @@ const colors: RangeOpts[] = [
 
 const layoutActions = [
   "randomize",
-  "resize",
   "toggle alt text",
   "reset"
 ]
