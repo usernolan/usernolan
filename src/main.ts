@@ -40,6 +40,67 @@ const debounce = (f: Function, interval: number) => {
 }
 
 
+/* NOTE: image resize, alt */
+
+const images = grid.querySelectorAll('.image') as NodeListOf<HTMLElement>
+
+const defaultSpanStr = '2'
+const maxSpan = 3 /* TODO: screen size */
+
+const modSpanEventListener = (e: MouseEvent) => {
+  const el = (e.target as HTMLElement).closest('.image') as HTMLElement
+  const prev = parseInt(el.getAttribute('data-span') || defaultSpanStr)
+  const next = e.shiftKey ?
+    prev === 1 ? maxSpan : prev - 1 :
+    prev === maxSpan ? 1 : prev + 1
+
+  el.setAttribute('data-span', `${next}`)
+  shuffle.layout()
+}
+
+images.forEach((x) =>
+  x.addEventListener('click', modSpanEventListener))
+
+var mouseTarget: HTMLElement | undefined = undefined
+document.addEventListener('mousemove', (e: MouseEvent) => {
+  mouseTarget = e.target as HTMLElement
+})
+
+/* TODO: additional key commands; generalize listeners */
+document.addEventListener('keydown', (e: KeyboardEvent) => {
+  if (e.key === "Shift" && mouseTarget?.matches('.image *'))
+    mouseTarget.closest('.image')?.classList.add('cursorZoomOut')
+
+  if (e.key === "Alt" && mouseTarget?.matches('.image *'))
+    e.shiftKey ? // ALT: alt+a, like cmd+a
+      images.forEach((x) => x.classList.toggle('showAlt')) :
+      mouseTarget.closest('.image')?.classList.toggle('showAlt')
+})
+
+document.addEventListener('keyup', (e: KeyboardEvent) => {
+  if (e.key === "Shift" && mouseTarget?.matches('.image *'))
+    mouseTarget.closest('.image')?.classList.remove('cursorZoomOut')
+})
+
+
+/* NOTE: hoverable images */
+
+const hoverableImgs = grid.querySelectorAll('.hoverable img') as NodeListOf<HTMLImageElement>
+
+const swapImgSrcsEventListener = (e: MouseEvent) => {
+  const el = e.target as HTMLImageElement
+  const src = el.src
+
+  el.src = el.getAttribute('data-hover-src') || src
+  el.setAttribute('data-hover-src', src)
+}
+
+hoverableImgs.forEach((x) => {
+  x.addEventListener('mouseenter', swapImgSrcsEventListener)
+  x.addEventListener('mouseleave', swapImgSrcsEventListener)
+})
+
+
 /* NOTE: controls toggle */
 
 const showControlsButton = document.querySelector("button.show") as HTMLButtonElement
@@ -137,61 +198,25 @@ const colorChangeEventListener = (_e: Event) => {
 colorFieldset?.addEventListener('input', colorChangeEventListener)
 
 
-/* NOTE: image resize, alt */
+/* NOTE: layout */
 
-const images = grid.querySelectorAll('.image') as NodeListOf<HTMLElement>
+const layoutFieldset = aside.querySelector("fieldset.layout") as HTMLFieldSetElement
+// const items = grid.querySelectorAll(".item") as NodeListOf<HTMLElement>
 
-const defaultSpanStr = '2'
-const maxSpan = 3 /* TODO: screen size */
+layoutFieldset?.querySelector('button[id$="randomize"]')
+  ?.addEventListener('click', () =>
+    shuffle.sort({ randomize: true }))
 
-const modSpanEventListener = (e: MouseEvent) => {
-  const el = (e.target as HTMLElement).closest('.image') as HTMLElement
-  const prev = parseInt(el.getAttribute('data-span') || defaultSpanStr)
-  const next = e.shiftKey ?
-    prev === 1 ? maxSpan : prev - 1 :
-    prev === maxSpan ? 1 : prev + 1
+// layoutFieldset?.querySelector('button[id$="resize"]')
+//   ?.addEventListener('click', (e: Event) => {
+//     items.forEach
+//   })
 
-  el.setAttribute('data-span', `${next}`)
-  shuffle.layout()
-}
+layoutFieldset?.querySelector('button[id$="toggle-alt-text"]')
+  ?.addEventListener('click', () =>
+    images.forEach((x) => x.classList.toggle('showAlt')))
 
-images.forEach((x) =>
-  x.addEventListener('click', modSpanEventListener))
-
-var mouseTarget: HTMLElement | undefined = undefined
-document.addEventListener('mousemove', (e: MouseEvent) => {
-  mouseTarget = e.target as HTMLElement
-})
-
-document.addEventListener('keydown', (e: KeyboardEvent) => {
-  if (e.key === "Shift" && mouseTarget?.matches('.image *'))
-    mouseTarget.closest('.image')?.classList.add('cursorZoomOut')
-
-  if (e.key === "Alt" && mouseTarget?.matches('.image *'))
-    e.shiftKey ? // ALT: alt+a, like cmd+a
-      images.forEach((x) => x.classList.toggle('showAlt')) :
-      mouseTarget.closest('.image')?.classList.toggle('showAlt')
-})
-
-document.addEventListener('keyup', (e: KeyboardEvent) => {
-  if (e.key === "Shift" && mouseTarget?.matches('.image *'))
-    mouseTarget.closest('.image')?.classList.remove('cursorZoomOut')
-})
-
-
-/* NOTE: hoverable images */
-
-const hoverableImgs = grid.querySelectorAll('.hoverable img') as NodeListOf<HTMLImageElement>
-
-const swapImgSrcsEventListener = (e: MouseEvent) => {
-  const el = e.target as HTMLImageElement
-  const src = el.src
-
-  el.src = el.getAttribute('data-hover-src') || src
-  el.setAttribute('data-hover-src', src)
-}
-
-hoverableImgs.forEach((x) => {
-  x.addEventListener('mouseenter', swapImgSrcsEventListener)
-  x.addEventListener('mouseleave', swapImgSrcsEventListener)
-})
+layoutFieldset?.querySelector('button[id$="reset"]')
+  ?.addEventListener('click', () =>
+    // TODO: original span
+    shuffle.sort({}))

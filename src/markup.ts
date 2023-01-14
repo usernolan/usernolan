@@ -1342,6 +1342,19 @@ const colors: RangeOpts[] = [
   { name: "invert", value: 0 }
 ]
 
+const layoutActions = [
+  "randomize",
+  "resize",
+  "toggle alt text",
+  "reset"
+]
+
+const controlActions = [
+  "randomize",
+  "invert",
+  "reset"
+]
+
 const filterCheckboxComponent = (kind: string) => (x: string) => {
   const id = `checkbox--filter--${kind}--${x}`
   const label = x === "Oe" ? ".•" : x
@@ -1353,7 +1366,7 @@ const filterCheckboxComponent = (kind: string) => (x: string) => {
 }
 
 const radioComponent = (kind: string, checkedVal?: string) => (x: string) => {
-  const id = `$radio--${kind}--${x}`
+  const id = `radio--${kind}--${x}`
   const checked = x === checkedVal
   return [
     "div", {},
@@ -1363,12 +1376,18 @@ const radioComponent = (kind: string, checkedVal?: string) => (x: string) => {
 }
 
 const rangeComponent = (kind: string) => (opts: RangeOpts) => {
-  const id = `$range--${kind}--${opts.name}`
+  const id = `range--${kind}--${opts.name}`
   return [
     "div", {},
     ["label", { for: id }, opts.name],
     ["input", { id, type: "range", ...opts }]
   ]
+}
+
+const buttonComponent = (kind: string) => (x: string) => {
+  const xid = x.split(" ").join("-")
+  const id = `button--${kind}--${xid}`
+  return ["button", { id }, x]
 }
 
 const controls = [
@@ -1404,17 +1423,12 @@ const controls = [
 
   ["fieldset.layout", {},
     ["legend", {}, "layout"],
-    ["button", {}, "randomize"],
-    ["button", {}, "resize"],
-    ["button", {}, "toggle alt text"],
-    ["button", {}, "reset"] // ??
+    ...layoutActions.map(buttonComponent("layout"))
   ],
 
   ["fieldset.controls", {},
     ["legend", {}, "controls"],
-    ["button", {}, "randomize"],
-    ["button", {}, "invert"],
-    ["button", {}, "reset"]
+    ...controlActions.map(buttonComponent("controls"))
   ],
 
   ["fieldset.import", {},
