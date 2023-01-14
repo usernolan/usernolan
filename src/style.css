@@ -30,31 +30,25 @@ body {
   width: 100%;
   margin: 0;
   padding: 0;
-  transition: background 250ms ease, color 250ms ease;
+  display: flex;
   overflow-y: scroll; /* NOTE: force scroll bar */
+  transition: background 250ms ease, color 250ms ease;
 }
 
 body * {
   box-sizing: border-box;
 }
 
-
-/* NOTE: "body"; tmp */
-
-.body {
-  display: flex;
-}
-
-.body main {
+body main {
   width: 100%
 }
 
-.body aside {
+body aside {
   width: 0%;
   transition: width 250ms ease; /* NOTE: same as shuffle */
 }
 
-.body aside.show {
+body aside.show {
   /* width: max(212px, 22.222%); */
   /* width: max(292px, 22.222%); */
   /* width: max(388px, 22.222%); */
@@ -354,7 +348,7 @@ fieldset.color div {
 
 .item.smixzy.image img:hover,
 .item.Oe.image img:hover {
-  animation: 18s infinite alternate hueRotation;
+  animation: 16s linear infinite hueRotation;
 }
 
 @keyframes hueRotation {
