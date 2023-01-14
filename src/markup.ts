@@ -1,14 +1,21 @@
 // import { take } from "@thi.ng/transducers/take"
 // import { repeatedly } from "@thi.ng/transducers/repeatedly"
-// import { choices } from "@thi.ng/transducers/choices"
+import { shuffle } from "@thi.ng/arrays/shuffle"
+import { choices } from "@thi.ng/transducers/choices"
 
 /* TODO: image optimization, lazy, markup dimensions; inline sharp? */
+/* TODO: split dirs, watch; eliminate double reload */
+
 
 /* NOTE: item interfaces, components */
 
+type Choosable<T> =
+  Array<T>
+  | Array<[x: T, weight: number]>
+
 interface Item {
   id: string,
-  columns?: string[],
+  spans?: Choosable<number>,
   tags?: string[],
   types?: string[],
   component: (x: this) => any
@@ -39,87 +46,109 @@ interface LinkItem extends Item {
   author?: string
 }
 
-/* TODO: weighted columns */
-const randNth = (arr: Array<any>) => arr[Math.floor(Math.random() * arr.length)]
-const defaultColumns = ["c1", "c2", "c3"]
-// const randWeighted(["c1", 0.1], ["c2", 0.5], ["c3", 0.1], ["c9", 0.01])
-// const randW = (...arr: [any, number][]) => {
-//   const xs = arr.map((x) => x[0])
-//   const ws = arr.map((x) => x[1])
-//   console.log(xs, ws)
-// }
+const defaultSpans: Choosable<number> = [1, 2, 3]
 
-// const wColumns: [any, number][] = [["c1", 0.33], ["c2", 0.33], ["c3", 0.33]]
-// console.log([...take(1, choices(wColumns.map(x => x[0]), wColumns.map(x => x[1])))])
+const choiceGen = (arr: Choosable<any>) => {
+  if (arr.length === 0) return choices(arr)
 
-// NOTE: put constraints in markup, interpret on client and apply weighting?
-// NOTE: data-column-choices="c1,c2,c3", data-column-weights="0.33,0.33,0.33"
+  return Array.isArray(arr[0]) ?
+    choices(arr.map((x) => x[0]), arr.map((x) => x[1])) :
+    choices(arr)
+}
 
-// randW(["x", 0.1], ["y", 0.2], ["z", 0.1])
+const choose = (x: Choosable<any> | IterableIterator<any>) =>
+  Array.isArray(x) ?
+    choiceGen(x).next().value :
+    x.next().value
 
-const gistComponent = ({ id, textComponent, columns = defaultColumns, tags = [], types = [] }: GistItem) => {
+const choicesFrom = (arr: Choosable<any>) =>
+  Array.isArray(arr[0]) ?
+    arr.map((x) => x[0]) :
+    arr
+
+const weightsFrom = (arr: Choosable<any>) =>
+  Array.isArray(arr[0]) ?
+    arr.map((x) => x[1]) :
+    null
+
+const spanAttrs = (spans: Choosable<number>) => ({
+  "data-span": choose(spans),
+  "data-span-choices": choicesFrom(spans).join(","),
+  "data-span-weights": weightsFrom(spans)?.join(",")
+})
+
+const groupAttrs = (groups: string[]) => ({
+  "data-groups": groups.length === 0 ? null : groups.join(",")
+})
+
+const gistComponent = ({ id, textComponent, spans = defaultSpans, tags = [], types = [] }: GistItem) => {
   const groups = tags.concat(types)
   return [
     "div",
     {
       id: `item--${id}`,
-      class: `item gist ${randNth(columns)} ${groups.join(" ")}`,
-      "data-groups": groups.join(",")
+      class: `item gist ${groups.join(" ")}`,
+      ...spanAttrs(spans),
+      ...groupAttrs(groups)
     },
     Array.isArray(textComponent) ? textComponent : textComponent()
   ]
 }
 
-const imageComponent = ({ id, src, alt, columns = defaultColumns, tags = [], types = [] }: ImageItem) => {
+const imageComponent = ({ id, src, alt, spans = defaultSpans, tags = [], types = [] }: ImageItem) => {
   const groups = tags.concat(types)
   return [
     "div",
     {
       id: `item--${id}`,
-      class: `item image ${randNth(columns)} ${groups.join(" ")}`,
-      "data-groups": groups.join(",")
+      class: `item image ${groups.join(" ")}`,
+      ...spanAttrs(spans),
+      ...groupAttrs(groups)
     },
     ["img", { src, alt }],
     ["p", {}, alt]
   ]
 }
 
-const hoverableImageComponent = ({ id, src, alt, hoverSrc, columns = defaultColumns, tags = [], types = [] }: HoverableImageItem) => {
+const hoverableImageComponent = ({ id, src, alt, hoverSrc, spans = defaultSpans, tags = [], types = [] }: HoverableImageItem) => {
   const groups = tags.concat(types)
   return [
     "div",
     {
       id: `item--${id}`,
-      class: `item image hoverable ${randNth(columns)} ${groups.join(" ")}`,
-      "data-groups": groups.join(",")
+      class: `item image hoverable ${groups.join(" ")}`,
+      ...spanAttrs(spans),
+      ...groupAttrs(groups)
     },
     ["img", { src, alt, "data-hover-src": hoverSrc }],
     ["p", {}, alt]
   ]
 }
 
-const quoteComponent = ({ id, quote, author, columns = defaultColumns, tags = [], types = [] }: QuoteItem) => {
+const quoteComponent = ({ id, quote, author, spans = defaultSpans, tags = [], types = [] }: QuoteItem) => {
   const groups = tags.concat(types)
   return [
     "div",
     {
       id: `item--${id}`,
-      class: `item quote ${randNth(columns)} ${groups.join(" ")}`,
-      "data-groups": groups.join(",")
+      class: `item quote ${groups.join(" ")}`,
+      ...spanAttrs(spans),
+      ...groupAttrs(groups)
     },
     ["h2", {}, quote],
     ["p", {}, `—${author}`]
   ]
 }
 
-const linkComponent = ({ id, href, destination, title, author, columns = defaultColumns, tags = [], types = [] }: LinkItem) => {
+const linkComponent = ({ id, href, destination, title, author, spans = defaultSpans, tags = [], types = [] }: LinkItem) => {
   const groups = tags.concat(types)
   return [
     "div",
     {
       id: `item--${id}`,
-      class: `item link ${randNth(columns)} ${groups.join(" ")}`,
-      "data-groups": groups.join(",")
+      class: `item link ${groups.join(" ")}`,
+      ...spanAttrs(spans),
+      ...groupAttrs(groups)
     },
     ["a", { href },
       ["p", {}, destination],
@@ -143,7 +172,7 @@ type I =
 const items: Array<I> = [
   {
     id: "intro",
-    columns: ["c3"],
+    spans: [[3, 0.9], [9, 0.1]],
     tags: ["nolan"],
     types: ["gist"],
     textComponent: ["h1", {}, "I'm nolan."],
@@ -152,7 +181,7 @@ const items: Array<I> = [
 
   {
     id: "nm8",
-    columns: ["c2", "c3"],
+    spans: [2, 3],
     tags: ["nm8"],
     types: ["gist"],
     textComponent: ["p", {}, "I build sketchy websites and primitive furniture. They're beautiful in the same way my sister's dog is beautiful. I promise they're beautiful."],
@@ -203,7 +232,7 @@ const items: Array<I> = [
     id: "nolan-self",
     tags: ["nolan"],
     types: ["image"],
-    src: `/jpeg/nolan.self.${randNth([1, 2])}.jpeg`,
+    src: `/jpeg/nolan.self.${choose([1, 2])}.jpeg`,
     alt: "Me in grayscale",
     component: imageComponent
   },
@@ -859,7 +888,7 @@ const items: Array<I> = [
 
   {
     id: "logistic-map",
-    columns: ["c2", "c3"],
+    spans: [2, 3],
     tags: ["nolan"],
     types: ["quote"],
     quote: "Unpredictability is not randomness, but in some circumstances looks very much like it.",
@@ -932,7 +961,7 @@ const items: Array<I> = [
 
   {
     id: "chapman",
-    columns: ["c2", "c3"],
+    spans: [2, 3],
     tags: ["nolan"],
     types: ["quote"],
     quote: "There can be no fixed method for this; it’s inherently improvisational.",
@@ -1402,45 +1431,49 @@ const controls = [
 const fontHrefRoot = "https://fonts.googleapis.com/css2?family="
 const fontHref = fontHrefRoot + "Fragment+Mono:ital@0;1&family=Inter:wght@400;700&display=swap"
 
-const shuffleArray = (arr: Array<any>) => {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]]
-  }
-  return arr
-}
+const head = [
+  "head", {},
+  ["meta", { charset: "UTF-8" }],
+  ["title", "nolan"],
+  ["link", { rel: "icon", href: "/favicon.ico", sizes: "any" }],
+  ["link", { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" }],
+  ["meta", { name: "viewport", content: "width=device-width,initial-scale=1.0" }],
+  ["link", { rel: "preconnect", href: "https://fonts.googleapis.com" }],
+  ["link", { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: true }],
+  ["link", { rel: "preload", as: "style", href: fontHref }],
+  ["link", { rel: "stylesheet", media: "print", onload: "this.onload=null;this.removeAttribute('media');", href: fontHref }],
+  ["noscript", ["link", { rel: "stylesheet", href: fontHref }]],
+  ["meta", { name: "description", content: ".·" }],
+  ["meta", { property: "og:title", content: "nolan" }],
+  ["meta", { property: "og:type", content: "website" }],
+  ["meta", { property: "og:url", content: "https://usernolan.net" }]
+  // ["meta", { property: "og:image", content: "https://usernolan.net/png/Oe.self.png" }]
+]
+
+const main = [
+  "main", { class: "grid-container" },
+  ...shuffle(items).map((x) => x.component(x as any)),
+  ["div.sizer", { "data-span": 1 }]
+]
+
+const aside = [
+  "aside", {},
+  ["button.show", {}, "+"],
+  controls
+]
+
+/* TODO: noscript hide controls toggle button */
+const body = [
+  "body", {},
+  main,
+  aside,
+  ["script", { type: "module", src: "/src/main.ts" }]
+]
 
 const root = [
   "html", { lang: "en" },
-  ["head", {},
-    ["meta", { charset: "UTF-8" }],
-    ["title", "nolan"],
-    ["link", { rel: "icon", href: "/favicon.ico", sizes: "any" }],
-    ["link", { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" }],
-    ["meta", { name: "viewport", content: "width=device-width,initial-scale=1.0" }],
-    ["link", { rel: "preconnect", href: "https://fonts.googleapis.com" }],
-    ["link", { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: true }],
-    ["link", { rel: "preload", as: "style", href: fontHref }],
-    ["link", { rel: "stylesheet", media: "print", onload: "this.onload=null;this.removeAttribute('media');", href: fontHref }],
-    ["noscript", ["link", { rel: "stylesheet", href: fontHref }]],
-    ["meta", { name: "description", content: ".·" }],
-    ["meta", { property: "og:title", content: "nolan" }],
-    ["meta", { property: "og:type", content: "website" }],
-    // ["meta", { property: "og:image", content: "https://usernolan.net/png/Oe.self.png" }]
-    ["meta", { property: "og:url", content: "https://usernolan.net" }]
-  ],
-  ["body", {},
-    ["main", { class: "grid-container" },
-      ...shuffleArray(items.slice(0)).map((x) => x.component(x as any)),
-      ["div.sizer.c1", {}]
-    ],
-    ["aside", {},
-      ["button.show", {}, "+"],
-      controls
-    ],
-    ["script", { type: "module", src: "/src/main.ts" }]
-    // TODO: noscript hide controls toggle button
-  ]
+  head,
+  body
 ]
 
 export const document = [

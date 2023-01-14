@@ -18,6 +18,7 @@
     "vite": "^4.0.4"
   },
   "dependencies": {
+    "@thi.ng/transducers": "^8.3.30",
     "shufflejs": "^6.1.0"
   }
 }

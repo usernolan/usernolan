@@ -141,26 +141,22 @@ colorFieldset?.addEventListener('input', colorChangeEventListener)
 
 const images = grid.querySelectorAll('.image') as NodeListOf<HTMLElement>
 
-const defaultColumnWidthStr = "2"
-const maxColumnWidth = 3 /* TODO: screen size */
+const defaultSpanStr = '2'
+const maxSpan = 3 /* TODO: screen size */
 
-const modColumnSizeEventListener = (e: MouseEvent) => {
+const modSpanEventListener = (e: MouseEvent) => {
   const el = (e.target as HTMLElement).closest('.image') as HTMLElement
-  const matches = el.className.match("c(?<widthStr>[1-9])")
-  const prev = parseInt(matches?.groups?.widthStr || defaultColumnWidthStr)
+  const prev = parseInt(el.getAttribute('data-span') || defaultSpanStr)
   const next = e.shiftKey ?
-    prev === 1 ? maxColumnWidth : prev - 1 :
-    prev === maxColumnWidth ? 1 : prev + 1
+    prev === 1 ? maxSpan : prev - 1 :
+    prev === maxSpan ? 1 : prev + 1
 
-  matches?.[0] ?
-    el.classList.replace(matches[0], `c${next}`) :
-    el.classList.add(`c${next}`)
-
+  el.setAttribute('data-span', `${next}`)
   shuffle.layout()
 }
 
 images.forEach((x) =>
-  x.addEventListener('click', modColumnSizeEventListener))
+  x.addEventListener('click', modSpanEventListener))
 
 var mouseTarget: HTMLElement | undefined = undefined
 document.addEventListener('mousemove', (e: MouseEvent) => {
