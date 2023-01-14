@@ -697,7 +697,7 @@ const items: Array<I> = [
     tags: ["Oe"],
     types: ["image"],
     src: "/jpeg/turrell.self.jpeg",
-    alt: "Metaobservation to positive consequent.",
+    alt: "Metaobservation",
     component: imageComponent
   },
 
@@ -919,6 +919,7 @@ const items: Array<I> = [
 
   {
     id: "logistic-map",
+    columns: ["c2", "c3"],
     tags: ["nolan"],
     types: ["quote"],
     quote: "Unpredictability is not randomness, but in some circumstances looks very much like it.",
@@ -991,6 +992,7 @@ const items: Array<I> = [
 
   {
     id: "chapman",
+    columns: ["c2", "c3"],
     tags: ["nolan"],
     types: ["quote"],
     quote: "There can be no fixed method for this; it’s inherently improvisational.",
@@ -1461,7 +1463,7 @@ const shuffleArray = (arr: Array<any>) => {
 
 const rdomRoot = [
   "div.body", {},
-  ["main", { class: "grid-container", "data-grid-columns": "9" },
+  ["main", { class: "grid-container" },
     ...shuffleArray(items.slice(0)).map((x) => x.component(x as any)),
     ["div.sizer.c1", {}]
   ],
@@ -1513,9 +1515,7 @@ const showControlsButton = document.querySelector("button.show") as HTMLButtonEl
 const aside = document.querySelector('aside') as HTMLElement
 
 showControlsButton?.addEventListener("click", () => {
-  const next = grid?.getAttribute("data-grid-columns") === "9" ? "7" : "9"
-
-  grid?.setAttribute("data-grid-columns", next)
+  grid?.classList.toggle("controls-showing")
   aside?.classList.toggle("show")
 })
 
@@ -1611,7 +1611,7 @@ colorFieldset?.addEventListener('input', colorChangeEventListener)
 const images = grid.querySelectorAll('.image') as NodeListOf<HTMLElement>
 
 const defaultColumnWidthStr = "2"
-const maxColumnWidth = 4
+const maxColumnWidth = 3 /* TODO: screen size */
 
 const modColumnSizeEventListener = (e: MouseEvent) => {
   const el = (e.target as HTMLElement).closest('.image') as HTMLElement
