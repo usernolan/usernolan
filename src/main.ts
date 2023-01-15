@@ -131,8 +131,8 @@ const searchResult = (el: HTMLElement) => {
 }
 
 const compositeFilter = (el: HTMLElement) => {
-  const checkedTags = Array.from(tagFilterInputs).filter((x) => x.checked).map((x) => x.name)
-  const checkedTypes = Array.from(typeFilterInputs).filter((x) => x.checked).map((x) => x.name)
+  const checkedTags = Array.from(tagFilterInputs).filter((x) => x.checked === true).map((x) => x.name)
+  const checkedTypes = Array.from(typeFilterInputs).filter((x) => x.checked === true).map((x) => x.name)
   const groups = (el.getAttribute("data-groups") || "").split(",")
 
   return (checkedTags.length === 0 || checkedTags.some((x) => groups.find((y) => x === y)))
@@ -171,7 +171,7 @@ const contrastStyle = document.createElement('style')
 document.head.appendChild(contrastStyle)
 
 /* NOTE: filter causes issues when applied to parent of position: fixed child; block creation */
-const colorChangeEventListener = (e: Event) => {
+const colorChangeEventListener = () => {
   const c = colorRangeInputs?.item(0).value
   const s = colorRangeInputs?.item(1).value
   const h = colorRangeInputs?.item(2).value
@@ -179,7 +179,7 @@ const colorChangeEventListener = (e: Event) => {
   const f = `contrast(${c}%) hue-rotate(${h}deg) saturate(${s}%)`
 
   root.style.filter = `invert(${i}%) ${f}`
-  contrastStyle.innerText = `main, div.controls * { filter: ${f}; }` /* NOTE: wildcard differentiates node depth */
+  contrastStyle.innerText = `div.controls, div.controls * { filter: ${f}; }` /* NOTE: wildcard differentiates node depth */
 }
 
 colorFieldset?.addEventListener('input', colorChangeEventListener)
@@ -260,20 +260,63 @@ const randomizeRangeInput = (input: HTMLInputElement) => {
   colorFieldset?.dispatchEvent(new Event('input'))
 }
 
+const randIndex = (length: number) =>
+  Math.floor(Math.random() * length)
+
 controlsFieldset?.querySelector('button[id$="randomize"]')
   ?.addEventListener('click', () => {
     tagFilterInputs.forEach(randomizeCheckboxInput)
     typeFilterInputs.forEach(randomizeCheckboxInput)
-    modeRadioInputs.item(Math.floor(Math.random() * modeRadioInputs.length)).click()
+    modeRadioInputs.item(randIndex(modeRadioInputs.length)).click()
     colorRangeInputs.forEach(randomizeRangeInput)
   })
 
+const invertMode = () => {
+  const attr = root.getAttribute('data-color-scheme')
+
+  if (attr) {
+    attr === "light" ?
+      modeRadioInputs.item(2).click()
+      : modeRadioInputs.item(1).click()
+  } else {
+    window.matchMedia('(prefers-color-scheme: light)').matches ?
+      modeRadioInputs.item(2).click()
+      : modeRadioInputs.item(1).click()
+  }
+}
+
+const invertRangeInput = (input: HTMLInputElement) => {
+  const max = parseInt(input.max || "100")
+  const min = parseInt(input.min || "0")
+  const v = parseInt(input.value)
+
+  input.value = `${max - v + min}`
+  colorFieldset?.dispatchEvent(new Event('input'))
+}
+
 controlsFieldset?.querySelector('button[id$="invert"]')
-  ?.addEventListener('click', (e: Event) => {
-    console.log(e)
+  ?.addEventListener('click', () => {
+    tagFilterInputs.forEach((x) => x.click())
+    typeFilterInputs.forEach((x) => x.click())
+    invertMode()
+    colorRangeInputs.forEach(invertRangeInput)
   })
 
+const resetCheckboxInput = (input: HTMLInputElement) => {
+  if (input.checked === true) {
+    input.click()
+  }
+}
+
+const resetRangeInput = (input: HTMLInputElement) => {
+  input.value = input.getAttribute('data-value-init') || "50"
+  colorFieldset?.dispatchEvent(new Event('input'))
+}
+
 controlsFieldset?.querySelector('button[id$="reset"]')
-  ?.addEventListener('click', (e: Event) => {
-    console.log(e)
+  ?.addEventListener('click', () => {
+    tagFilterInputs.forEach(resetCheckboxInput)
+    typeFilterInputs.forEach(resetCheckboxInput)
+    modeRadioInputs.item(0).click()
+    colorRangeInputs.forEach(resetRangeInput)
   })

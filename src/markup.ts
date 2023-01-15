@@ -1379,7 +1379,7 @@ const rangeComponent = (kind: string) => (opts: RangeOpts) => {
   return [
     "div", {},
     ["label", { for: id }, opts.name],
-    ["input", { id, type: "range", ...opts }]
+    ["input", { id, type: "range", ...opts, "data-value-init": opts.value }]
   ]
 }
 
