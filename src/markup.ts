@@ -1444,6 +1444,8 @@ const controls = [
 const fontHrefRoot = "https://fonts.googleapis.com/css2?family="
 const fontHref = fontHrefRoot + "Fragment+Mono:ital@0;1&family=Inter:wght@400;700&display=swap"
 
+/* TODO: preloads */
+
 const head = [
   "head", {},
   ["meta", { charset: "UTF-8" }],
@@ -1471,7 +1473,8 @@ const main = [
 
 const aside = [
   "aside", {},
-  ["button.show", {}, "+"],
+  ["button.show-controls", {},
+    ["span", {}, "+"]],
   controls
 ]
 

@@ -1,5 +1,5 @@
 /* NOTE: root styles */
-/* TODO: fix :root background when overscrolled */
+/* TODO: fix :root background when overscrolled, mobile landscape orientation */
 
 :root {
   font-family: Inter, Helvetica Neue, Avenir, Helvetica, Arial, sans-serif;
@@ -25,7 +25,6 @@
 }
 
 body {
-  font-size: smaller;
   box-sizing: border-box;
   width: 100%;
   margin: 0;
@@ -33,6 +32,18 @@ body {
   display: flex;
   overflow-y: scroll; /* NOTE: force scroll bar */
   transition: background 250ms ease, color 250ms ease;
+}
+
+@media screen and (orientation: landscape) and (max-width: 800px) {
+  body {
+    font-size: smaller;
+  }
+}
+
+@media screen and (orientation: portrait) and (max-width: 320px) {
+  body {
+    font-size: smaller;
+  }
 }
 
 body * {
@@ -50,7 +61,7 @@ body aside {
   transform: unset; /* NOTE: avoid body * translateZ block creation for fixed position children */
 }
 
-body aside.show {
+body aside.controls-showing {
   width: max(312px, 22.222%); /* NOTE: exact width for four tags */
   flex-shrink: 0; /* NOTE: may interact poorly with scroll bar if present on hidden aside */
 }
@@ -152,6 +163,7 @@ body aside.show {
   .grid-container [data-span="7"] {width: 100%;}
   .grid-container [data-span="8"] {width: 100%;}
   .grid-container [data-span="9"] {width: 100%;}
+
   .grid-container .item.gist[data-span="1"] {width: 40%;}
   .grid-container .item.quote[data-span="1"] {width: 40%;}
   .grid-container .item.link[data-span="1"] {width: 40%;}
@@ -167,6 +179,7 @@ body aside.show {
   .grid-container [data-span="7"] {width: 100%;}
   .grid-container [data-span="8"] {width: 100%;}
   .grid-container [data-span="9"] {width: 100%;}
+
   .grid-container .item.gist[data-span="1"] {width: 100%;}
   .grid-container .item.quote[data-span="1"] {width: 100%;}
   .grid-container .item.link[data-span="1"] {width: 100%;}
@@ -175,12 +188,15 @@ body aside.show {
 
 /* NOTE: aside */
 
-button.show {
+button.show-controls {
   position: fixed;
   width: 4rem;
   height: 4rem;
   transform: translate(calc(-100% - 2vh), calc(98vh - 4rem));
-  padding-bottom: 0.33rem; /* TODO: eliminate w/ centered svg */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
   -webkit-backdrop-filter: blur(3rem);
           backdrop-filter: blur(3rem);
   background: none;
@@ -189,33 +205,13 @@ button.show {
   cursor: pointer;
 }
 
-button.show:hover {
-  filter: invert();
+button.show-controls span {
+  transform: translateY(-2px)
 }
 
-/* :root[data-color-scheme="light"] button.show { */
-/*   border-color: black; */
-/*   color: black; */
-/* } */
-
-/* @media (prefers-color-scheme: light) { */
-/*   button.show { */
-/*     border-color: black; */
-/*     color: black; */
-/*   } */
-/* } */
-
-/* :root[data-color-scheme="dark"] button.show { */
-/*   border-color: white; */
-/*   color: white; */
-/* } */
-
-/* @media (prefers-color-scheme: dark) { */
-/*   button.show { */
-/*     border-color: white; */
-/*     color: white; */
-/*   } */
-/* } */
+button.show-controls:hover {
+  filter: invert();
+}
 
 
 /* NOTE: controls */
@@ -290,7 +286,7 @@ fieldset.color div {
   cursor: crosshair;
 }
 
-.item.image.cursorZoomOut {
+.item.image.cursor-zoom-out {
   cursor: zoom-out;
 }
 
@@ -321,11 +317,11 @@ fieldset.color div {
   display: none;
 }
 
-.item.image.c1 p {
+.item.image[data-span="1"] p {
   font-size: smaller;
 }
 
-.item.image.showAlt p {
+.item.image.show-alt p {
   z-index: 10;
   opacity: 1;
 }

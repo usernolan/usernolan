@@ -72,17 +72,17 @@ document.addEventListener('mousemove', (e: MouseEvent) => {
 /* TODO: additional key commands; generalize listeners */
 document.addEventListener('keydown', (e: KeyboardEvent) => {
   if (e.key === "Shift" && mouseTarget?.matches('.image *'))
-    mouseTarget.closest('.image')?.classList.add('cursorZoomOut')
+    mouseTarget.closest('.image')?.classList.add('cursor-zoom-out')
 
   if (e.key === "Alt" && mouseTarget?.matches('.image *'))
     e.shiftKey ? // ALT: alt+a, like cmd+a
-      images.forEach((x) => x.classList.toggle('showAlt')) :
-      mouseTarget.closest('.image')?.classList.toggle('showAlt')
+      images.forEach((x) => x.classList.toggle('show-alt')) :
+      mouseTarget.closest('.image')?.classList.toggle('show-alt')
 })
 
 document.addEventListener('keyup', (e: KeyboardEvent) => {
   if (e.key === "Shift" && mouseTarget?.matches('.image *'))
-    mouseTarget.closest('.image')?.classList.remove('cursorZoomOut')
+    mouseTarget.closest('.image')?.classList.remove('cursor-zoom-out')
 })
 
 
@@ -98,6 +98,7 @@ const swapImgSrcsEventListener = (e: MouseEvent | TouchEvent) => {
   el.setAttribute('data-hover-src', src)
 }
 
+/* TODO: mouse, touch detection */
 hoverableImgs.forEach((x) => {
   x.addEventListener('mouseenter', swapImgSrcsEventListener)
   x.addEventListener('touchstart', swapImgSrcsEventListener)
@@ -107,12 +108,14 @@ hoverableImgs.forEach((x) => {
 
 /* NOTE: controls toggle */
 
-const showControlsButton = document.querySelector("button.show") as HTMLButtonElement
+const showControlsButton = document.querySelector("button.show-controls") as HTMLButtonElement
 const aside = document.querySelector('aside') as HTMLElement
 
 showControlsButton?.addEventListener("click", () => {
+  const span = showControlsButton?.querySelector('span')
+  if (span) span.innerHTML = span?.innerHTML === "+" ? "-" : "+"
   grid?.classList.toggle("controls-showing")
-  aside?.classList.toggle("show")
+  aside?.classList.toggle("controls-showing")
 })
 
 
@@ -231,7 +234,7 @@ layoutFieldset?.querySelector('button[id$="randomize"]')
 
 layoutFieldset?.querySelector('button[id$="toggle-alt-text"]')
   ?.addEventListener('click', () =>
-    images.forEach((x) => x.classList.toggle('showAlt')))
+    images.forEach((x) => x.classList.toggle('show-alt')))
 
 layoutFieldset?.querySelector('button[id$="reset"]')
   ?.addEventListener('click', () => {
