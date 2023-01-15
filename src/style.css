@@ -37,15 +37,17 @@ body {
 
 body * {
   box-sizing: border-box;
+  transform: translateZ(0); /* NOTE: force GPU */
 }
 
 body main {
-  width: 100%
+  width: 100%;
 }
 
 body aside {
   width: 0%;
   transition: width 250ms ease; /* NOTE: same as shuffle */
+  transform: unset; /* NOTE: avoid body * translateZ block creation for fixed position children */
 }
 
 body aside.show {
@@ -348,7 +350,7 @@ fieldset.color div {
 
 .item.smixzy.image img:hover,
 .item.Oe.image img:hover {
-  animation: 16s linear infinite hueRotation;
+  animation: 12s linear infinite hueRotation;
 }
 
 @keyframes hueRotation {

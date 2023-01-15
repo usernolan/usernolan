@@ -115,9 +115,12 @@ showControlsButton?.addEventListener("click", () => {
 /* NOTE: filters */
 
 const filters = aside.querySelector("fieldset.filters") as HTMLFieldSetElement
+const searchFilterInput = filters?.querySelector('fieldset.search input[type="search"]') as HTMLInputElement
+const tagFilterInputs = filters?.querySelectorAll('fieldset.tag input[type="checkbox"]') as NodeListOf<HTMLInputElement>
+const typeFilterInputs = filters?.querySelectorAll('fieldset.type input[type="checkbox"]') as NodeListOf<HTMLInputElement>
 
-const searchResult = (el: HTMLElement, searchInput: HTMLInputElement) => {
-  const v = searchInput?.value.toLowerCase()
+const searchResult = (el: HTMLElement) => {
+  const v = searchFilterInput?.value.toLowerCase()
   if ((el.textContent || "").toLowerCase().indexOf(v) >= 0)
     return true
 
@@ -127,36 +130,18 @@ const searchResult = (el: HTMLElement, searchInput: HTMLInputElement) => {
     x.alt.toLowerCase().indexOf(v) >= 0)
 }
 
-const compositeFilter = (
-  searchInput: HTMLInputElement,
-  tagInputArray: HTMLInputElement[],
-  typeInputArray: HTMLInputElement[]
-) => {
-  const tagNames = tagInputArray.filter((x) => x.checked).map((x) => x.name)
-  const typeNames = typeInputArray.filter((x) => x.checked).map((x) => x.name)
+const compositeFilter = (el: HTMLElement) => {
+  const checkedTags = Array.from(tagFilterInputs).filter((x) => x.checked).map((x) => x.name)
+  const checkedTypes = Array.from(typeFilterInputs).filter((x) => x.checked).map((x) => x.name)
+  const groups = (el.getAttribute("data-groups") || "").split(",")
 
-  return (el: HTMLElement) => {
-    const groups = (el.getAttribute("data-groups") || "").split(",")
-    return (tagNames.length === 0 || tagNames.some((t) => groups.find((x) => x === t)))
-      && (typeNames.length === 0 || typeNames.some((t) => groups.find((x) => x === t)))
-      && (searchInput?.value.length === 0 || searchResult(el, searchInput))
-  }
+  return (checkedTags.length === 0 || checkedTags.some((x) => groups.find((y) => x === y)))
+    && (checkedTypes.length === 0 || checkedTypes.some((x) => groups.find((y) => x === y)))
+    && (searchFilterInput?.value.length === 0 || searchResult(el))
 }
 
-/* TODO: refactor forEach */
-const filterEventListener = (_e: Event) => {
-  const searchInput = filters?.querySelector('fieldset.search input[type="search"]')
-  const tagInputs = filters?.querySelectorAll('fieldset.tag input[type="checkbox"]')
-  const typeInputs = filters?.querySelectorAll('fieldset.type input[type="checkbox"]')
-
-  const f = compositeFilter(
-    searchInput as HTMLInputElement,
-    Array.from(tagInputs || []) as HTMLInputElement[],
-    Array.from(typeInputs || []) as HTMLInputElement[]
-  )
-
-  shuffle.filter(f)
-}
+const filterEventListener =
+  () => shuffle.filter(compositeFilter)
 
 filters?.addEventListener('input', debounce(filterEventListener, 120))
 
@@ -164,6 +149,7 @@ filters?.addEventListener('input', debounce(filterEventListener, 120))
 /* NOTE: mode, color-scheme */
 
 const root = document.querySelector(':root') as HTMLElement
+const modeFieldset = aside?.querySelector('fieldset.mode')
 
 const modeChangeEventListener = (e: Event) => {
   const v = (e?.target as HTMLInputElement)?.value
@@ -173,26 +159,27 @@ const modeChangeEventListener = (e: Event) => {
     root.setAttribute('data-color-scheme', v)
 }
 
-document.querySelector('fieldset.mode')?.addEventListener('change', modeChangeEventListener)
+modeFieldset?.addEventListener('change', modeChangeEventListener)
 
 
 /* NOTE: color */
 
 const colorFieldset = aside.querySelector('fieldset.color')
-const rangeInputs = colorFieldset?.querySelectorAll('input[type="range"]') as NodeListOf<HTMLInputElement>
-const contrastStyle = document.createElement('style')
+const colorRangeInputs = colorFieldset?.querySelectorAll('input[type="range"]') as NodeListOf<HTMLInputElement>
 
+const contrastStyle = document.createElement('style')
 document.head.appendChild(contrastStyle)
 
 /* NOTE: filter causes issues when applied to parent of position: fixed child; block creation */
-const colorChangeEventListener = (_e: Event) => {
-  const c = rangeInputs?.item(0).value
-  const s = rangeInputs?.item(1).value
-  const h = rangeInputs?.item(2).value
-  const i = rangeInputs?.item(3).value
+const colorChangeEventListener = (e: Event) => {
+  const c = colorRangeInputs?.item(0).value
+  const s = colorRangeInputs?.item(1).value
+  const h = colorRangeInputs?.item(2).value
+  const i = colorRangeInputs?.item(3).value
+  const f = `contrast(${c}%) hue-rotate(${h}deg) saturate(${s}%)`
 
-  root.style.filter = `saturate(${s}%) hue-rotate(${h}deg) invert(${i}%)`
-  contrastStyle.innerText = `main, div.controls { filter: contrast(${c}%); }`
+  root.style.filter = `invert(${i}%) ${f}`
+  contrastStyle.innerText = `main, div.controls * { filter: ${f}; }` /* NOTE: wildcard differentiates node depth */
 }
 
 colorFieldset?.addEventListener('input', colorChangeEventListener)
@@ -251,11 +238,34 @@ layoutFieldset?.querySelector('button[id$="reset"]')
 
 /* NOTE: control actions */
 
-const controlsFieldset = aside.querySelector("fieldset.controls") as HTMLFieldSetElement
+const controlsFieldset = aside.querySelector('fieldset.controls') as HTMLFieldSetElement
+const modeRadioInputs = modeFieldset?.querySelectorAll('input[type="radio"]') as NodeListOf<HTMLInputElement>
+
+const randomizeCheckboxInput = (input: HTMLInputElement) => {
+  if (Math.random() >= 0.5) {
+    input.click()
+  }
+}
+
+const randomizeRangeInput = (input: HTMLInputElement) => {
+  const min = parseInt(input.min || "0")
+  const max = parseInt(input.max || "100")
+  const r = Math.floor(Math.random() * (max - min) + min)
+  const x =
+    input.name === "invert" && (42 < r && r < 56) ?
+      r < 50 ? "0" : "100"
+      : `${r}`
+
+  input.value = x
+  colorFieldset?.dispatchEvent(new Event('input'))
+}
 
 controlsFieldset?.querySelector('button[id$="randomize"]')
-  ?.addEventListener('click', (e: Event) => {
-    console.log(e)
+  ?.addEventListener('click', () => {
+    tagFilterInputs.forEach(randomizeCheckboxInput)
+    typeFilterInputs.forEach(randomizeCheckboxInput)
+    modeRadioInputs.item(Math.floor(Math.random() * modeRadioInputs.length)).click()
+    colorRangeInputs.forEach(randomizeRangeInput)
   })
 
 controlsFieldset?.querySelector('button[id$="invert"]')
