@@ -63,6 +63,7 @@ body aside.show {
 
 .grid-container {
   position: relative;
+  min-height: 100vh;
 }
 
 /* TODO: nesting? */
