@@ -59,7 +59,7 @@ const modSpanEventListener = (e: MouseEvent) => {
 
   setTimeout(() =>
     el.scrollIntoView({ behavior: "smooth", block: "center" }),
-    shuffle.options.speed
+    (shuffle.options.speed || 250) * 1.5
   )
 }
 
@@ -92,7 +92,7 @@ document.addEventListener('keyup', (e: KeyboardEvent) => {
 
 const hoverableImgs = grid.querySelectorAll('.hoverable img') as NodeListOf<HTMLImageElement>
 
-const swapImgSrcsEventListener = (e: MouseEvent) => {
+const swapImgSrcsEventListener = (e: MouseEvent | TouchEvent) => {
   const el = e.target as HTMLImageElement
   const src = el.src
 
@@ -102,6 +102,7 @@ const swapImgSrcsEventListener = (e: MouseEvent) => {
 
 hoverableImgs.forEach((x) => {
   x.addEventListener('mouseenter', swapImgSrcsEventListener)
+  x.addEventListener('touchstart', swapImgSrcsEventListener)
   x.addEventListener('mouseleave', swapImgSrcsEventListener)
 })
 
