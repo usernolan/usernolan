@@ -56,6 +56,11 @@ const modSpanEventListener = (e: MouseEvent) => {
 
   el.setAttribute('data-span', `${next}`)
   shuffle.layout()
+
+  setTimeout(() =>
+    el.scrollIntoView({ behavior: "smooth", block: "center" }),
+    shuffle.options.speed
+  )
 }
 
 images.forEach((x) =>
