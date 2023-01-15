@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:markup": "nodemon -x ts-node-esm src/gen.ts",
+    "dev:markup": "nodemon -x ts-node-esm -i src/main.ts src/gen.ts",
     "build": "tsc && ts-node-esm src/gen.ts && vite build",
     "preview": "vite preview"
   },
