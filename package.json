@@ -6,13 +6,17 @@
   "scripts": {
     "dev": "vite",
     "dev:markup": "nodemon -x ts-node-esm -i src/main.ts src/gen.ts",
-    "build": "tsc && ts-node-esm src/gen.ts && vite build",
+    "build:css": "postcss src/*.css --use autoprefixer --replace --no-map",
+    "build": "tsc && yarn build:css && ts-node-esm src/gen.ts && vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
     "@thi.ng/hiccup": "^4.2.29",
     "@types/node": "^18.11.18",
+    "autoprefixer": "^10.4.13",
     "nodemon": "^2.0.20",
+    "postcss": "^8.4.21",
+    "postcss-cli": "^10.1.0",
     "ts-node": "^10.9.1",
     "typescript": "^4.6.4",
     "vite": "^4.0.4"

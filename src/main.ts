@@ -1,6 +1,4 @@
 import "./style.css"
-// import { take } from "@thi.ng/transducers/take"
-// import { repeatedly } from "@thi.ng/transducers/repeatedly"
 import { choices } from "@thi.ng/transducers/choices"
 import Shuffle from "shufflejs"
 
