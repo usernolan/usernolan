@@ -1342,15 +1342,17 @@ const colors: RangeOpts[] = [
   { name: "invert", value: 0 }
 ]
 
-const layoutActions = [
+const defaultActions = [
   "randomize",
-  "toggle alt text",
+  "invert",
   "reset"
 ]
 
-const controlActions = [
+const layoutActions = [
   "randomize",
-  "invert",
+  // increase images
+  // reduce images
+  "toggle alt text",
   "reset"
 ]
 
@@ -1407,6 +1409,10 @@ const controls = [
     ["fieldset.type", {},
       ["legend", {}, "type"],
       ...types.map(filterCheckboxComponent("type"))
+    ],
+
+    ["div.actions", {},
+      ...defaultActions.map(buttonComponent("filter"))
     ]
   ],
 
@@ -1417,17 +1423,15 @@ const controls = [
 
   ["fieldset.color", {},
     ["legend", {}, "color"],
-    ...colors.map(rangeComponent("color"))
+    ["div.inputs", {}, ...colors.map(rangeComponent("color"))],
+    ["div.actions", {}, ...defaultActions.map(buttonComponent("color"))]
   ],
 
   ["fieldset.layout", {},
     ["legend", {}, "layout"],
-    ...layoutActions.map(buttonComponent("layout"))
-  ],
-
-  ["fieldset.controls", {},
-    ["legend", {}, "controls"],
-    ...controlActions.map(buttonComponent("controls"))
+    ["div.actions", {},
+      ...layoutActions.map(buttonComponent("layout"))
+    ]
   ],
 
   ["fieldset.import", {},
