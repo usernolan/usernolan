@@ -37,6 +37,12 @@ const debounce = (f: Function, interval: number) => {
   }
 }
 
+const orientationMedia = window.matchMedia('(orientation: portrait)')
+var isPortrait = orientationMedia.matches
+
+orientationMedia.addEventListener('change', (e) =>
+  isPortrait = e.matches)
+
 
 /* NOTE: image resize, alt */
 
@@ -56,7 +62,7 @@ const modSpanEventListener = (e: MouseEvent) => {
   shuffle.layout()
 
   setTimeout(() =>
-    el.scrollIntoView({ behavior: "smooth", block: "center" }),
+    el.scrollIntoView({ behavior: "smooth", block: isPortrait ? "start" : "center" }),
     (shuffle.options.speed || 250) * 1.5
   )
 }
