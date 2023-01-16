@@ -666,7 +666,7 @@ const items: Array<I> = [
     tags: ["Oe"],
     types: ["image"],
     src: "/jpeg/turrell.self.jpeg",
-    alt: "Metaobservation",
+    alt: "Observing observation",
     component: imageComponent
   },
 

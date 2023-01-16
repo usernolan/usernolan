@@ -126,10 +126,87 @@ const showControlsButton = document.querySelector("button.show-controls") as HTM
 const aside = document.querySelector('aside') as HTMLElement
 
 showControlsButton?.addEventListener("click", () => {
-  const span = showControlsButton?.querySelector('span')
-  if (span) span.innerHTML = span?.innerHTML === "+" ? "-" : "+"
-  grid?.classList.toggle("controls-showing")
-  aside?.classList.toggle("controls-showing")
+  if (!isPortrait) {
+    const span = showControlsButton?.querySelector('span')
+    if (span) span.innerHTML = span?.innerHTML === "+" ? "-" : "+"
+    grid?.classList.toggle("controls-showing")
+    aside?.classList.toggle("controls-showing")
+  }
+})
+
+var showControlsButtonTouchStartY: number | null = null
+var asideHeightStart = aside?.clientHeight
+var asideHeightTouchMoved: boolean | null = null
+
+const snapAsideHeight = () => {
+  const b = showControlsButton.clientHeight
+  const vh = window.innerHeight / 100
+
+  if (aside?.clientHeight >= window.innerHeight - (b + 2 * vh)) {
+    aside.style.height = `${window.innerHeight - (b + 4 * vh)}px`
+  } else if (aside?.clientHeight <= 8 * vh) {
+    aside.style.height = "0px"
+  }
+}
+
+const defaultAsideHeightStyle = () =>
+  `${(window.innerHeight / 100) * 42}px`
+
+showControlsButton?.addEventListener("touchstart", (e) => {
+  if (isPortrait) {
+    showControlsButtonTouchStartY = e.touches[0].clientY
+    asideHeightStart = aside?.clientHeight
+  }
+})
+
+showControlsButton?.addEventListener("touchmove", (e) => {
+  e.preventDefault() // NOTE: cancel scroll
+  if (isPortrait) {
+    aside.style.transition = "none"
+
+    const d = (showControlsButtonTouchStartY || e.touches[0].clientY) - e.touches[0].clientY
+    const h = asideHeightStart + d
+
+    aside.style.height = `${h}px`
+    asideHeightTouchMoved = true
+  }
+})
+
+showControlsButton?.addEventListener("touchend", () => {
+  if (isPortrait) {
+    aside.style.transition = ""
+    snapAsideHeight()
+
+    const isClosed = aside.style.height === "0px"
+    if (asideHeightTouchMoved) {
+      const prev = isClosed ?
+        defaultAsideHeightStyle()  // NOTE: snapped down
+        : aside.style.height
+
+      aside?.setAttribute('data-previous-height', prev)
+      showControlsButtonTouchStartY = null
+      asideHeightTouchMoved = false;
+    } else {
+      if (isClosed) {
+        aside.style.height =
+          aside?.getAttribute('data-previous-height')
+          || defaultAsideHeightStyle()
+      } else {
+        aside?.setAttribute('data-previous-height', aside.style.height)
+        aside.style.height = "0px"
+      }
+    }
+
+    const span = showControlsButton?.querySelector('span')
+    if (span) span.innerHTML = isClosed ? "+" : "-"
+    if (isClosed) {
+      grid?.classList.remove("controls-showing")
+      aside?.classList.remove("controls-showing")
+    } else {
+      grid?.classList.add("controls-showing")
+      aside?.classList.add("controls-showing")
+    }
+  }
 })
 
 

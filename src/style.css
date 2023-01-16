@@ -1,5 +1,4 @@
 /* NOTE: root styles */
-/* TODO: fix :root background when overscrolled, mobile landscape orientation */
 
 :root {
   font-family: Inter, Helvetica Neue, Avenir, Helvetica, Arial, sans-serif;
@@ -92,7 +91,7 @@ body aside {
   }
 
   body aside.controls-showing {
-    height: 42vh;
+    /* height: 42vh; */
   }
 
   :root[data-color-scheme="light"] aside {
