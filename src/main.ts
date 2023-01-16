@@ -30,9 +30,9 @@ const shuffle = new Shuffle(
 
 const debounce = (f: Function, interval: number) => {
   var t: NodeJS.Timeout | number | undefined = undefined
-  return function(this: any) {
+  return function(this: any, ...args: any) {
     clearTimeout(t)
-    t = setTimeout(() => f.apply(this, arguments), interval)
+    t = setTimeout(() => f.apply(this, args), interval)
     return t
   }
 }
