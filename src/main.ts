@@ -78,6 +78,11 @@ const modSpanEventListener = (e: MouseEvent) => {
 images.forEach((x) =>
   x.addEventListener('click', modSpanEventListener))
 
+images.forEach((x) =>
+  x.addEventListener('touchstart', () =>
+    x.querySelector('img')
+      ?.dispatchEvent(new Event('hover'))))
+
 var mouseTarget: HTMLElement | undefined = undefined
 document.addEventListener('mousemove', (e: MouseEvent) => {
   mouseTarget = e.target as HTMLElement
@@ -165,8 +170,8 @@ showControlsButton?.addEventListener("touchmove", (e) => {
   if (isPortrait) {
     aside.style.transition = "none"
 
-    const d = (showControlsButtonTouchStartY || e.touches[0].clientY) - e.touches[0].clientY
-    const h = asideHeightStart + d
+    const startY = showControlsButtonTouchStartY || e.touches[0].clientY
+    const h = asideHeightStart + startY - e.touches[0].clientY
 
     aside.style.height = `${h}px`
     asideHeightTouchMoved = true
@@ -180,7 +185,7 @@ showControlsButton?.addEventListener("touchend", () => {
 
     if (asideHeightTouchMoved) {
       const prev = aside.style.height === "0px" ?
-        defaultAsideHeightStyle()  // NOTE: snapped down
+        defaultAsideHeightStyle()  // NOTE: snapped closed
         : aside.style.height
 
       aside?.setAttribute('data-previous-height', prev)
