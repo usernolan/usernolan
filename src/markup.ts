@@ -1432,18 +1432,18 @@ const controls = [
     ...modes.map(radioComponent("mode", modes[0]))
   ],
 
-  ["fieldset.color", {},
-    ["legend", {}, "color"],
-    ["div.inputs", {}, ...colors.map(rangeComponent("color"))],
-    ["div.actions", {}, ...defaultActions.map(buttonComponent("color"))]
-  ],
-
   ["fieldset.layout", {},
     ["legend", {}, "layout"],
     ["div.actions", {},
       ...layoutActions.map(buttonComponent("layout"))
     ]
   ],
+
+  ["fieldset.color", {},
+    ["legend", {}, "color"],
+    ["div.inputs", {}, ...colors.map(rangeComponent("color"))],
+    ["div.actions", {}, ...defaultActions.map(buttonComponent("color"))]
+  ]
 ]
 
 
