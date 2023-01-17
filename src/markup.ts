@@ -169,10 +169,10 @@ type I =
   | QuoteItem
   | LinkItem
 
-const items: Array<I> = [
+const nolanItems: Array<I> = [
   {
     id: "intro",
-    spans: [[3, 0.9], [9, 0.1]],
+    spans: [3],
     tags: ["nolan"],
     types: ["gist"],
     textComponent: ["h1", {}, "I'm nolan."],
@@ -180,67 +180,16 @@ const items: Array<I> = [
   },
 
   {
-    id: "nm8",
-    spans: [2, 3],
-    tags: ["nm8"],
-    types: ["gist"],
-    textComponent: ["p", {}, "I build sketchy websites and primitive furniture. They're beautiful in the same way my sister's dog is beautiful. I promise they're beautiful."],
-    component: gistComponent
-  },
-
-  {
-    id: "smixzy",
-    tags: ["smixzy"],
-    types: ["gist"],
-    textComponent: ["h3", {}, "I generate a lot of nonsense, acrylic, and handmade garbage. 🤢"],
-    component: gistComponent
-  },
-
-  {
-    id: "arcane-mage",
-    tags: ["smixzy"],
-    types: ["gist"],
-    textComponent: ["p", {}, "Lv. 70 arcane mage"],
-    component: gistComponent
-  },
-
-  {
-    id: "-•",
-    tags: ["Oe"],
-    types: ["gist"],
-    textComponent: ["p", {}, "I think a lot about language, logic, proof, etc.: real game of life hours, you know the one."],
-    component: gistComponent
-  },
-
-  {
-    id: "Oe",
-    tags: ["Oe"],
-    types: ["gist"],
-    textComponent: ["p", {}, "observe ∘ explicate"],
-    component: gistComponent
-  },
-
-  {
-    id: "blizzard",
-    types: ["quote"],
-    quote: "Stay a while, and listen.",
-    author: "Deckard Cain",
-    component: quoteComponent
-  },
-
-  {
     id: "nolan-self",
-    spans: [[1, 0.10], [2, 0.05], [3, 0.33], [4, 0.035]],
     tags: ["nolan"],
     types: ["image"],
-    src: `/jpeg/nolan.self.${choose([1,2])}.jpeg`,
+    src: `/jpeg/nolan.self.${choose([1, 2])}.jpeg`,
     alt: "Me in grayscale",
     component: imageComponent
   },
 
   {
     id: "persevere",
-    spans: [[1, 0.1], [2, 0.1], [3, 0.25], [4, 0.25]],
     tags: ["nolan"],
     types: ["image"],
     src: "/jpeg/persevere.jpeg",
@@ -345,6 +294,126 @@ const items: Array<I> = [
     src: "/jpeg/bridge.jpeg",
     alt: "Admiring my shoes on a narrow bridge above a rapid creek.",
     component: imageComponent
+  },
+
+  {
+    id: "claude",
+    tags: ["nolan"],
+    types: ["quote"],
+    quote: "My greatest concern was what to call it.",
+    author: "Claude Shannon",
+    component: quoteComponent
+  },
+
+  {
+    id: "rich",
+    tags: ["nolan"],
+    types: ["quote"],
+    quote: "We don't get to stop the world, especially not to observe it.",
+    author: "Rich Hickey",
+    component: quoteComponent
+  },
+
+  {
+    id: "logistic-map",
+    spans: [2, 3],
+    tags: ["nolan"],
+    types: ["quote"],
+    quote: "Unpredictability is not randomness, but in some circumstances looks very much like it.",
+    author: "Wikipedia; Logistic Map",
+    component: quoteComponent
+  },
+
+  {
+    id: "anw-1",
+    tags: ["nolan"],
+    types: ["quote"],
+    quote: "One main factor in the upward trend of animal life has been the power of wandering.",
+    author: "Alfred North Whitehead",
+    component: quoteComponent
+  },
+
+  {
+    id: "anw-2",
+    tags: ["nolan"],
+    types: ["quote"],
+    quote: "Unlimited possibility and abstract creativity can procure nothing.",
+    author: "Alfred North Whitehead",
+    component: quoteComponent
+  },
+
+  {
+    id: "anw-3",
+    tags: ["nolan"],
+    types: ["quote"],
+    quote: "A science that hesitates to forget its founders is lost.",
+    author: "Alfred North Whitehead",
+    component: quoteComponent
+  },
+
+  {
+    id: "anw-4",
+    tags: ["nolan"],
+    types: ["quote"],
+    quote: "We think in generalities, but we live in details.",
+    author: "Alfred North Whitehead",
+    component: quoteComponent
+  },
+
+  {
+    id: "fifield",
+    tags: ["nolan"],
+    types: ["quote"],
+    quote: "Answer is the dead stop.",
+    author: "William Fifield",
+    component: quoteComponent
+  },
+
+  {
+    id: "chris-a",
+    tags: ["nolan"],
+    types: ["quote"],
+    quote: "The wholeness is made of parts, the parts are created by the wholeness.",
+    author: "Christopher Alexander",
+    component: quoteComponent
+  },
+
+  {
+    id: "rs",
+    tags: ["nolan"],
+    types: ["quote"],
+    quote: "These build on themselves. You notice that anything you are aware of is in the process of changing as you notice it.",
+    author: "R.S.",
+    component: quoteComponent
+  },
+
+  {
+    id: "chapman",
+    spans: [2, 3],
+    tags: ["nolan"],
+    types: ["quote"],
+    quote: "There can be no fixed method for this; it’s inherently improvisational.",
+    author: "David Chapman",
+    component: quoteComponent
+  },
+
+  {
+    id: "blizzard",
+    types: ["quote"],
+    quote: "Stay a while, and listen.",
+    author: "Deckard Cain",
+    component: quoteComponent
+  }
+]
+
+const nm8Items: Array<I> = [
+  {
+    id: "nm8",
+    spans: [2, 3],
+    tags: ["nm8"],
+    types: ["gist"],
+    textComponent: ["p", {}, "I build sketchy websites and primitive furniture. They're beautiful in the same way my sister's dog is beautiful. I promise they're beautiful."],
+    component: gistComponent
   },
 
   {
@@ -493,12 +562,592 @@ const items: Array<I> = [
   },
 
   {
+    id: "tom",
+    tags: ["nm8", "smixzy"],
+    types: ["artist", "link"],
+    href: "https://www.tomsachs.com/",
+    destination: "website",
+    title: ".• Tom Sachs",
+    component: linkComponent
+  },
+
+  {
     id: "di",
     tags: ["nm8"],
     types: ["image"],
     src: "/jpeg/di.jpeg",
     alt: "The greatest mother to have ever done it hauling her offspring's garbage through a hardware store.",
     component: imageComponent
+  },
+
+  {
+    id: "the-mess-were-in",
+    tags: ["nm8"],
+    types: ["link"],
+    href: "https://youtu.be/lKXe3HUG2l4",
+    destination: "youtube",
+    title: "The Mess We're In",
+    author: "Joe Armstrong",
+    component: linkComponent
+  },
+
+  {
+    id: "how-to-sweep",
+    tags: ["nm8"],
+    types: ["link"],
+    href: "https://youtu.be/Kt-VlZpz-8E",
+    destination: "youtube",
+    title: "How to Sweep.",
+    author: "Tom Sachs",
+    component: linkComponent
+  },
+
+  {
+    id: "cool-uris",
+    tags: ["nm8"],
+    types: ["link"],
+    href: "https://www.w3.org/Provider/Style/URI",
+    destination: "w3.org",
+    title: "Cool URIs don't change.",
+    author: "Tim BL",
+    component: linkComponent
+  },
+
+  {
+    id: "the-language-of-the-system",
+    tags: ["nm8"],
+    types: ["link"],
+    href: "https://youtu.be/ROor6_NGIWU",
+    destination: "youtube",
+    title: "The Language of the System",
+    author: "Rich Hickey",
+    component: linkComponent
+  },
+
+  {
+    id: "the-value-of-values",
+    tags: ["nm8"],
+    types: ["link"],
+    href: "https://youtu.be/-6BsiVyC1kM",
+    destination: "youtube",
+    title: "The Value of Values",
+    author: "Rich Hickey",
+    component: linkComponent
+  },
+
+  {
+    id: "just-hard-fail-it",
+    tags: ["nm8"],
+    types: ["link"],
+    href: "https://www.usenix.org/legacy/event/lisa07/tech/full_papers/hamilton/hamilton_html/",
+    destination: "usenix",
+    title: "Just hard-fail it.",
+    author: "James Hamilton",
+    component: linkComponent
+  },
+
+  {
+    id: "thi-ng",
+    tags: ["nm8", "smixzy"],
+    types: ["link"],
+    href: "https://thi.ng/",
+    destination: "thi.ng",
+    title: "thi.ng",
+    author: "Karsten Schmidt",
+    component: linkComponent
+  },
+
+  {
+    id: "toxi",
+    tags: ["nm8", "smixzy"],
+    types: ["artist", "link"],
+    href: "https://mastodon.thi.ng/@toxi",
+    destination: "mastodon",
+    title: ".• Karsten Schmidt",
+    component: linkComponent
+  },
+
+  {
+    id: "worse-is-better",
+    tags: ["nm8", "smixzy"],
+    types: ["link"],
+    href: "https://www.dreamsongs.com/RiseOfWorseIsBetter.html",
+    destination: "website",
+    title: "Worse is Better",
+    author: "Richard Gabriel",
+    component: linkComponent
+  },
+
+  {
+    id: "quine",
+    tags: ["nm8"],
+    types: ["quote"],
+    quote: "Everything worth saying, and everything else as well, can be said with two characters.",
+    author: "Quine",
+    component: quoteComponent
+  }
+]
+
+const smixzyItems: Array<I> = [
+  {
+    id: "smixzy",
+    tags: ["smixzy"],
+    types: ["gist"],
+    textComponent: ["h3", {}, "I generate a lot of nonsense, acrylic, and handmade garbage. 🤢"],
+    component: gistComponent
+  },
+
+  {
+    id: "arcane-mage",
+    tags: ["smixzy"],
+    types: ["gist"],
+    textComponent: ["p", {}, "Lv. 70 arcane mage"],
+    component: gistComponent
+  },
+
+  {
+    id: "twobfc",
+    tags: ["smixzy"],
+    types: ["quote"],
+    quote: "You play through that.",
+    author: "2BFC",
+    component: quoteComponent
+  },
+
+  {
+    id: "smixzy-self",
+    tags: ["smixzy"],
+    types: ["image"],
+    src: "/jpeg/smixzy.self.jpeg",
+    alt: "Still me, but in my favorite clothes.",
+    component: imageComponent
+  },
+
+  {
+    id: "concrete",
+    tags: ["smixzy"],
+    types: ["image"],
+    src: "/jpeg/concrete.jpeg",
+    alt: "Soft concrete.",
+    component: imageComponent
+  },
+
+  {
+    id: "ass",
+    tags: ["smixzy"],
+    types: ["image"],
+    src: "/jpeg/ass-drag.jpeg",
+    alt: "A purple Post-it® with 'ASS DRAG' written on it in caps lock. There's so much more where this came from.",
+    component: imageComponent
+  },
+
+  {
+    id: "send-nudes",
+    tags: ["smixzy"],
+    types: ["image"],
+    src: "/jpeg/send-nudes.jpeg",
+    alt: "A quintessential United States Postal Service® mailbox with 'SEND NUDES' painted on the side, right above the logo.",
+    component: imageComponent
+  },
+
+  {
+    id: "instaworthy",
+    tags: ["smixzy"],
+    types: ["image"],
+    src: "/jpeg/instaworthy.jpeg",
+    alt: "An Instagram®-worthy bedside table with 'SHIT IN MY MOUTH' lovingly expressed on the signboard.",
+    component: imageComponent
+  },
+
+  {
+    id: "fnd-ur-way",
+    tags: ["smixzy"],
+    types: ["image"],
+    src: "/jpeg/fnd-ur-way.jpeg",
+    alt: "A hand-drawn sticker on a road sign that says 'FND UR WAY' under a skull with a staircase leading into the brain compartment.",
+    component: imageComponent
+  },
+
+  {
+    id: "face",
+    tags: ["smixzy"],
+    types: ["image"],
+    src: "/jpeg/face.preview.jpeg",
+    alt: "The word 'FACE' permanently etched into a concrete sidewalk.",
+    component: imageComponent
+  },
+
+  {
+    id: "sunglasses",
+    tags: ["smixzy"],
+    types: ["image"],
+    src: "/jpeg/sunglasses.jpeg",
+    alt: "The sidewalk shadows of two people holding heart-shaped sunglasses up to sunlight.",
+    component: imageComponent
+  },
+
+  {
+    id: "intersection",
+    tags: ["smixzy"],
+    types: ["image"],
+    src: "/jpeg/intersection.jpeg",
+    alt: "Shoegazing at an intersection in the sidewalk.",
+    component: imageComponent
+  },
+
+  {
+    id: "theme-provider",
+    tags: ["smixzy"],
+    types: ["image"],
+    src: "/jpeg/theme-provider.jpeg",
+    alt: "4 partially overlapping, heavily backlit bright pink Post-it® notes.",
+    component: imageComponent
+  },
+
+  {
+    id: "dumpstergram",
+    tags: ["smixzy"],
+    types: ["image"],
+    src: "/jpeg/dumpstergram.jpeg",
+    alt: "Two dumpsters in the middle of the woods. Unparalleled vibe.",
+    component: imageComponent
+  },
+
+  {
+    id: "post-it",
+    tags: ["smixzy"],
+    types: ["image"],
+    src: "/jpeg/post-it.jpeg",
+    alt: "A closeup of Post-it® notes with more Post-it® notes in the background; not to brag but it's a fresh cabinet pack of Helsinki-themed Greener Notes.",
+    component: imageComponent
+  },
+
+  {
+    id: "sky",
+    tags: ["smixzy"],
+    types: ["image"],
+    src: "/jpeg/sky.jpeg",
+    alt: "Purple night clouds hushing a busy street.",
+    component: imageComponent
+  },
+
+  {
+    id: "twig",
+    tags: ["smixzy"],
+    types: ["image"],
+    src: "/jpeg/twig.jpeg",
+    alt: "Closeup of a twig.",
+    component: imageComponent
+  },
+
+  {
+    id: "thrift",
+    tags: ["smixzy"],
+    types: ["image"],
+    src: "/jpeg/thrift.jpeg",
+    alt: "Maximum thrift store saturation.",
+    component: imageComponent
+  },
+
+  {
+    id: "ashlin",
+    tags: ["smixzy"],
+    types: ["artist", "link"],
+    href: "https://ashlindolanstudio.com/Home-II",
+    destination: "website",
+    title: ".• Ashlin Dolan",
+    component: linkComponent
+  },
+
+  {
+    id: "manifold",
+    tags: ["smixzy"],
+    types: ["image"],
+    src: "/jpeg/manifold.jpeg",
+    alt: "Sketched amorphous manifold of blue, pink, and green ink.",
+    component: imageComponent
+  },
+
+  {
+    id: "coral",
+    tags: ["smixzy"],
+    types: ["image"],
+    src: "/jpeg/coral.jpeg",
+    alt: "Scattered ink-encoded coral.",
+    component: imageComponent
+  },
+
+  {
+    id: "chalk",
+    tags: ["smixzy"],
+    types: ["image"],
+    src: "/jpeg/chalk.preview.jpeg",
+    alt: "Sidewalk chalk portal to outer space.",
+    component: imageComponent
+  },
+
+  {
+    id: "spray-paint",
+    tags: ["smixzy"],
+    types: ["image"],
+    src: "/jpeg/spray-paint.jpeg",
+    alt: "Spray paint blasted onto the sidewalk during construction.",
+    component: imageComponent
+  },
+
+  {
+    id: "monolith",
+    tags: ["smixzy"],
+    types: ["image"],
+    src: "/jpeg/monolith.jpeg",
+    alt: "A strangely oriented concrete monolith opimitzed for resting up to four asscheeks.",
+    component: imageComponent
+  },
+
+  {
+    id: "cable",
+    tags: ["smixzy"],
+    types: ["image"],
+    src: "/jpeg/cable.jpeg",
+    alt: "A classic mixup between the street lighting and television cable factions.",
+    component: imageComponent
+  },
+
+  {
+    id: "prof-hos",
+    tags: ["nm8", "smixzy"],
+    types: ["image"],
+    src: "/jpeg/mark.jpeg",
+    alt: "Prof. Hos.!!!",
+    component: imageComponent
+  },
+
+  {
+    id: "mark",
+    tags: ["smixzy"],
+    types: ["artist", "link"],
+    href: "https://sugarboypress.com/",
+    destination: "website",
+    title: ".• Mark Hosford",
+    component: linkComponent
+  },
+
+  {
+    id: "hilma",
+    tags: ["smixzy"],
+    types: ["artist", "link"],
+    href: "https://en.wikipedia.org/wiki/Hilma_af_Klint",
+    destination: "wikipedia",
+    title: ".• Hilma af Klint",
+    component: linkComponent
+  },
+
+  {
+    id: "kandinsky",
+    tags: ["smixzy"],
+    types: ["artist", "link"],
+    href: "https://en.wikipedia.org/wiki/Wassily_Kandinsky",
+    destination: "wikipedia",
+    title: ".• Kandinsky",
+    component: linkComponent
+  },
+
+  {
+    id: "terry-a-davis",
+    tags: ["smixzy"],
+    types: ["artist", "link"],
+    href: "https://youtu.be/XkXPqvWJHg4",
+    destination: "youtube",
+    title: ".• Terry A. Davis",
+    component: linkComponent
+  },
+
+  {
+    id: "moebius",
+    tags: ["smixzy"],
+    types: ["artist", "link"],
+    href: "https://www.moebius.fr/Les-Collections.html",
+    destination: "website",
+    title: ".• Moebius",
+    component: linkComponent
+  },
+
+  {
+    id: "ulises-farinas",
+    tags: ["smixzy"],
+    types: ["artist", "link"],
+    href: "https://ulisesfarinas.com/",
+    destination: "website",
+    title: ".• Ulises Fariñas",
+    component: linkComponent
+  },
+
+  {
+    id: "john-vermilyea",
+    tags: ["smixzy"],
+    types: ["artist", "link"],
+    href: "http://www.jonvermilyea.com/",
+    destination: "website",
+    title: ".• Jon Vermilyea",
+    component: linkComponent
+  },
+
+  {
+    id: "anders-nilsen",
+    tags: ["smixzy"],
+    types: ["artist", "link"],
+    href: "https://www.andersbrekhusnilsen.com/booksandcomics",
+    destination: "website",
+    title: ".• Anders Nilsen",
+    component: linkComponent
+  },
+
+  {
+    id: "jesse-jacobs",
+    tags: ["smixzy"],
+    types: ["artist", "link"],
+    href: "https://www.jessejacobsart.com/",
+    destination: "website",
+    title: ".• Jesse Jacobs",
+    component: linkComponent
+  },
+
+  {
+    id: "steve-axford",
+    tags: ["smixzy"],
+    types: ["artist", "link"],
+    href: "https://steveaxford.smugmug.com/",
+    destination: "smugmug",
+    title: ".• Steve Axford",
+    component: linkComponent
+  },
+
+  {
+    id: "minjeong-an",
+    tags: ["smixzy"],
+    types: ["artist", "link"],
+    href: "http://www.myartda.com/",
+    destination: "website",
+    title: ".• Minjeong An",
+    component: linkComponent
+  },
+
+  {
+    id: "devine-lu-linvega",
+    tags: ["smixzy", "Oe"],
+    types: ["artist", "link"],
+    href: "https://wiki.xxiivv.com/site/dinaisth.html",
+    destination: "website",
+    title: ".• Devine Lu Linvega",
+    component: linkComponent
+  },
+
+  {
+    id: "cakebread",
+    tags: ["smixzy", "Oe"],
+    types: ["artist", "link"],
+    href: "http://www.quantumrain.com/",
+    destination: "website",
+    title: ".• Stephen Cakebread",
+    component: linkComponent
+  },
+
+  {
+    id: "webring",
+    tags: ["smixzy", "Oe"],
+    types: ["link"],
+    href: "https://webring.xxiivv.com/",
+    destination: "website",
+    title: "{ webring }",
+    component: linkComponent
+  }
+]
+
+const OeItems: Array<I> = [
+  {
+    id: "-•",
+    tags: ["Oe"],
+    types: ["gist"],
+    textComponent: ["p", {}, "I think a lot about language, logic, proof, etc.: real game of life hours, you know the one."],
+    component: gistComponent
+  },
+
+  {
+    id: "Oe",
+    tags: ["Oe"],
+    types: ["gist"],
+    textComponent: ["p", {}, "observe ∘ explicate"],
+    component: gistComponent
+  },
+
+  {
+    id: "mereology",
+    tags: ["Oe"],
+    types: ["link"],
+    href: "https://en.wikipedia.org/wiki/Mereology",
+    destination: "wikipedia",
+    title: ".Mereology",
+    component: linkComponent
+  },
+
+  {
+    id: "sequent-calculus",
+    tags: ["Oe"],
+    types: ["link"],
+    href: "https://en.wikipedia.org/wiki/Sequent_calculus",
+    destination: "wikipedia",
+    title: ".Sequent Calculus",
+    component: linkComponent
+  },
+
+  {
+    id: "algebraic-structure",
+    tags: ["Oe"],
+    types: ["link"],
+    href: "https://en.wikipedia.org/wiki/Algebraic_structure",
+    destination: "wikipedia",
+    title: ".Algebraic Structure",
+    component: linkComponent
+  },
+
+  {
+    id: "schismogenesis",
+    tags: ["Oe"],
+    types: ["link"],
+    href: "https://en.wikipedia.org/wiki/Schismogenesis",
+    destination: "wikipedia",
+    title: ".Schismogenesis",
+    component: linkComponent
+  },
+
+  {
+    id: "information",
+    tags: ["Oe"],
+    types: ["link"],
+    href: "https://en.wikipedia.org/wiki/Information_theory",
+    destination: "wikipedia",
+    title: ".Information",
+    component: linkComponent
+  },
+
+  {
+    id: "process",
+    tags: ["Oe"],
+    types: ["link"],
+    href: "https://en.wikipedia.org/wiki/Process_philosophy",
+    destination: "wikipedia",
+    title: ".Process",
+    component: linkComponent
+  },
+
+  {
+    id: "bohm",
+    tags: ["Oe"],
+    types: ["link"],
+    href: "https://en.wikipedia.org/wiki/David_Bohm",
+    destination: "wikipedia",
+    title: ".Bohm",
+    component: linkComponent
   },
 
   {
@@ -670,657 +1319,18 @@ const items: Array<I> = [
     src: "/jpeg/turrell.self.jpeg",
     alt: "Observing observation",
     component: imageComponent
-  },
-
-  {
-    id: "smixzy-self",
-    tags: ["smixzy"],
-    types: ["image"],
-    src: "/jpeg/smixzy.self.jpeg",
-    alt: "Still me, but in my favorite clothes.",
-    component: imageComponent
-  },
-
-  {
-    id: "concrete",
-    tags: ["smixzy"],
-    types: ["image"],
-    src: "/jpeg/concrete.jpeg",
-    alt: "Soft concrete.",
-    component: imageComponent
-  },
-
-  {
-    id: "ass",
-    tags: ["smixzy"],
-    types: ["image"],
-    src: "/jpeg/ass-drag.jpeg",
-    alt: "A purple Post-it® with 'ASS DRAG' written on it in caps lock. There's so much more where this came from.",
-    component: imageComponent
-  },
-
-  {
-    id: "send-nudes",
-    tags: ["smixzy"],
-    types: ["image"],
-    src: "/jpeg/send-nudes.jpeg",
-    alt: "A quintessential United States Postal Service® mailbox with 'SEND NUDES' painted on the side, right above the logo.",
-    component: imageComponent
-  },
-
-  {
-    id: "instaworthy",
-    tags: ["smixzy"],
-    types: ["image"],
-    src: "/jpeg/instaworthy.jpeg",
-    alt: "An Instagram®-worthy bedside table with 'SHIT IN MY MOUTH' lovingly expressed on the signboard.",
-    component: imageComponent
-  },
-
-  {
-    id: "fnd-ur-way",
-    tags: ["smixzy"],
-    types: ["image"],
-    src: "/jpeg/fnd-ur-way.jpeg",
-    alt: "A hand-drawn sticker on a road sign that says 'FND UR WAY' under a skull with a staircase leading into the brain compartment.",
-    component: imageComponent
-  },
-
-  {
-    id: "face",
-    tags: ["smixzy"],
-    types: ["image"],
-    src: "/jpeg/face.preview.jpeg",
-    alt: "The word 'FACE' permanently etched into a concrete sidewalk.",
-    component: imageComponent
-  },
-
-  {
-    id: "sunglasses",
-    tags: ["smixzy"],
-    types: ["image"],
-    src: "/jpeg/sunglasses.jpeg",
-    alt: "The sidewalk shadows of two people holding heart-shaped sunglasses up to sunlight.",
-    component: imageComponent
-  },
-
-  {
-    id: "intersection",
-    tags: ["smixzy"],
-    types: ["image"],
-    src: "/jpeg/intersection.jpeg",
-    alt: "Shoegazing at an intersection in the sidewalk.",
-    component: imageComponent
-  },
-
-  {
-    id: "theme-provider",
-    tags: ["smixzy"],
-    types: ["image"],
-    src: "/jpeg/theme-provider.jpeg",
-    alt: "4 partially overlapping, heavily backlit bright pink Post-it® notes.",
-    component: imageComponent
-  },
-
-  {
-    id: "dumpstergram",
-    tags: ["smixzy"],
-    types: ["image"],
-    src: "/jpeg/dumpstergram.jpeg",
-    alt: "Two dumpsters in the middle of the woods. Unparalleled vibe.",
-    component: imageComponent
-  },
-
-  {
-    id: "post-it",
-    tags: ["smixzy"],
-    types: ["image"],
-    src: "/jpeg/post-it.jpeg",
-    alt: "A closeup of Post-it® notes with more Post-it® notes in the background; not to brag but it's a fresh cabinet pack of Helsinki-themed Greener Notes.",
-    component: imageComponent
-  },
-
-  {
-    id: "sky",
-    tags: ["smixzy"],
-    types: ["image"],
-    src: "/jpeg/sky.jpeg",
-    alt: "Purple night clouds hushing a busy street.",
-    component: imageComponent
-  },
-
-  {
-    id: "twig",
-    tags: ["smixzy"],
-    types: ["image"],
-    src: "/jpeg/twig.jpeg",
-    alt: "Closeup of a twig.",
-    component: imageComponent
-  },
-
-  {
-    id: "thrift",
-    tags: ["smixzy"],
-    types: ["image"],
-    src: "/jpeg/thrift.jpeg",
-    alt: "Maximum thrift store saturation.",
-    component: imageComponent
-  },
-
-  {
-    id: "manifold",
-    tags: ["smixzy"],
-    types: ["image"],
-    src: "/jpeg/manifold.jpeg",
-    alt: "Sketched amorphous manifold of blue, pink, and green ink.",
-    component: imageComponent
-  },
-
-  {
-    id: "coral",
-    tags: ["smixzy"],
-    types: ["image"],
-    src: "/jpeg/coral.jpeg",
-    alt: "Scattered ink-encoded coral.",
-    component: imageComponent
-  },
-
-  {
-    id: "chalk",
-    tags: ["smixzy"],
-    types: ["image"],
-    src: "/jpeg/chalk.preview.jpeg",
-    alt: "Sidewalk chalk portal to outer space.",
-    component: imageComponent
-  },
-
-  {
-    id: "spray-paint",
-    tags: ["smixzy"],
-    types: ["image"],
-    src: "/jpeg/spray-paint.jpeg",
-    alt: "Spray paint blasted onto the sidewalk during construction.",
-    component: imageComponent
-  },
-
-  {
-    id: "monolith",
-    tags: ["smixzy"],
-    types: ["image"],
-    src: "/jpeg/monolith.jpeg",
-    alt: "A strangely oriented concrete monolith opimitzed for resting up to four asscheeks.",
-    component: imageComponent
-  },
-
-  {
-    id: "cable",
-    tags: ["smixzy"],
-    types: ["image"],
-    src: "/jpeg/cable.jpeg",
-    alt: "A classic mixup between the street lighting and television cable factions.",
-    component: imageComponent
-  },
-
-  {
-    id: "prof-hos",
-    tags: ["smixzy"],
-    types: ["image"],
-    src: "/jpeg/mark.jpeg",
-    alt: "Prof. Hos.!!!",
-    component: imageComponent
-  },
-
-  {
-    id: "claude",
-    tags: ["nolan"],
-    types: ["quote"],
-    quote: "My greatest concern was what to call it.",
-    author: "Claude Shannon",
-    component: quoteComponent
-  },
-
-  {
-    id: "rich",
-    tags: ["nolan"],
-    types: ["quote"],
-    quote: "We don't get to stop the world, especially not to observe it.",
-    author: "Rich Hickey",
-    component: quoteComponent
-  },
-
-  {
-    id: "logistic-map",
-    spans: [2, 3],
-    tags: ["nolan"],
-    types: ["quote"],
-    quote: "Unpredictability is not randomness, but in some circumstances looks very much like it.",
-    author: "Wikipedia; Logistic Map",
-    component: quoteComponent
-  },
-
-  {
-    id: "anw-1",
-    tags: ["nolan"],
-    types: ["quote"],
-    quote: "One main factor in the upward trend of animal life has been the power of wandering.",
-    author: "Alfred North Whitehead",
-    component: quoteComponent
-  },
-
-  {
-    id: "anw-2",
-    tags: ["nolan"],
-    types: ["quote"],
-    quote: "Unlimited possibility and abstract creativity can procure nothing.",
-    author: "Alfred North Whitehead",
-    component: quoteComponent
-  },
-
-  {
-    id: "anw-3",
-    tags: ["nolan"],
-    types: ["quote"],
-    quote: "A science that hesitates to forget its founders is lost.",
-    author: "Alfred North Whitehead",
-    component: quoteComponent
-  },
-
-  {
-    id: "anw-4",
-    tags: ["nolan"],
-    types: ["quote"],
-    quote: "We think in generalities, but we live in details.",
-    author: "Alfred North Whitehead",
-    component: quoteComponent
-  },
-
-  {
-    id: "fifield",
-    tags: ["nolan"],
-    types: ["quote"],
-    quote: "Answer is the dead stop.",
-    author: "William Fifield",
-    component: quoteComponent
-  },
-
-  {
-    id: "chris-a",
-    tags: ["nolan"],
-    types: ["quote"],
-    quote: "The wholeness is made of parts, the parts are created by the wholeness.",
-    author: "Christopher Alexander",
-    component: quoteComponent
-  },
-
-  {
-    id: "rs",
-    tags: ["nolan"],
-    types: ["quote"],
-    quote: "These build on themselves. You notice that anything you are aware of is in the process of changing as you notice it.",
-    author: "R.S.",
-    component: quoteComponent
-  },
-
-  {
-    id: "chapman",
-    spans: [2, 3],
-    tags: ["nolan"],
-    types: ["quote"],
-    quote: "There can be no fixed method for this; it’s inherently improvisational.",
-    author: "David Chapman",
-    component: quoteComponent
-  },
-
-  {
-    id: "the-mess-were-in",
-    tags: ["nm8"],
-    types: ["link"],
-    href: "https://youtu.be/lKXe3HUG2l4",
-    destination: "youtube",
-    title: "The Mess We're In",
-    author: "Joe Armstrong",
-    component: linkComponent
-  },
-
-  {
-    id: "how-to-sweep",
-    tags: ["nm8"],
-    types: ["link"],
-    href: "https://youtu.be/Kt-VlZpz-8E",
-    destination: "youtube",
-    title: "How to Sweep.",
-    author: "Tom Sachs",
-    component: linkComponent
-  },
-
-  {
-    id: "cool-uris",
-    tags: ["nm8"],
-    types: ["link"],
-    href: "https://www.w3.org/Provider/Style/URI",
-    destination: "w3.org",
-    title: "Cool URIs don't change.",
-    author: "Tim BL",
-    component: linkComponent
-  },
-
-  {
-    id: "the-language-of-the-system",
-    tags: ["nm8"],
-    types: ["link"],
-    href: "https://youtu.be/ROor6_NGIWU",
-    destination: "youtube",
-    title: "The Language of the System",
-    author: "Rich Hickey",
-    component: linkComponent
-  },
-
-  {
-    id: "the-value-of-values",
-    tags: ["nm8"],
-    types: ["link"],
-    href: "https://youtu.be/-6BsiVyC1kM",
-    destination: "youtube",
-    title: "The Value of Values",
-    author: "Rich Hickey",
-    component: linkComponent
-  },
-
-  {
-    id: "just-hard-fail-it",
-    tags: ["nm8"],
-    types: ["link"],
-    href: "https://www.usenix.org/legacy/event/lisa07/tech/full_papers/hamilton/hamilton_html/",
-    destination: "usenix",
-    title: "Just hard-fail it.",
-    author: "James Hamilton",
-    component: linkComponent
-  },
-
-  {
-    id: "thi-ng",
-    tags: ["nm8"],
-    types: ["link"],
-    href: "https://thi.ng/",
-    destination: "thi.ng",
-    title: "thi.ng",
-    author: "Karsten Schmidt",
-    component: linkComponent
-  },
-
-  {
-    id: "worse-is-better",
-    tags: ["nm8"],
-    types: ["link"],
-    href: "https://www.dreamsongs.com/RiseOfWorseIsBetter.html",
-    destination: "website",
-    title: "Worse is Better",
-    author: "Richard Gabriel",
-    component: linkComponent
-  },
-
-  {
-    id: "quine",
-    tags: ["nm8"],
-    types: ["quote"],
-    quote: "Everything worth saying, and everything else as well, can be said with two characters.",
-    author: "Quine",
-    component: quoteComponent
-  },
-
-  {
-    id: "mereology",
-    tags: ["Oe"],
-    types: ["link"],
-    href: "https://en.wikipedia.org/wiki/Mereology",
-    destination: "wikipedia",
-    title: ".Mereology",
-    component: linkComponent
-  },
-
-  {
-    id: "sequent-calculus",
-    tags: ["Oe"],
-    types: ["link"],
-    href: "https://en.wikipedia.org/wiki/Sequent_calculus",
-    destination: "wikipedia",
-    title: ".Sequent Calculus",
-    component: linkComponent
-  },
-
-  {
-    id: "algebraic-structure",
-    tags: ["Oe"],
-    types: ["link"],
-    href: "https://en.wikipedia.org/wiki/Algebraic_structure",
-    destination: "wikipedia",
-    title: ".Algebraic Structure",
-    component: linkComponent
-  },
-
-  {
-    id: "schismogenesis",
-    tags: ["Oe"],
-    types: ["link"],
-    href: "https://en.wikipedia.org/wiki/Schismogenesis",
-    destination: "wikipedia",
-    title: ".Schismogenesis",
-    component: linkComponent
-  },
-
-  {
-    id: "information",
-    tags: ["Oe"],
-    types: ["link"],
-    href: "https://en.wikipedia.org/wiki/Information_theory",
-    destination: "wikipedia",
-    title: ".Information",
-    component: linkComponent
-  },
-
-  {
-    id: "process",
-    tags: ["Oe"],
-    types: ["link"],
-    href: "https://en.wikipedia.org/wiki/Process_philosophy",
-    destination: "wikipedia",
-    title: ".Process",
-    component: linkComponent
-  },
-
-  {
-    id: "bohm",
-    tags: ["Oe"],
-    types: ["link"],
-    href: "https://en.wikipedia.org/wiki/David_Bohm",
-    destination: "wikipedia",
-    title: ".Bohm",
-    component: linkComponent
-  },
-
-  {
-    id: "mark",
-    tags: ["smixzy"],
-    types: ["artist", "link"],
-    href: "https://sugarboypress.com/",
-    destination: "website",
-    title: ".• Mark Hosford",
-    component: linkComponent
-  },
-
-  {
-    id: "ashlin",
-    tags: ["smixzy"],
-    types: ["artist", "link"],
-    href: "https://ashlindolanstudio.com/Home-II",
-    destination: "website",
-    title: ".• Ashlin Dolan",
-    component: linkComponent
-  },
-
-  {
-    id: "tom",
-    tags: ["smixzy"],
-    types: ["artist", "link"],
-    href: "https://www.tomsachs.com/",
-    destination: "website",
-    title: ".• Tom Sachs",
-    component: linkComponent
-  },
-
-  {
-    id: "hilma",
-    tags: ["smixzy"],
-    types: ["artist", "link"],
-    href: "https://en.wikipedia.org/wiki/Hilma_af_Klint",
-    destination: "wikipedia",
-    title: ".• Hilma af Klint",
-    component: linkComponent
-  },
-
-  {
-    id: "kandinsky",
-    tags: ["smixzy"],
-    types: ["artist", "link"],
-    href: "https://en.wikipedia.org/wiki/Wassily_Kandinsky",
-    destination: "wikipedia",
-    title: ".• Kandinsky",
-    component: linkComponent
-  },
-
-  {
-    id: "toxi",
-    tags: ["smixzy"],
-    types: ["artist", "link"],
-    href: "https://mastodon.thi.ng/@toxi",
-    destination: "mastodon",
-    title: ".• Karsten Schmidt",
-    component: linkComponent
-  },
-
-  {
-    id: "terry-a-davis",
-    tags: ["smixzy"],
-    types: ["artist", "link"],
-    href: "https://youtu.be/XkXPqvWJHg4",
-    destination: "youtube",
-    title: ".• Terry A. Davis",
-    component: linkComponent
-  },
-
-  {
-    id: "moebius",
-    tags: ["smixzy"],
-    types: ["artist", "link"],
-    href: "https://www.moebius.fr/Les-Collections.html",
-    destination: "website",
-    title: ".• Moebius",
-    component: linkComponent
-  },
-
-  {
-    id: "ulises-farinas",
-    tags: ["smixzy"],
-    types: ["artist", "link"],
-    href: "https://ulisesfarinas.com/",
-    destination: "website",
-    title: ".• Ulises Fariñas",
-    component: linkComponent
-  },
-
-  {
-    id: "john-vermilyea",
-    tags: ["smixzy"],
-    types: ["artist", "link"],
-    href: "http://www.jonvermilyea.com/",
-    destination: "website",
-    title: ".• Jon Vermilyea",
-    component: linkComponent
-  },
-
-  {
-    id: "anders-nilsen",
-    tags: ["smixzy"],
-    types: ["artist", "link"],
-    href: "https://www.andersbrekhusnilsen.com/booksandcomics",
-    destination: "website",
-    title: ".• Anders Nilsen",
-    component: linkComponent
-  },
-
-  {
-    id: "jesse-jacobs",
-    tags: ["smixzy"],
-    types: ["artist", "link"],
-    href: "https://www.jessejacobsart.com/",
-    destination: "website",
-    title: ".• Jesse Jacobs",
-    component: linkComponent
-  },
-
-  {
-    id: "steve-axford",
-    tags: ["smixzy"],
-    types: ["artist", "link"],
-    href: "https://steveaxford.smugmug.com/",
-    destination: "smugmug",
-    title: ".• Steve Axford",
-    component: linkComponent
-  },
-
-  {
-    id: "minjeong-an",
-    tags: ["smixzy"],
-    types: ["artist", "link"],
-    href: "http://www.myartda.com/",
-    destination: "website",
-    title: ".• Minjeong An",
-    component: linkComponent
-  },
-
-  {
-    id: "devine-lu-linvega",
-    tags: ["smixzy"],
-    types: ["artist", "link"],
-    href: "https://wiki.xxiivv.com/site/dinaisth.html",
-    destination: "website",
-    title: ".• Devine Lu Linvega",
-    component: linkComponent
-  },
-
-  {
-    id: "cakebread",
-    tags: ["smixzy"],
-    types: ["artist", "link"],
-    href: "http://www.quantumrain.com/",
-    destination: "website",
-    title: ".• Stephen Cakebread",
-    component: linkComponent
-  },
-
-  {
-    id: "webring",
-    tags: ["smixzy"],
-    types: ["link"],
-    href: "https://webring.xxiivv.com/",
-    destination: "website",
-    title: "{ webring }",
-    component: linkComponent
-  },
-
-  {
-    id: "twobfc",
-    tags: ["smixzy"],
-    types: ["quote"],
-    quote: "You play through that.",
-    author: "2BFC",
-    component: quoteComponent
-  },
-
-  // TODO: add cowboy
-  // TODO: add color waterfall image
-  // TODO: add hints
+  }
 ]
+
+/* TODO: add cowboy */
+/* TODO: add color waterfall image */
+/* TODO: add hints */
+const items: Array<I> =
+  shuffle(nolanItems)
+    .concat(
+      shuffle(nm8Items),
+      shuffle(smixzyItems),
+      shuffle(OeItems))
 
 
 /* NOTE: control components */
@@ -1350,10 +1360,9 @@ const defaultActions = [
   "reset"
 ]
 
+/* ALT: image resizing */
 const layoutActions = [
   "randomize",
-  // increase images
-  // reduce images
   "toggle alt text",
   "reset"
 ]
@@ -1464,9 +1473,10 @@ const head = [
   // ["meta", { property: "og:image", content: "https://usernolan.net/png/Oe.self.png" }]
 ]
 
+
 const main = [
   "main", { class: "grid-container" },
-  ...shuffle(items).map((x) => x.component(x as any)),
+  items.map((x) => x.component(x as any)),
   ["div.sizer", { "data-span": 1 }]
 ]
 
