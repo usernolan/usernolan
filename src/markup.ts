@@ -183,7 +183,7 @@ const nolanItems: Array<I> = [
     id: "nolan-self",
     tags: ["nolan"],
     types: ["image"],
-    src: `/jpeg/nolan.self.${choose([1, 2])}.jpeg`,
+    src: `/jpeg/nolan.self.1.jpeg`,
     alt: "Me in grayscale",
     component: imageComponent
   },
