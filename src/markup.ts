@@ -1433,13 +1433,6 @@ const controls = [
       ...layoutActions.map(buttonComponent("layout"))
     ]
   ],
-
-  ["fieldset.import", {},
-    ["legend", {}, "import/export"],
-    ["input", { type: "text", placeholder: "paste configuration string" }],
-    ["button", {}, "import"],
-    ["button", {}, "copy configuration string to clipboard"]
-  ],
 ]
 
 

@@ -90,10 +90,6 @@ body aside {
     touch-action: manipulation;
   }
 
-  body aside.controls-showing {
-    /* height: 42vh; */
-  }
-
   :root[data-color-scheme="light"] aside {
     box-shadow: 0 0 0.5rem rgba(0,0,0,0.125);
   }
@@ -120,7 +116,7 @@ body aside {
 
 .grid-container {
   position: relative;
-  min-height: 100vh;
+  min-height: 58vh; /* NOTE: default controls height in portrait orientation is 42vh */
 }
 
 /* TODO: nesting, variables */

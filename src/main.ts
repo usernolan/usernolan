@@ -134,6 +134,7 @@ showControlsButton?.addEventListener("click", () => {
   }
 })
 
+/* TODO: refine, include landscape */
 var showControlsButtonTouchStartY: number | null = null
 var asideHeightStart = aside?.clientHeight
 var asideHeightTouchMoved: boolean | null = null
@@ -177,9 +178,8 @@ showControlsButton?.addEventListener("touchend", () => {
     aside.style.transition = ""
     snapAsideHeight()
 
-    const isClosed = aside.style.height === "0px"
     if (asideHeightTouchMoved) {
-      const prev = isClosed ?
+      const prev = aside.style.height === "0px" ?
         defaultAsideHeightStyle()  // NOTE: snapped down
         : aside.style.height
 
@@ -187,7 +187,7 @@ showControlsButton?.addEventListener("touchend", () => {
       showControlsButtonTouchStartY = null
       asideHeightTouchMoved = false;
     } else {
-      if (isClosed) {
+      if (aside.style.height === "0px") {
         aside.style.height =
           aside?.getAttribute('data-previous-height')
           || defaultAsideHeightStyle()
@@ -198,8 +198,8 @@ showControlsButton?.addEventListener("touchend", () => {
     }
 
     const span = showControlsButton?.querySelector('span')
-    if (span) span.innerHTML = isClosed ? "+" : "-"
-    if (isClosed) {
+    if (span) span.innerHTML = aside.style.height === "0px" ? "+" : "-"
+    if (aside.style.height === "0px") {
       grid?.classList.remove("controls-showing")
       aside?.classList.remove("controls-showing")
     } else {
@@ -296,7 +296,6 @@ modeFieldset?.addEventListener('change', modeChangeEventListener)
 
 
 /* NOTE: color */
-/* TODO: tween? */
 
 const colorFieldset = aside.querySelector('fieldset.color')
 const colorRangeInputs = colorFieldset?.querySelectorAll('input[type="range"]') as NodeListOf<HTMLInputElement>
