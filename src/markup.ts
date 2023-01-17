@@ -1452,7 +1452,9 @@ const controls = [
 const fontHrefRoot = "https://fonts.googleapis.com/css2?family="
 const fontHref = fontHrefRoot + "Fragment+Mono:ital@0;1&family=Inter:wght@400;700&display=swap"
 
-/* TODO: preloads */
+const preloads = [
+  ["link", { rel: "preload", href: "/gif/at.gif", as: "image" }]
+]
 
 const head = [
   "head", {},
@@ -1469,8 +1471,9 @@ const head = [
   ["meta", { name: "description", content: ".·" }],
   ["meta", { property: "og:title", content: "nolan" }],
   ["meta", { property: "og:type", content: "website" }],
-  ["meta", { property: "og:url", content: "https://usernolan.net" }]
+  ["meta", { property: "og:url", content: "https://usernolan.net" }],
   // ["meta", { property: "og:image", content: "https://usernolan.net/png/Oe.self.png" }]
+  ...preloads
 ]
 
 
