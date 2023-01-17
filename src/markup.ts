@@ -230,15 +230,17 @@ const items: Array<I> = [
 
   {
     id: "nolan-self",
+    spans: [[1, 0.10], [2, 0.05], [3, 0.33], [4, 0.035]],
     tags: ["nolan"],
     types: ["image"],
-    src: `/jpeg/nolan.self.${choose([1, 2])}.jpeg`,
+    src: `/jpeg/nolan.self.${choose([1,2])}.jpeg`,
     alt: "Me in grayscale",
     component: imageComponent
   },
 
   {
     id: "persevere",
+    spans: [[1, 0.1], [2, 0.1], [3, 0.25], [4, 0.25]],
     tags: ["nolan"],
     types: ["image"],
     src: "/jpeg/persevere.jpeg",

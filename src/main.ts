@@ -59,8 +59,8 @@ const modSpanEventListener = (e: MouseEvent) => {
   const el = (e.target as HTMLElement).closest('.image') as HTMLElement
   const prev = parseInt(el.getAttribute('data-span') || defaultSpanStr)
   const next = e.shiftKey ?
-    prev === 1 ? maxSpan : prev - 1 :
-    prev === maxSpan ? 1 : prev + 1
+    prev <= 1 ? maxSpan : prev - 1 :
+    prev >= maxSpan ? 1 : prev + 1
 
   el.setAttribute('data-span', `${next}`)
   shuffle.layout()
