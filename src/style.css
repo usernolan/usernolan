@@ -434,10 +434,12 @@ fieldset.color input[type="range"] {
 }
 
 .item.image img {
-  width: 100%;
+  max-width: 100%;
+  height: auto;
   -o-object-fit: cover;
      object-fit: cover;
   padding: 0 0.125rem;
+  content-visibility: auto;
 }
 
 .item.image p {
