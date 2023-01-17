@@ -75,7 +75,7 @@ const weightsFrom = (arr: Choosable<any>) =>
 
 const spanAttrs = (spans: Choosable<number>) => ({
   "data-span": choose(spans),
-  "data-span-choices": choicesFrom(spans).join(","),
+  "data-span-choices": spans === defaultSpans ? null : choicesFrom(spans).join(","),
   "data-span-weights": weightsFrom(spans)?.join(",")
 })
 

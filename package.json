@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "@thi.ng/hiccup": "^4.2.29",
+    "@thi.ng/transducers": "^8.3.30",
     "@types/node": "^18.11.18",
     "autoprefixer": "^10.4.13",
     "nodemon": "^2.0.20",
@@ -22,7 +23,6 @@
     "vite": "^4.0.4"
   },
   "dependencies": {
-    "@thi.ng/transducers": "^8.3.30",
     "shufflejs": "^6.1.0"
   }
 }

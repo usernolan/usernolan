@@ -1,5 +1,4 @@
 import "./style.css"
-import { choices } from "@thi.ng/transducers/choices"
 import Shuffle from "shufflejs"
 
 /* TODO: quote formatting */
@@ -27,6 +26,9 @@ const shuffle = new Shuffle(
 
 
 /* NOTE: utils */
+
+const randNth = (arr: any[]) =>
+  arr[Math.floor(Math.random() * arr.length)]
 
 const debounce = (f: Function, interval: number) => {
   var t: NodeJS.Timeout | number | undefined = undefined
@@ -370,28 +372,20 @@ colorFieldset?.querySelector('button[id$="reset"]')
 const layoutFieldset = aside.querySelector("fieldset.layout") as HTMLFieldSetElement
 const items = grid.querySelectorAll(".item") as NodeListOf<HTMLElement>
 
-const defaultSpanChoicesStr = "1,2,3"
+const defaultSpanChoices = [1, 2, 3]
 
 const spanChoices = (el: HTMLElement) =>
-  (el.getAttribute('data-span-choices') || defaultSpanChoicesStr)
-    .split(",")
-    .map((el) => parseInt(el))
-
-const spanWeights = (el: HTMLElement) =>
-  el.getAttribute('data-span-weights')
+  el.getAttribute('data-span-choices')
     ?.split(",")
-    .map((el) => parseFloat(el))
+    .map((x) => parseInt(x)) ||
+  defaultSpanChoices
 
 const respan = (el: HTMLElement) => {
-  const cs = spanChoices(el)
-  const ws = spanWeights(el)
-  const next = choices(cs, ws).next().value || defaultSpanStr
-
   if (!el.getAttribute('data-span-init')) {
     el.setAttribute('data-span-init', el.getAttribute('data-span') || defaultSpanStr)
   }
 
-  el.setAttribute('data-span', next)
+  el.setAttribute('data-span', `${randNth(spanChoices(el))}`)
 }
 
 const resetSpan = (el: HTMLElement) => {
