@@ -83,6 +83,8 @@ const groupAttrs = (groups: string[]) => ({
   "data-groups": groups.length === 0 ? null : groups.join(",")
 })
 
+const imageFormats = ["avif", "webp"]
+
 const gistComponent = ({
   id, textComponent,
   spans = defaultSpans, tags = [], types = []
@@ -100,6 +102,7 @@ const gistComponent = ({
   ]
 }
 
+/* TODO: proceduralize image gen */
 const imageComponent = ({
   id, src, alt, width, height,
   spans = defaultSpans, tags = [], types = []
@@ -113,10 +116,10 @@ const imageComponent = ({
       ...spanAttrs(spans),
       ...groupAttrs(groups)
     },
-    ["img", {
-      src, alt, width, height,
-      loading: "lazy", decoding: "async"
-    }],
+    ["picture", {}, ...imageFormats.map((ext) =>
+      ["source", { srcset: src.replaceAll("jpeg", ext), type: `image/${ext}` }]),
+      ["img", { src, alt, width, height, loading: "lazy", decoding: "async" }]
+    ],
     ["p", {}, alt]
   ]
 }
@@ -134,10 +137,10 @@ const hoverableImageComponent = ({
       ...spanAttrs(spans),
       ...groupAttrs(groups)
     },
-    ["img", {
-      src, alt, width, height, "data-hover-src": hoverSrc,
-      loading: "lazy", decoding: "async"
-    }],
+    ["picture", { "data-hover-src": hoverSrc }, ...imageFormats.map((ext) =>
+      ["source", { srcset: src.replaceAll("jpeg", ext), type: `image/${ext}` }]),
+      ["img", { src, alt, width, height, loading: "lazy", decoding: "async" }]
+    ],
     ["p", {}, alt]
   ]
 }
@@ -201,9 +204,9 @@ const nolanItems: Array<I> = [
 
   {
     id: "nolan-self", tags: ["nolan"], types: ["image"],
-    src: `/jpeg/nolan.self.1.jpeg`,
+    src: "/jpeg/nolan.self.jpeg",
     alt: "Me in grayscale",
-    width: 900, height: 1355,
+    width: 800, height: 1204,
     component: imageComponent
   },
 
@@ -211,7 +214,7 @@ const nolanItems: Array<I> = [
     id: "persevere", tags: ["nolan"], types: ["image"],
     src: "/jpeg/persevere.jpeg",
     alt: "A large poster on an empty wall that reads 'PERSEVERE' in painted lettering.",
-    width: 997, height: 1330,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -219,7 +222,7 @@ const nolanItems: Array<I> = [
     id: "clouds", tags: ["nolan"], types: ["image"],
     src: "/jpeg/clouds.jpeg",
     alt: "Heavy clouds and green foothills.",
-    width: 1331, height: 998,
+    width: 800, height: 600,
     component: imageComponent
   },
 
@@ -227,7 +230,7 @@ const nolanItems: Array<I> = [
     id: "parents", tags: ["nolan"], types: ["image"],
     src: "/jpeg/parents.jpeg",
     alt: "My parents interacting extremely typically.",
-    width: 1050, height: 1331,
+    width: 800, height: 1015,
     component: imageComponent
   },
 
@@ -235,7 +238,7 @@ const nolanItems: Array<I> = [
     id: "erica", tags: ["nolan"], types: ["image"],
     src: "/jpeg/erica.jpeg",
     alt: "My sister across the table taking a picture of me taking a picture of her, which is this picture.",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -243,7 +246,7 @@ const nolanItems: Array<I> = [
     id: "louie", tags: ["nolan"], types: ["image"],
     src: "/jpeg/louie.jpeg",
     alt: "My dog in the passenger seat politely requesting attention.",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -251,7 +254,7 @@ const nolanItems: Array<I> = [
     id: "petals", tags: ["nolan"], types: ["image"],
     src: "/jpeg/petals.jpeg",
     alt: "Pink flower petals gravitating toward a concrete sidewalk.",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -259,7 +262,7 @@ const nolanItems: Array<I> = [
     id: "pauszeks", tags: ["nolan"], types: ["image"],
     src: "/jpeg/pauszeks.jpeg",
     alt: "Two brothers walking through a small mountain town with fresh coffee; one peace sign, one cheers.",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -267,7 +270,7 @@ const nolanItems: Array<I> = [
     id: "watching", tags: ["nolan"], types: ["image"],
     src: "/jpeg/watching.jpeg",
     alt: "A lonely closed-circuit camera surveilling an empty parking lot labeled Lot P.",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -275,7 +278,7 @@ const nolanItems: Array<I> = [
     id: "david", tags: ["nolan"], types: ["image"],
     src: "/jpeg/david.jpeg",
     alt: "My sister's partner-of-significant-duration (my brother-in-vibe?) flaunting nothing on the way back from a rickety vantage overlooking a suburb of Los Angeles.",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -283,7 +286,7 @@ const nolanItems: Array<I> = [
     id: "branch", tags: ["nolan"], types: ["image"],
     src: "/jpeg/branch.jpeg",
     alt: "A branch of a tree that seems to branch indefinitely.",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -291,7 +294,7 @@ const nolanItems: Array<I> = [
     id: "eli", tags: ["nolan"], types: ["image"],
     src: "/jpeg/eli.jpeg",
     alt: "Black sand washing into cloudy Pacific infinity; a familiar bummer in the foreground utterly ruining the shot.",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -299,7 +302,7 @@ const nolanItems: Array<I> = [
     id: "bridge", tags: ["nolan"], types: ["image"],
     src: "/jpeg/bridge.jpeg",
     alt: "Admiring my shoes on a narrow bridge above a rapid creek.",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -399,7 +402,7 @@ const nm8Items: Array<I> = [
     id: "nm8-self", tags: ["nm8"], types: ["image"],
     src: "/jpeg/nm8.self.jpeg",
     alt: "A robot with a 2x4 soul, visibly dissatisfied with its output.",
-    width: 1216, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -407,7 +410,7 @@ const nm8Items: Array<I> = [
     id: "at", tags: ["nm8"], types: ["image"],
     src: "/jpeg/at.jpeg",
     alt: "A three dimensional @ printed in white, black, and mint green PLA.",
-    width: 720, height: 960,
+    width: 800, height: 1067,
     hoverSrc: "/gif/at.gif",
     component: hoverableImageComponent
   },
@@ -416,7 +419,7 @@ const nm8Items: Array<I> = [
     id: "table", tags: ["nm8"], types: ["image"],
     src: "/jpeg/table.jpeg",
     alt: "A diagram of a table on graph paper. A potential table.",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -424,7 +427,7 @@ const nm8Items: Array<I> = [
     id: "skulls", tags: ["nm8"], types: ["image"],
     src: "/jpeg/skulls.jpeg",
     alt: "Stackable cubic skulls printed in Martha Stewart®-brand PLA. The second greatest gift I've ever received: Martha's memento mori.",
-    width: 998, height: 998,
+    width: 800, height: 800,
     component: imageComponent
   },
 
@@ -432,7 +435,7 @@ const nm8Items: Array<I> = [
     id: "xacto", tags: ["nm8"], types: ["image"],
     src: "/jpeg/xacto.jpeg",
     alt: "An X-ACTO® knife. Fresh blade.",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -440,15 +443,15 @@ const nm8Items: Array<I> = [
     id: "buckets", tags: ["nm8"], types: ["image"],
     src: "/jpeg/buckets.jpeg",
     alt: "Galvanized steel plumbing pipes and fittings sorted into orange buckets, brought to you by Home Depot®.",
-    width: 1331, height: 998,
+    width: 800, height: 600,
     component: imageComponent
   },
 
   {
-    id: "warhammer", tags: ["nm8"], types: ["image"],
-    src: "/jpeg/warhammer.jpeg",
+    id: "tau", tags: ["nm8"], types: ["image"],
+    src: "/jpeg/tau.jpeg",
     alt: "Unpainted tabletop miniature. Sentient bipedal robot, specifically T'au.",
-    width: 1331, height: 998,
+    width: 800, height: 600,
     component: imageComponent
   },
 
@@ -456,7 +459,7 @@ const nm8Items: Array<I> = [
     id: "rug", tags: ["nm8"], types: ["image"],
     src: "/jpeg/rug.jpeg",
     alt: "Green rug, white couch, wood table, gray blanket.",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -464,7 +467,7 @@ const nm8Items: Array<I> = [
     id: "takach", tags: ["nm8"], types: ["image"],
     src: "/jpeg/takach.jpeg",
     alt: "Close-up of an etching press registration grid, brought to you by Takach Press®.",
-    width: 1331, height: 998,
+    width: 800, height: 600,
     component: imageComponent
   },
 
@@ -472,7 +475,7 @@ const nm8Items: Array<I> = [
     id: "print", tags: ["nm8"], types: ["image"],
     src: "/jpeg/print.jpeg",
     alt: "A screen print hanging on the wall above a large manual screen printing press. Super meaningful to whoever took the picture, at least I get that sense.",
-    width: 941, height: 1254,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -480,7 +483,7 @@ const nm8Items: Array<I> = [
     id: "frame", tags: ["nm8"], types: ["image"],
     src: "/jpeg/frame.jpeg",
     alt: "A rainbow-chromatic striped frame sample sitting on construction paper.",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -488,7 +491,7 @@ const nm8Items: Array<I> = [
     id: "screw", tags: ["nm8"], types: ["image"],
     src: "/jpeg/screw.jpeg",
     alt: "A black ballpoint pen drawing on white graph paper. A vaguely humanoid assemblage of shapes with screw-like rod arms, a stacked box torso, smooth pipe legs, and a plastic floret head. It's worshipping a biblically accurate screw of enormous proportion. In this world, even the most basic fasteners are much larger than people.",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -496,7 +499,7 @@ const nm8Items: Array<I> = [
     id: "fourth-avenue", tags: ["nm8"], types: ["image"],
     src: "/jpeg/fourth-avenue.jpeg",
     alt: "A blue Werner® ladder waiting for the subway at 4th Avenue.",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -504,7 +507,7 @@ const nm8Items: Array<I> = [
     id: "graphite", tags: ["nm8"], types: ["image"],
     src: "/jpeg/graphite.jpeg",
     alt: "A rough graphite sketch of a detached plot of land floating in space, populated by tree-sized lollipops.",
-    width: 1331, height: 1033,
+    width: 800, height: 621,
     component: imageComponent
   },
 
@@ -512,7 +515,7 @@ const nm8Items: Array<I> = [
     id: "frames", tags: ["nm8"], types: ["image"],
     src: "/jpeg/frames.jpeg",
     alt: "A pile of candidate frame samples in front of an entire wall of more frame samples.",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -520,7 +523,7 @@ const nm8Items: Array<I> = [
     id: "pack", tags: ["nm8"], types: ["image"],
     src: "/jpeg/pack.jpeg",
     alt: "A pristine dyneema fanny pack for use in the distant future when my current fanny pack falls irreparable.",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -536,7 +539,7 @@ const nm8Items: Array<I> = [
     id: "di", tags: ["nm8"], types: ["image"],
     src: "/jpeg/di.jpeg",
     alt: "The greatest mother to have ever done it hauling her offspring's garbage through a hardware store.",
-    width: 998, height: 1253,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -652,7 +655,7 @@ const smixzyItems: Array<I> = [
     id: "smixzy-self", tags: ["smixzy"], types: ["image"],
     src: "/jpeg/smixzy.self.jpeg",
     alt: "Still me, but in my favorite clothes.",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -660,15 +663,15 @@ const smixzyItems: Array<I> = [
     id: "concrete", tags: ["smixzy"], types: ["image"],
     src: "/jpeg/concrete.jpeg",
     alt: "Soft concrete.",
-    width: 998, height: 998,
+    width: 800, height: 800,
     component: imageComponent
   },
 
   {
     id: "ass", tags: ["smixzy"], types: ["image"],
-    src: "/jpeg/ass-drag.jpeg",
+    src: "/jpeg/ass.jpeg",
     alt: "A purple Post-it® with 'ASS DRAG' written on it in caps lock. There's so much more where this came from.",
-    width: 998, height: 998,
+    width: 800, height: 800,
     component: imageComponent
   },
 
@@ -676,7 +679,7 @@ const smixzyItems: Array<I> = [
     id: "send-nudes", tags: ["smixzy"], types: ["image"],
     src: "/jpeg/send-nudes.jpeg",
     alt: "A quintessential United States Postal Service® mailbox with 'SEND NUDES' painted on the side, right above the logo.",
-    width: 1079, height: 1080,
+    width: 800, height: 801,
     component: imageComponent
   },
 
@@ -684,7 +687,7 @@ const smixzyItems: Array<I> = [
     id: "instaworthy", tags: ["smixzy"], types: ["image"],
     src: "/jpeg/instaworthy.jpeg",
     alt: "An Instagram®-worthy bedside table with 'SHIT IN MY MOUTH' lovingly expressed on the signboard.",
-    width: 998, height: 1247,
+    width: 800, height: 1000,
     component: imageComponent
   },
 
@@ -692,15 +695,15 @@ const smixzyItems: Array<I> = [
     id: "fnd-ur-way", tags: ["smixzy"], types: ["image"],
     src: "/jpeg/fnd-ur-way.jpeg",
     alt: "A hand-drawn sticker on a road sign that says 'FND UR WAY' under a skull with a staircase leading into the brain compartment.",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
   {
     id: "face", tags: ["smixzy"], types: ["image"],
-    src: "/jpeg/face.preview.jpeg",
+    src: "/jpeg/face.jpeg",
     alt: "The word 'FACE' permanently etched into a concrete sidewalk.",
-    width: 971, height: 971,
+    width: 800, height: 800,
     component: imageComponent
   },
 
@@ -708,7 +711,7 @@ const smixzyItems: Array<I> = [
     id: "sunglasses", tags: ["smixzy"], types: ["image"],
     src: "/jpeg/sunglasses.jpeg",
     alt: "The sidewalk shadows of two people holding heart-shaped sunglasses up to sunlight.",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -716,7 +719,7 @@ const smixzyItems: Array<I> = [
     id: "intersection", tags: ["smixzy"], types: ["image"],
     src: "/jpeg/intersection.jpeg",
     alt: "Shoegazing at an intersection in the sidewalk.",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -724,7 +727,7 @@ const smixzyItems: Array<I> = [
     id: "theme-provider", tags: ["smixzy"], types: ["image"],
     src: "/jpeg/theme-provider.jpeg",
     alt: "4 partially overlapping, heavily backlit bright pink Post-it® notes.",
-    width: 998, height: 1331,
+    width: 800, height: 1066,
     component: imageComponent
   },
 
@@ -732,7 +735,7 @@ const smixzyItems: Array<I> = [
     id: "dumpstergram", tags: ["smixzy"], types: ["image"],
     src: "/jpeg/dumpstergram.jpeg",
     alt: "Two dumpsters in the middle of the woods. Unparalleled vibe.",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -740,7 +743,7 @@ const smixzyItems: Array<I> = [
     id: "post-it", tags: ["smixzy"], types: ["image"],
     src: "/jpeg/post-it.jpeg",
     alt: "A closeup of Post-it® notes with more Post-it® notes in the background; not to brag but it's a fresh cabinet pack of Helsinki-themed Greener Notes.",
-    width: 1240, height: 937,
+    width: 800, height: 605,
     component: imageComponent
   },
 
@@ -748,7 +751,7 @@ const smixzyItems: Array<I> = [
     id: "sky", tags: ["smixzy"], types: ["image"],
     src: "/jpeg/sky.jpeg",
     alt: "Purple night clouds hushing a busy street.",
-    width: 1331, height: 998,
+    width: 800, height: 600,
     component: imageComponent
   },
 
@@ -756,7 +759,7 @@ const smixzyItems: Array<I> = [
     id: "twig", tags: ["smixzy"], types: ["image"],
     src: "/jpeg/twig.jpeg",
     alt: "Closeup of a twig.",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -764,7 +767,7 @@ const smixzyItems: Array<I> = [
     id: "thrift", tags: ["smixzy"], types: ["image"],
     src: "/jpeg/thrift.jpeg",
     alt: "Maximum thrift store saturation.",
-    width: 998, height: 998,
+    width: 800, height: 800,
     component: imageComponent
   },
 
@@ -780,7 +783,7 @@ const smixzyItems: Array<I> = [
     id: "manifold", tags: ["smixzy"], types: ["image"],
     src: "/jpeg/manifold.jpeg",
     alt: "Sketched amorphous manifold of blue, pink, and green ink.",
-    width: 972, height: 972,
+    width: 800, height: 800,
     component: imageComponent
   },
 
@@ -788,15 +791,15 @@ const smixzyItems: Array<I> = [
     id: "coral", tags: ["smixzy"], types: ["image"],
     src: "/jpeg/coral.jpeg",
     alt: "Scattered ink-encoded coral.",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
   {
     id: "chalk", tags: ["smixzy"], types: ["image"],
-    src: "/jpeg/chalk.preview.jpeg",
+    src: "/jpeg/chalk.jpeg",
     alt: "Sidewalk chalk portal to outer space.",
-    width: 1198, height: 989,
+    width: 800, height: 660,
     component: imageComponent
   },
 
@@ -804,7 +807,7 @@ const smixzyItems: Array<I> = [
     id: "spray-paint", tags: ["smixzy"], types: ["image"],
     src: "/jpeg/spray-paint.jpeg",
     alt: "Spray paint blasted onto the sidewalk during construction.",
-    width: 1331, height: 1331,
+    width: 800, height: 800,
     component: imageComponent
   },
 
@@ -812,7 +815,7 @@ const smixzyItems: Array<I> = [
     id: "monolith", tags: ["smixzy"], types: ["image"],
     src: "/jpeg/monolith.jpeg",
     alt: "A strangely oriented concrete monolith opimitzed for resting up to four asscheeks.",
-    width: 1331, height: 1332,
+    width: 800, height: 800,
     component: imageComponent
   },
 
@@ -820,7 +823,7 @@ const smixzyItems: Array<I> = [
     id: "cable", tags: ["smixzy"], types: ["image"],
     src: "/jpeg/cable.jpeg",
     alt: "A classic mixup between the street lighting and television cable factions.",
-    width: 1331, height: 1332,
+    width: 800, height: 801,
     component: imageComponent
   },
 
@@ -828,7 +831,7 @@ const smixzyItems: Array<I> = [
     id: "prof-hos", tags: ["nm8", "smixzy"], types: ["image"],
     src: "/jpeg/mark.jpeg",
     alt: "Prof. Hos.!!!",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -1090,7 +1093,7 @@ const OeItems: Array<I> = [
     id: "sidewalk", tags: ["Oe"], types: ["image"],
     src: "/jpeg/sidewalk.jpeg",
     alt: "Construction-filtered sunlight projecting a binary pattern on the sidewalk.",
-    width: 1331, height: 1331,
+    width: 800, height: 800,
     component: imageComponent
   },
 
@@ -1098,15 +1101,15 @@ const OeItems: Array<I> = [
     id: "spill", tags: ["Oe"], types: ["image"],
     src: "/jpeg/spill.jpeg",
     alt: "The softest, most gorgeous spill you've ever faced.",
-    width: 1331, height: 1331,
+    width: 800, height: 800,
     component: imageComponent
   },
 
   {
     id: "stained", tags: ["Oe"], types: ["image"],
-    src: "/jpeg/stained.jpg",
+    src: "/jpeg/stained.jpeg",
     alt: "Neon-stained sandstone.",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -1114,7 +1117,7 @@ const OeItems: Array<I> = [
     id: "martini", tags: ["Oe"], types: ["image"],
     src: "/jpeg/martini.jpeg",
     alt: "A martini efficiently brokering photons.",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -1122,7 +1125,7 @@ const OeItems: Array<I> = [
     id: "midway", tags: ["Oe"], types: ["image"],
     src: "/jpeg/midway.jpeg",
     alt: "The ultraheterochromatic hallway of Midway International Airport.",
-    width: 1331, height: 998,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -1130,7 +1133,7 @@ const OeItems: Array<I> = [
     id: "truck", tags: ["Oe"], types: ["image"],
     src: "/jpeg/truck.jpeg",
     alt: "A yellow haul truck on the beach.",
-    width: 1331, height: 1331,
+    width: 800, height: 800,
     component: imageComponent
   },
 
@@ -1138,7 +1141,7 @@ const OeItems: Array<I> = [
     id: "cups", tags: ["Oe"], types: ["image"],
     src: "/jpeg/turrell.cups.jpeg",
     alt: "Two big gulps discussing Twilight Epiphany.",
-    width: 1536, height: 2049,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -1146,7 +1149,7 @@ const OeItems: Array<I> = [
     id: "epiphany", tags: ["Oe"], types: ["image"],
     src: "/jpeg/turrell.pink.jpeg",
     alt: "Pink angles.",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   },
 
@@ -1154,7 +1157,7 @@ const OeItems: Array<I> = [
     id: "universal-rectifier", tags: ["Oe"], types: ["image"],
     src: "/jpeg/universal-rectifier.jpeg",
     alt: "A Universal Rectifiers, Inc.® Cathodic Protection Rectifier. A Hometown American Product.",
-    width: 1331, height: 1331,
+    width: 800, height: 800,
     component: imageComponent
   },
 
@@ -1162,7 +1165,7 @@ const OeItems: Array<I> = [
     id: "observation", tags: ["Oe"], types: ["image"],
     src: "/jpeg/turrell.self.jpeg",
     alt: "Observing observation",
-    width: 998, height: 1331,
+    width: 800, height: 1067,
     component: imageComponent
   }
 ]

@@ -109,21 +109,29 @@ document.addEventListener('keyup', (e: KeyboardEvent) => {
 
 /* NOTE: hoverable images */
 
-const hoverableImgs = grid.querySelectorAll('.hoverable img') as NodeListOf<HTMLImageElement>
+const hoverableImgs = grid.querySelectorAll('.hoverable picture') as NodeListOf<HTMLPictureElement>
 
-const swapImgSrcsEventListener = (e: MouseEvent | TouchEvent) => {
-  const el = e.target as HTMLImageElement
-  const src = el.src
+const hoverPictureEventListener = (e: MouseEvent | TouchEvent) => {
+  const el = (e.target as HTMLElement).closest('picture') as HTMLPictureElement
 
-  el.src = el.getAttribute('data-hover-src') || src
-  el.setAttribute('data-hover-src', src)
+  if (el.getAttribute('data-hovering')) {
+    el.removeChild(el.childNodes[0])
+    el.removeAttribute('data-hovering')
+  }
+  else if (el.getAttribute('data-hover-src')) {
+    const child = document.createElement('source')
+    child.srcset = el.getAttribute('data-hover-src')!
+    child.type = "image/gif"
+    el.prepend(child)
+    el.setAttribute('data-hovering', "true")
+  }
 }
 
 /* TODO: mouse, touch detection */
 hoverableImgs.forEach((x) => {
-  x.addEventListener('mouseenter', swapImgSrcsEventListener)
-  x.addEventListener('touchstart', swapImgSrcsEventListener)
-  x.addEventListener('mouseleave', swapImgSrcsEventListener)
+  x.addEventListener('mouseenter', hoverPictureEventListener)
+  x.addEventListener('touchstart', hoverPictureEventListener)
+  x.addEventListener('mouseleave', hoverPictureEventListener)
 })
 
 
@@ -132,6 +140,7 @@ hoverableImgs.forEach((x) => {
 const showControlsButton = document.querySelector("button.show-controls") as HTMLButtonElement
 const aside = document.querySelector('aside') as HTMLElement
 
+/* TODO: refine, include landscape */
 showControlsButton?.addEventListener("click", () => {
   if (!isPortrait) {
     const span = showControlsButton?.querySelector('span')
@@ -141,7 +150,6 @@ showControlsButton?.addEventListener("click", () => {
   }
 })
 
-/* TODO: refine, include landscape */
 var showControlsButtonTouchStartY: number | null = null
 var asideHeightStart = aside?.clientHeight
 var asideHeightTouchMoved: boolean | null = null

@@ -200,7 +200,7 @@ body aside {
   .grid-container.controls-showing .item {width: 100%;}
 }
 
-@media screen and (orientation: portrait) and (max-width: 800px) {
+@media screen and (orientation: portrait) {
   .grid-container [data-span="1"] {width: 20%;}
   .grid-container [data-span="2"] {width: 40%;}
   .grid-container [data-span="3"] {width: 60%;}
