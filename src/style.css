@@ -551,3 +551,20 @@ fieldset.color input[type="range"] {
   from {filter: hue-rotate(0deg);}
   to {filter: hue-rotate(360deg);}
 }
+
+:root[data-color-scheme="dark"] #item--Oe-self,
+:root[data-color-scheme="dark"] #item--150,
+:root[data-color-scheme="dark"] #item--170,
+:root[data-color-scheme="dark"] #item--scad {
+  filter: invert();
+}
+
+@media (prefers-color-scheme: dark) {
+  #item--Oe-self,
+  #item--150,
+  #item--170,
+  #item--scad {
+    filter: invert();
+  }
+}
+

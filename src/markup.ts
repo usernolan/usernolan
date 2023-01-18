@@ -1185,129 +1185,498 @@ shuffle(nolanItems)
 */
 
 const spec: Array<I> = [
-  { id: "rich", span: 2 },
-  { id: "branch", span: 2 },
-  { id: "fifield", span: 2 },
-  { id: "rs", span: 1 },
-  { id: "louie", span: 1 },
-  { id: "petals", span: 1 },
-  { id: "clouds", span: 2 },
-  { id: "anw-3", span: 2 },
-  { id: "bridge", span: 2 },
-  { id: "persevere", span: 2 },
-  { id: "nolan-self", span: 3 },
-  { id: "pauszeks", span: 1 },
-  { id: "anw-4", span: 3 },
-  { id: "chapman", span: 3 },
-  { id: "parents", span: 1 },
-  { id: "intro", span: 3 },
-  { id: "logistic-map", span: 2 },
-  { id: "erica", span: 1 },
-  { id: "blizzard", span: 2 },
-  { id: "david", span: 1 },
-  { id: "eli", span: 1 },
-  { id: "watching", span: 1 },
-  { id: "chris-a", span: 1 },
-  { id: "anw-1", span: 1 },
-  { id: "claude", span: 3 },
-  { id: "anw-2", span: 1 },
-  { id: "takach", span: 1 },
-  { id: "pack", span: 1 },
-  { id: "at", span: 3 },
-  { id: "graphite", span: 2 },
-  { id: "buckets", span: 1 },
-  { id: "toxi", span: 2 },
-  { id: "the-mess-were-in", span: 1 },
-  { id: "nm8-self", span: 1 },
-  { id: "rug", span: 1 },
-  { id: "skulls", span: 2 },
-  { id: "cool-uris", span: 1 },
-  { id: "tau", span: 1 },
-  { id: "how-to-sweep", span: 2 },
-  { id: "nm8", span: 3 },
-  { id: "xacto", span: 2 },
-  { id: "quine", span: 2 },
-  { id: "di", span: 1 },
-  { id: "frame", span: 1 },
-  { id: "just-hard-fail-it", span: 1 },
-  { id: "screw", span: 2 },
-  { id: "the-language-of-the-system", span: 1 },
-  { id: "table", span: 2 },
-  { id: "the-value-of-values", span: 1 },
-  { id: "thi-ng", span: 1 },
-  { id: "tom", span: 1 },
-  { id: "worse-is-better", span: 2 },
-  { id: "frames", span: 2 },
-  { id: "fourth-avenue", span: 2 },
-  { id: "print", span: 1 },
-  { id: "hilma", span: 3 },
-  { id: "instaworthy", span: 1 },
-  { id: "face", span: 2 },
-  { id: "john-vermilyea", span: 2 },
-  { id: "chalk", span: 1 },
-  { id: "sunglasses", span: 2 },
-  { id: "ass", span: 1 },
-  { id: "steve-axford", span: 1 },
-  { id: "concrete", span: 2 },
-  { id: "intersection", span: 2 },
-  { id: "ashlin", span: 1 },
-  { id: "terry-a-davis", span: 3 },
-  { id: "webring", span: 2 },
-  { id: "send-nudes", span: 1 },
-  { id: "kandinsky", span: 3 },
-  { id: "twobfc", span: 2 },
-  { id: "devine-lu-linvega", span: 3 },
-  { id: "spray-paint", span: 1 },
-  { id: "dumpstergram", span: 1 },
-  { id: "thrift", span: 2 },
-  { id: "moebius", span: 3 },
-  { id: "minjeong-an", span: 2 },
-  { id: "coral", span: 1 },
-  { id: "sky", span: 1 },
-  { id: "monolith", span: 2 },
-  { id: "cakebread", span: 2 },
-  { id: "fnd-ur-way", span: 2 },
-  { id: "ulises-farinas", span: 1 },
-  { id: "anders-nilsen", span: 3 },
-  { id: "mark", span: 1 },
-  { id: "prof-hos", span: 1 },
-  { id: "smixzy-self", span: 3 },
-  { id: "theme-provider", span: 2 },
-  { id: "twig", span: 2 },
-  { id: "post-it", span: 2 },
-  { id: "jesse-jacobs", span: 2 },
-  { id: "cable", span: 2 },
-  { id: "arcane-mage", span: 2 },
-  { id: "smixzy", span: 2 },
-  { id: "manifold", span: 1 },
-  { id: "sidewalk", span: 2 },
-  { id: "sequent-calculus", span: 1 },
-  { id: "observation", span: 2 },
-  { id: "Oe-self", span: 2 },
-  { id: "170", span: 2 },
-  { id: "stairs", span: 2 },
-  { id: "truck", span: 1 },
-  { id: "martini", span: 1 },
-  { id: "schismogenesis", span: 1 },
-  { id: "universal-rectifier", span: 1 },
-  { id: "stained", span: 1 },
-  { id: "-•", span: 1 },
-  { id: "epiphany", span: 2 },
-  { id: "bohm", span: 1 },
-  { id: "150", span: 2 },
-  { id: "scad", span: 3 },
-  { id: "spill", span: 3 },
-  { id: "blue", span: 1 },
-  { id: "green", span: 3 },
-  { id: "process", span: 1 },
-  { id: "midway", span: 2 },
-  { id: "pink", span: 2 },
-  { id: "cups", span: 2 },
-  { id: "information", span: 3 },
-  { id: "Oe", span: 2 },
-  { id: "mereology", span: 2 },
-  { id: "era", span: 2 },
-  { id: "algebraic-structure", span: 1 }
+  {
+    id: "rich",
+    span: 2
+  },
+  {
+    id: "branch",
+    span: 2
+  },
+  {
+    id: "fifield",
+    span: 2
+  },
+  {
+    id: "rs",
+    span: 1
+  },
+  {
+    id: "louie",
+    span: 1
+  },
+  {
+    id: "petals",
+    span: 1
+  },
+  {
+    id: "clouds",
+    span: 2
+  },
+  {
+    id: "blizzard",
+    span: 2
+  },
+  {
+    id: "bridge",
+    span: 2
+  },
+  {
+    id: "persevere",
+    span: 2
+  },
+  {
+    id: "nolan-self",
+    span: 3
+  },
+  {
+    id: "pauszeks",
+    span: 1
+  },
+  {
+    id: "anw-4",
+    span: 3
+  },
+  {
+    id: "chapman",
+    span: 3
+  },
+  {
+    id: "parents",
+    span: 1
+  },
+  {
+    id: "intro",
+    span: 3
+  },
+  {
+    id: "chris-a",
+    span: 2
+  },
+  {
+    id: "erica",
+    span: 1
+  },
+  {
+    id: "logistic-map",
+    span: 2
+  },
+  {
+    id: "david",
+    span: 1
+  },
+  {
+    id: "eli",
+    span: 1
+  },
+  {
+    id: "watching",
+    span: 2
+  },
+  {
+    id: "anw-3",
+    span: 1
+  },
+  {
+    id: "anw-1",
+    span: 2
+  },
+  {
+    id: "claude",
+    span: 3
+  },
+  {
+    id: "anw-2",
+    span: 1
+  },
+  {
+    id: "takach",
+    span: 1
+  },
+  {
+    id: "pack",
+    span: 1
+  },
+  {
+    id: "at",
+    span: 3
+  },
+  {
+    id: "graphite",
+    span: 1
+  },
+  {
+    id: "buckets",
+    span: 1
+  },
+  {
+    id: "tom",
+    span: 2
+  },
+  {
+    id: "the-mess-were-in",
+    span: 1
+  },
+  {
+    id: "nm8-self",
+    span: 2
+  },
+  {
+    id: "rug",
+    span: 1
+  },
+  {
+    id: "skulls",
+    span: 2
+  },
+  {
+    id: "cool-uris",
+    span: 1
+  },
+  {
+    id: "tau",
+    span: 1
+  },
+  {
+    id: "how-to-sweep",
+    span: 2
+  },
+  {
+    id: "nm8",
+    span: 3
+  },
+  {
+    id: "xacto",
+    span: 1
+  },
+  {
+    id: "quine",
+    span: 2
+  },
+  {
+    id: "di",
+    span: 1
+  },
+  {
+    id: "frame",
+    span: 1
+  },
+  {
+    id: "thi-ng",
+    span: 1
+  },
+  {
+    id: "screw",
+    span: 2
+  },
+  {
+    id: "the-language-of-the-system",
+    span: 1
+  },
+  {
+    id: "table",
+    span: 1
+  },
+  {
+    id: "the-value-of-values",
+    span: 1
+  },
+  {
+    id: "toxi",
+    span: 1
+  },
+  {
+    id: "just-hard-fail-it",
+    span: 1
+  },
+  {
+    id: "worse-is-better",
+    span: 2
+  },
+  {
+    id: "frames",
+    span: 1
+  },
+  {
+    id: "fourth-avenue",
+    span: 1
+  },
+  {
+    id: "print",
+    span: 1
+  },
+  {
+    id: "hilma",
+    span: 3
+  },
+  {
+    id: "instaworthy",
+    span: 1
+  },
+  {
+    id: "face",
+    span: 1
+  },
+  {
+    id: "john-vermilyea",
+    span: 2
+  },
+  {
+    id: "chalk",
+    span: 1
+  },
+  {
+    id: "sunglasses",
+    span: 2
+  },
+  {
+    id: "ass",
+    span: 1
+  },
+  {
+    id: "steve-axford",
+    span: 1
+  },
+  {
+    id: "concrete",
+    span: 2
+  },
+  {
+    id: "intersection",
+    span: 2
+  },
+  {
+    id: "ashlin",
+    span: 1
+  },
+  {
+    id: "terry-a-davis",
+    span: 3
+  },
+  {
+    id: "webring",
+    span: 2
+  },
+  {
+    id: "send-nudes",
+    span: 1
+  },
+  {
+    id: "kandinsky",
+    span: 3
+  },
+  {
+    id: "twobfc",
+    span: 2
+  },
+  {
+    id: "devine-lu-linvega",
+    span: 3
+  },
+  {
+    id: "spray-paint",
+    span: 1
+  },
+  {
+    id: "dumpstergram",
+    span: 1
+  },
+  {
+    id: "thrift",
+    span: 2
+  },
+  {
+    id: "moebius",
+    span: 1
+  },
+  {
+    id: "minjeong-an",
+    span: 2
+  },
+  {
+    id: "coral",
+    span: 1
+  },
+  {
+    id: "sky",
+    span: 1
+  },
+  {
+    id: "monolith",
+    span: 3
+  },
+  {
+    id: "cakebread",
+    span: 2
+  },
+  {
+    id: "fnd-ur-way",
+    span: 1
+  },
+  {
+    id: "ulises-farinas",
+    span: 1
+  },
+  {
+    id: "anders-nilsen",
+    span: 3
+  },
+  {
+    id: "mark",
+    span: 1
+  },
+  {
+    id: "prof-hos",
+    span: 1
+  },
+  {
+    id: "smixzy-self",
+    span: 3
+  },
+  {
+    id: "theme-provider",
+    span: 1
+  },
+  {
+    id: "twig",
+    span: 2
+  },
+  {
+    id: "post-it",
+    span: 1
+  },
+  {
+    id: "jesse-jacobs",
+    span: 2
+  },
+  {
+    id: "cable",
+    span: 1
+  },
+  {
+    id: "arcane-mage",
+    span: 2
+  },
+  {
+    id: "smixzy",
+    span: 2
+  },
+  {
+    id: "manifold",
+    span: 1
+  },
+  {
+    id: "sidewalk",
+    span: 3
+  },
+  {
+    id: "sequent-calculus",
+    span: 1
+  },
+  {
+    id: "observation",
+    span: 2
+  },
+  {
+    id: "Oe-self",
+    span: 3
+  },
+  {
+    id: "170",
+    span: 1
+  },
+  {
+    id: "stairs",
+    span: 1
+  },
+  {
+    id: "truck",
+    span: 1
+  },
+  {
+    id: "martini",
+    span: 1
+  },
+  {
+    id: "schismogenesis",
+    span: 1
+  },
+  {
+    id: "universal-rectifier",
+    span: 1
+  },
+  {
+    id: "stained",
+    span: 3
+  },
+  {
+    id: "epiphany",
+    span: 1
+  },
+  {
+    id: "bohm",
+    span: 1
+  },
+  {
+    id: "150",
+    span: 1
+  },
+  {
+    id: "scad",
+    span: 3
+  },
+  {
+    id: "-•",
+    span: 2
+  },
+  {
+    id: "spill",
+    span: 2
+  },
+  {
+    id: "blue",
+    span: 1
+  },
+  {
+    id: "process",
+    span: 1
+  },
+  {
+    id: "midway",
+    span: 2
+  },
+  {
+    id: "green",
+    span: 1
+  },
+  {
+    id: "pink",
+    span: 1
+  },
+  {
+    id: "cups",
+    span: 2
+  },
+  {
+    id: "information",
+    span: 3
+  },
+  {
+    id: "Oe",
+    span: 2
+  },
+  {
+    id: "mereology",
+    span: 2
+  },
+  {
+    id: "era",
+    span: 1
+  },
+  {
+    id: "algebraic-structure",
+    span: 1
+  }
 ].map((x) => {
   const item = items.find((y) => x.id === y.id)
   if (!item) throw new Error(`Invalid id while ordering items: ${x.id}`)
