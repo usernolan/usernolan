@@ -560,10 +560,10 @@ fieldset.color input[type="range"] {
 }
 
 @media (prefers-color-scheme: dark) {
-  #item--Oe-self,
-  #item--150,
-  #item--170,
-  #item--scad {
+  :root:not([data-color-scheme="light"]) #item--Oe-self,
+  :root:not([data-color-scheme="light"]) #item--150,
+  :root:not([data-color-scheme="light"]) #item--170,
+  :root:not([data-color-scheme="light"]) #item--scad {
     filter: invert();
   }
 }
