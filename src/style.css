@@ -298,6 +298,7 @@ div.controls::-webkit-scrollbar {
     -webkit-backdrop-filter: blur(3rem);
             backdrop-filter: blur(3rem);
     height: 100%;
+    padding-bottom: 5vh;
   }
 
   :root[data-color-scheme="light"] div.controls {
@@ -499,6 +500,7 @@ fieldset.color input[type="range"] {
   padding: 1rem;
 }
 
+.item.contact a,
 .item.link a {
   display: inline-block;
   text-decoration: none;
@@ -515,6 +517,7 @@ fieldset.color input[type="range"] {
 	margin: 0 0 0.75rem;
 }
 
+.item.contact a:hover,
 .item.link a:hover h2 {
 	text-decoration: underline;
 }
@@ -538,8 +541,13 @@ fieldset.color input[type="range"] {
   font-style: italic;
 }
 
+.item.contact,
 .item.link.Oe {
   font-family: Fragment Mono;
+}
+
+.item.gist.contact {
+  font-style: normal;
 }
 
 .item.smixzy.image img:hover,
@@ -567,4 +575,3 @@ fieldset.color input[type="range"] {
     filter: invert();
   }
 }
-

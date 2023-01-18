@@ -1171,10 +1171,12 @@ const OeItems: Array<I> = [
   }
 ]
 
-/* TODO: add cowboy */
-/* TODO: add hints */
 const items: Array<I> =
-  nolanItems.concat(nm8Items, smixzyItems, OeItems)
+  nolanItems.concat(nm8Items, smixzyItems, OeItems).concat([{
+    id: "contact", tags: ["nolan", "nm8", "smixzy", "Oe"], types: ["contact"],
+    textComponent: ["a", { href: "mailto:nolan@usernolan.net" }, "nolan@usernolan.net"],
+    component: gistComponent
+  }])
 
 /*
 shuffle(nolanItems)
@@ -1676,6 +1678,10 @@ const spec: Array<I> = [
   {
     id: "algebraic-structure",
     span: 1
+  },
+  {
+    id: "contact",
+    span: 2
   }
 ].map((x) => {
   const item = items.find((y) => x.id === y.id)
