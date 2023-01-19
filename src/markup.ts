@@ -1,10 +1,4 @@
-// import { take } from "@thi.ng/transducers/take"
-// import { repeatedly } from "@thi.ng/transducers/repeatedly"
-// import { shuffle } from "@thi.ng/arrays/shuffle"
 import { choices } from "@thi.ng/transducers/choices"
-
-/* TODO: image optimization, lazy, markup dimensions; inline sharp? */
-/* TODO: split dirs, watch; eliminate double reload */
 
 
 /* NOTE: item interfaces, components */
@@ -34,11 +28,6 @@ export interface ImageItem extends Item {
   loading?: string,
   decoding?: string
 }
-
-// export const isImageItem = (x: any | ImageItem): x is ImageItem => {
-//   return Object.hasOwn(x, "id")
-//     && x?.src && x?.alt && x?.width && x?.height
-// }
 
 interface HoverableImageItem extends ImageItem {
   hoverSrc: string

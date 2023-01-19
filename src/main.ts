@@ -3,12 +3,8 @@ import Shuffle from "shufflejs"
 
 /* TODO: quote formatting */
 /* TODO: noscript */
-/* TODO: refine querySelectors */
-/* TODO: revisit top level naming; els etc. */
+/* TODO: refine query selectors, event listeners */
 /* TODO: undo, back, state history, sharing */
-/* TODO: inline css */
-/* TODO: client randomization */
-/* NOTE: css import? can that be used? */
 
 
 /* NOTE: shuffle, isotope, grid */
@@ -105,7 +101,6 @@ document.addEventListener('mousemove', (e: MouseEvent) => {
   mouseTarget = e.target as HTMLElement
 })
 
-/* TODO: additional key commands; generalize listeners */
 document.addEventListener('keydown', (e: KeyboardEvent) => {
   if (e.key === "Shift" && mouseTarget?.matches('.image *'))
     mouseTarget.closest('.image')?.classList.add('cursor-zoom-out')
