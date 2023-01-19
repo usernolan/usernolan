@@ -45,6 +45,20 @@ var isPortrait = orientationMedia.matches
 orientationMedia.addEventListener('change', (e) =>
   isPortrait = e.matches)
 
+var passiveSupported = false
+try {
+  const options = {
+    get passive() {
+      passiveSupported = true
+      return false
+    }
+  }
+  window.addEventListener("detect-passive", () => null, options)
+  window.removeEventListener("detect-passive", () => null, options as any)
+} catch (err) {
+  passiveSupported = false
+}
+
 
 /* NOTE: image resize, alt */
 
@@ -83,7 +97,8 @@ images.forEach((x) =>
 images.forEach((x) =>
   x.addEventListener('touchstart', () =>
     x.querySelector('img')
-      ?.dispatchEvent(new Event('hover'))))
+      ?.dispatchEvent(new Event('hover')),
+    passiveSupported ? { passive: true } : false))
 
 var mouseTarget: HTMLElement | undefined = undefined
 document.addEventListener('mousemove', (e: MouseEvent) => {
@@ -130,7 +145,7 @@ const hoverPictureEventListener = (e: MouseEvent | TouchEvent) => {
 /* TODO: mouse, touch detection */
 hoverableImgs.forEach((x) => {
   x.addEventListener('mouseenter', hoverPictureEventListener)
-  x.addEventListener('touchstart', hoverPictureEventListener)
+  x.addEventListener('touchstart', hoverPictureEventListener, passiveSupported ? { passive: true } : false)
   x.addEventListener('mouseleave', hoverPictureEventListener)
 })
 
@@ -173,10 +188,10 @@ showControlsButton?.addEventListener("touchstart", (e) => {
     showControlsButtonTouchStartY = e.touches[0].clientY
     asideHeightStart = aside?.clientHeight
   }
-})
+}, passiveSupported ? { passive: true } : false)
 
 showControlsButton?.addEventListener("touchmove", (e) => {
-  e.preventDefault() // NOTE: cancel scroll
+  e.preventDefault() // NOTE: cancel scroll, implies passive: true
   if (isPortrait) {
     aside.style.transition = "none"
 
@@ -186,7 +201,7 @@ showControlsButton?.addEventListener("touchmove", (e) => {
     aside.style.height = `${h}px`
     asideHeightTouchMoved = true
   }
-})
+}, passiveSupported ? { passive: true } : false)
 
 showControlsButton?.addEventListener("touchend", () => {
   if (isPortrait) {
@@ -200,7 +215,7 @@ showControlsButton?.addEventListener("touchend", () => {
 
       aside?.setAttribute('data-previous-height', prev)
       showControlsButtonTouchStartY = null
-      asideHeightTouchMoved = false;
+      asideHeightTouchMoved = false
     } else {
       if (aside.style.height === "0px") {
         aside.style.height =
@@ -222,7 +237,7 @@ showControlsButton?.addEventListener("touchend", () => {
       aside?.classList.add("controls-showing")
     }
   }
-})
+}, passiveSupported ? { passive: true } : false)
 
 
 /* NOTE: filters */
