@@ -26,12 +26,19 @@ interface GistItem extends Item {
   textComponent: any[] | Function
 }
 
-interface ImageItem extends Item {
+export interface ImageItem extends Item {
   src: string,
   alt: string
   width: number,
-  height: number
+  height: number,
+  loading?: string,
+  decoding?: string
 }
+
+// export const isImageItem = (x: any | ImageItem): x is ImageItem => {
+//   return Object.hasOwn(x, "id")
+//     && x?.src && x?.alt && x?.width && x?.height
+// }
 
 interface HoverableImageItem extends ImageItem {
   hoverSrc: string
@@ -106,7 +113,9 @@ const gistComponent = ({
 /* TODO: proceduralize image gen */
 const imageComponent = ({
   id, src, alt, width, height,
-  spans = defaultSpans, span, tags = [], types = []
+  loading = "lazy", decoding = "async",
+  spans = defaultSpans, span,
+  tags = [], types = []
 }: ImageItem) => {
   const groups = tags.concat(types)
   return [
@@ -119,7 +128,7 @@ const imageComponent = ({
     },
     ["picture", {}, ...imageFormats.map((ext) =>
       ["source", { srcset: src.replaceAll("jpeg", ext), type: `image/${ext}` }]),
-      ["img", { src, alt, width, height, loading: "lazy", decoding: "async" }]
+      ["img", { src, alt, width, height, loading, decoding }]
     ],
     ["p", {}, alt]
   ]
@@ -127,6 +136,7 @@ const imageComponent = ({
 
 const hoverableImageComponent = ({
   id, src, alt, width, height, hoverSrc,
+  loading = "lazy", decoding = "async",
   spans = defaultSpans, span, tags = [], types = []
 }: HoverableImageItem) => {
   const groups = tags.concat(types)
@@ -140,7 +150,7 @@ const hoverableImageComponent = ({
     },
     ["picture", { "data-hover-src": hoverSrc }, ...imageFormats.map((ext) =>
       ["source", { srcset: src.replaceAll("jpeg", ext), type: `image/${ext}` }]),
-      ["img", { src, alt, width, height, loading: "lazy", decoding: "async" }]
+      ["img", { src, alt, width, height, loading, decoding }]
     ],
     ["p", {}, alt]
   ]
@@ -207,7 +217,7 @@ const nolanItems: Array<I> = [
     id: "nolan-self", tags: ["nolan"], types: ["image"],
     src: "/jpeg/nolan.self.jpeg",
     alt: "Me in grayscale",
-    width: 800, height: 1204,
+    width: 800, height: 1204, loading: "eager",
     component: imageComponent
   },
 
@@ -215,7 +225,7 @@ const nolanItems: Array<I> = [
     id: "persevere", tags: ["nolan"], types: ["image"],
     src: "/jpeg/persevere.jpeg",
     alt: "A large poster on an empty wall that reads 'PERSEVERE' in painted lettering.",
-    width: 800, height: 1067,
+    width: 800, height: 1067, loading: "eager",
     component: imageComponent
   },
 
@@ -223,7 +233,7 @@ const nolanItems: Array<I> = [
     id: "clouds", tags: ["nolan"], types: ["image"],
     src: "/jpeg/clouds.jpeg",
     alt: "Heavy clouds and green foothills.",
-    width: 800, height: 600,
+    width: 800, height: 600, loading: "eager",
     component: imageComponent
   },
 
@@ -231,7 +241,7 @@ const nolanItems: Array<I> = [
     id: "parents", tags: ["nolan"], types: ["image"],
     src: "/jpeg/parents.jpeg",
     alt: "My parents interacting extremely typically.",
-    width: 800, height: 1015,
+    width: 800, height: 1015, loading: "eager",
     component: imageComponent
   },
 
@@ -239,7 +249,7 @@ const nolanItems: Array<I> = [
     id: "erica", tags: ["nolan"], types: ["image"],
     src: "/jpeg/erica.jpeg",
     alt: "My sister across the table taking a picture of me taking a picture of her, which is this picture.",
-    width: 800, height: 1067,
+    width: 800, height: 1067, loading: "eager",
     component: imageComponent
   },
 
@@ -247,7 +257,7 @@ const nolanItems: Array<I> = [
     id: "louie", tags: ["nolan"], types: ["image"],
     src: "/jpeg/louie.jpeg",
     alt: "My dog in the passenger seat politely requesting attention.",
-    width: 800, height: 1067,
+    width: 800, height: 1067, loading: "eager",
     component: imageComponent
   },
 
@@ -255,7 +265,7 @@ const nolanItems: Array<I> = [
     id: "petals", tags: ["nolan"], types: ["image"],
     src: "/jpeg/petals.jpeg",
     alt: "Pink flower petals gravitating toward a concrete sidewalk.",
-    width: 800, height: 1067,
+    width: 800, height: 1067, loading: "eager",
     component: imageComponent
   },
 
@@ -263,7 +273,7 @@ const nolanItems: Array<I> = [
     id: "pauszeks", tags: ["nolan"], types: ["image"],
     src: "/jpeg/pauszeks.jpeg",
     alt: "Two brothers walking through a small mountain town with fresh coffee; one peace sign, one cheers.",
-    width: 800, height: 1067,
+    width: 800, height: 1067, loading: "eager",
     component: imageComponent
   },
 
@@ -287,7 +297,7 @@ const nolanItems: Array<I> = [
     id: "branch", tags: ["nolan"], types: ["image"],
     src: "/jpeg/branch.jpeg",
     alt: "A branch of a tree that seems to branch indefinitely.",
-    width: 800, height: 1067,
+    width: 800, height: 1067, loading: "eager",
     component: imageComponent
   },
 
@@ -303,7 +313,7 @@ const nolanItems: Array<I> = [
     id: "bridge", tags: ["nolan"], types: ["image"],
     src: "/jpeg/bridge.jpeg",
     alt: "Admiring my shoes on a narrow bridge above a rapid creek.",
-    width: 800, height: 1067,
+    width: 800, height: 1067, loading: "eager",
     component: imageComponent
   },
 
@@ -1030,7 +1040,7 @@ const OeItems: Array<I> = [
     id: "scad", tags: ["Oe"], types: ["image"],
     src: "/png/scad.png",
     alt: "A 3D CAD workspace populated with a repeating sinusoidal wave colorized according to coordinate.",
-    width: 3584, height: 1603,
+    width: 3584, height: 1599,
     component: imageComponent
   },
 
@@ -1126,7 +1136,7 @@ const OeItems: Array<I> = [
     id: "midway", tags: ["Oe"], types: ["image"],
     src: "/jpeg/midway.jpeg",
     alt: "The ultraheterochromatic hallway of Midway International Airport.",
-    width: 800, height: 1067,
+    width: 800, height: 600,
     component: imageComponent
   },
 
@@ -1171,7 +1181,7 @@ const OeItems: Array<I> = [
   }
 ]
 
-const items: Array<I> =
+export const items: Array<I> =
   nolanItems.concat(nm8Items, smixzyItems, OeItems).concat([{
     id: "contact", tags: ["nolan", "nm8", "smixzy", "Oe"], types: ["contact"],
     textComponent: ["a", { href: "mailto:nolan@usernolan.net" }, "nolan@usernolan.net"],
