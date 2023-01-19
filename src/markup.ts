@@ -1767,7 +1767,8 @@ const controls = [
 
     ["fieldset.search", {},
       ["legend", {}, "search"],
-      ["input", { type: "search" }]
+      ["label", { for: "text--filter--search", style: { display: "none" } }, "search"],
+      ["input", { id: "text--filter--search", type: "search" }]
     ],
 
     ["fieldset.tag", {},
