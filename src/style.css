@@ -434,7 +434,8 @@ fieldset.color input[type="range"] {
   cursor: zoom-out;
 }
 
-.item.image img {
+.item.image img,
+.item.image video {
   width: 100%;
   height: auto;
   -o-object-fit: cover;
@@ -490,6 +491,14 @@ fieldset.color input[type="range"] {
   .item.image p {
     background: rgba(0,0,0,0.42);
   }
+}
+
+.item.image.hoverable:hover picture {
+  display: none;
+}
+
+.item.image.hoverable:not(:hover) video {
+  display: none;
 }
 
 .item.quote {
@@ -550,9 +559,9 @@ fieldset.color input[type="range"] {
   font-style: normal;
 }
 
-.item.smixzy.image img:hover,
-.item.Oe.image img:hover {
-  animation: 12s linear infinite hueRotation;
+.item.smixzy.image:hover,
+.item.Oe.image:hover {
+  animation: 10s ease-out infinite alternate hueRotation;
 }
 
 @keyframes hueRotation {

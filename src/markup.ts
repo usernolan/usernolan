@@ -91,8 +91,6 @@ const groupAttrs = (groups: string[]) => ({
   "data-groups": groups.length === 0 ? null : groups.join(",")
 })
 
-const imageFormats = ["avif", "webp"]
-
 const gistComponent = ({
   id, textComponent,
   spans = defaultSpans, span, tags = [], types = []
@@ -109,6 +107,9 @@ const gistComponent = ({
     Array.isArray(textComponent) ? textComponent : textComponent()
   ]
 }
+
+const imageFormats = ["avif", "webp"]
+const videoFormats = ["webm", "mp4"]
 
 /* TODO: proceduralize image gen */
 const imageComponent = ({
@@ -148,9 +149,16 @@ const hoverableImageComponent = ({
       ...spanAttrs(spans, span),
       ...groupAttrs(groups)
     },
-    ["picture", { "data-hover-src": hoverSrc }, ...imageFormats.map((ext) =>
+    ["picture", {}, ...imageFormats.map((ext) =>
       ["source", { srcset: src.replaceAll("jpeg", ext), type: `image/${ext}` }]),
       ["img", { src, alt, width, height, loading, decoding }]
+    ],
+    ["video", {
+      muted: true, autoplay: true, loop: true, playsinline: true,
+      preload: "auto", width, height, alt
+    }, ...videoFormats.map((ext) =>
+      ["source", { src: hoverSrc.replaceAll("mp4", ext), type: `video/${ext}` }]),
+      ["a", { href: hoverSrc }, hoverSrc]
     ],
     ["p", {}, alt]
   ]
@@ -422,7 +430,7 @@ const nm8Items: Array<I> = [
     src: "/jpeg/at.jpeg",
     alt: "A three dimensional @ printed in white, black, and mint green PLA.",
     width: 800, height: 1067,
-    hoverSrc: "/gif/at.gif",
+    hoverSrc: "/mp4/at.mp4",
     component: hoverableImageComponent
   },
 
@@ -1821,10 +1829,6 @@ const controls = [
 const fontHrefRoot = "https://fonts.googleapis.com/css2?family="
 const fontHref = fontHrefRoot + "Fragment+Mono:ital@0;1&family=Inter:wght@400;700&display=swap"
 
-const preloads = [
-  ["link", { rel: "preload", href: "/gif/at.gif", as: "image" }]
-]
-
 const head = [
   "head", {},
   ["meta", { charset: "UTF-8" }],
@@ -1842,7 +1846,6 @@ const head = [
   ["meta", { property: "og:type", content: "website" }],
   ["meta", { property: "og:url", content: "https://usernolan.net" }],
   // ["meta", { property: "og:image", content: "https://usernolan.net/png/Oe.self.png" }]
-  ...preloads
 ]
 
 

@@ -96,7 +96,7 @@ images.forEach((x) =>
 
 images.forEach((x) =>
   x.addEventListener('touchstart', () =>
-    x.querySelector('img')
+    x.querySelector('.item.image')
       ?.dispatchEvent(new Event('hover')),
     passiveSupported ? { passive: true } : false))
 
@@ -119,34 +119,6 @@ document.addEventListener('keydown', (e: KeyboardEvent) => {
 document.addEventListener('keyup', (e: KeyboardEvent) => {
   if (e.key === "Shift" && mouseTarget?.matches('.image *'))
     mouseTarget.closest('.image')?.classList.remove('cursor-zoom-out')
-})
-
-
-/* NOTE: hoverable images */
-
-const hoverableImgs = grid.querySelectorAll('.hoverable picture') as NodeListOf<HTMLPictureElement>
-
-const hoverPictureEventListener = (e: MouseEvent | TouchEvent) => {
-  const el = (e.target as HTMLElement).closest('picture') as HTMLPictureElement
-
-  if (el.getAttribute('data-hovering')) {
-    el.removeChild(el.childNodes[0])
-    el.removeAttribute('data-hovering')
-  }
-  else if (el.getAttribute('data-hover-src')) {
-    const child = document.createElement('source')
-    child.srcset = el.getAttribute('data-hover-src')!
-    child.type = "image/gif"
-    el.prepend(child)
-    el.setAttribute('data-hovering', "true")
-  }
-}
-
-/* TODO: mouse, touch detection */
-hoverableImgs.forEach((x) => {
-  x.addEventListener('mouseenter', hoverPictureEventListener)
-  x.addEventListener('touchstart', hoverPictureEventListener, passiveSupported ? { passive: true } : false)
-  x.addEventListener('mouseleave', hoverPictureEventListener)
 })
 
 

@@ -12,5 +12,4 @@ echo "DEPLOYMENT_TARGET: " $DEPLOYMENT_TARGET
 aws s3 sync dist/ s3://$DEPLOYMENT_TARGET \
     --acl public-read \
     --size-only \
-    --exclude '.DS_Store' \
-    --delete
+    --exclude '*.DS_Store'
