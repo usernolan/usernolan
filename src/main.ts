@@ -158,7 +158,7 @@ showControlsButton?.addEventListener("touchstart", (e) => {
 }, passiveSupported ? { passive: true } : false)
 
 showControlsButton?.addEventListener("touchmove", (e) => {
-  e.preventDefault() // NOTE: cancel scroll, implies passive: true
+  e.preventDefault() // NOTE: cancel scroll
   if (isPortrait) {
     aside.style.transition = "none"
 
@@ -168,7 +168,7 @@ showControlsButton?.addEventListener("touchmove", (e) => {
     aside.style.height = `${h}px`
     asideHeightTouchMoved = true
   }
-}, passiveSupported ? { passive: true } : false)
+})
 
 showControlsButton?.addEventListener("touchend", () => {
   if (isPortrait) {
