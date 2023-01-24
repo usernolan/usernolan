@@ -1180,7 +1180,7 @@ const OeItems: Array<I> = [
 
 export const items: Array<I> =
   nolanItems.concat(nm8Items, smixzyItems, OeItems).concat([{
-    id: "contact", tags: ["nolan", "nm8", "smixzy", "Oe"], types: ["contact"],
+    id: "contact", spans: [2, 3], tags: ["nolan", "nm8", "smixzy", "Oe"], types: ["contact"],
     textComponent: ["a", { href: "mailto:nolan@usernolan.net" }, "nolan@usernolan.net"],
     component: gistComponent
   }])
