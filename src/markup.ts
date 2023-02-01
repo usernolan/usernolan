@@ -393,7 +393,7 @@ const nolanItems: Array<I> = [
 
   {
     id: "blizzard", types: ["quote"],
-    quote: "Stay a while, and listen.",
+    quote: "Stay awhile and listen.",
     author: "Deckard Cain",
     component: quoteComponent
   }
