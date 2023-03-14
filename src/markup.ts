@@ -536,14 +536,6 @@ const nm8Items: Array<I> = [
   },
 
   {
-    id: "tom", tags: ["nm8", "smixzy"], types: ["artist", "link"],
-    href: "https://www.tomsachs.com/",
-    destination: "website",
-    title: ".• Tom Sachs",
-    component: linkComponent
-  },
-
-  {
     id: "di", tags: ["nm8"], types: ["image"],
     src: "/jpeg/di.jpeg",
     alt: "The greatest mother to have ever done it hauling her offspring's garbage through a hardware store.",
@@ -1317,10 +1309,6 @@ const spec: Array<I> = [
   {
     id: "buckets",
     span: 1
-  },
-  {
-    id: "tom",
-    span: 2
   },
   {
     id: "the-mess-were-in",
