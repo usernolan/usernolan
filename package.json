@@ -5,11 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:markup": "nodemon -x ts-node-esm -i src/main.ts -i src/images.ts src/gen.ts",
-    "build:markup": "ts-node-esm src/gen.ts",
-    "release:markup": "ts-node-esm src/gen.ts --release",
+    "dev:markup": "nodemon -x ts-node-esm -i src/index.ts -i src/images.ts src/build/html.ts",
+    "build:markup": "ts-node-esm src/build/html.ts",
+    "release:markup": "ts-node-esm src/build/html.ts --release",
     "build:css": "postcss src/*.css --use autoprefixer --replace --no-map",
-    "build:images": "ts-node-esm src/images.ts",
+    "build:images": "ts-node-esm src/build/images.ts",
     "build": "tsc && yarn build:css && yarn release:markup && vite build",
     "preview": "vite preview"
   },

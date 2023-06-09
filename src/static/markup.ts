@@ -119,8 +119,7 @@ const imageComponent = ({
     ["picture", {}, ...imageFormats.map((ext) =>
       ["source", { srcset: src.replaceAll("jpeg", ext), type: `image/${ext}` }]),
       ["img", { src, alt, width, height, loading, decoding }]
-    ],
-    ["p", {}, alt]
+    ]
   ]
 }
 
@@ -148,8 +147,7 @@ const hoverableImageComponent = ({
     }, ...videoFormats.map((ext) =>
       ["source", { src: hoverSrc.replaceAll("mp4", ext), type: `video/${ext}` }]),
       ["a", { href: hoverSrc }, hoverSrc]
-    ],
-    ["p", {}, alt]
+    ]
   ]
 }
 
@@ -1177,629 +1175,6 @@ export const items: Array<I> =
     component: gistComponent
   }])
 
-/*
-shuffle(nolanItems)
-  .concat(
-    shuffle(nm8Items),
-    shuffle(smixzyItems),
-    shuffle(OeItems))
-*/
-
-const spec: Array<I> = [
-  {
-    id: "rich",
-    span: 2
-  },
-  {
-    id: "branch",
-    span: 2
-  },
-  {
-    id: "fifield",
-    span: 2
-  },
-  {
-    id: "rs",
-    span: 1
-  },
-  {
-    id: "louie",
-    span: 1
-  },
-  {
-    id: "petals",
-    span: 1
-  },
-  {
-    id: "clouds",
-    span: 2
-  },
-  {
-    id: "blizzard",
-    span: 2
-  },
-  {
-    id: "bridge",
-    span: 2
-  },
-  {
-    id: "persevere",
-    span: 2
-  },
-  {
-    id: "nolan-self",
-    span: 3
-  },
-  {
-    id: "pauszeks",
-    span: 1
-  },
-  {
-    id: "anw-4",
-    span: 3
-  },
-  {
-    id: "chapman",
-    span: 3
-  },
-  {
-    id: "parents",
-    span: 1
-  },
-  {
-    id: "intro",
-    span: 3
-  },
-  {
-    id: "chris-a",
-    span: 2
-  },
-  {
-    id: "erica",
-    span: 1
-  },
-  {
-    id: "logistic-map",
-    span: 2
-  },
-  {
-    id: "david",
-    span: 1
-  },
-  {
-    id: "eli",
-    span: 1
-  },
-  {
-    id: "watching",
-    span: 2
-  },
-  {
-    id: "anw-3",
-    span: 1
-  },
-  {
-    id: "anw-1",
-    span: 2
-  },
-  {
-    id: "claude",
-    span: 3
-  },
-  {
-    id: "anw-2",
-    span: 1
-  },
-  {
-    id: "takach",
-    span: 1
-  },
-  {
-    id: "pack",
-    span: 1
-  },
-  {
-    id: "at",
-    span: 3
-  },
-  {
-    id: "graphite",
-    span: 1
-  },
-  {
-    id: "buckets",
-    span: 1
-  },
-  {
-    id: "the-mess-were-in",
-    span: 1
-  },
-  {
-    id: "nm8-self",
-    span: 2
-  },
-  {
-    id: "rug",
-    span: 1
-  },
-  {
-    id: "skulls",
-    span: 2
-  },
-  {
-    id: "cool-uris",
-    span: 1
-  },
-  {
-    id: "tau",
-    span: 1
-  },
-  {
-    id: "how-to-sweep",
-    span: 2
-  },
-  {
-    id: "nm8",
-    span: 3
-  },
-  {
-    id: "xacto",
-    span: 1
-  },
-  {
-    id: "quine",
-    span: 2
-  },
-  {
-    id: "di",
-    span: 1
-  },
-  {
-    id: "frame",
-    span: 1
-  },
-  {
-    id: "thi-ng",
-    span: 1
-  },
-  {
-    id: "screw",
-    span: 2
-  },
-  {
-    id: "the-language-of-the-system",
-    span: 1
-  },
-  {
-    id: "table",
-    span: 1
-  },
-  {
-    id: "the-value-of-values",
-    span: 1
-  },
-  {
-    id: "toxi",
-    span: 1
-  },
-  {
-    id: "just-hard-fail-it",
-    span: 1
-  },
-  {
-    id: "worse-is-better",
-    span: 2
-  },
-  {
-    id: "frames",
-    span: 1
-  },
-  {
-    id: "fourth-avenue",
-    span: 1
-  },
-  {
-    id: "print",
-    span: 1
-  },
-  {
-    id: "hilma",
-    span: 3
-  },
-  {
-    id: "instaworthy",
-    span: 1
-  },
-  {
-    id: "face",
-    span: 1
-  },
-  {
-    id: "john-vermilyea",
-    span: 2
-  },
-  {
-    id: "chalk",
-    span: 1
-  },
-  {
-    id: "sunglasses",
-    span: 2
-  },
-  {
-    id: "ass",
-    span: 1
-  },
-  {
-    id: "steve-axford",
-    span: 1
-  },
-  {
-    id: "concrete",
-    span: 2
-  },
-  {
-    id: "intersection",
-    span: 2
-  },
-  {
-    id: "ashlin",
-    span: 1
-  },
-  {
-    id: "terry-a-davis",
-    span: 3
-  },
-  {
-    id: "webring",
-    span: 2
-  },
-  {
-    id: "send-nudes",
-    span: 1
-  },
-  {
-    id: "kandinsky",
-    span: 3
-  },
-  {
-    id: "twobfc",
-    span: 2
-  },
-  {
-    id: "devine-lu-linvega",
-    span: 3
-  },
-  {
-    id: "spray-paint",
-    span: 1
-  },
-  {
-    id: "dumpstergram",
-    span: 1
-  },
-  {
-    id: "thrift",
-    span: 2
-  },
-  {
-    id: "moebius",
-    span: 1
-  },
-  {
-    id: "minjeong-an",
-    span: 2
-  },
-  {
-    id: "coral",
-    span: 1
-  },
-  {
-    id: "sky",
-    span: 1
-  },
-  {
-    id: "monolith",
-    span: 3
-  },
-  {
-    id: "cakebread",
-    span: 2
-  },
-  {
-    id: "fnd-ur-way",
-    span: 1
-  },
-  {
-    id: "ulises-farinas",
-    span: 1
-  },
-  {
-    id: "anders-nilsen",
-    span: 3
-  },
-  {
-    id: "mark",
-    span: 1
-  },
-  {
-    id: "prof-hos",
-    span: 1
-  },
-  {
-    id: "smixzy-self",
-    span: 3
-  },
-  {
-    id: "theme-provider",
-    span: 1
-  },
-  {
-    id: "twig",
-    span: 2
-  },
-  {
-    id: "post-it",
-    span: 1
-  },
-  {
-    id: "jesse-jacobs",
-    span: 2
-  },
-  {
-    id: "cable",
-    span: 1
-  },
-  {
-    id: "arcane-mage",
-    span: 2
-  },
-  {
-    id: "smixzy",
-    span: 2
-  },
-  {
-    id: "manifold",
-    span: 1
-  },
-  {
-    id: "sidewalk",
-    span: 3
-  },
-  {
-    id: "sequent-calculus",
-    span: 1
-  },
-  {
-    id: "observation",
-    span: 2
-  },
-  {
-    id: "Oe-self",
-    span: 3
-  },
-  {
-    id: "170",
-    span: 1
-  },
-  {
-    id: "stairs",
-    span: 1
-  },
-  {
-    id: "truck",
-    span: 1
-  },
-  {
-    id: "martini",
-    span: 1
-  },
-  {
-    id: "schismogenesis",
-    span: 1
-  },
-  {
-    id: "universal-rectifier",
-    span: 1
-  },
-  {
-    id: "stained",
-    span: 3
-  },
-  {
-    id: "epiphany",
-    span: 1
-  },
-  {
-    id: "bohm",
-    span: 1
-  },
-  {
-    id: "150",
-    span: 1
-  },
-  {
-    id: "scad",
-    span: 3
-  },
-  {
-    id: "-•",
-    span: 2
-  },
-  {
-    id: "spill",
-    span: 2
-  },
-  {
-    id: "blue",
-    span: 1
-  },
-  {
-    id: "process",
-    span: 1
-  },
-  {
-    id: "midway",
-    span: 2
-  },
-  {
-    id: "green",
-    span: 1
-  },
-  {
-    id: "pink",
-    span: 1
-  },
-  {
-    id: "cups",
-    span: 2
-  },
-  {
-    id: "information",
-    span: 3
-  },
-  {
-    id: "Oe",
-    span: 2
-  },
-  {
-    id: "mereology",
-    span: 2
-  },
-  {
-    id: "era",
-    span: 1
-  },
-  {
-    id: "algebraic-structure",
-    span: 1
-  },
-  {
-    id: "contact",
-    span: 2
-  }
-].map((x) => {
-  const item = items.find((y) => x.id === y.id)
-  if (!item) throw new Error(`Invalid id while ordering items: ${x.id}`)
-  item.span = x.span
-  return item
-})
-
-
-/* NOTE: control components */
-
-interface RangeOpts {
-  name: string,
-  min?: number,
-  max?: number,
-  step?: number,
-  value?: number
-}
-
-const tags = [...new Set(items.flatMap((x) => x.tags || []))]
-const types = [...new Set(items.flatMap((x) => x.types || []))]
-const modes = ["system", "light", "dark"]
-
-const colors: RangeOpts[] = [
-  { name: "contrast", min: 50, max: 150, value: 100 },
-  { name: "saturate", min: 0, max: 200, value: 100 },
-  { name: "hue", min: 0, max: 360, value: 0 },
-  { name: "invert", value: 0 }
-]
-
-const defaultActions = [
-  "randomize",
-  "invert",
-  "reset"
-]
-
-/* ALT: image resizing */
-const layoutActions = [
-  "randomize",
-  "toggle alt text",
-  "reset"
-]
-
-const filterCheckboxComponent = (kind: string) => (x: string) => {
-  const id = `checkbox--filter--${kind}--${x}`
-  const label = x === "Oe" ? ".•" : x
-  return [
-    "div", {},
-    ["label", { for: id }, label],
-    ["input", { id, type: "checkbox", name: x }]
-  ]
-}
-
-const radioComponent = (kind: string, checkedVal?: string) => (x: string) => {
-  const id = `radio--${kind}--${x}`
-  const checked = x === checkedVal
-  return [
-    "div", {},
-    ["label", { for: id }, x],
-    ["input", { id, type: "radio", name: kind, value: x, checked }]
-  ]
-}
-
-const rangeComponent = (kind: string) => (opts: RangeOpts) => {
-  const id = `range--${kind}--${opts.name}`
-  return [
-    "div", {},
-    ["label", { for: id }, opts.name],
-    ["input", { id, type: "range", ...opts, "data-value-init": opts.value }]
-  ]
-}
-
-const buttonComponent = (kind: string) => (x: string) => {
-  const xid = x.split(" ").join("-")
-  const id = `button--${kind}--${xid}`
-  return ["button", { id }, x]
-}
-
-const controls = [
-  "div.controls", {},
-  ["fieldset.filters", {},
-    ["legend", {}, "filters"],
-
-    ["fieldset.search", {},
-      ["legend", {}, "search"],
-      ["label", { for: "text--filter--search", style: { display: "none" } }, "search"],
-      ["input", { id: "text--filter--search", type: "search" }]
-    ],
-
-    ["fieldset.tag", {},
-      ["legend", {}, "tag"],
-      ...tags.map(filterCheckboxComponent("tag")),
-    ],
-
-    ["fieldset.type", {},
-      ["legend", {}, "type"],
-      ...types.map(filterCheckboxComponent("type"))
-    ],
-
-    ["div.actions", {},
-      ...defaultActions.map(buttonComponent("filter"))
-    ]
-  ],
-
-  ["fieldset.mode", {},
-    ["legend", {}, "mode"],
-    ...modes.map(radioComponent("mode", modes[0]))
-  ],
-
-  ["fieldset.layout", {},
-    ["legend", {}, "layout"],
-    ["div.actions", {},
-      ...layoutActions.map(buttonComponent("layout"))
-    ]
-  ],
-
-  ["fieldset.color", {},
-    ["legend", {}, "color"],
-    ["div.inputs", {}, ...colors.map(rangeComponent("color"))],
-    ["div.actions", {}, ...defaultActions.map(buttonComponent("color"))]
-  ]
-]
-
 
 /* NOTE: document components */
 
@@ -1825,26 +1200,42 @@ const head = [
   // ["meta", { property: "og:image", content: "https://usernolan.net/png/Oe.self.png" }]
 ]
 
-
+/* TODO: revisit image filenames */
 const main = [
-  "main", { class: "grid-container" },
-  spec.map((x) => x.component(x as any)),
-  ["div.sizer", { "data-span": 1 }]
+  "main", {},
+  ["div.header", {},
+    ["h1", {}, "i'm nolan"],
+    ["div.select", {},
+      ["label", { for: "select--mode" }, "mode: "],
+      ["select#select--mode", {},
+        ["option", {}, "system"],
+        ["option", {}, "light"],
+        ["option", {}, "dark"],
+        // ["option", {}, "multi"]
+      ]]
+  ],
+  imageComponent({
+    id: "smixzy-self", tags: ["smixzy"], types: ["image"],
+    src: "/jpeg/smixzy.self.jpeg",
+    alt: "Me in my favorite clothes.",
+    width: 800, height: 1067,
+    component: imageComponent
+  }),
+  ["div.links", {},
+    ["a", { href: "/images/" }, "images"],
+    ["a", { href: "/links/" }, "links"],
+    ["a", { href: "/quotes/" }, "quotes"],
+    ["a", { href: "/pdf/resume.pdf", target: "_blank" }, "cv"]
+  ],
+  ["p", {},
+    `I build sketchy websites and primitive furniture. They're beautiful in the
+  same way my sister's dog is beautiful. I promise they're beautiful.`],
 ]
 
-const aside = [
-  "aside", {},
-  ["button.show-controls", {},
-    ["span", {}, "+"]],
-  controls
-]
-
-/* TODO: noscript hide controls toggle button */
 const body = [
   "body", {},
   main,
-  aside,
-  ["script", { type: "module", src: "/src/main.ts" }]
+  ["script", { type: "module", src: "/src/index.ts" }]
 ]
 
 const root = [
@@ -1853,7 +1244,16 @@ const root = [
   body
 ]
 
-export const document = [
+export const index = [
   ["!DOCTYPE", "html"],
   root
+]
+
+export const images = [
+  ["!DOCTYPE", "html"],
+  head,
+  ["body", {},
+    ["h1", {}, "images"],
+    ["script", { type: "module", src: "/src/images.ts" }]
+  ]
 ]
