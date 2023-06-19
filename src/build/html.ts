@@ -1,7 +1,7 @@
 import { writeFileSync } from "node:fs"
 import { argv } from "node:process"
 import { serialize } from "@thi.ng/hiccup"
-import { index, images } from "../static/markup.js" // NOTE: ts-node-esm requires .js ext
+import { index, images, links, quotes } from "../static/markup.js" // NOTE: ts-node-esm requires .js ext
 import beautify from "js-beautify" // NOTE: named import unsupported
 
 
@@ -12,3 +12,5 @@ const asHtml = (data: any[]) => argv.find((x) => x === "--release") ?
 
 writeFileSync("index.html", asHtml(index))
 writeFileSync("images/index.html", asHtml(images))
+writeFileSync("links/index.html", asHtml(links))
+writeFileSync("quotes/index.html", asHtml(quotes))
