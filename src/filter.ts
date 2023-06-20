@@ -1,9 +1,12 @@
+/* TODO: hide select tags when scripting disabled */
+/* TODO: restore previous per page */
+
 export const addFilterSelect = (
-  container: HTMLElement,
+  container: Element,
   selector: string,
-  id?: string
+  id = "select#select--filter"
 ) => {
-  const filterSelect = document.querySelector(id || "select#select--filter") as HTMLSelectElement
+  const filterSelect = document.querySelector(id) as HTMLSelectElement
   if (!filterSelect) return;
   filterSelect.addEventListener(
     "change",
@@ -17,4 +20,7 @@ export const addFilterSelect = (
       }
     })
   )
+  const restore = "all"
+  filterSelect.value = restore
+  filterSelect.dispatchEvent(new Event("change"))
 }

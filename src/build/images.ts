@@ -1,19 +1,16 @@
 import fs from "node:fs"
 import imageSize from "image-size"
 import sharp from "sharp"
-import { items, ImageItem } from "../static/markup.js"
+import { imageItems } from "../static/markup.js"
 
 const inputRoot = './images'
 const outputRoot = './public'
 
 const missized: string[] = []
-items.forEach((x) => {
-  if (x.types && x.types.indexOf("image") > -1) {
-    const y = x as ImageItem
-    const s = imageSize(`${outputRoot}${y.src}`)
-    if (y.width !== s.width || y.height !== s.height)
-      missized.push(`\t${y.id} should be { width: ${s.width}, height: ${s.height} }`)
-  }
+imageItems.forEach((x) => {
+  const s = imageSize(`${outputRoot}${x.src}`)
+  if (x.width !== s.width || x.height !== s.height)
+    missized.push(`\t${x.id} should be { width: ${s.width}, height: ${s.height} }`)
 })
 
 if (missized.length)

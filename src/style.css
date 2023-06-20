@@ -59,7 +59,7 @@ div.header h1 {
 div.header a {
   font-size: 1.56rem;
   font-weight: bolder;
-  color: black;
+  color: CanvasText;
   text-decoration: none;
 }
 
@@ -79,6 +79,7 @@ div.controls select {
   font-weight: bolder;
   cursor: pointer;
   -webkit-appearance: none;
+  color: CanvasText;
 }
 
 div.controls > div:not(:last-child) {
@@ -92,8 +93,9 @@ div.links {
 div.links a {
   font-size: 1rem;
   font-weight: bolder;
-  color: black;
+  color: CanvasText;
   text-decoration: none;
+  display: inline-block;
 }
 
 div.links a:hover {
@@ -111,38 +113,13 @@ div.images {
   gap: 0.25rem;
 }
 
-/*
-"of-me"
-"of-people"
-"artifacts"
-"drawing"
-"nature"
-"concrete"
-"dumpsters"
-"furniture"
-"bad-words"
-"post-its"
-"generative"
-"monochrome"
-"heterochrome"
----
-"prints"
-"by-me"
-"by-people"
-"by-others"
-"geom"
-"primsa(l)"
-"iridial"
-"(hand)made"
-"hue"
-*/
-
 div.images img,
 div.images video {
   cursor: crosshair;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   aspect-ratio: 1 / 1;
   content-visibility: auto;
 }
@@ -176,7 +153,7 @@ div[data-span="4"] video {
   aspect-ratio: initial;
 }
 
-div.images div.image.heterochrome img:hover {
+div.images div.image.heterochrome:hover img {
   animation: 10s ease-out infinite alternate hueRotation;
 }
 
@@ -197,8 +174,9 @@ div.image.hoverable:not(:hover) video {
   display: none;
 }
 
-div.image#item--nolan-self img {
-  object-position: 50% 15%;
+div.image#item--self-2 img {
+  -o-object-position: 50% 15%;
+     object-position: 50% 15%;
 }
 
 div.link, div.quote {
@@ -211,8 +189,51 @@ div.link h2, div.quote h2 {
   margin: 0.42rem 0;
 }
 
+div.quote h2 {
+  font-weight: normal;
+}
+
 div.link p, div.quote p {
   margin: 0;
   opacity: 0.56;
   font-weight: 400;
+}
+
+@media screen and (orientation: landscape) and (max-width: 1023px) {
+  main {
+    width: 66%;
+    margin-top: 2rem;
+  }
+}
+
+@media screen and (orientation: landscape) and (max-width: 667px) {
+  main {
+    width: 100%;
+    max-width: initial;
+    margin: 0.5rem;
+  }
+
+  div.controls {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+}
+
+@media screen and (orientation: portrait) and (max-width: 1023px) {
+  main {
+    width: 100%;
+    max-width: initial;
+    margin: 0.5rem;
+  }
+
+  div.header {
+    margin: 0.56rem 0 1.56rem;
+  }
+}
+
+@media screen and (orientation: portrait) and (max-width: 667px) {
+  div.controls {
+    display: flex;
+    flex-direction: column-reverse;
+  }
 }

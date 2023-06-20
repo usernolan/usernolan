@@ -30,7 +30,5 @@
     "typescript": "^4.6.4",
     "vite": "^4.0.4"
   },
-  "dependencies": {
-    "shufflejs": "^6.1.0"
-  }
+  "dependencies": {}
 }
