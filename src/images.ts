@@ -15,7 +15,7 @@ if (imagesDiv) {
       if (!parent) return;
       const span = parseInt(parent.getAttribute("data-span") || "1")
       if (span >= 4) {
-        parent.setAttribute("data-span", "1")
+        parent.removeAttribute("data-span")
       } else {
         parent.setAttribute("data-span", `${span + 1}`)
       }

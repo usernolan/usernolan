@@ -130,32 +130,32 @@ div.images div.image:first-child img {
   aspect-ratio: unset;
 }
 
-div[data-span="1"] {
+div.image {
   grid-row-end: span 1;
   grid-column-end: span 1;
 }
 
-div[data-span="2"] {
+div.image[data-span="2"] {
   grid-row-end: span 2;
   grid-column-end: span 2;
 }
 
-div[data-span="3"] {
+div.image[data-span="3"] {
   grid-row-end: span 3;
   grid-column-end: span 3;
 }
 
-div[data-span="4"] {
+div.image[data-span="4"] {
   grid-row-end: span 4;
   grid-column-end: span 4;
 }
 
-div[data-span="4"] img,
-div[data-span="4"] video {
+div.image[data-span="4"] img,
+div.image[data-span="4"] video {
   aspect-ratio: initial;
 }
 
-div.images div.image.heterochrome:hover img {
+div.image.heterochrome:hover img {
   animation: 10s ease-out infinite alternate hueRotation;
 }
 

@@ -1,11 +1,4 @@
-import { choices } from "@thi.ng/transducers/choices"
-
-
 /* NOTE: item interfaces, components */
-
-type Choosable<T> =
-  Array<T>
-  | Array<[x: T, weight: number]>
 
 interface Item {
   id: string,
@@ -19,7 +12,6 @@ export interface ImageItem extends Item {
   height: number,
   loading?: string,
   decoding?: string
-  spans?: Choosable<number>,
   span?: number,
   hoverSrc?: string
 }
@@ -36,48 +28,13 @@ interface LinkItem extends Item {
   author?: string
 }
 
-// const defaultSpans: Choosable<number> = [[1, 0.8], [2, 0.1], [3, 0.05], [4, 0.01]]
-const defaultSpans: Choosable<number> = [1]
-
-const choiceGen = (arr: Choosable<any>) => {
-  if (arr.length === 0) return choices(arr)
-
-  return Array.isArray(arr[0]) ?
-    choices(arr.map((x) => x[0]), arr.map((x) => x[1])) :
-    choices(arr)
-}
-
-const choose = (x: Choosable<any> | IterableIterator<any>) =>
-  Array.isArray(x) ?
-    choiceGen(x).next().value :
-    x.next().value
-
-const choicesFrom = (arr: Choosable<any>) =>
-  Array.isArray(arr[0]) ?
-    arr.map((x) => x[0]) :
-    arr
-
-const weightsFrom = (arr: Choosable<any>) =>
-  Array.isArray(arr[0]) ?
-    arr.map((x) => x[1]) :
-    null
-
-const spanAttrs = (spans: Choosable<number>, span?: number) => ({
-  "data-span": span || choose(spans),
-  "data-span-choices": spans === defaultSpans ? null : choicesFrom(spans).join(","),
-  "data-span-weights": weightsFrom(spans)?.join(",")
-})
-
 const imageFormats = ["avif", "webp"]
 const videoFormats = ["webm", "mp4"]
 
 /* TODO: proceduralize image gen */
 const imageComponent = ({
-  id, src, alt, width, height,
-  loading = "lazy", decoding = "async",
-  spans = defaultSpans, span,
-  tags = [],
-  hoverSrc
+  id, src, alt, width, height, span, hoverSrc,
+  loading = "lazy", decoding = "async", tags = []
 }: ImageItem) => {
   const classes = Array.from(new Set(tags.concat(["item", "image", hoverSrc ? "hoverable" : ""])))
   return [
@@ -85,7 +42,7 @@ const imageComponent = ({
     {
       id: `item--${id}`,
       class: classes.join(" "),
-      ...spanAttrs(spans, span)
+      ...{ "data-span": span || null }
     },
     ["picture", {}, ...imageFormats.map((ext) =>
       ["source", { srcset: src.replaceAll("jpeg", ext), type: `image/${ext}` }]),
@@ -1001,8 +958,7 @@ export const index = [
   ["html", { lang: "en" },
     head("nolan"),
     ["body", {},
-      [
-        "main", {},
+      ["main", {},
         ["div.header", {},
           ["h1", {}, "i'm nolan"],
           ["div.controls", {}, modeSelect]
@@ -1028,7 +984,7 @@ export const images = [
   ["html", { lang: "en" },
     head("nolan - images"),
     ["body", {},
-      ["main.images", {},
+      ["main", {},
         ["div.header", {},
           ["a", { href: "/" }, "home"],
           ["div.controls", {},
@@ -1066,7 +1022,7 @@ export const links = [
   ["html", { lang: "en" },
     head("nolan - links"),
     ["body", {},
-      ["main.links", {},
+      ["main", {},
         ["div.header", {},
           ["a", { href: "/" }, "home"],
           ["div.controls", {},
@@ -1096,7 +1052,7 @@ export const quotes = [
   ["html", { lang: "en" },
     head("nolan - quotes"),
     ["body", {},
-      ["main.quotes", {},
+      ["main", {},
         ["div.header", {},
           ["a", { href: "/" }, "home"],
           ["div.controls", {}, modeSelect]
