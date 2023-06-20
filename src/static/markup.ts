@@ -40,7 +40,7 @@ const imageComponent = ({
   return [
     "div",
     {
-      id: `item--${id}`,
+      id: `image--${id}`,
       class: classes.join(" "),
       ...{ "data-span": span || null }
     },
@@ -66,7 +66,7 @@ const quoteComponent = ({
   return [
     "div",
     {
-      id: `item--${id}`,
+      id: `quote--${id}`,
       class: classes.join(" ")
     },
     ["h2", {}, quote],
@@ -81,7 +81,7 @@ const linkComponent = ({
   return [
     "div",
     {
-      id: `item--${id}`,
+      id: `link--${id}`,
       class: classes.join(" ")
     },
     ["a", { href },

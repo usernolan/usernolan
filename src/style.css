@@ -176,7 +176,7 @@ div.image.hoverable:not(:hover) video {
   display: none;
 }
 
-div.image#item--self-2 img {
+div.image#image--self-2 img {
   -o-object-position: 50% 15%;
      object-position: 50% 15%;
 }

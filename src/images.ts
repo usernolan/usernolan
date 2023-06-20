@@ -2,7 +2,6 @@ import "./style.css"
 import { addFilterSelect } from "./filter.js"
 import { addModeSelect } from "./mode.js"
 
-
 const imagesDiv = document.querySelector("div.images") as HTMLDivElement
 
 if (imagesDiv) {
