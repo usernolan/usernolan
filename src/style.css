@@ -181,6 +181,16 @@ div.image#item--self-2 img {
      object-position: 50% 15%;
 }
 
+:root[data-color-scheme="dark"] div.image.invertible img {
+  filter: invert()
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-color-scheme="light"]) div.image.invertible img {
+    filter: invert();
+  }
+}
+
 div.link, div.quote {
   margin: 3rem 0;
   padding-left: 0.125rem;

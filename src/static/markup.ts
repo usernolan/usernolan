@@ -1,6 +1,4 @@
 import { choices } from "@thi.ng/transducers/choices"
-// import { range } from "@thi.ng/transducers/range"
-// import { map } from "@thi.ng/transducers/map"
 
 
 /* NOTE: item interfaces, components */
@@ -525,7 +523,7 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
-    id: "Oe-self", tags: ["of-me", "generative", "monochrome"],
+    id: "self-4", tags: ["of-me", "generative", "monochrome", "invertible"],
     src: "/png/Oe.self.png",
     alt: "A selectively randomized, poorly pixelized sapiens approximate peeking out of a previously sealed box.",
     width: 1216, height: 1331
@@ -539,7 +537,7 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
-    id: "170", tags: ["generative", "monochrome"],
+    id: "170", tags: ["generative", "monochrome", "invertible"],
     src: "/png/rule.170.png",
     alt: "Rule 170: 1D cellular automaton with range = 1, where cells are shaped like keyholes, but I think it's bugged. If you stare long enough it looks like a waterfall and starts to move.",
     width: 1200, height: 1200
@@ -581,7 +579,7 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
-    id: "150", tags: ["generative", "monochrome"],
+    id: "150", tags: ["generative", "monochrome", "invertible"],
     src: "/png/rule.150.png",
     alt: "Rule 150, I think.",
     width: 1200, height: 1200
