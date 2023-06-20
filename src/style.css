@@ -72,13 +72,15 @@ div.controls div {
 }
 
 div.controls select {
-  background: none;
+  background: Canvas;
   border: none;
-  padding: 0;
+  padding: 0 0.25rem;
   font-size: 1.28rem;
   font-weight: bolder;
   cursor: pointer;
   -webkit-appearance: none;
+          -moz-appearance: none;
+       appearance: none;
   color: CanvasText;
 }
 
