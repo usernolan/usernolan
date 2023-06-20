@@ -724,21 +724,21 @@ const linkItems: Array<LinkItem> = [
   },
 
   {
-    id: "mark", tags: ["artist"],
+    id: "mark", tags: ["artists"],
     href: "https://sugarboypress.com/",
     destination: "website",
     title: ".• Mark Hosford"
   },
 
   {
-    id: "hilma", tags: ["artist"],
+    id: "hilma", tags: ["artists"],
     href: "https://en.wikipedia.org/wiki/Hilma_af_Klint",
     destination: "wikipedia",
     title: ".• Hilma af Klint"
   },
 
   {
-    id: "kandinsky", tags: ["artist"],
+    id: "kandinsky", tags: ["artists"],
     href: "https://en.wikipedia.org/wiki/Wassily_Kandinsky",
     destination: "wikipedia",
     title: ".• Kandinsky"
@@ -746,98 +746,98 @@ const linkItems: Array<LinkItem> = [
 
 
   {
-    id: "moebius", tags: ["artist", "comic"],
+    id: "moebius", tags: ["artists", "comics"],
     href: "https://www.moebius.fr/Les-Collections.html",
     destination: "website",
     title: ".• Moebius"
   },
 
   {
-    id: "caza", tags: ["artist", "comic"],
+    id: "caza", tags: ["artists", "comics"],
     href: "https://en.wikipedia.org/wiki/Caza",
     destination: "wikipedia",
     title: ".• Caza"
   },
 
   {
-    id: "ulises-farinas", tags: ["artist", "comic"],
+    id: "ulises-farinas", tags: ["artists", "comics"],
     href: "https://ulisesfarinas.com/",
     destination: "website",
     title: ".• Ulises Fariñas"
   },
 
   {
-    id: "john-vermilyea", tags: ["artist", "comic"],
+    id: "john-vermilyea", tags: ["artists", "comics"],
     href: "http://www.jonvermilyea.com/",
     destination: "website",
     title: ".• Jon Vermilyea"
   },
 
   {
-    id: "anders-nilsen", tags: ["artist", "comic"],
+    id: "anders-nilsen", tags: ["artists", "comics"],
     href: "https://www.andersbrekhusnilsen.com/booksandcomics",
     destination: "website",
     title: ".• Anders Nilsen"
   },
 
   {
-    id: "jesse-jacobs", tags: ["artist", "comic"],
+    id: "jesse-jacobs", tags: ["artists", "comics"],
     href: "https://www.jessejacobsart.com/",
     destination: "website",
     title: ".• Jesse Jacobs"
   },
 
   {
-    id: "minjeong-an", tags: ["artist"],
+    id: "minjeong-an", tags: ["artists"],
     href: "http://www.myartda.com/",
     destination: "website",
     title: ".• Minjeong An"
   },
 
   {
-    id: "terry-a-davis", tags: ["technology", "philosophy", "artist"],
+    id: "terry-a-davis", tags: ["technology", "philosophy", "artists"],
     href: "https://youtu.be/XkXPqvWJHg4",
     destination: "youtube",
     title: ".• Terry A. Davis"
   },
 
   {
-    id: "toxi", tags: ["technology", "artist"],
+    id: "toxi", tags: ["technology", "artists"],
     href: "https://mastodon.thi.ng/@toxi",
     destination: "mastodon",
     title: ".• Karsten Schmidt"
   },
 
   {
-    id: "devine-lu-linvega", tags: ["technology", "philosophy", "artist"],
+    id: "devine-lu-linvega", tags: ["technology", "philosophy", "artists"],
     href: "https://wiki.xxiivv.com/site/dinaisth.html",
     destination: "website",
     title: ".• Devine Lu Linvega"
   },
 
   {
-    id: "cakebread", tags: ["technology", "artist"],
+    id: "cakebread", tags: ["technology", "artists"],
     href: "http://www.quantumrain.com/",
     destination: "website",
     title: ".• Stephen Cakebread"
   },
 
   {
-    id: "mereology", tags: ["philosophy", "idea"],
+    id: "mereology", tags: ["philosophy", "ideas"],
     href: "https://en.wikipedia.org/wiki/Mereology",
     destination: "wikipedia",
     title: ".Mereology"
   },
 
   {
-    id: "sequent-calculus", tags: ["idea"],
+    id: "sequent-calculus", tags: ["ideas"],
     href: "https://en.wikipedia.org/wiki/Sequent_calculus",
     destination: "wikipedia",
     title: ".Sequent Calculus"
   },
 
   {
-    id: "algebraic-structure", tags: ["idea"],
+    id: "algebraic-structure", tags: ["ideas"],
     href: "https://en.wikipedia.org/wiki/Algebraic_structure",
     destination: "wikipedia",
     title: ".Algebraic Structure"
@@ -846,21 +846,21 @@ const linkItems: Array<LinkItem> = [
   /* TODO: synchronicity */
 
   {
-    id: "schismogenesis", tags: ["idea"],
+    id: "schismogenesis", tags: ["ideas"],
     href: "https://en.wikipedia.org/wiki/Schismogenesis",
     destination: "wikipedia",
     title: ".Schismogenesis"
   },
 
   {
-    id: "information", tags: ["philosophy", "idea"],
+    id: "information", tags: ["philosophy", "ideas"],
     href: "https://en.wikipedia.org/wiki/Information_theory",
     destination: "wikipedia",
     title: ".Information"
   },
 
   {
-    id: "process", tags: ["philosophy", "idea"],
+    id: "process", tags: ["philosophy", "ideas"],
     href: "https://en.wikipedia.org/wiki/Process_philosophy",
     destination: "wikipedia",
     title: ".Process"
@@ -1076,9 +1076,9 @@ export const links = [
                 ["option", {}, "all"],
                 ["option", {}, "technology"],
                 ["option", {}, "philosophy"],
-                ["option", {}, "artist"],
-                ["option", {}, "comic"],
-                ["option", {}, "idea"]
+                ["option", {}, "artists"],
+                ["option", {}, "comics"],
+                ["option", {}, "ideas"]
               ]
             ],
             modeSelect
