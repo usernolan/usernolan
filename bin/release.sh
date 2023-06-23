@@ -9,7 +9,14 @@ if [ -z $DEPLOYMENT_TARGET ]; then
 fi
 echo "DEPLOYMENT_TARGET: " $DEPLOYMENT_TARGET
 
+# --size-only \
 aws s3 sync dist/ s3://$DEPLOYMENT_TARGET \
     --acl public-read \
-    --size-only \
+    --delete \
+    --exclude '*.avif' \
+    --exclude '*.jpeg' \
+    --exclude '*.mp4' \
+    --exclude '*.png' \
+    --exclude '*.webm' \
+    --exclude '*.webp' \
     --exclude '*.DS_Store'

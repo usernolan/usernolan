@@ -36,7 +36,7 @@ const imageComponent = ({
   id, src, alt, width, height, span, hoverSrc,
   loading = "lazy", decoding = "async", tags = []
 }: ImageItem) => {
-  const classes = Array.from(new Set(tags.concat(["item", "image", hoverSrc ? "hoverable" : ""])))
+  const classes = Array.from(new Set(["image", ...(hoverSrc ? ["hoverable"] : [])].concat(tags)))
   return [
     "div",
     {
@@ -62,7 +62,7 @@ const imageComponent = ({
 const quoteComponent = ({
   id, quote, author, tags = []
 }: QuoteItem) => {
-  const classes = Array.from(new Set(tags.concat(["item", "quote"])))
+  const classes = Array.from(new Set(["quote"].concat(tags)))
   return [
     "div",
     {
@@ -77,7 +77,7 @@ const quoteComponent = ({
 const linkComponent = ({
   id, href, destination, title, author, tags = []
 }: LinkItem) => {
-  const classes = Array.from(new Set(tags.concat(["item", "link"])))
+  const classes = Array.from(new Set(["link"].concat(tags)))
   return [
     "div",
     {
@@ -326,7 +326,7 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
-    id: "di", tags: ["of-people", "dumpsters"],
+    id: "di", tags: ["of-people"],
     src: "/jpeg/di.jpeg",
     alt: "The greatest mother to have ever done it hauling her offspring's garbage through Home Depot®.",
     width: 800, height: 1067
@@ -480,17 +480,17 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
+    id: "stained", tags: ["concrete", "heterochrome"],
+    src: "/jpeg/stained.jpeg",
+    alt: "Neon-stained sandstone.",
+    width: 800, height: 1067
+  },
+
+  {
     id: "self-4", tags: ["of-me", "generative", "monochrome", "invertible"],
     src: "/png/Oe.self.png",
     alt: "A selectively randomized, poorly pixelized sapiens approximate peeking out of a previously sealed box.",
     width: 1216, height: 1331
-  },
-
-  {
-    id: "scad", tags: ["generative"],
-    src: "/png/scad.png",
-    alt: "A 3D CAD workspace populated with a repeating sinusoidal wave colorized according to coordinate.",
-    width: 3584, height: 1599
   },
 
   {
@@ -501,10 +501,17 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
-    id: "era", tags: ["nature", "generative", "monochrome"],
-    src: "/png/rule.era.png",
-    alt: "Imperfectly pixelated flowers falling out of high-contrast background noise.",
-    width: 1031, height: 1500
+    id: "150", tags: ["generative", "monochrome", "invertible"],
+    src: "/png/rule.150.png",
+    alt: "Rule 150, I think.",
+    width: 1200, height: 1200
+  },
+
+  {
+    id: "scad", tags: ["generative"],
+    src: "/png/scad.png",
+    alt: "A 3D CAD workspace populated with a repeating sinusoidal wave colorized according to coordinate.",
+    width: 3584, height: 1599
   },
 
   {
@@ -536,10 +543,10 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
-    id: "150", tags: ["generative", "monochrome", "invertible"],
-    src: "/png/rule.150.png",
-    alt: "Rule 150, I think.",
-    width: 1200, height: 1200
+    id: "era", tags: ["nature", "generative", "monochrome"],
+    src: "/png/rule.era.png",
+    alt: "Imperfectly pixelated flowers falling out of high-contrast background noise.",
+    width: 1031, height: 1500
   },
 
   {
@@ -554,13 +561,6 @@ export const imageItems: Array<ImageItem> = [
     src: "/jpeg/spill.jpeg",
     alt: "The softest, most gorgeous spill you've ever faced.",
     width: 800, height: 800
-  },
-
-  {
-    id: "stained", tags: ["concrete", "heterochrome"],
-    src: "/jpeg/stained.jpeg",
-    alt: "Neon-stained sandstone.",
-    width: 800, height: 1067
   },
 
   {
@@ -623,14 +623,28 @@ const linkItems: Array<LinkItem> = [
   },
 
   {
-    id: "cool-uris", tags: ["technology", "philosophy"],
+    id: "cool-uris", tags: ["technology", "ideas"],
     href: "https://www.w3.org/Provider/Style/URI",
     destination: "w3.org",
-    title: "Cool URIs don't change.",
+    title: "Cool URIs don't change",
     author: "Tim BL"
   },
 
-  /* TODO: are we there yet */
+  {
+    id: "how-to-sweep", tags: ["ideas"],
+    href: "https://youtu.be/Kt-VlZpz-8E",
+    destination: "youtube",
+    title: "How to Sweep.",
+    author: "Tom Sachs"
+  },
+
+  {
+    id: "the-value-of-values", tags: ["technology"],
+    href: "https://youtu.be/-6BsiVyC1kM",
+    destination: "youtube",
+    title: "The Value of Values",
+    author: "Rich Hickey"
+  },
 
   {
     id: "the-language-of-the-system", tags: ["technology"],
@@ -641,15 +655,7 @@ const linkItems: Array<LinkItem> = [
   },
 
   {
-    id: "the-value-of-values", tags: ["technology", "philosophy"],
-    href: "https://youtu.be/-6BsiVyC1kM",
-    destination: "youtube",
-    title: "The Value of Values",
-    author: "Rich Hickey"
-  },
-
-  {
-    id: "just-hard-fail-it", tags: ["technology", "philosophy"],
+    id: "just-hard-fail-it", tags: ["technology", "ideas"],
     href: "https://www.usenix.org/legacy/event/lisa07/tech/full_papers/hamilton/hamilton_html/",
     destination: "usenix",
     title: "Just hard-fail it.",
@@ -657,7 +663,7 @@ const linkItems: Array<LinkItem> = [
   },
 
   {
-    id: "worse-is-better", tags: ["technology", "philosophy"],
+    id: "worse-is-better", tags: ["technology", "ideas"],
     href: "https://www.dreamsongs.com/RiseOfWorseIsBetter.html",
     destination: "website",
     title: "Worse is Better",
@@ -665,11 +671,19 @@ const linkItems: Array<LinkItem> = [
   },
 
   {
-    id: "how-to-sweep", tags: ["philosophy"],
-    href: "https://youtu.be/Kt-VlZpz-8E",
-    destination: "youtube",
-    title: "How to Sweep.",
-    author: "Tom Sachs"
+    id: "systems-design-1", tags: ["technology", "ideas"],
+    href: "https://apenwarr.ca/log/20201227",
+    destination: "website",
+    title: "Systems design explains the world: volume 1",
+    author: "Avery Pennarun"
+  },
+
+  {
+    id: "systems-design-2", tags: ["technology"],
+    href: "https://apenwarr.ca/log/20230415",
+    destination: "website",
+    title: "Systems design 2: What we hope we know",
+    author: "Avery Pennarun"
   },
 
   {
@@ -700,7 +714,6 @@ const linkItems: Array<LinkItem> = [
     destination: "wikipedia",
     title: ".• Kandinsky"
   },
-
 
   {
     id: "moebius", tags: ["artists", "comics"],
@@ -752,7 +765,7 @@ const linkItems: Array<LinkItem> = [
   },
 
   {
-    id: "terry-a-davis", tags: ["technology", "philosophy", "artists"],
+    id: "terry-a-davis", tags: ["technology", "artists"],
     href: "https://youtu.be/XkXPqvWJHg4",
     destination: "youtube",
     title: ".• Terry A. Davis"
@@ -766,7 +779,14 @@ const linkItems: Array<LinkItem> = [
   },
 
   {
-    id: "devine-lu-linvega", tags: ["technology", "philosophy", "artists"],
+    id: "amanda-ghassaei", tags: ["technology", "artists"],
+    href: "https://amandaghassaei.com/",
+    destination: "website",
+    title: ".• Amanda Ghassaei"
+  },
+
+  {
+    id: "devine-lu-linvega", tags: ["technology", "artists"],
     href: "https://wiki.xxiivv.com/site/dinaisth.html",
     destination: "website",
     title: ".• Devine Lu Linvega"
@@ -800,8 +820,6 @@ const linkItems: Array<LinkItem> = [
     title: ".Algebraic Structure"
   },
 
-  /* TODO: synchronicity */
-
   {
     id: "schismogenesis", tags: ["ideas"],
     href: "https://en.wikipedia.org/wiki/Schismogenesis",
@@ -810,7 +828,7 @@ const linkItems: Array<LinkItem> = [
   },
 
   {
-    id: "information", tags: ["philosophy", "ideas"],
+    id: "information", tags: ["technology", "ideas"],
     href: "https://en.wikipedia.org/wiki/Information_theory",
     destination: "wikipedia",
     title: ".Information"
@@ -828,6 +846,27 @@ const linkItems: Array<LinkItem> = [
     href: "https://en.wikipedia.org/wiki/David_Bohm",
     destination: "wikipedia",
     title: ".Bohm"
+  },
+
+  {
+    id: "synchronicity", tags: ["ideas"],
+    href: "https://en.wikipedia.org/wiki/Synchronicity",
+    destination: "wikipedia",
+    title: ".Synchronicity"
+  },
+
+  {
+    id: "goblin-manifesto", tags: ["ideas"],
+    href: "https://maya.land/goblin/",
+    destination: "website",
+    title: ".• Goblin Manifesto"
+  },
+
+  {
+    id: "collision-course", tags: ["ideas"],
+    href: "https://zandercutt.com/2018/12/06/the-world-is-on-a-collision-course-with-itself/",
+    destination: "website",
+    title: "The World Is on a Collision Course With Itself"
   },
 
   {
@@ -855,6 +894,12 @@ const quoteItems: Array<QuoteItem> = [
     id: "chris-a",
     quote: "The wholeness is made of parts, the parts are created by the wholeness.",
     author: "Christopher Alexander"
+  },
+
+  {
+    id: "rs",
+    quote: "These build on themselves. You notice that anything you are aware of is in the process of changing as you notice it.",
+    author: "R.S."
   },
 
   {
@@ -891,12 +936,6 @@ const quoteItems: Array<QuoteItem> = [
     id: "fifield",
     quote: "Answer is the dead stop.",
     author: "William Fifield"
-  },
-
-  {
-    id: "rs",
-    quote: "These build on themselves. You notice that anything you are aware of is in the process of changing as you notice it.",
-    author: "R.S."
   },
 
   {
