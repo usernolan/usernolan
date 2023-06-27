@@ -100,8 +100,8 @@ const linkComponent = ({
 /* TODO: add pics */
 export const imageItems: Array<ImageItem> = [
   {
-    id: "self-1", tags: ["of-me", "heterochrome"],
-    src: "/jpeg/smixzy.self.jpeg",
+    id: "nolan-1", tags: ["of-me", "heterochrome"],
+    src: "/jpeg/nolan.1.jpeg",
     alt: "Me in my favorite clothes.",
     width: 800, height: 1067,
     loading: "eager",
@@ -109,15 +109,15 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
-    id: "self-2", tags: ["of-me", "monochrome"],
-    src: "/jpeg/nolan.self.jpeg",
+    id: "nolan-2", tags: ["of-me", "monochrome"],
+    src: "/jpeg/nolan.2.jpeg",
     alt: "Me in grayscale.",
     width: 800, height: 1204,
     loading: "eager"
   },
 
   {
-    id: "persevere", tags: ["artifacts", "monochrome"],
+    id: "persevere", tags: ["artifacts", "bad-words", "monochrome"],
     src: "/jpeg/persevere.jpeg",
     alt: "A large poster on an empty wall that reads 'PERSEVERE' in painted lettering.",
     width: 800, height: 1067,
@@ -197,24 +197,24 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
-    id: "watching", tags: ["nature"],
-    src: "/jpeg/watching.jpeg",
+    id: "watching-1", tags: ["nature"],
+    src: "/jpeg/watching.1.jpeg",
     alt: "A lonely closed-circuit camera surveilling an empty parking lot labeled Lot P.",
     width: 800, height: 1067,
     loading: "eager"
   },
 
   {
-    id: "bridge", tags: ["nature"],
-    src: "/jpeg/bridge.jpeg",
+    id: "bridge-1", tags: ["nature"],
+    src: "/jpeg/bridge.1.jpeg",
     alt: "Admiring my shoes on a narrow bridge above a rapid creek.",
     width: 800, height: 1067,
     loading: "eager"
   },
 
   {
-    id: "self-3", tags: ["of-me", "furniture"],
-    src: "/jpeg/nm8.self.jpeg",
+    id: "nolan-3", tags: ["of-me", "furniture"],
+    src: "/jpeg/nolan.3.jpeg",
     alt: "A robot with a 2x4 soul, visibly dissatisfied with its output.",
     width: 800, height: 1067
   },
@@ -298,8 +298,8 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
-    id: "fourth-avenue", tags: ["concrete"],
-    src: "/jpeg/fourth-avenue.jpeg",
+    id: "four-avenue", tags: ["concrete"],
+    src: "/jpeg/four-avenue.jpeg",
     alt: "A blue Werner® ladder waiting for the subway at 4th Avenue.",
     width: 800, height: 1067
   },
@@ -326,8 +326,8 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
-    id: "di", tags: ["of-people"],
-    src: "/jpeg/di.jpeg",
+    id: "di-1", tags: ["of-people"],
+    src: "/jpeg/di.1.jpeg",
     alt: "The greatest mother to have ever done it hauling her offspring's garbage through Home Depot®.",
     width: 800, height: 1067
   },
@@ -340,8 +340,8 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
-    id: "ass", tags: ["bad-words", "post-its"],
-    src: "/jpeg/ass.jpeg",
+    id: "ass-drag", tags: ["bad-words", "post-its"],
+    src: "/jpeg/ass-drag.jpeg",
     alt: "A purple Post-it® with 'ASS DRAG' written on it in caps lock. There's so much more where this came from.",
     width: 800, height: 800
   },
@@ -354,8 +354,8 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
-    id: "instaworthy", tags: ["bad-words"],
-    src: "/jpeg/instaworthy.jpeg",
+    id: "shit-in-my-mouth", tags: ["bad-words"],
+    src: "/jpeg/shit-in-my-mouth.jpeg",
     alt: "An Instagram®-worthy bedside table with 'SHIT IN MY MOUTH' lovingly expressed on the signboard.",
     width: 800, height: 1000
   },
@@ -396,8 +396,8 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
-    id: "dumpstergram", tags: ["dumpsters"],
-    src: "/jpeg/dumpstergram.jpeg",
+    id: "dumpstergrams", tags: ["dumpsters"],
+    src: "/jpeg/dumpstergrams.jpeg",
     alt: "Two dumpsters in the middle of the woods. Unparalleled vibe.",
     width: 800, height: 1067
   },
@@ -487,8 +487,8 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
-    id: "self-4", tags: ["of-me", "generative", "monochrome", "invertible"],
-    src: "/png/Oe.self.png",
+    id: "nolan-4", tags: ["of-me", "generative", "monochrome", "invertible"],
+    src: "/png/nolan.4.png",
     alt: "A selectively randomized, poorly pixelized sapiens approximate peeking out of a previously sealed box.",
     width: 1216, height: 1331
   },
@@ -607,9 +607,275 @@ export const imageItems: Array<ImageItem> = [
 
   {
     id: "observation", tags: ["of-me"],
-    src: "/jpeg/turrell.self.jpeg",
+    src: "/jpeg/turrell.nolan.jpeg",
     alt: "Observing observation",
     width: 800, height: 1067
+  },
+
+  {
+    id: "nolan-5", tags: ["of-me"],
+    src: "/jpeg/nolan.5.jpeg",
+    alt: "Me hugging a massive neon flamingo you'd only find in Las Vegas.",
+    width: 800, height: 1423
+  },
+
+  {
+    id: "mamnoon-1",
+    src: "/jpeg/mamnoon.1.jpeg",
+    alt: "Neon shelves.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "karnage-kube", tags: ["bad-words"],
+    src: "/jpeg/karnage-kube.jpeg",
+    alt: "A bottle of wine named Karnage Kube.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "voidz",
+    src: "/jpeg/voidz.jpeg",
+    alt: "The lead guitarist of The Voidz lit in RGB, out of focus.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "bookshelf", tags: ["furniture"],
+    src: "/jpeg/bookshelf.jpeg",
+    alt: "A wall-sized bookshelf made out of plywood and plumbing pipes against brick.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "cutting-mat", tags: ["furniture"],
+    src: "/jpeg/cutting-mat.jpeg",
+    alt: "A massive black cutting mat on desk wood with a 1 inch grid.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "one-way", tags: ["nature", "dumpsters", "bad-words"],
+    src: "/jpeg/one-way.jpeg",
+    alt: "A fence for shepharding hikers with a 'ONE WAY' sign hanging by a thread.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "postage", tags: ["nature", "dumpsters"],
+    src: "/jpeg/postage.jpeg",
+    alt: "A singular unaddressed mailbox in front of a crumbling, overgrown stone wall.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "cave-stairs", tags: ["nature"],
+    src: "/jpeg/cave-stairs.jpeg",
+    alt: "A stairway leading out of a dark cave toward bright sunlight.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "bed-yarn",
+    src: "/jpeg/bed-yarn.jpeg",
+    alt: "The yarn package manager running installation on a bedside laptop at night.",
+    width: 800, height: 800
+  },
+
+  {
+    id: "mbp", tags: ["furniture"],
+    src: "/jpeg/mbp.jpeg",
+    alt: "A pristine macbook on an acrylic surface.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "moraine", tags: ["nature"],
+    src: "/jpeg/moraine.jpeg",
+    alt: "Shoegazing at lake moraine.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "banff", tags: ["nature"],
+    src: "/jpeg/banff.jpeg",
+    alt: "The summit of a hike I wasn't prepared for.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "nz", tags: ["nature"],
+    src: "/jpeg/nz.jpeg",
+    alt: "The rolling hills of New Zealand.",
+    width: 800, height: 600
+  },
+
+  {
+    id: "chromacreek", tags: ["nature", "heterochrome"],
+    src: "/jpeg/chromacreek.jpeg",
+    alt: "A supersaturated mountain creek.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "mamnoon-2", tags: ["heterochrome"],
+    src: "/jpeg/mamnoon.2.jpeg",
+    alt: "A colorful translucent awning.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "orbitals", tags: ["drawing", "heterochrome"],
+    src: "/jpeg/orbitals.jpeg",
+    alt: "Oil pastel and acrylic ink in orbital concentric circles.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "far-fetched", tags: ["artifacts", "bad-words"],
+    src: "/jpeg/far-fetched.jpeg",
+    alt: "A colorloaded poster by Jesse Jacobs that says 'FAR FETCHED'.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "pencil-dust", tags: ["drawing"],
+    src: "/jpeg/pencil-dust.jpeg",
+    alt: "Omnichromal colored pencil shavings amassed in a growing pile.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "di-2", tags: ["of-people"],
+    src: "/jpeg/di.2.jpeg",
+    alt: "Diane arriving at her favorite restaurant for dinner.",
+    width: 800, height: 800
+  },
+
+  {
+    id: "chuks",
+    src: "/jpeg/chuks.jpeg",
+    alt: "Go to tacos chukis if you're in Seattle.",
+    width: 800, height: 800
+  },
+
+  {
+    id: "daisies", tags: ["nature"],
+    src: "/jpeg/daisies.jpeg",
+    alt: "Daisies speckling tall grass.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "bridge-2", tags: ["nature"],
+    src: "/jpeg/bridge.2.jpeg",
+    alt: "Admiring my shoes on a log bridge over a lush creek.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "tim", tags: ["of-people", "nature"],
+    src: "/jpeg/tim.jpeg",
+    alt: "A portal made of sticks into a sacred grove, apparently; Tim checking it out.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "coast", tags: ["nature"],
+    src: "/jpeg/coast.jpeg",
+    alt: "Looking at my shoes overlooking a rocky coast.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "trash", tags: ["bad-words", "monochrome"],
+    src: "/jpeg/trash.jpeg",
+    alt: "A sign that reads 'PLEASE DO NOT PUT TRASH IN TOILETS, IT IS EXTREMELY DIFFICULT TO GET OUT'.",
+    width: 800, height: 600
+  },
+
+  {
+    id: "bird-house", tags: ["nature"],
+    src: "/jpeg/bird-house.jpeg",
+    alt: "An extremely high-traffic bird house next to a quiet river.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "crater-lake", tags: ["nature"],
+    src: "/jpeg/crater-lake.jpeg",
+    alt: "The sky inverted against crater lake.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "watching-2", tags: ["monochrome"],
+    src: "/jpeg/watching.2.jpeg",
+    alt: "A closed-circuit camera surveilling an empty school during summer break.",
+    width: 800, height: 879
+  },
+
+  {
+    id: "watching-3", tags: ["monochrome"],
+    src: "/jpeg/watching.3.jpeg",
+    alt: "A closed-circuit camera surrounded by graffiti watching for vandals.",
+    width: 800, height: 1066
+  },
+
+  {
+    id: "hydrant-1", tags: ["concrete", "dumpsters"],
+    src: "/jpeg/hydrant.1.jpeg",
+    alt: "A blue-capped fire hydrant planted within the textures of crossing the street.",
+    width: 800, height: 800
+  },
+
+  {
+    id: "arboretum", tags: ["nature", "heterochrome"],
+    src: "/jpeg/arboretum.jpeg",
+    alt: "Trees in an arboretum, where they clearly belong.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "hot-sauce-and-panko", tags: ["bad-words", "heterochrome"],
+    src: "/jpeg/hot-sauce-and-panko.jpeg",
+    alt: "A streetcorner restaurant sign that says 'HOT SAUCE AND PANKO'.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "infinity-repeating", tags: ["nature", "heterochrome"],
+    src: "/jpeg/infinity-repeating.jpeg",
+    alt: "A seemingly prehistoric succulent among dozens of identical siblings.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "manhole", tags: ["concrete", "dumpsters", "heterochrome"],
+    src: "/jpeg/manhole.jpeg",
+    alt: "An unintelligible polychrome sticker permanently imprinted on a manhole cover.",
+    width: 800, height: 953
+  },
+
+  {
+    id: "hydrant-2", tags: ["concrete", "dumpsters"],
+    src: "/jpeg/hydrant.2.jpeg",
+    alt: "A chrome fire hydrant emerging from angular concrete.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "cowboy", tags: ["of-people", "nature"],
+    src: "/jpeg/cowboy.jpeg",
+    alt: "Cowboy taking a shit.",
+    width: 800, height: 947
+  },
+
+  {
+    id: "hydrant-3", tags: ["nature", "concrete", "dumpsters"],
+    src: "/jpeg/hydrant.3.jpeg",
+    alt: "A yellow fire hydrant sprouting out of tall grass.",
+    width: 800, height: 1059
   }
 ]
 
@@ -911,24 +1177,6 @@ const quoteItems: Array<QuoteItem> = [
   {
     id: "anw-1",
     quote: "One main factor in the upward trend of animal life has been the power of wandering.",
-    author: "Alfred North Whitehead"
-  },
-
-  {
-    id: "anw-2",
-    quote: "Unlimited possibility and abstract creativity can procure nothing.",
-    author: "Alfred North Whitehead"
-  },
-
-  {
-    id: "anw-3",
-    quote: "A science that hesitates to forget its founders is lost.",
-    author: "Alfred North Whitehead"
-  },
-
-  {
-    id: "anw-4",
-    quote: "We think in generalities, but we live in details.",
     author: "Alfred North Whitehead"
   },
 

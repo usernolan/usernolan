@@ -182,6 +182,11 @@ div.image#image--self-2 img {
      object-position: 50% 15%;
 }
 
+div.image#image--bird-house img {
+  -o-object-position: 50% 100%;
+  object-position: 50% 100%;
+}
+
 :root[data-color-scheme="dark"] div.image.invertible img {
   filter: invert()
 }
