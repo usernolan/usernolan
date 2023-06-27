@@ -655,7 +655,7 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
-    id: "one-way", tags: ["nature", "dumpsters", "bad-words"],
+    id: "one-way", tags: ["nature", "bad-words"],
     src: "/jpeg/one-way.jpeg",
     alt: "A fence for shepharding hikers with a 'ONE WAY' sign hanging by a thread.",
     width: 800, height: 1067
@@ -982,42 +982,42 @@ const linkItems: Array<LinkItem> = [
   },
 
   {
-    id: "moebius", tags: ["artists", "comics"],
+    id: "moebius", tags: ["artists"],
     href: "https://www.moebius.fr/Les-Collections.html",
     destination: "website",
     title: ".• Moebius"
   },
 
   {
-    id: "caza", tags: ["artists", "comics"],
+    id: "caza", tags: ["artists"],
     href: "https://en.wikipedia.org/wiki/Caza",
     destination: "wikipedia",
     title: ".• Caza"
   },
 
   {
-    id: "ulises-farinas", tags: ["artists", "comics"],
+    id: "ulises-farinas", tags: ["artists"],
     href: "https://ulisesfarinas.com/",
     destination: "website",
     title: ".• Ulises Fariñas"
   },
 
   {
-    id: "john-vermilyea", tags: ["artists", "comics"],
+    id: "john-vermilyea", tags: ["artists"],
     href: "http://www.jonvermilyea.com/",
     destination: "website",
     title: ".• Jon Vermilyea"
   },
 
   {
-    id: "anders-nilsen", tags: ["artists", "comics"],
+    id: "anders-nilsen", tags: ["artists"],
     href: "https://www.andersbrekhusnilsen.com/booksandcomics",
     destination: "website",
     title: ".• Anders Nilsen"
   },
 
   {
-    id: "jesse-jacobs", tags: ["artists", "comics"],
+    id: "jesse-jacobs", tags: ["artists"],
     href: "https://www.jessejacobsart.com/",
     destination: "website",
     title: ".• Jesse Jacobs"
@@ -1227,7 +1227,7 @@ const head = (title: string) => [
   ["meta", { property: "og:title", content: title }],
   ["meta", { property: "og:type", content: "website" }],
   ["meta", { property: "og:url", content: "https://usernolan.net" }],
-  ["meta", { property: "og:image", content: "https://usernolan.net/jpeg/smixzy.self.jpeg" }]
+  ["meta", { property: "og:image", content: "https://usernolan.net/jpeg/nolan.1.jpeg" }]
 ]
 
 const modeSelect = [
@@ -1259,7 +1259,7 @@ export const index = [
         ],
         ["p", {},
           `I build sketchy websites and primitive furniture. They're beautiful
-in the same way my sister's dog is beautiful; I promise they're beautiful.`],
+in the same way my sister's dog is beautiful. I promise they're beautiful.`],
       ],
       ["script", { type: "module", src: "/src/index.ts" }]
     ]
@@ -1320,7 +1320,6 @@ export const links = [
                 ["option", {}, "technology"],
                 ["option", {}, "philosophy"],
                 ["option", {}, "artists"],
-                ["option", {}, "comics"],
                 ["option", {}, "ideas"]
               ]
             ],
