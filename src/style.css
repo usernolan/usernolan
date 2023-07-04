@@ -177,7 +177,7 @@ div.image.hoverable:not(:hover) video {
   display: none;
 }
 
-div.image#image--self-2 img {
+div.image#image--nolan-2 img {
   -o-object-position: 50% 15%;
      object-position: 50% 15%;
 }
@@ -188,7 +188,7 @@ div.image#image--bird-house img {
 }
 
 :root[data-color-scheme="dark"] div.image.invertible img {
-  filter: invert()
+  filter: invert();
 }
 
 @media (prefers-color-scheme: dark) {
