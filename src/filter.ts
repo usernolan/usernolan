@@ -4,9 +4,9 @@
 export const addFilterSelect = (
   container: Element,
   selector: string,
-  id = "select#select--filter"
+  id = "select--filter"
 ) => {
-  const filterSelect = document.querySelector(id) as HTMLSelectElement
+  const filterSelect = document.getElementById(id) as HTMLSelectElement
   if (!filterSelect) return;
   filterSelect.addEventListener(
     "change",

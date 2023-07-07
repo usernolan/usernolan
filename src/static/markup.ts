@@ -70,7 +70,7 @@ const quoteComponent = ({
       class: classes.join(" ")
     },
     ["h2", {}, quote],
-    ["p", {}, `—${author}`]
+    ["p", {}, `${author}`]
   ]
 }
 
@@ -100,12 +100,20 @@ const linkComponent = ({
 /* TODO: add pics */
 export const imageItems: Array<ImageItem> = [
   {
+    id: "nolan-6", tags: ["of-me"],
+    src: "/jpeg/nolan.6.jpeg",
+    alt: "Me eating soup at Han Bat.",
+    width: 800, height: 1067,
+    loading: "eager",
+    span: 2
+  },
+
+  {
     id: "nolan-1", tags: ["of-me", "heterochrome"],
     src: "/jpeg/nolan.1.jpeg",
     alt: "Me in my favorite clothes.",
     width: 800, height: 1067,
-    loading: "eager",
-    span: 2
+    loading: "eager"
   },
 
   {
@@ -149,8 +157,8 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
-    id: "erica", tags: ["of-people"],
-    src: "/jpeg/erica.jpeg",
+    id: "erica-1", tags: ["of-people"],
+    src: "/jpeg/erica.1.jpeg",
     alt: "My sister across the table taking a picture of me taking a picture of her, which is this picture.",
     width: 800, height: 1067,
     loading: "eager"
@@ -165,7 +173,7 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
-    id: "petals", tags: ["nature"],
+    id: "petals", tags: ["nature", "concrete"],
     src: "/jpeg/petals.jpeg",
     alt: "Pink flower petals gravitating toward a concrete sidewalk.",
     width: 800, height: 1067,
@@ -403,8 +411,8 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
-    id: "post-it", tags: ["post-its", "heterochrome"],
-    src: "/jpeg/post-it.jpeg",
+    id: "post-it-1", tags: ["post-its", "heterochrome"],
+    src: "/jpeg/post-it.1.jpeg",
     alt: "A closeup of Post-it® notes with more Post-it® notes in the background; not to brag but it's a fresh cabinet pack of Helsinki-themed Greener Notes.",
     width: 800, height: 605
   },
@@ -851,13 +859,6 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
-    id: "manhole", tags: ["concrete", "dumpsters", "heterochrome"],
-    src: "/jpeg/manhole.jpeg",
-    alt: "An unintelligible polychrome sticker permanently imprinted on a manhole cover.",
-    width: 800, height: 953
-  },
-
-  {
     id: "hydrant-2", tags: ["concrete", "dumpsters"],
     src: "/jpeg/hydrant.2.jpeg",
     alt: "A chrome fire hydrant emerging from angular concrete.",
@@ -865,8 +866,8 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
-    id: "cowboy", tags: ["of-people", "nature"],
-    src: "/jpeg/cowboy.jpeg",
+    id: "cowboy-1", tags: ["of-people", "nature"],
+    src: "/jpeg/cowboy.1.jpeg",
     alt: "Cowboy taking a shit.",
     width: 800, height: 947
   },
@@ -876,8 +877,37 @@ export const imageItems: Array<ImageItem> = [
     src: "/jpeg/hydrant.3.jpeg",
     alt: "A yellow fire hydrant sprouting out of tall grass.",
     width: 800, height: 1059
+  },
+
+  {
+    id: "post-it-2", tags: ["post-its"],
+    src: "/jpeg/post-it.2.jpeg",
+    alt: "A mostly full box of Helsinki-themed Post-it® notes, like pastel steps to the gates of the mind.",
+    width: 800, height: 800
+  },
+
+  {
+    id: "sidewalk-dot", tags: ["concrete"],
+    src: "/jpeg/sidewalk-dot.jpeg",
+    alt: "Sidewalk textures.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "erica-2", tags: ["of-people", "nature"],
+    src: "/jpeg/erica.2.jpeg",
+    alt: "Erica decked out in dog park apparel.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "cowboy-2", tags: ["of-people"],
+    src: "/jpeg/cowboy.2.jpeg",
+    alt: "Cowmin at the dog park.",
+    width: 800, height: 959
   }
 ]
+
 
 const linkItems: Array<LinkItem> = [
   {
@@ -1066,6 +1096,13 @@ const linkItems: Array<LinkItem> = [
   },
 
   {
+    id: "eskil-steenberg", tags: ["technology", "artists"],
+    href: "http://www.quelsolaar.com/",
+    destination: "website",
+    title: ".• Eskil Steenberg"
+  },
+
+  {
     id: "mereology", tags: ["philosophy", "ideas"],
     href: "https://en.wikipedia.org/wiki/Mereology",
     destination: "wikipedia",
@@ -1227,17 +1264,17 @@ const head = (title: string) => [
   ["meta", { property: "og:title", content: title }],
   ["meta", { property: "og:type", content: "website" }],
   ["meta", { property: "og:url", content: "https://usernolan.net" }],
-  ["meta", { property: "og:image", content: "https://usernolan.net/jpeg/nolan.1.jpeg" }]
+  ["meta", { property: "og:image", content: "https://usernolan.net/jpeg/nolan.6.jpeg" }]
 ]
 
 const modeSelect = [
   "div.select--mode", {},
-  ["label", { for: "select--mode" }, "mode: "],
   ["select#select--mode", {},
     ["option", {}, "system"],
     ["option", {}, "light"],
     ["option", {}, "dark"]
-  ]
+  ],
+  ["label", { for: "select--mode" }, "mode"],
 ]
 
 export const index = [
@@ -1248,7 +1285,11 @@ export const index = [
       ["main", {},
         ["div.header", {},
           ["h1", {}, "i'm nolan"],
-          ["div.controls", {}, modeSelect]
+          ["div.controls", {},
+            ["div.select--ghost", {},
+              ["select", {}],],
+            modeSelect
+          ]
         ],
         ["div.images", {}, imageComponent(imageItems[0])],
         ["div.links", {},
@@ -1257,9 +1298,9 @@ export const index = [
           ["a", { href: "/quotes/" }, "quotes"],
           ["a", { href: "/pdf/resume.pdf", target: "_blank" }, "cv"]
         ],
-        ["p", {},
-          `I build sketchy websites and primitive furniture. They're beautiful
-in the same way my sister's dog is beautiful. I promise they're beautiful.`],
+        ["p", {}, "you may be thinking \"no but this is archaic garbage??? i'm going back to fortnite!\" and it is and you should stay. it's beautiful in the same way my ",
+          ["a", { href: "/images/#image--cowboy-2" }, "sister's dog"],
+          " is beautiful. it's so beautiful. it's better than fortnite."]
       ],
       ["script", { type: "module", src: "/src/index.ts" }]
     ]
@@ -1276,7 +1317,6 @@ export const images = [
           ["a", { href: "/" }, "home"],
           ["div.controls", {},
             ["div.select--filter", {},
-              ["label", { for: "select--filter" }, "filter: "],
               ["select#select--filter", {},
                 ["option", {}, "all"],
                 ["option", { value: "of-me" }, "of me"],
@@ -1292,14 +1332,15 @@ export const images = [
                 ["option", {}, "generative"],
                 ["option", {}, "monochrome"],
                 ["option", {}, "heterochrome"]
-              ]
+              ],
+              ["label", { for: "select--filter" }, "filter"]
             ],
             modeSelect
           ]
         ],
         ["div.images", {}, ...imageItems.map(imageComponent)]
       ],
-      ["script", { type: "module", src: "/src/images.ts" }]
+      ["script", { type: "module", src: "/src/index.ts" }]
     ]
   ]
 ]
@@ -1314,14 +1355,14 @@ export const links = [
           ["a", { href: "/" }, "home"],
           ["div.controls", {},
             ["div.select--filter", {},
-              ["label", { for: "select--filter" }, "filter: "],
               ["select#select--filter", {},
                 ["option", {}, "all"],
                 ["option", {}, "technology"],
                 ["option", {}, "philosophy"],
                 ["option", {}, "artists"],
                 ["option", {}, "ideas"]
-              ]
+              ],
+              ["label", { for: "select--filter" }, "filter"]
             ],
             modeSelect
           ]

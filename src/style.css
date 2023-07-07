@@ -1,5 +1,3 @@
-/* NOTE: root styles */
-
 :root {
   font-family: Inter, Helvetica Neue, Avenir, Helvetica, Arial, sans-serif;
   color-scheme: light dark;
@@ -26,6 +24,7 @@
 body {
   box-sizing: border-box;
   margin: 0;
+  overflow: auto scroll;
 }
 
 body * {
@@ -56,14 +55,17 @@ div.header h1 {
   margin: 0;
 }
 
-div.header a {
-  font-size: 1.56rem;
+div.header a, div.links a, p a {
   font-weight: bolder;
-  color: CanvasText;
   text-decoration: none;
+  color: CanvasText;
 }
 
-div.header a:hover {
+div.header a {
+  font-size: 1.56rem;
+}
+
+div.header a:hover, div.links a:hover, p a:hover {
   text-decoration: underline;
 }
 
@@ -74,7 +76,7 @@ div.controls div {
 div.controls select {
   background: Canvas;
   border: none;
-  padding: 0 0.25rem;
+  padding: 0;
   font-size: 1.28rem;
   font-weight: bolder;
   cursor: pointer;
@@ -82,10 +84,19 @@ div.controls select {
           -moz-appearance: none;
        appearance: none;
   color: CanvasText;
+  text-align-last: right;
 }
 
-div.controls > div:not(:last-child) {
-  margin-right: 1rem;
+div.controls div.select--ghost {
+  visibility: hidden;
+}
+
+div.controls label {
+  margin-left: 0.42rem;
+}
+
+div.controls > div:not(:last-child):not(.select--ghost) {
+  margin-right: 2rem;
 }
 
 div.links {
@@ -93,15 +104,7 @@ div.links {
 }
 
 div.links a {
-  font-size: 1rem;
-  font-weight: bolder;
-  color: CanvasText;
-  text-decoration: none;
   display: inline-block;
-}
-
-div.links a:hover {
-  text-decoration: underline;
 }
 
 div.links a:not(:last-child) {
@@ -177,9 +180,19 @@ div.image.hoverable:not(:hover) video {
   display: none;
 }
 
+div.image#image--nolan-1 img {
+  -o-object-position: 50% 33%;
+  object-position: 50% 33%;
+}
+
 div.image#image--nolan-2 img {
   -o-object-position: 50% 15%;
      object-position: 50% 15%;
+}
+
+div.image#image--sunglasses img {
+  -o-object-position: 50% 0%;
+  object-position: 50% 0%;
 }
 
 div.image#image--bird-house img {
@@ -234,6 +247,11 @@ div.link p, div.quote p {
   div.controls {
     display: flex;
     flex-direction: column-reverse;
+    align-items: flex-end;
+  }
+
+  div.controls > div:not(:last-child):not(.select--ghost) {
+    margin-right: unset;
   }
 }
 
@@ -245,7 +263,8 @@ div.link p, div.quote p {
   }
 
   div.header {
-    margin: 0.56rem 0 1.56rem;
+    align-items: flex-start;
+    margin-bottom: 1rem;
   }
 }
 
@@ -253,5 +272,10 @@ div.link p, div.quote p {
   div.controls {
     display: flex;
     flex-direction: column-reverse;
+    align-items: flex-end;
+  }
+
+  div.controls > div:not(:last-child):not(.select--ghost) {
+    margin-right: unset;
   }
 }

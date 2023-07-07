@@ -1,10 +1,10 @@
 /* TODO: hide select tags when scripting disabled */
 
 export const addModeSelect = (
-  id = "select#select--mode"
+  id = "select--mode"
 ) => {
   const root = document.querySelector(":root") as HTMLElement
-  const modeSelect = document.querySelector(id) as HTMLSelectElement
+  const modeSelect = document.getElementById(id) as HTMLSelectElement
   if (!modeSelect) return;
   modeSelect.addEventListener(
     "change",

@@ -17,14 +17,14 @@
   <meta property="og:title" content="nolan - images" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://usernolan.net" />
-  <meta property="og:image" content="https://usernolan.net/jpeg/nolan.1.jpeg" />
+  <meta property="og:image" content="https://usernolan.net/jpeg/nolan.6.jpeg" />
 </head>
 
 <body>
   <main>
     <div class="header"><a href="/">home</a>
       <div class="controls">
-        <div class="select--filter"><label for="select--filter">filter: </label><select id="select--filter">
+        <div class="select--filter"><select id="select--filter">
             <option>all</option>
             <option value="of-me">of me</option>
             <option value="of-people">of people</option>
@@ -39,16 +39,22 @@
             <option>generative</option>
             <option>monochrome</option>
             <option>heterochrome</option>
-          </select></div>
-        <div class="select--mode"><label for="select--mode">mode: </label><select id="select--mode">
+          </select><label for="select--filter">filter</label></div>
+        <div class="select--mode"><select id="select--mode">
             <option>system</option>
             <option>light</option>
             <option>dark</option>
-          </select></div>
+          </select><label for="select--mode">mode</label></div>
       </div>
     </div>
     <div class="images">
-      <div id="image--nolan-1" class="image of-me heterochrome" data-span="2">
+      <div id="image--nolan-6" class="image of-me" data-span="2">
+        <picture>
+          <source srcset="/avif/nolan.6.avif" type="image/avif" />
+          <source srcset="/webp/nolan.6.webp" type="image/webp" /><img src="/jpeg/nolan.6.jpeg" alt="Me eating soup at Han Bat." width="800" height="1067" loading="eager" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--nolan-1" class="image of-me heterochrome">
         <picture>
           <source srcset="/avif/nolan.1.avif" type="image/avif" />
           <source srcset="/webp/nolan.1.webp" type="image/webp" /><img src="/jpeg/nolan.1.jpeg" alt="Me in my favorite clothes." width="800" height="1067" loading="eager" decoding="async" />
@@ -84,10 +90,10 @@
           <source srcset="/webp/parents.webp" type="image/webp" /><img src="/jpeg/parents.jpeg" alt="My parents interacting extremely typically." width="800" height="1015" loading="eager" decoding="async" />
         </picture>
       </div>
-      <div id="image--erica" class="image of-people">
+      <div id="image--erica-1" class="image of-people">
         <picture>
-          <source srcset="/avif/erica.avif" type="image/avif" />
-          <source srcset="/webp/erica.webp" type="image/webp" /><img src="/jpeg/erica.jpeg" alt="My sister across the table taking a picture of me taking a picture of her, which is this picture." width="800" height="1067" loading="eager" decoding="async" />
+          <source srcset="/avif/erica.1.avif" type="image/avif" />
+          <source srcset="/webp/erica.1.webp" type="image/webp" /><img src="/jpeg/erica.1.jpeg" alt="My sister across the table taking a picture of me taking a picture of her, which is this picture." width="800" height="1067" loading="eager" decoding="async" />
         </picture>
       </div>
       <div id="image--louie" class="image of-people">
@@ -96,7 +102,7 @@
           <source srcset="/webp/louie.webp" type="image/webp" /><img src="/jpeg/louie.jpeg" alt="My dog in the passenger seat politely requesting attention." width="800" height="1067" loading="eager" decoding="async" />
         </picture>
       </div>
-      <div id="image--petals" class="image nature">
+      <div id="image--petals" class="image nature concrete">
         <picture>
           <source srcset="/avif/petals.avif" type="image/avif" />
           <source srcset="/webp/petals.webp" type="image/webp" /><img src="/jpeg/petals.jpeg" alt="Pink flower petals gravitating toward a concrete sidewalk." width="800" height="1067" loading="eager" decoding="async" />
@@ -297,10 +303,10 @@
           <source srcset="/webp/dumpstergrams.webp" type="image/webp" /><img src="/jpeg/dumpstergrams.jpeg" alt="Two dumpsters in the middle of the woods. Unparalleled vibe." width="800" height="1067" loading="lazy" decoding="async" />
         </picture>
       </div>
-      <div id="image--post-it" class="image post-its heterochrome">
+      <div id="image--post-it-1" class="image post-its heterochrome">
         <picture>
-          <source srcset="/avif/post-it.avif" type="image/avif" />
-          <source srcset="/webp/post-it.webp" type="image/webp" /><img src="/jpeg/post-it.jpeg" alt="A closeup of Post-it® notes with more Post-it® notes in the background; not to brag but it's a fresh cabinet pack of Helsinki-themed Greener Notes." width="800" height="605" loading="lazy" decoding="async" />
+          <source srcset="/avif/post-it.1.avif" type="image/avif" />
+          <source srcset="/webp/post-it.1.webp" type="image/webp" /><img src="/jpeg/post-it.1.jpeg" alt="A closeup of Post-it® notes with more Post-it® notes in the background; not to brag but it's a fresh cabinet pack of Helsinki-themed Greener Notes." width="800" height="605" loading="lazy" decoding="async" />
         </picture>
       </div>
       <div id="image--sky" class="image nature">
@@ -681,22 +687,16 @@
           <source srcset="/webp/infinity-repeating.webp" type="image/webp" /><img src="/jpeg/infinity-repeating.jpeg" alt="A seemingly prehistoric succulent among dozens of identical siblings." width="800" height="1067" loading="lazy" decoding="async" />
         </picture>
       </div>
-      <div id="image--manhole" class="image concrete dumpsters heterochrome">
-        <picture>
-          <source srcset="/avif/manhole.avif" type="image/avif" />
-          <source srcset="/webp/manhole.webp" type="image/webp" /><img src="/jpeg/manhole.jpeg" alt="An unintelligible polychrome sticker permanently imprinted on a manhole cover." width="800" height="953" loading="lazy" decoding="async" />
-        </picture>
-      </div>
       <div id="image--hydrant-2" class="image concrete dumpsters">
         <picture>
           <source srcset="/avif/hydrant.2.avif" type="image/avif" />
           <source srcset="/webp/hydrant.2.webp" type="image/webp" /><img src="/jpeg/hydrant.2.jpeg" alt="A chrome fire hydrant emerging from angular concrete." width="800" height="1067" loading="lazy" decoding="async" />
         </picture>
       </div>
-      <div id="image--cowboy" class="image of-people nature">
+      <div id="image--cowboy-1" class="image of-people nature">
         <picture>
-          <source srcset="/avif/cowboy.avif" type="image/avif" />
-          <source srcset="/webp/cowboy.webp" type="image/webp" /><img src="/jpeg/cowboy.jpeg" alt="Cowboy taking a shit." width="800" height="947" loading="lazy" decoding="async" />
+          <source srcset="/avif/cowboy.1.avif" type="image/avif" />
+          <source srcset="/webp/cowboy.1.webp" type="image/webp" /><img src="/jpeg/cowboy.1.jpeg" alt="Cowboy taking a shit." width="800" height="947" loading="lazy" decoding="async" />
         </picture>
       </div>
       <div id="image--hydrant-3" class="image nature concrete dumpsters">
@@ -705,9 +705,33 @@
           <source srcset="/webp/hydrant.3.webp" type="image/webp" /><img src="/jpeg/hydrant.3.jpeg" alt="A yellow fire hydrant sprouting out of tall grass." width="800" height="1059" loading="lazy" decoding="async" />
         </picture>
       </div>
+      <div id="image--post-it-2" class="image post-its">
+        <picture>
+          <source srcset="/avif/post-it.2.avif" type="image/avif" />
+          <source srcset="/webp/post-it.2.webp" type="image/webp" /><img src="/jpeg/post-it.2.jpeg" alt="A mostly full box of Helsinki-themed Post-it® notes, like pastel steps to the gates of the mind." width="800" height="800" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--sidewalk-dot" class="image concrete">
+        <picture>
+          <source srcset="/avif/sidewalk-dot.avif" type="image/avif" />
+          <source srcset="/webp/sidewalk-dot.webp" type="image/webp" /><img src="/jpeg/sidewalk-dot.jpeg" alt="Sidewalk textures." width="800" height="1067" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--erica-2" class="image of-people nature">
+        <picture>
+          <source srcset="/avif/erica.2.avif" type="image/avif" />
+          <source srcset="/webp/erica.2.webp" type="image/webp" /><img src="/jpeg/erica.2.jpeg" alt="Erica decked out in dog park apparel." width="800" height="1067" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--cowboy-2" class="image of-people">
+        <picture>
+          <source srcset="/avif/cowboy.2.avif" type="image/avif" />
+          <source srcset="/webp/cowboy.2.webp" type="image/webp" /><img src="/jpeg/cowboy.2.jpeg" alt="Cowmin at the dog park." width="800" height="959" loading="lazy" decoding="async" />
+        </picture>
+      </div>
     </div>
   </main>
-  <script type="module" src="/src/images.ts"></script>
+  <script type="module" src="/src/index.ts"></script>
 </body>
 
 </html>
