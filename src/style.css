@@ -84,7 +84,8 @@ div.controls select {
           -moz-appearance: none;
        appearance: none;
   color: CanvasText;
-  text-align-last: right;
+  -moz-text-align-last: right;
+       text-align-last: right;
 }
 
 div.controls div.select--ghost {
