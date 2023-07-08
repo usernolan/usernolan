@@ -1284,7 +1284,7 @@ export const index = [
           ["a", { href: "/pdf/resume.pdf", target: "_blank" }, "cv"]
         ],
         ["p", {}, "you may be thinking \"no but this site is archaic garbage??? i'm going back to fortnite!\" and it is, and you should stay. it's beautiful in the same way my ",
-          ["a", { href: "/images/#image--cowboy-2" }, "sister's dog"],
+          ["a", { href: imageItems.find((x) => x.id === "cowboy-2")?.src }, "sister's dog"],
           " is beautiful. it's so beautiful. it's better than fortnite."]
       ],
       ["script", { type: "module", src: "/src/index.ts" }]
