@@ -38,6 +38,9 @@ if (location.hash) {
   const el = document.querySelector(location.hash)
   if (el) {
     toggleSize(el)
-    el.scrollIntoView({ behavior: "instant", block: "center" })
+    el.querySelector("img")?.addEventListener(
+      "load",
+      () => el.scrollIntoView({ behavior: "smooth", block: "center" })
+    )
   }
 }

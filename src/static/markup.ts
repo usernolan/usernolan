@@ -104,7 +104,6 @@ export const imageItems: Array<ImageItem> = [
     src: "/jpeg/nolan.6.jpeg",
     alt: "Me eating soup at Han Bat.",
     width: 800, height: 1067,
-    loading: "eager",
     span: 2
   },
 
@@ -113,7 +112,6 @@ export const imageItems: Array<ImageItem> = [
     src: "/jpeg/nolan.1.jpeg",
     alt: "Me in my favorite clothes.",
     width: 800, height: 1067,
-    loading: "eager"
   },
 
   {
@@ -121,7 +119,6 @@ export const imageItems: Array<ImageItem> = [
     src: "/jpeg/nolan.2.jpeg",
     alt: "Me in grayscale.",
     width: 800, height: 1204,
-    loading: "eager"
   },
 
   {
@@ -129,7 +126,6 @@ export const imageItems: Array<ImageItem> = [
     src: "/jpeg/persevere.jpeg",
     alt: "A large poster on an empty wall that reads 'PERSEVERE' in painted lettering.",
     width: 800, height: 1067,
-    loading: "eager"
   },
 
   {
@@ -137,7 +133,6 @@ export const imageItems: Array<ImageItem> = [
     src: "/jpeg/clouds.jpeg",
     alt: "Heavy clouds and green foothills.",
     width: 800, height: 600,
-    loading: "eager"
   },
 
   {
@@ -145,7 +140,6 @@ export const imageItems: Array<ImageItem> = [
     src: "/jpeg/branch.jpeg",
     alt: "A branch of a tree that seems to branch indefinitely.",
     width: 800, height: 1067,
-    loading: "eager"
   },
 
   {
@@ -153,7 +147,6 @@ export const imageItems: Array<ImageItem> = [
     src: "/jpeg/parents.jpeg",
     alt: "My parents interacting extremely typically.",
     width: 800, height: 1015,
-    loading: "eager"
   },
 
   {
@@ -161,7 +154,6 @@ export const imageItems: Array<ImageItem> = [
     src: "/jpeg/erica.1.jpeg",
     alt: "My sister across the table taking a picture of me taking a picture of her, which is this picture.",
     width: 800, height: 1067,
-    loading: "eager"
   },
 
   {
@@ -169,7 +161,6 @@ export const imageItems: Array<ImageItem> = [
     src: "/jpeg/louie.jpeg",
     alt: "My dog in the passenger seat politely requesting attention.",
     width: 800, height: 1067,
-    loading: "eager"
   },
 
   {
@@ -177,7 +168,6 @@ export const imageItems: Array<ImageItem> = [
     src: "/jpeg/petals.jpeg",
     alt: "Pink flower petals gravitating toward a concrete sidewalk.",
     width: 800, height: 1067,
-    loading: "eager"
   },
 
   {
@@ -185,7 +175,6 @@ export const imageItems: Array<ImageItem> = [
     src: "/jpeg/pauszeks.jpeg",
     alt: "Two brothers walking through a small mountain town with fresh coffee; one peace sign, one cheers.",
     width: 800, height: 1067,
-    loading: "eager"
   },
 
   {
@@ -193,7 +182,6 @@ export const imageItems: Array<ImageItem> = [
     src: "/jpeg/eli.jpeg",
     alt: "Black sand washing into cloudy Pacific infinity; a familiar bummer in the foreground utterly ruining the shot.",
     width: 800, height: 1067,
-    loading: "eager"
   },
 
   {
@@ -201,7 +189,6 @@ export const imageItems: Array<ImageItem> = [
     src: "/jpeg/david.jpeg",
     alt: "My sister's partner-of-significant-duration (my brother-in-vibe?) flaunting nothing on the way back from a rickety vantage overlooking a suburb of Los Angeles.",
     width: 800, height: 1067,
-    loading: "eager"
   },
 
   {
@@ -209,7 +196,6 @@ export const imageItems: Array<ImageItem> = [
     src: "/jpeg/watching.1.jpeg",
     alt: "A lonely closed-circuit camera surveilling an empty parking lot labeled Lot P.",
     width: 800, height: 1067,
-    loading: "eager"
   },
 
   {
@@ -217,7 +203,6 @@ export const imageItems: Array<ImageItem> = [
     src: "/jpeg/bridge.1.jpeg",
     alt: "Admiring my shoes on a narrow bridge above a rapid creek.",
     width: 800, height: 1067,
-    loading: "eager"
   },
 
   {
@@ -1298,7 +1283,7 @@ export const index = [
           ["a", { href: "/quotes/" }, "quotes"],
           ["a", { href: "/pdf/resume.pdf", target: "_blank" }, "cv"]
         ],
-        ["p", {}, "you may be thinking \"no but this is archaic garbage??? i'm going back to fortnite!\" and it is and you should stay. it's beautiful in the same way my ",
+        ["p", {}, "you may be thinking \"no but this site is archaic garbage??? i'm going back to fortnite!\" and it is, and you should stay. it's beautiful in the same way my ",
           ["a", { href: "/images/#image--cowboy-2" }, "sister's dog"],
           " is beautiful. it's so beautiful. it's better than fortnite."]
       ],
