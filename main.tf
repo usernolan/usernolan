@@ -1,10 +1,10 @@
 terraform {
-  required_version = "~> 1.4"
+  required_version = "~> 1.5"
 
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.0"
+      version = "~> 5.0"
     }
   }
 }
@@ -14,10 +14,34 @@ provider "aws" {
 }
 
 resource "aws_acm_certificate" "site" {
-  domain_name       = var.domain_name
-  validation_method = "DNS"
+  domain_name               = var.domain_name
+  validation_method         = "DNS"
+  subject_alternative_names = var.alternative_domain_names
 }
 
+resource "aws_route53_zone" "site" {
+  for_each = toset(aws_acm_certificate.site.domain_validation_options[*].domain_name)
+  name     = each.key
+}
+
+locals {
+  zones = {
+    for z in aws_route53_zone.site : z.name => z
+  }
+}
+
+resource "aws_route53domains_registered_domain" "domains" {
+  for_each    = toset(keys(local.zones))
+  domain_name = each.key
+
+  # `for_each` doesn't work here
+  name_server { name = local.zones[each.key].name_servers[0] }
+  name_server { name = local.zones[each.key].name_servers[1] }
+  name_server { name = local.zones[each.key].name_servers[2] }
+  name_server { name = local.zones[each.key].name_servers[3] }
+}
+
+/* NOTE: cache-control policy */
 resource "aws_route53_record" "site_cert_validation" {
   for_each = {
     for dvo in aws_acm_certificate.site.domain_validation_options : dvo.domain_name => {
@@ -31,7 +55,7 @@ resource "aws_route53_record" "site_cert_validation" {
   records         = [each.value.record]
   ttl             = 60
   type            = each.value.type
-  zone_id         = var.zone_id
+  zone_id         = local.zones[each.key].zone_id
 }
 
 resource "aws_acm_certificate_validation" "cert" {
@@ -61,7 +85,8 @@ resource "aws_s3_bucket_website_configuration" "site" {
 }
 
 resource "aws_cloudfront_distribution" "site" {
-  depends_on = [aws_acm_certificate_validation.cert]
+  depends_on       = [aws_acm_certificate_validation.cert]
+  retain_on_delete = true
 
   origin {
     domain_name = aws_s3_bucket_website_configuration.site.website_endpoint
@@ -80,7 +105,7 @@ resource "aws_cloudfront_distribution" "site" {
     }
   }
 
-  aliases         = [var.domain_name]
+  aliases         = keys(local.zones)
   is_ipv6_enabled = true
   enabled         = true
 
@@ -118,13 +143,53 @@ resource "aws_cloudfront_distribution" "site" {
 }
 
 resource "aws_route53_record" "site" {
-  name    = var.domain_name
-  type    = "A"
-  zone_id = var.zone_id
+  for_each = local.zones
+  name     = each.key
+  type     = "A"
+  zone_id  = each.value.zone_id
 
   alias {
     evaluate_target_health = false
     name                   = aws_cloudfront_distribution.site.domain_name
     zone_id                = aws_cloudfront_distribution.site.hosted_zone_id
   }
+}
+
+resource "aws_route53_record" "usernolan_protonmail_mx" {
+  name    = var.domain_name
+  type    = "MX"
+  ttl     = 300
+  zone_id = local.zones[var.domain_name].zone_id
+  records = [
+    "10 mail.protonmail.ch",
+    "20 mailsec.protonmail.ch"
+  ]
+}
+
+resource "aws_route53_record" "usernolan_protonmail_txt_verification" {
+  name    = var.domain_name
+  type    = "TXT"
+  ttl     = 300
+  zone_id = local.zones[var.domain_name].zone_id
+  records = [
+    "protonmail-verification=5a71b38c64cd852fccc54afd0985503ea4a13bf9",
+    "v=spf1 include:_spf.protonmail.ch mx ~all"
+  ]
+}
+
+resource "aws_route53_record" "usernolan_protonmail_txt_dmarc" {
+  name    = "_dmarc.${var.domain_name}"
+  type    = "TXT"
+  ttl     = 300
+  zone_id = local.zones[var.domain_name].zone_id
+  records = ["v=DMARC1; p=quarantine"]
+}
+
+resource "aws_route53_record" "usernolan_protonmail_cname" {
+  count   = 3
+  name    = "protonmail${count.index == 0 ? "" : count.index + 1}._domainkey.${var.domain_name}"
+  type    = "CNAME"
+  ttl     = 300
+  zone_id = local.zones[var.domain_name].zone_id
+  records = ["protonmail${count.index == 0 ? "" : count.index + 1}.domainkey.dtckf7mzzg2qpjj2wgujbrvr5je5pxu6ezoftpkkuodvjnjch6zka.domains.proton.ch."]
 }
