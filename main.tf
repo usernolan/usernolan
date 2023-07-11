@@ -155,41 +155,13 @@ resource "aws_route53_record" "site" {
   }
 }
 
-resource "aws_route53_record" "usernolan_protonmail_mx" {
-  name    = var.domain_name
-  type    = "MX"
-  ttl     = 300
-  zone_id = local.zones[var.domain_name].zone_id
-  records = [
-    "10 mail.protonmail.ch",
-    "20 mailsec.protonmail.ch"
-  ]
-}
-
-resource "aws_route53_record" "usernolan_protonmail_txt_verification" {
-  name    = var.domain_name
-  type    = "TXT"
-  ttl     = 300
-  zone_id = local.zones[var.domain_name].zone_id
-  records = [
-    "protonmail-verification=5a71b38c64cd852fccc54afd0985503ea4a13bf9",
-    "v=spf1 include:_spf.protonmail.ch mx ~all"
-  ]
-}
-
-resource "aws_route53_record" "usernolan_protonmail_txt_dmarc" {
-  name    = "_dmarc.${var.domain_name}"
-  type    = "TXT"
-  ttl     = 300
-  zone_id = local.zones[var.domain_name].zone_id
-  records = ["v=DMARC1; p=quarantine"]
-}
-
-resource "aws_route53_record" "usernolan_protonmail_cname" {
-  count   = 3
-  name    = "protonmail${count.index == 0 ? "" : count.index + 1}._domainkey.${var.domain_name}"
-  type    = "CNAME"
-  ttl     = 300
-  zone_id = local.zones[var.domain_name].zone_id
-  records = ["protonmail${count.index == 0 ? "" : count.index + 1}.domainkey.dtckf7mzzg2qpjj2wgujbrvr5je5pxu6ezoftpkkuodvjnjch6zka.domains.proton.ch."]
+resource "aws_route53_record" "dns_records" {
+  for_each = {
+    for r in var.dns_records : sha256(join("", r.records)) => r
+  }
+  name    = each.value.name == null ? each.value.domain_name : each.value.name
+  type    = each.value.type
+  ttl     = each.value.ttl
+  zone_id = local.zones[each.value.domain_name].zone_id
+  records = each.value.records
 }
