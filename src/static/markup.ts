@@ -192,6 +192,13 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
+    id: "cowboy-2", tags: ["cowboy"],
+    src: "/jpeg/cowboy.2.jpeg",
+    alt: "Cowmin at the dog park.",
+    width: 800, height: 959
+  },
+
+  {
     id: "watching-1", tags: ["nature"],
     src: "/jpeg/watching.1.jpeg",
     alt: "A lonely closed-circuit camera surveilling an empty parking lot labeled Lot P.",
@@ -213,7 +220,7 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
-    id: "at", tags: ["artifacts", "generative", "monochrome"],
+    id: "at", tags: ["artifacts", "automata", "monochrome", "orbs"],
     src: "/jpeg/at.jpeg",
     alt: "A three dimensional @ printed in white, black, and mint green PLA.",
     width: 800, height: 1067,
@@ -424,28 +431,28 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
-    id: "manifold", tags: ["drawing", "heterochrome"],
+    id: "manifold", tags: ["drawing", "heterochrome", "orbs"],
     src: "/jpeg/manifold.jpeg",
     alt: "Sketched amorphous manifold of blue, pink, and green ink.",
     width: 800, height: 800
   },
 
   {
-    id: "coral", tags: ["drawing", "heterochrome"],
+    id: "coral", tags: ["drawing", "heterochrome", "orbs"],
     src: "/jpeg/coral.jpeg",
     alt: "Scattered ink-encoded coral.",
     width: 800, height: 1067
   },
 
   {
-    id: "chalk", tags: ["drawing", "concrete", "heterochrome"],
+    id: "chalk", tags: ["drawing", "concrete", "heterochrome", "orbs"],
     src: "/jpeg/chalk.jpeg",
     alt: "Sidewalk chalk portal to outer space.",
     width: 800, height: 660
   },
 
   {
-    id: "spray-paint", tags: ["concrete", "heterochrome"],
+    id: "spray-paint", tags: ["concrete", "heterochrome", "orbs"],
     src: "/jpeg/spray-paint.jpeg",
     alt: "Spray paint blasted onto the sidewalk during construction.",
     width: 800, height: 800
@@ -480,63 +487,63 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
-    id: "nolan-4", tags: ["of-me", "generative", "monochrome", "invertible"],
+    id: "nolan-4", tags: ["of-me", "automata", "monochrome", "invertible"],
     src: "/png/nolan.4.png",
     alt: "A selectively randomized, poorly pixelized sapiens approximate peeking out of a previously sealed box.",
     width: 1216, height: 1331
   },
 
   {
-    id: "170", tags: ["generative", "monochrome", "invertible"],
+    id: "170", tags: ["automata", "monochrome", "invertible"],
     src: "/png/rule.170.png",
     alt: "Rule 170: 1D cellular automaton with range = 1, where cells are shaped like keyholes, but I think it's bugged. If you stare long enough it looks like a waterfall and starts to move.",
     width: 1200, height: 1200
   },
 
   {
-    id: "150", tags: ["generative", "monochrome", "invertible"],
+    id: "150", tags: ["automata", "monochrome", "invertible"],
     src: "/png/rule.150.png",
     alt: "Rule 150, I think.",
     width: 1200, height: 1200
   },
 
   {
-    id: "scad", tags: ["generative"],
+    id: "scad", tags: ["automata"],
     src: "/png/scad.png",
     alt: "A 3D CAD workspace populated with a repeating sinusoidal wave colorized according to coordinate.",
     width: 3584, height: 1599
   },
 
   {
-    id: "green", tags: ["generative"],
+    id: "green", tags: ["automata"],
     src: "/png/rule.green.png",
     alt: "A grid of thin vertical lines with a unique fingerprint identified by empty grid coordinates; energetic green background.",
     width: 810, height: 1015
   },
 
   {
-    id: "pink", tags: ["generative"],
+    id: "pink", tags: ["automata"],
     src: "/png/rule.pink.png",
     alt: "A grid of thin vertical lines with a unique fingerprint identified by empty grid coordinates; pale-hot pink background.",
     width: 810, height: 1015
   },
 
   {
-    id: "blue", tags: ["generative"],
+    id: "blue", tags: ["automata"],
     src: "/png/rule.blue.png",
     alt: "I think this is a poor approximation of rule 99; ultra blue background.",
     width: 1200, height: 2800
   },
 
   {
-    id: "stairs", tags: ["generative", "monochrome"],
+    id: "stairs", tags: ["automata", "monochrome"],
     src: "/png/rule.stairs.png",
     alt: "Two bright perfectoids conversing in a noisy universe.",
     width: 500, height: 748
   },
 
   {
-    id: "era", tags: ["nature", "generative", "monochrome"],
+    id: "era", tags: ["nature", "automata", "monochrome"],
     src: "/png/rule.era.png",
     alt: "Imperfectly pixelated flowers falling out of high-contrast background noise.",
     width: 1031, height: 1500
@@ -557,7 +564,7 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
-    id: "martini",
+    id: "martini", tags: ["orbs"],
     src: "/jpeg/martini.jpeg",
     alt: "A martini efficiently brokering photons.",
     width: 800, height: 1067
@@ -718,7 +725,7 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
-    id: "orbitals", tags: ["drawing", "heterochrome"],
+    id: "orbitals", tags: ["drawing", "heterochrome", "orbs"],
     src: "/jpeg/orbitals.jpeg",
     alt: "Oil pastel and acrylic ink in orbital concentric circles.",
     width: 800, height: 1067
@@ -728,13 +735,6 @@ export const imageItems: Array<ImageItem> = [
     id: "far-fetched", tags: ["artifacts", "bad-words"],
     src: "/jpeg/far-fetched.jpeg",
     alt: "A colorloaded poster by Jesse Jacobs that says 'FAR FETCHED'.",
-    width: 800, height: 1067
-  },
-
-  {
-    id: "pencil-dust", tags: ["drawing"],
-    src: "/jpeg/pencil-dust.jpeg",
-    alt: "Omnichromal colored pencil shavings amassed in a growing pile.",
     width: 800, height: 1067
   },
 
@@ -837,7 +837,7 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
-    id: "infinity-repeating", tags: ["nature", "heterochrome"],
+    id: "infinity-repeating", tags: ["nature", "heterochrome", "orbs"],
     src: "/jpeg/infinity-repeating.jpeg",
     alt: "A seemingly prehistoric succulent among dozens of identical siblings.",
     width: 800, height: 1067
@@ -851,7 +851,7 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
-    id: "cowboy-1", tags: ["of-people", "nature"],
+    id: "cowboy-1", tags: ["nature", "cowboy"],
     src: "/jpeg/cowboy.1.jpeg",
     alt: "Cowboy taking a shit.",
     width: 800, height: 947
@@ -862,13 +862,6 @@ export const imageItems: Array<ImageItem> = [
     src: "/jpeg/hydrant.3.jpeg",
     alt: "A yellow fire hydrant sprouting out of tall grass.",
     width: 800, height: 1059
-  },
-
-  {
-    id: "post-it-2", tags: ["post-its"],
-    src: "/jpeg/post-it.2.jpeg",
-    alt: "A mostly full box of Helsinki-themed Post-it® notes, like pastel steps to the gates of the mind.",
-    width: 800, height: 800
   },
 
   {
@@ -886,13 +879,263 @@ export const imageItems: Array<ImageItem> = [
   },
 
   {
-    id: "cowboy-2", tags: ["of-people"],
-    src: "/jpeg/cowboy.2.jpeg",
-    alt: "Cowmin at the dog park.",
-    width: 800, height: 959
+    id: "platonics-5", tags: ["drawing", "heterochrome", "orbs"],
+    src: "/jpeg/platonics.5.jpeg",
+    alt: "A pastel drawing of orbs.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "antisymmetry-3", tags: ["drawing", "orbs"],
+    src: "/jpeg/antisymmetry.3.jpeg",
+    alt: "A pastel drawing of a lollipop.",
+    width: 800, height: 600
+  },
+
+  {
+    id: "aspen-1", tags: ["of-me", "of-people"],
+    src: "/jpeg/aspen.1.jpeg",
+    alt: "3 friends at the top of a ski run.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "banff-2", tags: ["nature"],
+    src: "/jpeg/banff.2.jpeg",
+    alt: "A creek embedded into boulders at the top of a mountain. The scale is impossible to determine relative to anything else in the image.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "claremont", tags: ["nature", "bad-words"],
+    src: "/jpeg/claremont.jpeg",
+    alt: "A street sign for Claremont Avenue.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "concrete-1", tags: ["concrete"],
+    src: "/jpeg/concrete.1.jpeg",
+    alt: "A sidewalk illuminated by the neon glow of a nearby movie theater.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "cowboy-3", tags: ["cowboy"],
+    src: "/jpeg/cowboy.3.jpeg",
+    alt: "Cowboy resting on the couch.",
+    width: 800, height: 600
+  },
+
+  {
+    id: "david-2", tags: ["of-people"],
+    src: "/jpeg/david.2.jpeg",
+    alt: "David considering sharing a slice of pizza with Cowboy.",
+    width: 800, height: 600
+  },
+
+  {
+    id: "di-3", tags: ["of-me", "of-people"],
+    src: "/jpeg/di.3.jpeg",
+    alt: "Diane and I at a concert.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "duck", tags: ["of-me", "nature"],
+    src: "/jpeg/duck.jpeg",
+    alt: "A duck standing on top of a red Toyota Yaris.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "tim-1", tags: ["of-people", "nature"],
+    src: "/jpeg/tim.1.jpeg",
+    alt: "Tim and I looking dumb next to a mountain lake.",
+    width: 800, height: 600
+  },
+  {
+    id: "tim-2", tags: ["of-people"],
+    src: "/jpeg/tim.2.jpeg",
+    alt: "Tim making an obscene gesture in Bend, OR.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "iris-1", tags: ["artifacts"],
+    src: "/jpeg/iris.1.jpeg",
+    alt: "An Iris v8 split keyboard illuminated bright white in the dark.",
+    width: 800, height: 600
+  },
+
+  {
+    id: "iris-2", tags: ["artifacts", "monochrome"],
+    src: "/jpeg/iris.2.jpeg",
+    alt: "An Iris v8 split keyboard blending into its transparent-geometric desk topology.",
+    width: 800, height: 600
+  },
+
+  {
+    id: "artifacts-2", tags: ["artifacts"],
+    src: "/jpeg/artifacts.2.jpeg",
+    alt: "A floor-sitting assortment of artifacts.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "cowboy-4", tags: ["cowboy"],
+    src: "/jpeg/cowboy.4.jpeg",
+    alt: "Cowboy very close to taking a nap.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "marmont-1",
+    src: "/jpeg/marmont.1.jpeg",
+    alt: "A grass and stone checkerboard.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "marmont-2",
+    src: "/jpeg/marmont.2.jpeg",
+    alt: "A vividly upholstered couch.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "shoes-1",
+    src: "/jpeg/shoes.1.jpeg",
+    alt: "Shoegazing on geometric carpet.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "fam-1", tags: ["of-people"],
+    src: "/jpeg/fam.1.jpeg",
+    alt: "Pre-wedding Erica, David, and Diane.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "nolan-8", tags: ["of-me"],
+    src: "/jpeg/nolan.8.jpeg",
+    alt: "Me at my sister's wedding.",
+    width: 800, height: 1110
+  },
+
+  {
+    id: "newports", tags: ["bad-words"],
+    src: "/jpeg/newports.jpeg",
+    alt: "A pack of Newport cigarettes being sold for $20 in a boutique.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "nolan-7", tags: ["of-me"],
+    src: "/jpeg/nolan.7.jpeg",
+    alt: "Me carrying a towel on the beach.",
+    width: 800, height: 1194
+  },
+
+  {
+    id: "oilpastel-1", tags: ["drawing", "heterochrome", "orbs"],
+    src: "/jpeg/oilpastel.1.jpeg",
+    alt: "An oil pastel drawing of skulls, orbs, and orbital lineation against an iridescent background.",
+    width: 800, height: 296
+  },
+
+  {
+    id: "post-it-3", tags: ["post-its", "heterochrome"],
+    src: "/jpeg/post-it.3.jpeg",
+    alt: "A box of Post-it notes with a handheld level and other miscellania.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "sacral", tags: ["artifacts", "post-its", "orbs"],
+    src: "/jpeg/sacral.jpeg",
+    alt: "A hole'd rock sitting on a transparent grid.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "tansley", tags: ["post-its", "drawing", "orbs"],
+    src: "/jpeg/tansley.jpeg",
+    alt: "A Post-it drawing of interconnected circles describing the Tansley effect.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "stormking-1", tags: ["nature"],
+    src: "/jpeg/stormking.1.jpeg",
+    alt: "A large red steel beam suspended against the sky.",
+    width: 800, height: 600
+  },
+
+  {
+    id: "stormking-2", tags: ["nature", "bad-words"],
+    src: "/jpeg/stormking.2.jpeg",
+    alt: "An empty bottle of amphetamines discarded in the grass.",
+    width: 800, height: 600
+  },
+
+  {
+    id: "stormking-3", tags: ["nature"],
+    src: "/jpeg/stormking.3.jpeg",
+    alt: "A massive steel sculpture standing uncontested at the top of a hill in an open field.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "stormking-4", tags: ["nature", "orbs"],
+    src: "/jpeg/stormking.4.jpeg",
+    alt: "Metal rings standing opposed in the grass.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "boys-1", tags: ["of-people"],
+    src: "/jpeg/boys.1.jpeg",
+    alt: "Robbie and Matt struggling to start a golf cart.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "di-4", tags: ["of-people"],
+    src: "/jpeg/di.4.jpeg",
+    alt: "Diane walking into the Sphere.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "nolan-9", tags: ["of-me"],
+    src: "/jpeg/nolan.9.jpeg",
+    alt: "A picture of me taking a polaroid picture of of the picture taker.",
+    width: 800, height: 1192
+  },
+
+  {
+    id: "cowboy-6", tags: ["cowboy"],
+    src: "/jpeg/cowboy.6.jpeg",
+    alt: "Cowboy sitting patiently outside while we cook. Cowboy is afraid of the kitchen.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "cowboy-8", tags: ["cowboy"],
+    src: "/jpeg/cowboy.8.jpeg",
+    alt: "Cowboy sleeping on the couch.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "persevere-1", tags: ["furniture", "artifacts"],
+    src: "/jpeg/persevere.1.jpeg",
+    alt: "A sunny corner of my apartment.",
+    width: 800, height: 1067
   }
 ]
-
 
 const linkItems: Array<LinkItem> = [
   {
@@ -1267,25 +1510,27 @@ export const index = [
   ["html", { lang: "en" },
     head("nolan"),
     ["body", {},
+      ["header", {},
+        ["h1", {}, "i'm nolan"],
+        ["div.controls", {},
+          ["div.select--ghost", {},
+            ["select", {}]],
+          modeSelect
+        ]
+      ],
       ["main", {},
-        ["div.header", {},
-          ["h1", {}, "i'm nolan"],
-          ["div.controls", {},
-            ["div.select--ghost", {},
-              ["select", {}],],
-            modeSelect
+        ["div.images", {},
+          imageComponent(imageItems[0]),
+          ["div.summary", {},
+            ["div.links", {},
+              ["a", { href: "/images/" }, "images"],
+              ["a", { href: "/quotes/" }, "quotes"],
+              ["a", { href: "/links/" }, "links"],
+              ["a", { href: "/pdf/resume.pdf" }, "cv"]
+            ],
+            ["p", {}, "you might be thinking \"no but this site is ass?\" and it is. i love it though."],
           ]
-        ],
-        ["div.images", {}, imageComponent(imageItems[0])],
-        ["div.links", {},
-          ["a", { href: "/images/" }, "images"],
-          ["a", { href: "/links/" }, "links"],
-          ["a", { href: "/quotes/" }, "quotes"],
-          ["a", { href: "/pdf/resume.pdf", target: "_blank" }, "cv"]
-        ],
-        ["p", {}, "you may be thinking \"no but this site is archaic garbage??? i'm going back to fortnite,\" and it is, and you should stay. it's beautiful in the same way my ",
-          ["a", { href: imageItems.find((x) => x.id === "cowboy-2")?.src }, "sister's dog"],
-          " is beautiful. it's so beautiful. it's better than fortnite."]
+        ]
       ],
       ["script", { type: "module", src: "/src/index.ts" }]
     ]
@@ -1297,32 +1542,34 @@ export const images = [
   ["html", { lang: "en" },
     head("nolan - images"),
     ["body", {},
-      ["main", {},
-        ["div.header", {},
-          ["a", { href: "/" }, "home"],
-          ["div.controls", {},
-            ["div.select--filter", {},
-              ["select#select--filter", {},
-                ["option", {}, "all"],
-                ["option", { value: "of-me" }, "of me"],
-                ["option", { value: "of-people" }, "of people"],
-                ["option", {}, "artifacts"],
-                ["option", {}, "drawing"],
-                ["option", {}, "nature"],
-                ["option", {}, "concrete"],
-                ["option", {}, "dumpsters"],
-                ["option", {}, "furniture"],
-                ["option", { value: "bad-words" }, "bad words"],
-                ["option", {}, "post-its"],
-                ["option", {}, "generative"],
-                ["option", {}, "monochrome"],
-                ["option", {}, "heterochrome"]
-              ],
-              ["label", { for: "select--filter" }, "filter"]
+      ["header", {},
+        ["a", { href: "/" }, "home"],
+        ["div.controls", {},
+          ["div.select--filter", {},
+            ["select#select--filter", {},
+              ["option", {}, "all"],
+              ["option", { value: "of-me" }, "of me"],
+              ["option", { value: "of-people" }, "of people"],
+              ["option", {}, "artifacts"],
+              ["option", {}, "drawing"],
+              ["option", {}, "nature"],
+              ["option", {}, "concrete"],
+              ["option", {}, "dumpsters"],
+              ["option", {}, "furniture"],
+              ["option", { value: "bad-words" }, "bad words"],
+              ["option", {}, "post-its"],
+              ["option", {}, "cowboy"],
+              ["option", {}, "orbs"],
+              ["option", {}, "automata"],
+              ["option", {}, "monochrome"],
+              ["option", {}, "heterochrome"]
             ],
-            modeSelect
-          ]
-        ],
+            ["label", { for: "select--filter" }, "filter"]
+          ],
+          modeSelect
+        ]
+      ],
+      ["main", {},
         ["div.images", {}, ...imageItems.map(imageComponent)]
       ],
       ["script", { type: "module", src: "/src/index.ts" }]
@@ -1335,23 +1582,23 @@ export const links = [
   ["html", { lang: "en" },
     head("nolan - links"),
     ["body", {},
-      ["main", {},
-        ["div.header", {},
-          ["a", { href: "/" }, "home"],
-          ["div.controls", {},
-            ["div.select--filter", {},
-              ["select#select--filter", {},
-                ["option", {}, "all"],
-                ["option", {}, "technology"],
-                ["option", {}, "philosophy"],
-                ["option", {}, "artists"],
-                ["option", {}, "ideas"]
-              ],
-              ["label", { for: "select--filter" }, "filter"]
+      ["header", {},
+        ["a", { href: "/" }, "home"],
+        ["div.controls", {},
+          ["div.select--filter", {},
+            ["select#select--filter", {},
+              ["option", {}, "all"],
+              ["option", {}, "technology"],
+              ["option", {}, "philosophy"],
+              ["option", {}, "artists"],
+              ["option", {}, "ideas"]
             ],
-            modeSelect
-          ]
-        ],
+            ["label", { for: "select--filter" }, "filter"]
+          ],
+          modeSelect
+        ]
+      ],
+      ["main", {},
         ["div.links", {}, ...linkItems.map(linkComponent)]
       ],
       ["script", { type: "module", src: "/src/links.ts" }]
@@ -1364,11 +1611,11 @@ export const quotes = [
   ["html", { lang: "en" },
     head("nolan - quotes"),
     ["body", {},
-      ["main", {},
-        ["div.header", {},
+      ["header", {},
           ["a", { href: "/" }, "home"],
           ["div.controls", {}, modeSelect]
-        ],
+      ],
+      ["main", {},
         ["div.quotes", {}, ...quoteItems.map(quoteComponent)]
       ],
       ["script", { type: "module", src: "/src/index.ts" }]

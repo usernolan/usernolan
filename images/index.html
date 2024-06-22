@@ -21,32 +21,34 @@
 </head>
 
 <body>
-  <main>
-    <div class="header"><a href="/">home</a>
-      <div class="controls">
-        <div class="select--filter"><select id="select--filter">
-            <option>all</option>
-            <option value="of-me">of me</option>
-            <option value="of-people">of people</option>
-            <option>artifacts</option>
-            <option>drawing</option>
-            <option>nature</option>
-            <option>concrete</option>
-            <option>dumpsters</option>
-            <option>furniture</option>
-            <option value="bad-words">bad words</option>
-            <option>post-its</option>
-            <option>generative</option>
-            <option>monochrome</option>
-            <option>heterochrome</option>
-          </select><label for="select--filter">filter</label></div>
-        <div class="select--mode"><select id="select--mode">
-            <option>system</option>
-            <option>light</option>
-            <option>dark</option>
-          </select><label for="select--mode">mode</label></div>
-      </div>
+  <header><a href="/">home</a>
+    <div class="controls">
+      <div class="select--filter"><select id="select--filter">
+          <option>all</option>
+          <option value="of-me">of me</option>
+          <option value="of-people">of people</option>
+          <option>artifacts</option>
+          <option>drawing</option>
+          <option>nature</option>
+          <option>concrete</option>
+          <option>dumpsters</option>
+          <option>furniture</option>
+          <option value="bad-words">bad words</option>
+          <option>post-its</option>
+          <option>cowboy</option>
+          <option>orbs</option>
+          <option>automata</option>
+          <option>monochrome</option>
+          <option>heterochrome</option>
+        </select><label for="select--filter">filter</label></div>
+      <div class="select--mode"><select id="select--mode">
+          <option>system</option>
+          <option>light</option>
+          <option>dark</option>
+        </select><label for="select--mode">mode</label></div>
     </div>
+  </header>
+  <main>
     <div class="images">
       <div id="image--nolan-6" class="image of-me" data-span="2">
         <picture>
@@ -126,6 +128,12 @@
           <source srcset="/webp/david.webp" type="image/webp" /><img src="/jpeg/david.jpeg" alt="My sister's partner-of-significant-duration (my brother-in-vibe?) flaunting nothing on the way back from a rickety vantage overlooking a suburb of Los Angeles." width="800" height="1067" loading="lazy" decoding="async" />
         </picture>
       </div>
+      <div id="image--cowboy-2" class="image cowboy">
+        <picture>
+          <source srcset="/avif/cowboy.2.avif" type="image/avif" />
+          <source srcset="/webp/cowboy.2.webp" type="image/webp" /><img src="/jpeg/cowboy.2.jpeg" alt="Cowmin at the dog park." width="800" height="959" loading="lazy" decoding="async" />
+        </picture>
+      </div>
       <div id="image--watching-1" class="image nature">
         <picture>
           <source srcset="/avif/watching.1.avif" type="image/avif" />
@@ -144,7 +152,7 @@
           <source srcset="/webp/nolan.3.webp" type="image/webp" /><img src="/jpeg/nolan.3.jpeg" alt="A robot with a 2x4 soul, visibly dissatisfied with its output." width="800" height="1067" loading="lazy" decoding="async" />
         </picture>
       </div>
-      <div id="image--at" class="image hoverable artifacts generative monochrome">
+      <div id="image--at" class="image hoverable artifacts automata monochrome orbs">
         <picture>
           <source srcset="/avif/at.avif" type="image/avif" />
           <source srcset="/webp/at.webp" type="image/webp" /><img src="/jpeg/at.jpeg" alt="A three dimensional @ printed in white, black, and mint green PLA." width="800" height="1067" loading="lazy" decoding="async" />
@@ -327,25 +335,25 @@
           <source srcset="/webp/thrift.webp" type="image/webp" /><img src="/jpeg/thrift.jpeg" alt="Maximum thrift store saturation." width="800" height="800" loading="lazy" decoding="async" />
         </picture>
       </div>
-      <div id="image--manifold" class="image drawing heterochrome">
+      <div id="image--manifold" class="image drawing heterochrome orbs">
         <picture>
           <source srcset="/avif/manifold.avif" type="image/avif" />
           <source srcset="/webp/manifold.webp" type="image/webp" /><img src="/jpeg/manifold.jpeg" alt="Sketched amorphous manifold of blue, pink, and green ink." width="800" height="800" loading="lazy" decoding="async" />
         </picture>
       </div>
-      <div id="image--coral" class="image drawing heterochrome">
+      <div id="image--coral" class="image drawing heterochrome orbs">
         <picture>
           <source srcset="/avif/coral.avif" type="image/avif" />
           <source srcset="/webp/coral.webp" type="image/webp" /><img src="/jpeg/coral.jpeg" alt="Scattered ink-encoded coral." width="800" height="1067" loading="lazy" decoding="async" />
         </picture>
       </div>
-      <div id="image--chalk" class="image drawing concrete heterochrome">
+      <div id="image--chalk" class="image drawing concrete heterochrome orbs">
         <picture>
           <source srcset="/avif/chalk.avif" type="image/avif" />
           <source srcset="/webp/chalk.webp" type="image/webp" /><img src="/jpeg/chalk.jpeg" alt="Sidewalk chalk portal to outer space." width="800" height="660" loading="lazy" decoding="async" />
         </picture>
       </div>
-      <div id="image--spray-paint" class="image concrete heterochrome">
+      <div id="image--spray-paint" class="image concrete heterochrome orbs">
         <picture>
           <source srcset="/avif/spray-paint.avif" type="image/avif" />
           <source srcset="/webp/spray-paint.webp" type="image/webp" /><img src="/jpeg/spray-paint.jpeg" alt="Spray paint blasted onto the sidewalk during construction." width="800" height="800" loading="lazy" decoding="async" />
@@ -375,55 +383,55 @@
           <source srcset="/webp/stained.webp" type="image/webp" /><img src="/jpeg/stained.jpeg" alt="Neon-stained sandstone." width="800" height="1067" loading="lazy" decoding="async" />
         </picture>
       </div>
-      <div id="image--nolan-4" class="image of-me generative monochrome invertible">
+      <div id="image--nolan-4" class="image of-me automata monochrome invertible">
         <picture>
           <source srcset="/png/nolan.4.png" type="image/avif" />
           <source srcset="/png/nolan.4.png" type="image/webp" /><img src="/png/nolan.4.png" alt="A selectively randomized, poorly pixelized sapiens approximate peeking out of a previously sealed box." width="1216" height="1331" loading="lazy" decoding="async" />
         </picture>
       </div>
-      <div id="image--170" class="image generative monochrome invertible">
+      <div id="image--170" class="image automata monochrome invertible">
         <picture>
           <source srcset="/png/rule.170.png" type="image/avif" />
           <source srcset="/png/rule.170.png" type="image/webp" /><img src="/png/rule.170.png" alt="Rule 170: 1D cellular automaton with range = 1, where cells are shaped like keyholes, but I think it's bugged. If you stare long enough it looks like a waterfall and starts to move." width="1200" height="1200" loading="lazy" decoding="async" />
         </picture>
       </div>
-      <div id="image--150" class="image generative monochrome invertible">
+      <div id="image--150" class="image automata monochrome invertible">
         <picture>
           <source srcset="/png/rule.150.png" type="image/avif" />
           <source srcset="/png/rule.150.png" type="image/webp" /><img src="/png/rule.150.png" alt="Rule 150, I think." width="1200" height="1200" loading="lazy" decoding="async" />
         </picture>
       </div>
-      <div id="image--scad" class="image generative">
+      <div id="image--scad" class="image automata">
         <picture>
           <source srcset="/png/scad.png" type="image/avif" />
           <source srcset="/png/scad.png" type="image/webp" /><img src="/png/scad.png" alt="A 3D CAD workspace populated with a repeating sinusoidal wave colorized according to coordinate." width="3584" height="1599" loading="lazy" decoding="async" />
         </picture>
       </div>
-      <div id="image--green" class="image generative">
+      <div id="image--green" class="image automata">
         <picture>
           <source srcset="/png/rule.green.png" type="image/avif" />
           <source srcset="/png/rule.green.png" type="image/webp" /><img src="/png/rule.green.png" alt="A grid of thin vertical lines with a unique fingerprint identified by empty grid coordinates; energetic green background." width="810" height="1015" loading="lazy" decoding="async" />
         </picture>
       </div>
-      <div id="image--pink" class="image generative">
+      <div id="image--pink" class="image automata">
         <picture>
           <source srcset="/png/rule.pink.png" type="image/avif" />
           <source srcset="/png/rule.pink.png" type="image/webp" /><img src="/png/rule.pink.png" alt="A grid of thin vertical lines with a unique fingerprint identified by empty grid coordinates; pale-hot pink background." width="810" height="1015" loading="lazy" decoding="async" />
         </picture>
       </div>
-      <div id="image--blue" class="image generative">
+      <div id="image--blue" class="image automata">
         <picture>
           <source srcset="/png/rule.blue.png" type="image/avif" />
           <source srcset="/png/rule.blue.png" type="image/webp" /><img src="/png/rule.blue.png" alt="I think this is a poor approximation of rule 99; ultra blue background." width="1200" height="2800" loading="lazy" decoding="async" />
         </picture>
       </div>
-      <div id="image--stairs" class="image generative monochrome">
+      <div id="image--stairs" class="image automata monochrome">
         <picture>
           <source srcset="/png/rule.stairs.png" type="image/avif" />
           <source srcset="/png/rule.stairs.png" type="image/webp" /><img src="/png/rule.stairs.png" alt="Two bright perfectoids conversing in a noisy universe." width="500" height="748" loading="lazy" decoding="async" />
         </picture>
       </div>
-      <div id="image--era" class="image nature generative monochrome">
+      <div id="image--era" class="image nature automata monochrome">
         <picture>
           <source srcset="/png/rule.era.png" type="image/avif" />
           <source srcset="/png/rule.era.png" type="image/webp" /><img src="/png/rule.era.png" alt="Imperfectly pixelated flowers falling out of high-contrast background noise." width="1031" height="1500" loading="lazy" decoding="async" />
@@ -441,7 +449,7 @@
           <source srcset="/webp/spill.webp" type="image/webp" /><img src="/jpeg/spill.jpeg" alt="The softest, most gorgeous spill you've ever faced." width="800" height="800" loading="lazy" decoding="async" />
         </picture>
       </div>
-      <div id="image--martini" class="image">
+      <div id="image--martini" class="image orbs">
         <picture>
           <source srcset="/avif/martini.avif" type="image/avif" />
           <source srcset="/webp/martini.webp" type="image/webp" /><img src="/jpeg/martini.jpeg" alt="A martini efficiently brokering photons." width="800" height="1067" loading="lazy" decoding="async" />
@@ -579,7 +587,7 @@
           <source srcset="/webp/mamnoon.2.webp" type="image/webp" /><img src="/jpeg/mamnoon.2.jpeg" alt="A colorful translucent awning." width="800" height="1067" loading="lazy" decoding="async" />
         </picture>
       </div>
-      <div id="image--orbitals" class="image drawing heterochrome">
+      <div id="image--orbitals" class="image drawing heterochrome orbs">
         <picture>
           <source srcset="/avif/orbitals.avif" type="image/avif" />
           <source srcset="/webp/orbitals.webp" type="image/webp" /><img src="/jpeg/orbitals.jpeg" alt="Oil pastel and acrylic ink in orbital concentric circles." width="800" height="1067" loading="lazy" decoding="async" />
@@ -589,12 +597,6 @@
         <picture>
           <source srcset="/avif/far-fetched.avif" type="image/avif" />
           <source srcset="/webp/far-fetched.webp" type="image/webp" /><img src="/jpeg/far-fetched.jpeg" alt="A colorloaded poster by Jesse Jacobs that says 'FAR FETCHED'." width="800" height="1067" loading="lazy" decoding="async" />
-        </picture>
-      </div>
-      <div id="image--pencil-dust" class="image drawing">
-        <picture>
-          <source srcset="/avif/pencil-dust.avif" type="image/avif" />
-          <source srcset="/webp/pencil-dust.webp" type="image/webp" /><img src="/jpeg/pencil-dust.jpeg" alt="Omnichromal colored pencil shavings amassed in a growing pile." width="800" height="1067" loading="lazy" decoding="async" />
         </picture>
       </div>
       <div id="image--di-2" class="image of-people">
@@ -681,7 +683,7 @@
           <source srcset="/webp/hot-sauce-and-panko.webp" type="image/webp" /><img src="/jpeg/hot-sauce-and-panko.jpeg" alt="A streetcorner restaurant sign that says 'HOT SAUCE AND PANKO'." width="800" height="1067" loading="lazy" decoding="async" />
         </picture>
       </div>
-      <div id="image--infinity-repeating" class="image nature heterochrome">
+      <div id="image--infinity-repeating" class="image nature heterochrome orbs">
         <picture>
           <source srcset="/avif/infinity-repeating.avif" type="image/avif" />
           <source srcset="/webp/infinity-repeating.webp" type="image/webp" /><img src="/jpeg/infinity-repeating.jpeg" alt="A seemingly prehistoric succulent among dozens of identical siblings." width="800" height="1067" loading="lazy" decoding="async" />
@@ -693,7 +695,7 @@
           <source srcset="/webp/hydrant.2.webp" type="image/webp" /><img src="/jpeg/hydrant.2.jpeg" alt="A chrome fire hydrant emerging from angular concrete." width="800" height="1067" loading="lazy" decoding="async" />
         </picture>
       </div>
-      <div id="image--cowboy-1" class="image of-people nature">
+      <div id="image--cowboy-1" class="image nature cowboy">
         <picture>
           <source srcset="/avif/cowboy.1.avif" type="image/avif" />
           <source srcset="/webp/cowboy.1.webp" type="image/webp" /><img src="/jpeg/cowboy.1.jpeg" alt="Cowboy taking a shit." width="800" height="947" loading="lazy" decoding="async" />
@@ -703,12 +705,6 @@
         <picture>
           <source srcset="/avif/hydrant.3.avif" type="image/avif" />
           <source srcset="/webp/hydrant.3.webp" type="image/webp" /><img src="/jpeg/hydrant.3.jpeg" alt="A yellow fire hydrant sprouting out of tall grass." width="800" height="1059" loading="lazy" decoding="async" />
-        </picture>
-      </div>
-      <div id="image--post-it-2" class="image post-its">
-        <picture>
-          <source srcset="/avif/post-it.2.avif" type="image/avif" />
-          <source srcset="/webp/post-it.2.webp" type="image/webp" /><img src="/jpeg/post-it.2.jpeg" alt="A mostly full box of Helsinki-themed Post-it® notes, like pastel steps to the gates of the mind." width="800" height="800" loading="lazy" decoding="async" />
         </picture>
       </div>
       <div id="image--sidewalk-dot" class="image concrete">
@@ -723,10 +719,226 @@
           <source srcset="/webp/erica.2.webp" type="image/webp" /><img src="/jpeg/erica.2.jpeg" alt="Erica decked out in dog park apparel." width="800" height="1067" loading="lazy" decoding="async" />
         </picture>
       </div>
-      <div id="image--cowboy-2" class="image of-people">
+      <div id="image--platonics-5" class="image drawing heterochrome orbs">
         <picture>
-          <source srcset="/avif/cowboy.2.avif" type="image/avif" />
-          <source srcset="/webp/cowboy.2.webp" type="image/webp" /><img src="/jpeg/cowboy.2.jpeg" alt="Cowmin at the dog park." width="800" height="959" loading="lazy" decoding="async" />
+          <source srcset="/avif/platonics.5.avif" type="image/avif" />
+          <source srcset="/webp/platonics.5.webp" type="image/webp" /><img src="/jpeg/platonics.5.jpeg" alt="A pastel drawing of orbs." width="800" height="1067" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--antisymmetry-3" class="image drawing orbs">
+        <picture>
+          <source srcset="/avif/antisymmetry.3.avif" type="image/avif" />
+          <source srcset="/webp/antisymmetry.3.webp" type="image/webp" /><img src="/jpeg/antisymmetry.3.jpeg" alt="A pastel drawing of a lollipop." width="800" height="600" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--aspen-1" class="image of-me of-people">
+        <picture>
+          <source srcset="/avif/aspen.1.avif" type="image/avif" />
+          <source srcset="/webp/aspen.1.webp" type="image/webp" /><img src="/jpeg/aspen.1.jpeg" alt="3 friends at the top of a ski run." width="800" height="1067" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--banff-2" class="image nature">
+        <picture>
+          <source srcset="/avif/banff.2.avif" type="image/avif" />
+          <source srcset="/webp/banff.2.webp" type="image/webp" /><img src="/jpeg/banff.2.jpeg" alt="A creek embedded into boulders at the top of a mountain. The scale is impossible to determine relative to anything else in the image." width="800" height="1067" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--claremont" class="image nature bad-words">
+        <picture>
+          <source srcset="/avif/claremont.avif" type="image/avif" />
+          <source srcset="/webp/claremont.webp" type="image/webp" /><img src="/jpeg/claremont.jpeg" alt="A street sign for Claremont Avenue." width="800" height="1067" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--concrete-1" class="image concrete">
+        <picture>
+          <source srcset="/avif/concrete.1.avif" type="image/avif" />
+          <source srcset="/webp/concrete.1.webp" type="image/webp" /><img src="/jpeg/concrete.1.jpeg" alt="A sidewalk illuminated by the neon glow of a nearby movie theater." width="800" height="1067" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--cowboy-3" class="image cowboy">
+        <picture>
+          <source srcset="/avif/cowboy.3.avif" type="image/avif" />
+          <source srcset="/webp/cowboy.3.webp" type="image/webp" /><img src="/jpeg/cowboy.3.jpeg" alt="Cowboy resting on the couch." width="800" height="600" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--david-2" class="image of-people">
+        <picture>
+          <source srcset="/avif/david.2.avif" type="image/avif" />
+          <source srcset="/webp/david.2.webp" type="image/webp" /><img src="/jpeg/david.2.jpeg" alt="David considering sharing a slice of pizza with Cowboy." width="800" height="600" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--di-3" class="image of-me of-people">
+        <picture>
+          <source srcset="/avif/di.3.avif" type="image/avif" />
+          <source srcset="/webp/di.3.webp" type="image/webp" /><img src="/jpeg/di.3.jpeg" alt="Diane and I at a concert." width="800" height="1067" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--duck" class="image of-me nature">
+        <picture>
+          <source srcset="/avif/duck.avif" type="image/avif" />
+          <source srcset="/webp/duck.webp" type="image/webp" /><img src="/jpeg/duck.jpeg" alt="A duck standing on top of a red Toyota Yaris." width="800" height="1067" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--tim-1" class="image of-people nature">
+        <picture>
+          <source srcset="/avif/tim.1.avif" type="image/avif" />
+          <source srcset="/webp/tim.1.webp" type="image/webp" /><img src="/jpeg/tim.1.jpeg" alt="Tim and I looking dumb next to a mountain lake." width="800" height="600" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--tim-2" class="image of-people">
+        <picture>
+          <source srcset="/avif/tim.2.avif" type="image/avif" />
+          <source srcset="/webp/tim.2.webp" type="image/webp" /><img src="/jpeg/tim.2.jpeg" alt="Tim making an obscene gesture in Bend, OR." width="800" height="1067" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--iris-1" class="image artifacts">
+        <picture>
+          <source srcset="/avif/iris.1.avif" type="image/avif" />
+          <source srcset="/webp/iris.1.webp" type="image/webp" /><img src="/jpeg/iris.1.jpeg" alt="An Iris v8 split keyboard illuminated bright white in the dark." width="800" height="600" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--iris-2" class="image artifacts monochrome">
+        <picture>
+          <source srcset="/avif/iris.2.avif" type="image/avif" />
+          <source srcset="/webp/iris.2.webp" type="image/webp" /><img src="/jpeg/iris.2.jpeg" alt="An Iris v8 split keyboard blending into its transparent-geometric desk topology." width="800" height="600" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--artifacts-2" class="image artifacts">
+        <picture>
+          <source srcset="/avif/artifacts.2.avif" type="image/avif" />
+          <source srcset="/webp/artifacts.2.webp" type="image/webp" /><img src="/jpeg/artifacts.2.jpeg" alt="A floor-sitting assortment of artifacts." width="800" height="1067" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--cowboy-4" class="image cowboy">
+        <picture>
+          <source srcset="/avif/cowboy.4.avif" type="image/avif" />
+          <source srcset="/webp/cowboy.4.webp" type="image/webp" /><img src="/jpeg/cowboy.4.jpeg" alt="Cowboy very close to taking a nap." width="800" height="1067" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--marmont-1" class="image">
+        <picture>
+          <source srcset="/avif/marmont.1.avif" type="image/avif" />
+          <source srcset="/webp/marmont.1.webp" type="image/webp" /><img src="/jpeg/marmont.1.jpeg" alt="A grass and stone checkerboard." width="800" height="1067" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--marmont-2" class="image">
+        <picture>
+          <source srcset="/avif/marmont.2.avif" type="image/avif" />
+          <source srcset="/webp/marmont.2.webp" type="image/webp" /><img src="/jpeg/marmont.2.jpeg" alt="A vividly upholstered couch." width="800" height="1067" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--shoes-1" class="image">
+        <picture>
+          <source srcset="/avif/shoes.1.avif" type="image/avif" />
+          <source srcset="/webp/shoes.1.webp" type="image/webp" /><img src="/jpeg/shoes.1.jpeg" alt="Shoegazing on geometric carpet." width="800" height="1067" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--fam-1" class="image of-people">
+        <picture>
+          <source srcset="/avif/fam.1.avif" type="image/avif" />
+          <source srcset="/webp/fam.1.webp" type="image/webp" /><img src="/jpeg/fam.1.jpeg" alt="Pre-wedding Erica, David, and Diane." width="800" height="1067" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--nolan-8" class="image of-me">
+        <picture>
+          <source srcset="/avif/nolan.8.avif" type="image/avif" />
+          <source srcset="/webp/nolan.8.webp" type="image/webp" /><img src="/jpeg/nolan.8.jpeg" alt="Me at my sister's wedding." width="800" height="1110" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--newports" class="image bad-words">
+        <picture>
+          <source srcset="/avif/newports.avif" type="image/avif" />
+          <source srcset="/webp/newports.webp" type="image/webp" /><img src="/jpeg/newports.jpeg" alt="A pack of Newport cigarettes being sold for $20 in a boutique." width="800" height="1067" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--nolan-7" class="image of-me">
+        <picture>
+          <source srcset="/avif/nolan.7.avif" type="image/avif" />
+          <source srcset="/webp/nolan.7.webp" type="image/webp" /><img src="/jpeg/nolan.7.jpeg" alt="Me carrying a towel on the beach." width="800" height="1194" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--oilpastel-1" class="image drawing heterochrome orbs">
+        <picture>
+          <source srcset="/avif/oilpastel.1.avif" type="image/avif" />
+          <source srcset="/webp/oilpastel.1.webp" type="image/webp" /><img src="/jpeg/oilpastel.1.jpeg" alt="An oil pastel drawing of skulls, orbs, and orbital lineation against an iridescent background." width="800" height="296" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--post-it-3" class="image post-its heterochrome">
+        <picture>
+          <source srcset="/avif/post-it.3.avif" type="image/avif" />
+          <source srcset="/webp/post-it.3.webp" type="image/webp" /><img src="/jpeg/post-it.3.jpeg" alt="A box of Post-it notes with a handheld level and other miscellania." width="800" height="1067" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--sacral" class="image artifacts post-its orbs">
+        <picture>
+          <source srcset="/avif/sacral.avif" type="image/avif" />
+          <source srcset="/webp/sacral.webp" type="image/webp" /><img src="/jpeg/sacral.jpeg" alt="A hole'd rock sitting on a transparent grid." width="800" height="1067" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--tansley" class="image post-its drawing orbs">
+        <picture>
+          <source srcset="/avif/tansley.avif" type="image/avif" />
+          <source srcset="/webp/tansley.webp" type="image/webp" /><img src="/jpeg/tansley.jpeg" alt="A Post-it drawing of interconnected circles describing the Tansley effect." width="800" height="1067" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--stormking-1" class="image nature">
+        <picture>
+          <source srcset="/avif/stormking.1.avif" type="image/avif" />
+          <source srcset="/webp/stormking.1.webp" type="image/webp" /><img src="/jpeg/stormking.1.jpeg" alt="A large red steel beam suspended against the sky." width="800" height="600" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--stormking-2" class="image nature bad-words">
+        <picture>
+          <source srcset="/avif/stormking.2.avif" type="image/avif" />
+          <source srcset="/webp/stormking.2.webp" type="image/webp" /><img src="/jpeg/stormking.2.jpeg" alt="An empty bottle of amphetamines discarded in the grass." width="800" height="600" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--stormking-3" class="image nature">
+        <picture>
+          <source srcset="/avif/stormking.3.avif" type="image/avif" />
+          <source srcset="/webp/stormking.3.webp" type="image/webp" /><img src="/jpeg/stormking.3.jpeg" alt="A massive steel sculpture standing uncontested at the top of a hill in an open field." width="800" height="1067" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--stormking-4" class="image nature orbs">
+        <picture>
+          <source srcset="/avif/stormking.4.avif" type="image/avif" />
+          <source srcset="/webp/stormking.4.webp" type="image/webp" /><img src="/jpeg/stormking.4.jpeg" alt="Metal rings standing opposed in the grass." width="800" height="1067" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--boys-1" class="image of-people">
+        <picture>
+          <source srcset="/avif/boys.1.avif" type="image/avif" />
+          <source srcset="/webp/boys.1.webp" type="image/webp" /><img src="/jpeg/boys.1.jpeg" alt="Robbie and Matt struggling to start a golf cart." width="800" height="1067" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--di-4" class="image of-people">
+        <picture>
+          <source srcset="/avif/di.4.avif" type="image/avif" />
+          <source srcset="/webp/di.4.webp" type="image/webp" /><img src="/jpeg/di.4.jpeg" alt="Diane walking into the Sphere." width="800" height="1067" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--nolan-9" class="image of-me">
+        <picture>
+          <source srcset="/avif/nolan.9.avif" type="image/avif" />
+          <source srcset="/webp/nolan.9.webp" type="image/webp" /><img src="/jpeg/nolan.9.jpeg" alt="A picture of me taking a polaroid picture of of the picture taker." width="800" height="1192" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--cowboy-6" class="image cowboy">
+        <picture>
+          <source srcset="/avif/cowboy.6.avif" type="image/avif" />
+          <source srcset="/webp/cowboy.6.webp" type="image/webp" /><img src="/jpeg/cowboy.6.jpeg" alt="Cowboy sitting patiently outside while we cook. Cowboy is afraid of the kitchen." width="800" height="1067" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--cowboy-8" class="image cowboy">
+        <picture>
+          <source srcset="/avif/cowboy.8.avif" type="image/avif" />
+          <source srcset="/webp/cowboy.8.webp" type="image/webp" /><img src="/jpeg/cowboy.8.jpeg" alt="Cowboy sleeping on the couch." width="800" height="1067" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div id="image--persevere-1" class="image furniture artifacts">
+        <picture>
+          <source srcset="/avif/persevere.1.avif" type="image/avif" />
+          <source srcset="/webp/persevere.1.webp" type="image/webp" /><img src="/jpeg/persevere.1.jpeg" alt="A sunny corner of my apartment." width="800" height="1067" loading="lazy" decoding="async" />
         </picture>
       </div>
     </div>

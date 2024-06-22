@@ -6,9 +6,10 @@ import beautify from "js-beautify" // NOTE: named import unsupported
 
 
 /* TODO: refine `any[]` */
-const asHtml = (data: any[]) => argv.find((x) => x === "--release") ?
-  serialize(data) :
-  beautify.html_beautify(serialize(data), { indent_size: 2 })
+const asHtml = (data: any[]) =>
+  argv.find((x) => x === "--release") ?
+    serialize(data) :
+    beautify.html_beautify(serialize(data), { indent_size: 2 })
 
 writeFileSync("index.html", asHtml(index))
 writeFileSync("images/index.html", asHtml(images))

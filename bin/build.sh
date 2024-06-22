@@ -1,3 +1,3 @@
 #!/usr/bin/env sh
 
-yarn build
+npm run build

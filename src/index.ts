@@ -4,9 +4,9 @@ import { addModeSelect } from "./mode.js"
 
 const toggleSize = (el: Element) => {
   const span = el.getAttribute("data-span")
-  if (!span || (span && parseInt(span) < 4)) {
+  if (!span || (span && parseInt(span) < 3)) {
     if (span) el.setAttribute("data-init-span", span)
-    el.setAttribute("data-span", "4")
+    el.setAttribute("data-span", "3")
   } else {
     const initSpan = el.getAttribute("data-init-span")
     if (initSpan) {
@@ -34,6 +34,7 @@ imagesDiv?.addEventListener(
 addFilterSelect(imagesDiv, "div.image")
 addModeSelect()
 
+// TODO: Add location listener or remove this
 if (location.hash) {
   const el = document.querySelector(location.hash)
   if (el) {
