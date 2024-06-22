@@ -1272,20 +1272,23 @@ export const index = [
           ["h1", {}, "i'm nolan"],
           ["div.controls", {},
             ["div.select--ghost", {},
-              ["select", {}],],
+              ["select", {}]],
             modeSelect
           ]
         ],
-        ["div.images", {}, imageComponent(imageItems[0])],
-        ["div.links", {},
-          ["a", { href: "/images/" }, "images"],
-          ["a", { href: "/links/" }, "links"],
-          ["a", { href: "/quotes/" }, "quotes"],
-          ["a", { href: "/pdf/resume.pdf", target: "_blank" }, "cv"]
-        ],
-        ["p", {}, "you may be thinking \"no but this site is archaic garbage??? i'm going back to fortnite,\" and it is, and you should stay. it's beautiful in the same way my ",
-          ["a", { href: imageItems.find((x) => x.id === "cowboy-2")?.src }, "sister's dog"],
-          " is beautiful. it's so beautiful. it's better than fortnite."]
+        ["div.images", {},
+          imageComponent(imageItems[0]),
+          ["div.summary", {},
+            ["div.links", {},
+              ["a", { href: "/images/" }, "images"],
+              ["a", { href: "/quotes/" }, "quotes"],
+              ["a", { href: "/links/" }, "links"],
+              ["a", { href: "/pdf/resume.pdf" }, "cv"]
+            ],
+            ["p", {}, "you may be thinking \"no but this site is ass???\" and it is. it so is."],
+            ["p", {}, "thats me eating han bat."]
+          ]
+        ]
       ],
       ["script", { type: "module", src: "/src/index.ts" }]
     ]

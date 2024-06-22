@@ -7,6 +7,8 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* TODO: review rem values */
+
 :root[data-color-scheme="light"] {
   color-scheme: light;
 }
@@ -37,9 +39,8 @@ body {
 }
 
 main {
-  width: 50%;
-  max-width: 37.5rem;
-  margin-top: 7.5rem;
+  width: 100%;
+  margin: 5.6vw 8.4vw;
 }
 
 div.header {
@@ -47,11 +48,11 @@ div.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0 0 2rem;
+  margin: 0 0 2.1rem;
 }
 
 div.header h1 {
-  font-size: 1.56rem;
+  font-size: 1.54rem;
   margin: 0;
 }
 
@@ -62,7 +63,7 @@ div.header a, div.links a, p a {
 }
 
 div.header a {
-  font-size: 1.56rem;
+  font-size: 1.54rem;
 }
 
 div.header a:hover, div.links a:hover, p a:hover {
@@ -81,8 +82,8 @@ div.controls select {
   font-weight: bolder;
   cursor: pointer;
   -webkit-appearance: none;
-          -moz-appearance: none;
-       appearance: none;
+     -moz-appearance: none;
+          appearance: none;
   color: CanvasText;
   -moz-text-align-last: right;
        text-align-last: right;
@@ -97,11 +98,25 @@ div.controls label {
 }
 
 div.controls > div:not(:last-child):not(.select--ghost) {
-  margin-right: 2rem;
+  margin-right: 2.1rem;
+}
+
+div.summary {
+  grid-row-end: span 2;
+  grid-column-end: span 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  padding: 0 0 0 2.1rem;
+}
+
+div.summary p {
+  max-width: 35rem;
+  margin: 0;
 }
 
 div.links {
-  margin: 1.66rem 0 1rem;
+  margin-bottom: 1rem;
 }
 
 div.links a {
@@ -114,9 +129,9 @@ div.links a:not(:last-child) {
 
 div.images {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(calc(25% - 0.25rem), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(calc(16.667% - 0.14rem), 1fr));
   grid-auto-flow: dense;
-  gap: 0.25rem;
+  gap: 0.14rem;
   touch-action: manipulation;
 }
 
@@ -183,7 +198,7 @@ div.image.hoverable:not(:hover) video {
 
 div.image#image--nolan-1 img {
   -o-object-position: 50% 33%;
-  object-position: 50% 33%;
+     object-position: 50% 33%;
 }
 
 div.image#image--nolan-2 img {
@@ -193,12 +208,12 @@ div.image#image--nolan-2 img {
 
 div.image#image--sunglasses img {
   -o-object-position: 50% 0%;
-  object-position: 50% 0%;
+     object-position: 50% 0%;
 }
 
 div.image#image--bird-house img {
   -o-object-position: 50% 100%;
-  object-position: 50% 100%;
+     object-position: 50% 100%;
 }
 
 :root[data-color-scheme="dark"] div.image.invertible img {
@@ -216,6 +231,14 @@ div.link, div.quote {
   padding-left: 0.125rem;
 }
 
+div.link {
+  max-width: 21rem;
+}
+
+div.quote {
+  max-width: 24.5rem;
+}
+
 div.link h2, div.quote h2 {
   font-size: 1.28rem;
   margin: 0.42rem 0;
@@ -231,28 +254,17 @@ div.link p, div.quote p {
   font-weight: 400;
 }
 
-@media screen and (orientation: landscape) and (max-width: 1023px) {
-  main {
-    width: 66%;
-    margin-top: 2rem;
-  }
-}
-
 @media screen and (orientation: landscape) and (max-width: 667px) {
   main {
     width: 100%;
     max-width: initial;
     margin: 0.25rem;
   }
+}
 
-  div.controls {
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: flex-end;
-  }
-
-  div.controls > div:not(:last-child):not(.select--ghost) {
-    margin-right: unset;
+@media screen and (orientation: portrait) {
+  div.images {
+    grid-template-columns: repeat(auto-fill, minmax(calc(25% - 0.125rem), 1fr));
   }
 }
 
