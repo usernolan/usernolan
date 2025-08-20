@@ -7,7 +7,7 @@
    viewBox="0 0 215.9 355.6"
    version="1.1"
    id="svg1"
-   inkscape:version="1.4 (1:1.4+202410161351+e7c3feb100)"
+   inkscape:version="1.4.2 (1:1.4.2+202505120738+ebf0e940d0)"
    sodipodi:docname="resume.svg"
    inkscape:export-filename="../pdf/resume.pdf"
    inkscape:export-xdpi="96"
@@ -27,15 +27,15 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="1.1703431"
-     inkscape:cx="408"
-     inkscape:cy="373.39476"
+     inkscape:zoom="1.3184524"
+     inkscape:cx="338.65463"
+     inkscape:cy="541.54402"
      inkscape:window-width="1920"
      inkscape:window-height="1131"
      inkscape:window-x="0"
      inkscape:window-y="32"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g3-5"
+     inkscape:current-layer="g8"
      showguides="false"
      inkscape:export-bgcolor="#ffffffff">
     <inkscape:grid
@@ -962,7 +962,7 @@
              style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Light';stroke-width:0.264583">2017-2022</tspan></text>
         <text
            xml:space="preserve"
-           style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:14.6667px;line-height:0;font-family:'Inter Variable';-inkscape-font-specification:'Inter Variable Light';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;white-space:pre;inline-size:362.18;display:inline;fill:#000000"
+           style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:14.6667px;line-height:0;font-family:'Inter Variable';-inkscape-font-specification:'Inter Variable Light';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;white-space:pre;inline-size:407.688;display:inline;fill:#000000"
            x="251.02605"
            y="370.84247"
            id="text15"
@@ -972,7 +972,7 @@
              y="370.84247"
              id="tspan65"><tspan
                style="font-weight:500;font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Medium'"
-               id="tspan63">Founder, Principal Software Engineer — NuID [nuid.io]</tspan></tspan></text>
+               id="tspan63">Founder, CTO, Principal Software Engineer — NuID [nuid.io]</tspan></tspan></text>
       </g>
       <g
          id="g8-2"
@@ -1094,7 +1094,7 @@
              style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Light';stroke-width:0.264583">2023-Current</tspan></text>
         <text
            xml:space="preserve"
-           style="display:inline;font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:14.6667px;line-height:0;font-family:'Inter Variable';-inkscape-font-specification:'Inter Variable Light';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#000000"
+           style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:14.6667px;line-height:0;font-family:'Inter Variable';-inkscape-font-specification:'Inter Variable Light';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;display:inline;fill:#000000"
            x="251.02605"
            y="370.84247"
            id="text15-7"
@@ -1104,7 +1104,7 @@
              x="251.02605"
              y="370.84247"
              style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Medium'"
-             sodipodi:role="line">Senior Software Engineer — Wolfram Research</tspan></text>
+             sodipodi:role="line">Principal Software Engineer — Wolfram Research</tspan></text>
       </g>
       <text
          id="text49-2-4"
@@ -1154,10 +1154,11 @@
              inkscape:label="skills"><tspan
                x="251.02605"
                y="212.90625"
-               id="tspan74">Full-Stack Software Engineering, Data Engineering, Cloud Architecture, </tspan><tspan
+               id="tspan74">Full-Stack Software Engineering, Data Science, Data Engineering,
+</tspan><tspan
                x="251.02605"
                y="229.03963"
-               id="tspan76">DevOps, Product Management</tspan></text>
+               id="tspan75">Cloud Architecture, DevOps, MLOps, Product Management</tspan></text>
         </g>
         <g
            id="g74"
@@ -1203,19 +1204,19 @@
            inkscape:label="content"><tspan
              x="250.94011"
              y="104.90624"
-             id="tspan78"><tspan
+             id="tspan77"><tspan
                style="font-weight:500;font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Medium'"
-               id="tspan77">Practiced software engineer, enthusiastic learner, and intuitive communicator </tspan></tspan><tspan
+               id="tspan76">Practiced software engineer, enthusiastic learner, and intuitive communicator </tspan></tspan><tspan
              x="250.94011"
              y="121.63919"
-             id="tspan80"><tspan
+             id="tspan79"><tspan
                style="font-weight:500;font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Medium'"
-               id="tspan79">with 14 years of professional programming experience in a broad variety of </tspan></tspan><tspan
+               id="tspan78">with 14 years of professional programming experience in a broad variety of </tspan></tspan><tspan
              x="250.94011"
              y="138.37214"
-             id="tspan82"><tspan
+             id="tspan81"><tspan
                style="font-weight:500;font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Medium'"
-               id="tspan81">demanding technical environments</tspan></tspan></text>
+               id="tspan80">demanding technical environments</tspan></tspan></text>
         <text
            id="text49-2"
            xml:space="preserve"
