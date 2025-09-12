@@ -1289,13 +1289,6 @@ const linkItems: Array<LinkItem> = [
   },
 
   {
-    id: "terry-a-davis", tags: ["technology", "artists"],
-    href: "https://youtu.be/XkXPqvWJHg4",
-    destination: "youtube",
-    title: ".• Terry A. Davis"
-  },
-
-  {
     id: "toxi", tags: ["technology", "artists"],
     href: "https://mastodon.thi.ng/@toxi",
     destination: "mastodon",
