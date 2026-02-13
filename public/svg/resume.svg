@@ -7,7 +7,7 @@
    viewBox="0 0 215.9 355.6"
    version="1.1"
    id="svg1"
-   inkscape:version="1.4.2 (1:1.4.2+202505120738+ebf0e940d0)"
+   inkscape:version="1.4.3 (1:1.4.3+202512261034+0d15f75042)"
    sodipodi:docname="resume.svg"
    inkscape:export-filename="../pdf/resume.pdf"
    inkscape:export-xdpi="96"
@@ -28,14 +28,14 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="1.3184524"
-     inkscape:cx="339.03386"
-     inkscape:cy="542.30248"
+     inkscape:cx="339.41309"
+     inkscape:cy="178.99774"
      inkscape:window-width="1920"
      inkscape:window-height="1131"
      inkscape:window-x="0"
-     inkscape:window-y="32"
+     inkscape:window-y="741"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g8"
+     inkscape:current-layer="g1"
      showguides="false"
      inkscape:export-bgcolor="#ffffffff">
     <inkscape:grid
@@ -116,7 +116,7 @@
              inkscape:label="content"><tspan
                x="366.6626"
                y="0"
-               id="tspan82">Manager at Microsoft</tspan></text>
+               id="tspan2">Manager at Microsoft</tspan></text>
           <text
              xml:space="preserve"
              style="display:inline;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:14.6667px;line-height:1.1;font-family:'Inter Variable';-inkscape-font-specification:'Inter Variable Medium';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;white-space:pre;inline-size:0;fill:#000000"
@@ -164,7 +164,7 @@
              inkscape:label="content"><tspan
                x="366.6626"
                y="0"
-               id="tspan84">Collaborator on infrastructure at NuID</tspan></text>
+               id="tspan3">Collaborator on infrastructure at NuID</tspan></text>
           <text
              xml:space="preserve"
              style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:14.6667px;line-height:1.1;font-family:'Inter Variable';-inkscape-font-specification:'Inter Variable Medium';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;white-space:pre;inline-size:0;fill:#000000"
@@ -233,7 +233,7 @@
                inkscape:label="content"><tspan
                  x="366.6626"
                  y="0"
-                 id="tspan85">GPA: Cumulative 3.777/4.0 - Major 3.854/4.0</tspan></text>
+                 id="tspan4">GPA: Cumulative 3.777/4.0 - Major 3.854/4.0</tspan></text>
             <text
                xml:space="preserve"
                style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:14.6667px;line-height:1.1;font-family:'Inter Variable';-inkscape-font-specification:'Inter Variable Medium';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;white-space:pre;inline-size:0;fill:#000000"
@@ -262,7 +262,7 @@
                inkscape:label="content"><tspan
                  x="366.6626"
                  y="0"
-                 id="tspan86">Fine art minor focusing in drawing and printmaking</tspan></text>
+                 id="tspan5">Fine art minor focusing in drawing and printmaking</tspan></text>
             <text
                xml:space="preserve"
                style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:14.6667px;line-height:1.1;font-family:'Inter Variable';-inkscape-font-specification:'Inter Variable Medium';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;white-space:pre;inline-size:0;fill:#000000"
@@ -291,7 +291,7 @@
                inkscape:label="content"><tspan
                  x="366.6626"
                  y="0"
-                 id="tspan87">Completed B.S. and M.S. in 4 years</tspan></text>
+                 id="tspan6">Completed B.S. and M.S. in 4 years</tspan></text>
             <text
                xml:space="preserve"
                style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:14.6667px;line-height:1.1;font-family:'Inter Variable';-inkscape-font-specification:'Inter Variable Medium';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;white-space:pre;inline-size:0;fill:#000000"
@@ -357,7 +357,7 @@
                inkscape:label="content"><tspan
                  x="366.6626"
                  y="0"
-                 id="tspan92">GPA: 4.0/4.0</tspan></text>
+                 id="tspan7">GPA: 4.0/4.0</tspan></text>
             <text
                xml:space="preserve"
                style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:14.6667px;line-height:1.1;font-family:'Inter Variable';-inkscape-font-specification:'Inter Variable Medium';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;white-space:pre;inline-size:0;fill:#000000"
@@ -386,7 +386,7 @@
                inkscape:label="content"><tspan
                  x="366.6626"
                  y="0"
-                 id="tspan93">Project: Distributed Online Record Linkage with MinHash and Storm</tspan></text>
+                 id="tspan8">Project: Distributed Online Record Linkage with MinHash and Storm</tspan></text>
             <text
                xml:space="preserve"
                style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:14.6667px;line-height:1.1;font-family:'Inter Variable';-inkscape-font-specification:'Inter Variable Medium';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;white-space:pre;inline-size:0;fill:#000000"
@@ -415,7 +415,7 @@
                inkscape:label="content"><tspan
                  x="366.6626"
                  y="0"
-                 id="tspan94">Thesis: Design Patterns in Concurrent and Asynchronous Systems</tspan></text>
+                 id="tspan9">Thesis: Design Patterns in Concurrent and Asynchronous Systems</tspan></text>
             <text
                xml:space="preserve"
                style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:14.6667px;line-height:1.1;font-family:'Inter Variable';-inkscape-font-specification:'Inter Variable Medium';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;white-space:pre;inline-size:0;fill:#000000"
@@ -498,13 +498,13 @@
                inkscape:label="content"><tspan
                  x="366.6626"
                  y="0"
-                 id="tspan95">Designed and implemented an open-source conformance suite for testing new </tspan><tspan
+                 id="tspan10">Designed and implemented an open-source conformance suite for testing new </tspan><tspan
                  x="366.6626"
                  y="11.55"
-                 id="tspan96">and existing specification implementations, leading to an ecosystem-wide </tspan><tspan
+                 id="tspan11">and existing specification implementations, leading to an ecosystem-wide </tspan><tspan
                  x="366.6626"
                  y="23.099999"
-                 id="tspan97">improvement in compatibility and improving the visibility of our products</tspan></text>
+                 id="tspan12">improvement in compatibility and improving the visibility of our products</tspan></text>
             <text
                xml:space="preserve"
                style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:14.6667px;line-height:1.1;font-family:'Inter Variable';-inkscape-font-specification:'Inter Variable Medium';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;white-space:pre;inline-size:0;fill:#000000"
@@ -533,13 +533,13 @@
                inkscape:label="content"><tspan
                  x="366.6626"
                  y="0"
-                 id="tspan98">Contributed to open-source eLearning libraries and browser extensions which </tspan><tspan
+                 id="tspan13">Contributed to open-source eLearning libraries and browser extensions which </tspan><tspan
                  x="366.6626"
                  y="11.55"
-                 id="tspan99">increased adoption of an emerging eLearning specification and established </tspan><tspan
+                 id="tspan14">increased adoption of an emerging eLearning specification and established </tspan><tspan
                  x="366.6626"
                  y="23.099999"
-                 id="tspan100">new revenue streams for our team</tspan></text>
+                 id="tspan16">new revenue streams for our team</tspan></text>
             <text
                xml:space="preserve"
                style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:14.6667px;line-height:1.1;font-family:'Inter Variable';-inkscape-font-specification:'Inter Variable Medium';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;white-space:pre;inline-size:0;fill:#000000"
@@ -605,13 +605,13 @@
                inkscape:label="content"><tspan
                  x="366.6626"
                  y="0"
-                 id="tspan101">Designed and implemented a compiler and toolchain in C# for describing </tspan><tspan
+                 id="tspan19">Designed and implemented a compiler and toolchain in C# for describing </tspan><tspan
                  x="366.6626"
                  y="11.55"
-                 id="tspan102">compute workflows that improved metric accuracy, reliability, and compute </tspan><tspan
+                 id="tspan20">compute workflows that improved metric accuracy, reliability, and compute </tspan><tspan
                  x="366.6626"
                  y="23.099999"
-                 id="tspan103">efficiency across our team</tspan></text>
+                 id="tspan21">efficiency across our team</tspan></text>
             <text
                xml:space="preserve"
                style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:14.6667px;line-height:1.1;font-family:'Inter Variable';-inkscape-font-specification:'Inter Variable Medium';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;white-space:pre;inline-size:0;fill:#000000"
@@ -640,13 +640,13 @@
                inkscape:label="content"><tspan
                  x="366.6626"
                  y="0"
-                 id="tspan104">Led engineering and deployment of a machine learning model for device age, </tspan><tspan
+                 id="tspan22">Led engineering and deployment of a machine learning model for device age, </tspan><tspan
                  x="366.6626"
                  y="11.55"
-                 id="tspan105">informing high-level Windows 10 marketing and delivery strategies across the </tspan><tspan
+                 id="tspan23">informing high-level Windows 10 marketing and delivery strategies across the </tspan><tspan
                  x="366.6626"
                  y="23.099999"
-                 id="tspan106">Windows organization</tspan></text>
+                 id="tspan24">Windows organization</tspan></text>
             <text
                xml:space="preserve"
                style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:14.6667px;line-height:1.1;font-family:'Inter Variable';-inkscape-font-specification:'Inter Variable Medium';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;white-space:pre;inline-size:0;fill:#000000"
@@ -675,10 +675,10 @@
                inkscape:label="content"><tspan
                  x="366.6626"
                  y="0"
-                 id="tspan107">Implemented and maintained pipelines in Spark and Hadoop-like architectures </tspan><tspan
+                 id="tspan25">Implemented and maintained pipelines in Spark and Hadoop-like architectures </tspan><tspan
                  x="366.6626"
                  y="11.55"
-                 id="tspan108">driving dashboards and analyses relied upon by senior leadership and the CTO</tspan></text>
+                 id="tspan26">driving dashboards and analyses relied upon by senior leadership and the CTO</tspan></text>
             <text
                xml:space="preserve"
                style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:14.6667px;line-height:1.1;font-family:'Inter Variable';-inkscape-font-specification:'Inter Variable Medium';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;white-space:pre;inline-size:0;fill:#000000"
@@ -743,19 +743,19 @@
                inkscape:label="content"><tspan
                  x="251.3698"
                  y="574.83533"
-                 id="tspan110"><tspan
+                 id="tspan28"><tspan
                    style="font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Light'"
-                   id="tspan109">Collaborated with professor of cryptography and ACM Fellow Jonathan Katz to </tspan></tspan><tspan
+                   id="tspan27">Collaborated with professor of cryptography and ACM Fellow Jonathan Katz to </tspan></tspan><tspan
                  x="251.3698"
                  y="590.83496"
-                 id="tspan112"><tspan
+                 id="tspan30"><tspan
                    style="font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Light'"
-                   id="tspan111">develop a zero-knowledge authentication protocol for which we were granted </tspan></tspan><tspan
+                   id="tspan29">develop a zero-knowledge authentication protocol for which we were granted </tspan></tspan><tspan
                  x="251.3698"
                  y="606.8346"
-                 id="tspan114"><tspan
+                 id="tspan32"><tspan
                    style="font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Light'"
-                   id="tspan113">patents US 10880089, 11496310</tspan></tspan></text>
+                   id="tspan31">patents US 10880089, 11496310</tspan></tspan></text>
             <text
                xml:space="preserve"
                style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:14.6667px;line-height:1.1;font-family:'Inter Variable';-inkscape-font-specification:'Inter Variable Medium';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#000000"
@@ -784,19 +784,19 @@
                inkscape:label="content"><tspan
                  x="-37.110027"
                  y="560.92059"
-                 id="tspan116"><tspan
+                 id="tspan34"><tspan
                    style="font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Light'"
-                   id="tspan115">Hired and led small, distributed teams across engineering and product </tspan></tspan><tspan
+                   id="tspan33">Hired and led small, distributed teams across engineering and product </tspan></tspan><tspan
                  x="-37.110027"
                  y="576.92023"
-                 id="tspan118"><tspan
+                 id="tspan36"><tspan
                    style="font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Light'"
-                   id="tspan117">development which were responsible for onboarding thousands of users onto </tspan></tspan><tspan
+                   id="tspan35">development which were responsible for onboarding thousands of users onto </tspan></tspan><tspan
                  x="-37.110027"
                  y="592.91986"
-                 id="tspan120"><tspan
+                 id="tspan38"><tspan
                    style="font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Light'"
-                   id="tspan119">our authentication service and public key infrastructure</tspan></tspan></text>
+                   id="tspan37">our authentication service and public key infrastructure</tspan></tspan></text>
             <text
                xml:space="preserve"
                style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:14.6667px;line-height:1.1;font-family:'Inter Variable';-inkscape-font-specification:'Inter Variable Medium';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#000000"
@@ -825,19 +825,19 @@
                inkscape:label="content"><tspan
                  x="262"
                  y="530"
-                 id="tspan122"><tspan
+                 id="tspan40"><tspan
                    style="font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Light'"
-                   id="tspan121">Led development and maintenance of open-source front-end and back-end </tspan></tspan><tspan
+                   id="tspan39">Led development and maintenance of open-source front-end and back-end </tspan></tspan><tspan
                  x="262"
                  y="545.99963"
-                 id="tspan124"><tspan
+                 id="tspan42"><tspan
                    style="font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Light'"
-                   id="tspan123">libraries in Java, JavaScript, Go, Ruby, and Clojure, helping hundreds of </tspan></tspan><tspan
+                   id="tspan41">libraries in Java, JavaScript, Go, Ruby, and Clojure, helping hundreds of </tspan></tspan><tspan
                  x="262"
                  y="561.99927"
-                 id="tspan126"><tspan
+                 id="tspan44"><tspan
                    style="font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Light'"
-                   id="tspan125">developers integrate our authentication API into their projects</tspan></tspan></text>
+                   id="tspan43">developers integrate our authentication API into their projects</tspan></tspan></text>
             <text
                xml:space="preserve"
                style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:14.6667px;line-height:1.1;font-family:'Inter Variable';-inkscape-font-specification:'Inter Variable Medium';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#000000"
@@ -866,19 +866,19 @@
                inkscape:label="content"><tspan
                  x="257"
                  y="445"
-                 id="tspan128"><tspan
+                 id="tspan46"><tspan
                    style="font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Light'"
-                   id="tspan127">Designed and implemented a cloud-native developer experience within AWS </tspan></tspan><tspan
+                   id="tspan45">Designed and implemented a cloud-native developer experience within AWS </tspan></tspan><tspan
                  x="257"
                  y="460.9996"
-                 id="tspan130"><tspan
+                 id="tspan48"><tspan
                    style="font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Light'"
-                   id="tspan129">enabling on-demand development environments, stateful integration testing, </tspan></tspan><tspan
+                   id="tspan47">enabling on-demand development environments, stateful integration testing, </tspan></tspan><tspan
                  x="257"
                  y="476.99921"
-                 id="tspan132"><tspan
+                 id="tspan52"><tspan
                    style="font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Light'"
-                   id="tspan131">live previews, progressive delivery, and structured observability</tspan></tspan></text>
+                   id="tspan49">live previews, progressive delivery, and structured observability</tspan></tspan></text>
             <text
                xml:space="preserve"
                style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:14.6667px;line-height:1.1;font-family:'Inter Variable';-inkscape-font-specification:'Inter Variable Medium';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#000000"
@@ -907,32 +907,32 @@
                inkscape:label="content"><tspan
                  x="366.6626"
                  y="0"
-                 id="tspan134"><tspan
+                 id="tspan54"><tspan
                    style="font-weight:300;font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Light';fill:#231f20"
-                   id="tspan133">Designed and implemented an elastic, highly available authentication API and </tspan></tspan><tspan
+                   id="tspan53">Designed and implemented an elastic, highly available authentication API and </tspan></tspan><tspan
                  x="366.6626"
                  y="11.999681"
-                 id="tspan136"><tspan
+                 id="tspan56"><tspan
                    style="font-weight:300;font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Light';fill:#231f20"
-                   id="tspan135">web-based developer portal using Clojure, TypeScript, AWS, and Terraform
+                   id="tspan55">web-based developer portal using Clojure, TypeScript, AWS, and Terraform
 </tspan></tspan><tspan
                  x="366.6626"
                  y="23.999361"
-                 id="tspan138"><tspan
+                 id="tspan58"><tspan
                    style="font-weight:300;font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Light';fill:#231f20"
-                   id="tspan137">
+                   id="tspan57">
 </tspan></tspan><tspan
                  x="366.6626"
                  y="35.999041"
-                 id="tspan140"><tspan
+                 id="tspan60"><tspan
                    style="font-weight:300;font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Light';fill:#231f20"
-                   id="tspan139">
+                   id="tspan59">
 </tspan></tspan><tspan
                  x="366.6626"
                  y="47.998721"
-                 id="tspan142"><tspan
+                 id="tspan62"><tspan
                    style="font-weight:300;font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Light';fill:#231f20"
-                   id="tspan141">
+                   id="tspan61">
 </tspan></tspan></text>
             <text
                xml:space="preserve"
@@ -970,9 +970,9 @@
            transform="matrix(0.26458333,0,0,0.26458333,-0.02463469,0.11179454)"><tspan
              x="251.02605"
              y="370.84247"
-             id="tspan144"><tspan
+             id="tspan65"><tspan
                style="font-weight:500;font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Medium'"
-               id="tspan143">Founder, CTO, Principal Engineer — NuID [nuid.io]</tspan></tspan></text>
+               id="tspan63">Founder, CTO, Principal Engineer — NuID [nuid.io]</tspan></tspan></text>
       </g>
       <g
          id="g8-2"
@@ -998,7 +998,7 @@
                inkscape:label="content"><tspan
                  x="366.6626"
                  y="0"
-                 id="tspan145">Addressed synchronization bugs and failure modes in legacy Java code </tspan></text>
+                 id="tspan66">Addressed synchronization bugs and failure modes in legacy Java code </tspan></text>
             <text
                xml:space="preserve"
                style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:14.6667px;line-height:1.1;font-family:'Inter Variable';-inkscape-font-specification:'Inter Variable Medium';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;white-space:pre;inline-size:0;fill:#000000"
@@ -1026,13 +1026,13 @@
                inkscape:label="content"><tspan
                  x="366.6626"
                  y="0"
-                 id="tspan146">Developed and deployed back-end services in Java, Typescript, and Wolfram </tspan><tspan
+                 id="tspan68">Developed and deployed back-end services in Java, Typescript, and Wolfram </tspan><tspan
                  x="366.6626"
                  y="11.55"
-                 id="tspan147">Language related to kernel management, expression evaluation, server-side </tspan><tspan
+                 id="tspan69">Language related to kernel management, expression evaluation, server-side </tspan><tspan
                  x="366.6626"
                  y="23.099999"
-                 id="tspan148">rendering, and Mathematica notebook state management</tspan></text>
+                 id="tspan70">rendering, and Mathematica notebook state management</tspan></text>
             <text
                xml:space="preserve"
                style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:14.6667px;line-height:1.1;font-family:'Inter Variable';-inkscape-font-specification:'Inter Variable Medium';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;white-space:pre;inline-size:0;fill:#000000"
@@ -1061,10 +1061,10 @@
                inkscape:label="content"><tspan
                  x="366.6626"
                  y="0"
-                 id="tspan149">Inherited and led the rearchitecture and migration of the Wolfram Cloud </tspan><tspan
+                 id="tspan71">Inherited and led the rearchitecture and migration of the Wolfram Cloud </tspan><tspan
                  x="366.6626"
                  y="11.55"
-                 id="tspan150">application to Kubernetes</tspan></text>
+                 id="tspan72">application to Kubernetes</tspan></text>
             <text
                xml:space="preserve"
                style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:14.6667px;line-height:1.1;font-family:'Inter Variable';-inkscape-font-specification:'Inter Variable Medium';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;white-space:pre;inline-size:0;fill:#000000"
@@ -1142,8 +1142,8 @@
                id="tspan64"
                style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:3.175px;font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Light';writing-mode:lr-tb;fill:#231f20;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.352777"
                x="63.814026"
-               dx="0 0 0 -0.053022496 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.036830001 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -0.071119994"
-               y="47.466286">Java, Clojure, TypeScript, Python, Go, Rust, C#, C, Lua, Erlang, Haskell, OCaml</tspan></text>
+               dx="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -0.071119994"
+               y="47.466286">Clojure, Java, TypeScript, C, Lua, Erlang, Rust, Haskell, Go, Zig, OCaml, WL</tspan></text>
           <text
              xml:space="preserve"
              style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:14.6667px;line-height:1.1;font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Medium';text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;white-space:pre;inline-size:529.255;display:inline;fill:#000000"
@@ -1154,11 +1154,11 @@
              inkscape:label="skills"><tspan
                x="251.02605"
                y="212.90625"
-               id="tspan151">Full-Stack Software Engineering, Data Science, Data Engineering,
+               id="tspan74">Full-Stack Software Engineering, Data Science, Data Engineering,
 </tspan><tspan
                x="251.02605"
                y="229.03963"
-               id="tspan152">Cloud Architecture, DevOps, MLOps, Product Management</tspan></text>
+               id="tspan75">Cloud Architecture, DevOps, MLOps, Product Management</tspan></text>
         </g>
         <g
            id="g74"
@@ -1204,19 +1204,19 @@
            inkscape:label="content"><tspan
              x="250.94011"
              y="104.90624"
-             id="tspan154"><tspan
+             id="tspan77"><tspan
                style="font-weight:500;font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Medium'"
-               id="tspan153">Practiced software engineer, enthusiastic learner, and intuitive communicator </tspan></tspan><tspan
+               id="tspan76">Practiced software engineer, enthusiastic learner, and intuitive communicator </tspan></tspan><tspan
              x="250.94011"
              y="121.63919"
-             id="tspan156"><tspan
+             id="tspan79"><tspan
                style="font-weight:500;font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Medium'"
-               id="tspan155">with 14 years of professional programming experience in a broad variety of </tspan></tspan><tspan
+               id="tspan78">with 14 years of professional programming experience in a broad variety of </tspan></tspan><tspan
              x="250.94011"
              y="138.37214"
-             id="tspan158"><tspan
+             id="tspan81"><tspan
                style="font-weight:500;font-family:'Inter 24pt';-inkscape-font-specification:'Inter 24pt Medium'"
-               id="tspan157">demanding technical environments</tspan></tspan></text>
+               id="tspan80">demanding technical environments</tspan></tspan></text>
         <text
            id="text49-2"
            xml:space="preserve"

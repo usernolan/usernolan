@@ -18,6 +18,7 @@ export interface ImageItem extends Item {
 
 interface QuoteItem extends Item {
   quote: string,
+  nextLine?: string,
   author: string
 }
 
@@ -60,7 +61,7 @@ const imageComponent = ({
 }
 
 const quoteComponent = ({
-  id, quote, author, tags = []
+  id, quote, nextLine, author, tags = []
 }: QuoteItem) => {
   const classes = Array.from(new Set(["quote"].concat(tags)))
   return [
@@ -70,6 +71,7 @@ const quoteComponent = ({
       class: classes.join(" ")
     },
     ["h2", {}, quote],
+    nextLine ? ["h2", {}, nextLine] : null,
     ["p", {}, `${author}`]
   ]
 }
@@ -1139,6 +1141,13 @@ export const imageItems: Array<ImageItem> = [
 
 const linkItems: Array<LinkItem> = [
   {
+    id: "process", tags: ["philosophy", "ideas"],
+    href: "https://en.wikipedia.org/wiki/Process_philosophy",
+    destination: "wikipedia",
+    title: ".Process"
+  },
+
+  {
     id: "the-mess-were-in", tags: ["technology"],
     href: "https://youtu.be/lKXe3HUG2l4",
     destination: "youtube",
@@ -1152,14 +1161,6 @@ const linkItems: Array<LinkItem> = [
     destination: "w3.org",
     title: "Cool URIs don't change",
     author: "Tim BL"
-  },
-
-  {
-    id: "how-to-sweep", tags: ["ideas"],
-    href: "https://youtu.be/Kt-VlZpz-8E",
-    destination: "youtube",
-    title: "How to Sweep.",
-    author: "Tom Sachs"
   },
 
   {
@@ -1359,13 +1360,6 @@ const linkItems: Array<LinkItem> = [
   },
 
   {
-    id: "process", tags: ["philosophy", "ideas"],
-    href: "https://en.wikipedia.org/wiki/Process_philosophy",
-    destination: "wikipedia",
-    title: ".Process"
-  },
-
-  {
     id: "bohm", tags: ["philosophy"],
     href: "https://en.wikipedia.org/wiki/David_Bohm",
     destination: "wikipedia",
@@ -1415,7 +1409,13 @@ const quoteItems: Array<QuoteItem> = [
   },
 
   {
-    id: "chris-a",
+    id: "stephen",
+    quote: "And in addition to such branching, there can also be merging.",
+    author: "Stephen Wolfram"
+  },
+
+  {
+    id: "chris",
     quote: "The wholeness is made of parts, the parts are created by the wholeness.",
     author: "Christopher Alexander"
   },
@@ -1427,13 +1427,26 @@ const quoteItems: Array<QuoteItem> = [
   },
 
   {
+    id: "fromm",
+    quote: "It is a process that flows and flows in itself and beyond itself.",
+    author: "Erich Fromm"
+  },
+
+  {
+    id: "tcb",
+    quote: "Don't think",
+    nextLine: "Just let it flow",
+    author: "Chemical Ed & Tom"
+  },
+
+  {
     id: "logistic-map",
     quote: "Unpredictability is not randomness, but in some circumstances looks very much like it.",
     author: "Wikipedia; Logistic Map"
   },
 
   {
-    id: "anw-1",
+    id: "anw",
     quote: "One main factor in the upward trend of animal life has been the power of wandering.",
     author: "Alfred North Whitehead"
   },
@@ -1442,6 +1455,13 @@ const quoteItems: Array<QuoteItem> = [
     id: "fifield",
     quote: "Answer is the dead stop.",
     author: "William Fifield"
+  },
+
+  {
+    id: "dan",
+    quote: "I wish we could change it",
+    nextLine: "To before we changed it",
+    author: "Dan Deacon"
   },
 
   {
@@ -1454,6 +1474,12 @@ const quoteItems: Array<QuoteItem> = [
     id: "blizzard",
     quote: "Stay awhile, and listen.",
     author: "Deckard Cain"
+  },
+
+  {
+    id: "bc",
+    quote: "Ayn Rand was doing a bit.",
+    author: "Anonymous"
   },
 
   {
