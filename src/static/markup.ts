@@ -1136,6 +1136,153 @@ export const imageItems: Array<ImageItem> = [
     src: "/jpeg/persevere.1.jpeg",
     alt: "A sunny corner of my apartment.",
     width: 800, height: 1067
+  },
+
+  {
+    id: "di-5", tags: ["of-people"],
+    src: "/jpeg/di.5.jpeg",
+    alt: "Erica and Di at a Dodgers game.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "observe-1", tags: ["nature"],
+    src: "/jpeg/observatory.1.jpeg",
+    alt: "Looking up at Griffith Observatory.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "libby", tags: [],
+    src: "/jpeg/libby.jpeg",
+    alt: "The Libby Bowl in Ojai, shortly before a show.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "pool", tags: ["of-people"],
+    src: "/jpeg/pool.jpeg",
+    alt: "Erica and David walking on a pink pool deck under a black and white striped umbrella at dusk.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "cowboy-9", tags: ["cowboy"],
+    src: "/jpeg/cowboy.9.jpeg",
+    alt: "Cowboy lounging in sand, unbothered by how dirty it's making him.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "cowboy-10", tags: ["cowboy"],
+    src: "/jpeg/cowboy.10.jpeg",
+    alt: "Still Cowboy, but this time lounging in the park, much cleaner.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "pandabear", tags: ["heterochrome"],
+    src: "/jpeg/pandabear.jpeg",
+    alt: "The venue before a Panda Bear show.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "famb", tags: ["of-people"],
+    src: "/jpeg/famb.1.jpeg",
+    alt: "Eli and Lauren at Swimming Paul.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "mendo-1", tags: ["nature"],
+    src: "/jpeg/mendo.1.jpeg",
+    alt: "A cliff in Mendocino.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "mendo-2", tags: ["nature"],
+    src: "/jpeg/mendo.2.jpeg",
+    alt: "Waves against rocks, also in Mendocino.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "ib-1", tags: ["of-people", "nature"],
+    src: "/jpeg/ib.1.jpeg",
+    alt: "Ib forging a path.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "mendo-3", tags: ["nature"],
+    src: "/jpeg/mendo.3.jpeg",
+    alt: "A seagull sideyeing us on a rock beach in Mendocino.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "parking-189", tags: ["concrete", "monochrome"],
+    src: "/jpeg/189.jpeg",
+    alt: "A parking reminder.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "ds-1", tags: ["heterochrome"],
+    src: "/jpeg/ds.1.jpeg",
+    alt: "An underground tunnel at a trance festival.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "ds-2", tags: ["concrete"],
+    src: "/jpeg/ds.2.jpeg",
+    alt: "The sleepy aftermath of said trance festival.",
+    width: 800, height: 600
+  },
+
+  {
+    id: "griffith-1", tags: ["nature"],
+    src: "/jpeg/griffith.1.jpeg",
+    alt: "A path through Griffith.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "griffith-2", tags: ["nature"],
+    src: "/jpeg/griffith.2.jpeg",
+    alt: "A Griffith tree sillhouette.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "griffith-3", tags: ["nature"],
+    src: "/jpeg/griffith.3.jpeg",
+    alt: "Another path through Griffith.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "trav-1", tags: ["of-people"],
+    src: "/jpeg/trav.1.jpeg",
+    alt: "Travis wearing a horse mask for no reason.",
+    width: 800, height: 1191
+  },
+
+  {
+    id: "summit-1", tags: ["of-people"],
+    src: "/jpeg/summit.1.jpeg",
+    alt: "Eli and Dixon exploring the Summit Cave.",
+    width: 800, height: 1067
+  },
+
+  {
+    id: "winst", tags: ["of-people", "of-me"],
+    src: "/jpeg/winst.1.jpeg",
+    alt: "Winston and I at Ajax Tavern.",
+    width: 800, height: 1067
   }
 ]
 
