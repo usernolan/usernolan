@@ -1626,7 +1626,7 @@ const quoteItems: Array<QuoteItem> = [
   {
     id: "bc",
     quote: "Ayn Rand was doing a bit.",
-    author: "Anonymous"
+    author: "B.C."
   },
 
   {
