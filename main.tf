@@ -17,6 +17,12 @@ resource "aws_acm_certificate" "site" {
   domain_name               = var.domain_name
   validation_method         = "DNS"
   subject_alternative_names = var.alternative_domain_names
+
+  # Changing SANs forces a new cert; create the replacement (and validate it)
+  # before destroying the old one so CloudFront never loses a valid cert.
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_route53_zone" "site" {
